@@ -8,7 +8,7 @@ To install this bundle, simply use [composer](https://getcomposer.org) and inclu
 
 ```javascript
     "require" : {
-         "spliced/commerce-bundle" : "dev-master",
+         "spliced/commerce" : "dev-master",
     },
 ```
 
