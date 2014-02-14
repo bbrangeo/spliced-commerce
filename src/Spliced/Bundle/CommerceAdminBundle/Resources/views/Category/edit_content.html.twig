@@ -1,0 +1,12 @@
+<div class="page-header">
+	<h1>Editing Category <small>{{ category.name }}</small></h1>
+</div>
+
+<form method="post" role="form" action="{{ path('commerce_admin_category_update', { 'id' : category.id }) }}">
+    {{ include('SplicedCommerceAdminBundle:Category:form.html.twig') }}
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-success">Update Category</button>
+        <a href="{{ path('commerce_admin_category') }}" class="btn btn-warning"><i class=" icon-remove"></i> Cancel</a>
+    </div>
+</form> 

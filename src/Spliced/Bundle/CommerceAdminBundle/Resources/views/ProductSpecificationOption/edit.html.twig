@@ -1,0 +1,52 @@
+{% extends 'SplicedCommerceAdminBundle:Layouts:2columns-left.html.twig' %}
+
+{% block title %}{{ form.vars.data.name }} | Product Specification Options | {{ parent() }}{% endblock %}
+
+{% block content_section_header -%}
+    {{ include('SplicedCommerceAdminBundle:ProductSpecificationOption:content_section_header.html.twig') }}
+{% endblock %}
+
+{% block left -%}
+<ul class="nav nav-pills nav-stacked nav-tabs">
+  <li class="active"><a href="#Details" data-toggle="tab">Details</a></li>
+  {% if form.vars.data.optionType != 2 %}
+  	<li class=""><a href="#Values" data-toggle="tab">Values</a></li>
+  {% endif %}
+</ul>
+{% endblock %}
+
+{% block content -%}
+
+<div class="page-header">
+	<h1>Product Specification Option <small>Editing {{ form.vars.data.id }}</small></h1>
+</div>
+
+<form action="{{ path('commerce_admin_product_specification_option_update', { 'id' : form.vars.data.id }) }}" class="form product-specification-option-form" method="post" {{ form_enctype(form) }}>
+
+<div class="tab-content">
+	<div class="tab-pane active" id="Details" data-toggle="tab">
+	    <div class="page-header">
+	        <h2><small>Details</small></h2>
+	    </div>
+        {{ include("SplicedCommerceAdminBundle:ProductSpecificationOption:form.html.twig", { }) }}
+        
+	</div>
+	
+	{% if form.vars.data.optionType != 2 %}
+		<div class="tab-pane" id="Values" data-toggle="tab">
+		    <div class="page-header">
+		        <h2><small>Values</small></h2>
+		    </div>
+		    {{ include("SplicedCommerceAdminBundle:ProductSpecificationOption:values.html.twig", {}) }}
+		</div>
+	{% endif %}
+</div>
+
+<div class="form-actions">
+    <button type="submit" class="btn btn-success"><i class="icon-ok icon-white"></i> Update</button>
+</div>
+
+{{ form_widget(form._token) }}
+
+</form>
+{% endblock %}

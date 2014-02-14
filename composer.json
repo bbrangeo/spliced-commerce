@@ -1,0 +1,34 @@
+{
+	"name" : "spliced/commerce",
+	"description" : "Spliced Media Commerce Platform for Symfony 2.3.x",
+	"type" : "library",
+	"authors" : [{
+			"name" : "Gassan Idriss",
+			"email" : "ghassani@splicedmedia.com"
+		}
+	],
+	"homepage" : "http://www.splicedmedia.com",
+	"license" : [
+		"Apache-2.0"
+	],
+	"require" : {
+		"php" : ">=5.3.3",
+		"symfony/symfony" : "2.3.*",
+		"doctrine/mongodb-odm-bundle" : "3.0.*@dev",
+		"guzzle/guzzle" : "dev-master",
+		"facebook/php-sdk" : "3.2.*",
+		"imagine/Imagine" : "v0.3.0",
+		"spliced/components" : "dev-master",
+		"knplabs/knp-paginator-bundle" : "dev-master",
+		"adoy/oauth2" : "dev-master",
+		"doctrine/mongodb-odm" : "1.0.*@dev",
+		"doctrine/orm" : ">=2.2.3,<2.4-dev",
+		"paypal/merchant-sdk-php" : "v3.5.103"
+	},
+	"autoload" : {
+		"psr-0" : {
+			"Spliced\\" : "src/"
+		}
+	},
+	"minimum-stability" : "dev"
+}

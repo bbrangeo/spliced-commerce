@@ -1,0 +1,44 @@
+{% extends 'SplicedCommerceAdminBundle:Layouts:2columns-left.html.twig' %}
+
+{% block content_section_header -%}
+    {{ include('SplicedCommerceAdminBundle:Configuration:content_section_header.html.twig') }}
+{% endblock %}
+
+{% block left -%}
+<ul class="nav nav-pills nav-stacked nav-tabs">
+	{% set first = true %}
+    {%  for parentGroupName,parentGroupValues in forms %}
+      {% if first == true %}
+      	{% set first = false %}
+      	<li class="active">
+      {% else %}
+      	<li class="">
+      {% endif %}
+        <a href="#{{ parentGroupName }}" data-toggle="tab">{{  parentGroupName }}</a>
+        {# if parentGroupValues.value is not defined %}
+            <ul>
+            {% for childGroupName, childGroupValues in parentGroupValues %}
+                {%  if childGroupValues.value is not defined %}
+                <li>
+                    <a href="#{{ parentGroupName }}" data-toggle="tab">{{  childGroupName }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        {% endif #}
+      </li>
+    {% endfor %}
+</ul>
+{% endblock -%}
+    
+{% block content -%}
+
+<div class="page-header">
+	<h1>Configuration <small>Managment</small></h1>
+</div>
+
+<form class="form-horizontal" role="form">
+	{{ include("SplicedCommerceAdminBundle:Configuration:config_data_set.html.twig", { 'forms' : forms, 'active' : true }) }}
+</form>
+
+{% endblock %}

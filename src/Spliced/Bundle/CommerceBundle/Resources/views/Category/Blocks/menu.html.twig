@@ -1,0 +1,12 @@
+{#
+	Category/Block/menu.html.twig
+	@package SplicedCommerceBundle
+	@author Gassan Idriss - ghassani@splicedmedia.com
+
+	@var categories
+#}
+<ul id="nav" class="main_sub">
+	{% for category in categories %}
+		<li class="level0"><a href="{{  path(category.urlSlug) }}">{{ category.name }}</a></li>
+	{% endfor %}
+</ul>

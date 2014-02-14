@@ -1,0 +1,66 @@
+{% import "SplicedCommerceBundle:Cart:macros.html.twig" as helper %}
+
+
+<table class="cart-table table table-striped table-bordered table-condensed" cellspacing="0" cellpadding="0">
+	<thead>
+		<tr>
+		    <th width="{{ commerce_get_config('commerce.product.image_cart_width', 140) + 5 }}"></th>
+			<th>Part</th>
+			<th>Description</th>
+			<th>Quantity</th>
+			<th>Price</th>
+			{% if uneditable is not defined %}
+				<th colspan="2">Ext. Price</th>
+			{% else %}
+				<th>Ext. Price</th>
+			{% endif %}
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="{{ uneditable is not defined ? 4 : 3 }}" rowspan="5">
+
+				{# include("SplicedCommerceBundle:Cart/Form:shipping_quote_form.html.twig") #}
+				<ul class="list-unstyled cart-button-set">
+				     <li><button type="submit" class="btn  btn-info btn-block">Update Cart</button></li>
+				     <li><a class="btn btn-medium btn-primary btn-block" href="{{ path('commerce_homepage') }}">Continue Shopping</a></li>
+				     <li><a class="btn btn-medium btn-success btn-block" href="{{ path('commerce_checkout') }}">Checkout Now</a></li>
+				</ul>
+				
+			</td>
+		</tr>
+		<tr>
+			<th>Items</th>
+			<td colspan="2">
+				{{ commerce_cart_manager().totalItems }}
+			</td>
+		</tr>
+		<tr>
+			<th>Subtotal</th>
+			<td colspan="2">
+				${{ commerce_cart_subtotal() }}
+			</td>
+		</tr>
+		<tr>
+
+			<th>Taxes</th>
+			<td colspan="2">${{ commerce_cart_tax() }}</td>
+		</tr>
+		<tr>
+			<th>Total</th>
+			<td colspan="2">
+				<div class="price">
+					<span class="price">${{ commerce_cart_total() }}</span>
+				</div>
+			</td>
+		</tr>
+	</tfoot>
+	<tbody>
+	{% for item in commerce_cart_items() %}
+	    {% if item.isParent() and not item.isChild %}
+		{{ helper.cart_item_row(item, userDataForms) }}
+		{% endif %}
+		
+	{%  endfor %}
+	</tbody>
+</table>

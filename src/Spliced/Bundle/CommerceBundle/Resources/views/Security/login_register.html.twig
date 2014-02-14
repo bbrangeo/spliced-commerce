@@ -1,0 +1,46 @@
+{% extends 'SplicedCommerceBundle::Layouts/default.html.twig' %}
+
+{% block title %}Login/Register | {{ commerce_get_config('commerce.store.name') }}{% endblock %}
+
+{% block head %}
+<link rel="canonical" href="{{ commerce_get_config('commerce.store.url') }}{{ path('account_login') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="register-login">
+	<div class="page-header">
+	    <h1>Log In or Register for an Acount</h1>
+	</div>
+
+	<div class="row">
+	    <div class="social-login">{{ include("SplicedCommerceBundle:Security/Block:social_login_inline.html.twig") }}</div>
+		<div class="login col-lg-6 col-sm-6">
+			<div class="block_base block-customer-existing">
+				<div class="block_head page-header">
+					<h3>Log-In To Your Account</h3>
+				</div>
+				<div class="block_content">
+					{% include "SplicedCommerceBundle:Security:Form/login.html.twig" with { 
+					    "form": loginForm, 
+					    "error" : error,
+					    "noLabels" : true,
+                    } %}
+				</div>
+				<div class="block_foot"></div>
+			</div>
+		</div>
+
+		<div class="register col-lg-6 col-sm-6">
+			<div class="block_base block-customer-register">
+				<div class="block_head page-header">
+					<h3>Create a New Account</h3>
+				</div>
+				<div class="block_content">
+					{% include "SplicedCommerceBundle:Security:Form/register.html.twig" with {"form" : registrationForm} %}
+				</div>
+				<div class="block_foot"></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

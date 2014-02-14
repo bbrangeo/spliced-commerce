@@ -1,0 +1,14 @@
+<table class="table table-striped table-bordered table-condensed product-specification-table">
+	<tbody>		
+		{% for specification in product.specifications %}
+			{% if specification.option.onView %}
+				<tr>
+					<td><strong>{{ specification.option.publicName }}</strong></td>
+					<td>
+						{{ specification.values|join(', ') }}
+					</td>
+				</tr>				
+			{% endif %}
+		{% endfor %}
+	</tbody>
+</table>

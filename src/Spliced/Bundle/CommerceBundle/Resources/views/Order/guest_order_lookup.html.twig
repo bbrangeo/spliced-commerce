@@ -1,0 +1,57 @@
+{#
+
+#}
+
+{% extends 'SplicedCommerceBundle::Layouts/default.html.twig' %}
+
+
+{% block title %}Order Status Lookup | {{ commerce_get_config('commerce.store.name') }}{% endblock %}
+
+
+{% block content %}
+<div class="page-header">
+    <h1>Order Status Lookup</h1>
+</div>
+
+<div class="alert alert-info">
+    Use one of the following methods to lookup your order to check it's status. If you checked out while logged in, 
+    you can access all your orders from <a href="{{ path('commerce_account') }}">your account page</a>.
+</div>
+
+<div class="row">
+    <div class="span6">
+        <form method="post" action="{{ path('commerce_guest_order_lookup') }}">
+            <h3>Lookup By <small>Order Number &amp; E-Mail Address</small></h3>
+            <div class="controls-row">
+                {{ form_label(form.orderNumber, "Order Number") }}
+                {{ form_widget(form.orderNumber) }}
+            </div>
+            <div class="controls-row">
+                {{ form_label(form.email, "E-Mail Address") }}
+                {{ form_widget(form.email) }}
+            </div>
+            {{ form_rest(form) }}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success"><i class="icon-search"></i> Lookup</button>
+            </div>
+        </form>
+    </div>
+    <div class="span5">
+        <form method="post" action="{{ path('commerce_guest_order_lookup') }}">
+            <h3>Lookup By <small>E-Mail Address &amp; Billing Zipcode</small></h3>
+            <div class="controls-row">
+                {{ form_label(formAlt.email, "E-Mail Address") }}
+                {{ form_widget(formAlt.email) }}
+            </div>
+            <div class="controls-row">
+                {{ form_label(formAlt.billingZipcode, "Billing Zipcode") }}
+                {{ form_widget(formAlt.billingZipcode) }}
+            </div>
+            {{ form_rest(formAlt) }}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success"><i class="icon-search"></i> Lookup</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

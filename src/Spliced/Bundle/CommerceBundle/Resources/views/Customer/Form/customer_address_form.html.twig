@@ -1,0 +1,71 @@
+{{ form_errors(form) }}
+	
+
+	<div class="customer-address">
+	    <div class="controls controls-row span7_9">
+	    	{{ form_widget(form.addressLabel, { 'attr' : { 'class' : 'input-block-level', 'placeholder' : 'Address Label' } } ) }}
+	    	{{ form_errors(form.addressLabel) }}
+	    </div>
+	    
+	    <div class="controls controls-row span3_5">
+	    	{{ form_widget(form.firstName, { 'attr' : { 'class' : 'input-block-level', 'placeholder' : 'First Name' } } ) }}
+	    	{{ form_errors(form.firstName) }}
+	    </div>
+	    
+	    <div class="controls controls-row span3_5">
+	    	{{ form_widget(form.lastName, { 'attr' : { 'class' : 'input-block-level', 'placeholder' : 'Last Name' } } ) }}
+	    	{{ form_errors(form.lastName) }}
+	    </div>
+	    
+	    <div class="controls controls-row span7_9">
+	    	{{ form_widget(form.attn, { 'attr' : { 'class' : 'input-block-level', 'placeholder' : 'Attention To' } } ) }}
+	    	{{ form_errors(form.attn) }}
+	    </div>
+	    
+	    <div class="controls controls-row span7_9">
+	    	{{ form_widget(form.address, { 'attr' : { 'class' : 'input-block-level', 'placeholder' : 'Address' } } ) }}
+	    	{{ form_errors(form.address) }}
+	    </div>
+	    
+	    <div class="controls controls-row span7_9">
+	    	{{ form_widget(form.address2, { 'attr' : { 'class' : 'input-block-level', 'placeholder' : 'Apt, Suite, Unit' } } ) }}
+	    	{{ form_errors(form.address2) }}
+	    </div>
+	    
+	    <div class="controls controls-row span7_9"> 
+	    	{{ form_widget(form.country, { 'attr' : { 'class' : 'input-block-level' } } ) }}
+	    	{{ form_errors(form.country) }}
+	    </div>
+	    
+	    <div class="clearfix"></div>
+	    
+	    <div class="controls controls-row span2_5">
+	        {{ form_widget(form.city, { 'attr' : { 'class' : 'input-block-level', 'placeholder' : 'City' } } ) }}
+	    	{{ form_errors(form.city) }}
+	    </div>
+	    
+	    <div class="controls controls-row span2_5">
+	        {{ form_widget(form.state, { 'attr' : { 'class' : 'input-block-level', 'placeholder' : 'State' } } ) }}
+	    	{{ form_errors(form.state) }}
+	    </div>
+	    
+	    <div class="controls controls-row span2_5">
+	    	{{ form_widget(form.zipcode, { 'attr' : { 'class' : 'input-block-level', 'placeholder' : 'Zipcode' } } ) }}
+	        {{ form_errors(form.zipcode) }}
+	    </div>
+	    
+	    
+	    
+	    <div class="controls controls-row span7_9"> 
+	    	{{ form_widget(form.phoneNumber, { 'attr' : { 'class' : 'span2_5', 'placeholder' : 'Phone Number' } } ) }}
+	    	{{ form_errors(form.phoneNumber) }}
+	    </div>
+	</div>
+		
+	<div class="clearfix"></div>
+	
+	
+	
+	
+	
+	{{ form_rest(form) }}

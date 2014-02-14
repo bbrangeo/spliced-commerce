@@ -1,0 +1,82 @@
+<ul class="list-unstyled main-side-nav">
+	<li><a href="{{ path('commerce_admin_dashboard') }}"><i class="icon-desktop white"></i> Home</a></li>
+    <li class="dropdown">
+    	<a data-toggle="dropdown" href="#">
+        	<i class="icon-group  white"></i> Customers
+        </a>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="sideNavCustomers">
+        	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_customer') }}">Customers</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">New Customer</a></li>
+        </ul>
+	</li>
+            <li class="dropdown">
+                <a data-toggle="dropdown" href="#">
+                    <i class="icon-money  white"></i> Orders
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="sideNavOrders">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_order') }}">Manage Orders</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_order_incomplete') }}">Incomplete/Abandoned Orders</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_order_incomplete') }}">Abandoned Carts</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Reports</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a data-toggle="dropdown" href="#">
+                    <i class="icon-shopping-cart  white"></i> Catalog
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="sideNavCatalog">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_product') }}">Manage Products</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_product_specification_option') }}">Manage Product Specifications</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_product_attribute_option') }}">Manage Product Attributes</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_category') }}">Manage Categories</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a data-toggle="dropdown" href="#">
+                    <i class="icon-shopping-cart  white"></i> Manufacturers
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="sideNavAffiliate">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_manufacturer') }}">Manage Manufacturers</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a data-toggle="dropdown" href="#">
+                    <i class="icon-shopping-cart  white"></i> Affiliates
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="sideNavAffiliate">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_affiliate') }}">Manage Affiliates</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a data-toggle="dropdown" href="#">
+                    <i class="icon-list-ol  white"></i> Content
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="sideNavCatalog">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_cms_page') }}">Manage Content Pages</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Manage Content Blocks</a></li>
+                </ul>
+            </li>                       
+            <li class="dropdown">
+                <a data-toggle="dropdown" href="#">
+                    <i class="icon-link  white"></i> Analytics
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="sideNavAnalytics">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_visitor') }}">Visitors</a></li>
+                	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_visitor_bots') }}">Bots</a></li>
+                	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_visitor_browsers') }}">Browsers</a></li>
+                </ul>
+            </li> 
+            <li class="dropdown">
+                <a data-toggle="dropdown" href="#">
+                    <i class="icon-cogs  white"></i> Configuration
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="sideNavConfiguration">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_configuration') }}">Configuration Settings</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_route') }}">Manage Routes</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{{ path('commerce_admin_configuration') }}">Manage Users</a></li>
+                </ul>
+            </li>
+            
+        </ul>
+        {# knp_menu_render('SplicedCommerceAdminBundle:MainMenuBuilder:menu') #}
+        
