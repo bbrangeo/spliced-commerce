@@ -52,61 +52,61 @@ class CheckoutController extends Controller
 
         $configurationManager   = $this->get('commerce.configuration');
         $orderManager           = $this->get('commerce.order_manager');
-        $customer 		 		= $this->get('security.context')->getToken()->getUser();
-        $securityContext 		= $this->get('security.context');
-        $checkoutManager 		= $this->get('commerce.checkout_manager');
-        $breadcrumbs 	    	= $this->get('commerce.breadcrumb');
-        $dispatcher		 		= $this->get('event_dispatcher');
-        $request		 		= $this->get('request');
-        $session		 		= $this->get('session');
-		$productAttributerUserFormBuilder = $this->get('commerce.product.attribute_option_user_data_form_builder');
-        $isXmlHttpRequest 		= $request->isXmlHttpRequest();
-		
-		$cart = $cartManager->getCart();
-		
-		// first we check to see that all information required is collected from products
-		// with user data collection attributes
-		$userDataForms = $productAttributerUserFormBuilder->buildForms(array(
-			 // just to validate the already submitted data if we have it 
-		    'csrf_protection' => false, 
-		));
-		
-		$hasUserDataValidationError = false;
-		
-		foreach($userDataForms as $itemId => &$userDataForm){
-			if(is_null($userDataForm)){
-				continue;
-			}
-			
-			$itemData = $cart->getItemById($itemId)->getItemData();
-			
-			$userDataForm->bind(isset($itemData['user_data']) ? $itemData['user_data'] : array());
-			
-			if(!$userDataForm->isValid()){
-				//print_r($userDataForm->getData());
-				//die($this->render('SplicedCommerceBundle:Common:debug_form.html.twig', array('form' => $userDataForm->createView()))->getContent());
-				$hasUserDataValidationError = true;
-			}
-		}
-		
-		if($hasUserDataValidationError){
-			if($isXmlHttpRequest){
-				// TODO display a modal with options to continue
-			}
-			// render the cart page to show errors 
-			// and collect information
-			$session->getFlashBag()->add('error', 'One or more items in your shopping cart require additional information to complete your order.');
-			return $this->render('SplicedCommerceBundle:Cart:index.html.twig', array(
-				'cartContents' => $cart->getItems(),
-				'userDataForms' => array_map(function($userForm){
-					if($userForm instanceof FormInterface){
-            			return $userForm->createView();
-					}
-					return $userForm;
-            	}, $userDataForms),
-			));
-		}
-		
+        $customer               = $this->get('security.context')->getToken()->getUser();
+        $securityContext        = $this->get('security.context');
+        $checkoutManager        = $this->get('commerce.checkout_manager');
+        $breadcrumbs            = $this->get('commerce.breadcrumb');
+        $dispatcher             = $this->get('event_dispatcher');
+        $request                = $this->get('request');
+        $session                = $this->get('session');
+        $isXmlHttpRequest       = $request->isXmlHttpRequest();
+        $productAttributerUserFormBuilder = $this->get('commerce.product.attribute_option_user_data_form_builder');
+        
+        $cart = $cartManager->getCart();
+        
+        // first we check to see that all information required is collected from products
+        // with user data collection attributes
+        $userDataForms = $productAttributerUserFormBuilder->buildForms(array(
+             // just to validate the already submitted data if we have it 
+            'csrf_protection' => false, 
+        ));
+        
+        $hasUserDataValidationError = false;
+        
+        foreach($userDataForms as $itemId => &$userDataForm){
+            if(is_null($userDataForm)){
+                continue;
+            }
+            
+            $itemData = $cart->getItemById($itemId)->getItemData();
+            
+            $userDataForm->bind(isset($itemData['user_data']) ? $itemData['user_data'] : array());
+            
+            if(!$userDataForm->isValid()){
+                //print_r($userDataForm->getData());
+                //die($this->render('SplicedCommerceBundle:Common:debug_form.html.twig', array('form' => $userDataForm->createView()))->getContent());
+                $hasUserDataValidationError = true;
+            }
+        }
+        
+        if($hasUserDataValidationError){
+            if($isXmlHttpRequest){
+                // TODO display a modal with options to continue
+            }
+            // render the cart page to show errors 
+            // and collect information
+            $session->getFlashBag()->add('error', 'One or more items in your shopping cart require additional information to complete your order.');
+            return $this->render('SplicedCommerceBundle:Cart:index.html.twig', array(
+                'cartContents' => $cart->getItems(),
+                'userDataForms' => array_map(function($userForm){
+                    if($userForm instanceof FormInterface){
+                        return $userForm->createView();
+                    }
+                    return $userForm;
+                }, $userDataForms),
+            ));
+        }
+        
         // add breadcumbs
         $breadcrumbs->createBreadcrumb(
             'Checkout', 
@@ -139,7 +139,7 @@ class CheckoutController extends Controller
         // the user has already completed
         if ($request->query->has('step')) {
             $backToStep = (int) $request->query->get('step');
-			$previousStep = $checkoutManager->getCurrentStep();
+            $previousStep = $checkoutManager->getCurrentStep();
             if ($backToStep <= $checkoutManager->getLastCompletedStep()) {
                 $checkoutManager->setCurrentStep($backToStep);
             }
@@ -158,27 +158,27 @@ class CheckoutController extends Controller
         }
         
         if($processStepEvent->isComplete()) {
-        	
-        	// we have completed the checkout process?
-        	// if so we finalize the order by notifying
-        	// the event dispatcher to complate the processing
-        	// of the order
-        	if($processStepEvent->isLastStep()) {
-        	    $finalzeCheckoutEvent = $dispatcher->dispatch(
-        	        Events\Event::EVENT_CHECKOUT_FINALIZE,
-        	        new Events\CheckoutFinalizeEvent($processStepEvent->getOrder(), $request)
-        	    );
-        	    
-        	    if($finalzeCheckoutEvent->getResponse() instanceof Response) {
-        	        // if instanceof JsonResponse (customzize here)
-        	        return $finalzeCheckoutEvent->getResponse();
-        	    }
-        	        
-        	    if($finalzeCheckoutEvent->isComplete()){
-        	        return $this->redirect($this->generateUrl('commerce_checkout_success'));
-        	    }
-        	}
-        	
+            
+            // we have completed the checkout process?
+            // if so we finalize the order by notifying
+            // the event dispatcher to complate the processing
+            // of the order
+            if($processStepEvent->isLastStep()) {
+                $finalzeCheckoutEvent = $dispatcher->dispatch(
+                    Events\Event::EVENT_CHECKOUT_FINALIZE,
+                    new Events\CheckoutFinalizeEvent($processStepEvent->getOrder(), $request)
+                );
+                
+                if($finalzeCheckoutEvent->getResponse() instanceof Response) {
+                    // if instanceof JsonResponse (customzize here)
+                    return $finalzeCheckoutEvent->getResponse();
+                }
+                    
+                if($finalzeCheckoutEvent->isComplete()){
+                    return $this->redirect($this->generateUrl('commerce_checkout_success'));
+                }
+            }
+            
             // lets redirect back to the checkout page
             // clearing any post data and moving on to the 
             // next step    
@@ -189,13 +189,13 @@ class CheckoutController extends Controller
     }
 
     /**
-	 * @Route("/checkout/success", name="commerce_checkout_success")
+     * @Route("/checkout/success", name="commerce_checkout_success")
      * @Template("SplicedCommerceBundle:Checkout:success.html.twig")
      */
     public function successAction()
     {
         $checkoutManager = $this->get('commerce.checkout_manager');
-        $dispatcher	  	 = $this->get('event_dispatcher');
+        $dispatcher           = $this->get('event_dispatcher');
 
         $debugLast = $this->getRequest()->query->has('debug');
         
@@ -243,8 +243,8 @@ class CheckoutController extends Controller
         $this->getDoctrine()->getManager()->persist($order);
         $this->getDoctrine()->getManager()->flush();
 
-		
-		
+        
+        
         return $order;
     }
     
@@ -267,8 +267,8 @@ class CheckoutController extends Controller
             
         } catch(NoResultException $e) { /* do nothing */ }
                 
-		
-		
+        
+        
         $this->get('commerce.checkout_manager')->reset();
 
         $this->get('session')->getFlashBag()->add('success', 'Order has been cancelled and checkout progress has been cleared.');
@@ -294,8 +294,8 @@ class CheckoutController extends Controller
      */
     public function remotelyProcessedCancelAction($provider, $order)
     {
-        $cartManager 	 = $this->get('commerce.cart');
-        $customer 		 = $this->get('security.context')->getToken()->getUser();
+        $cartManager      = $this->get('commerce.cart');
+        $customer          = $this->get('security.context')->getToken()->getUser();
         $checkoutManager = $this->get('commerce.checkout_manager');
         $dispatcher      = $this->get('event_dispatcher');
         $request         = $this->getRequest();
@@ -344,9 +344,9 @@ class CheckoutController extends Controller
      */
     public function remotelyProcessedCompleteAction($provider, $order)
     {
-        $cartManager 	 = $this->get('commerce.cart');
-        $orderManager 	 = $this->get('commerce.order_manager');
-        $customer 		 = $this->get('security.context')->getToken()->getUser();
+        $cartManager      = $this->get('commerce.cart');
+        $orderManager      = $this->get('commerce.order_manager');
+        $customer          = $this->get('security.context')->getToken()->getUser();
         $checkoutManager = $this->get('commerce.checkout_manager');
         $dispatcher      = $this->get('event_dispatcher');
         $request         = $this->getRequest();
@@ -371,7 +371,7 @@ class CheckoutController extends Controller
             Events\Event::EVENT_CHECKOUT_COMPLETE,
             new Events\CheckoutCompleteEvent($order, $request)
         ); 
-		
+        
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse(array(
                 'success' => true,
@@ -382,12 +382,12 @@ class CheckoutController extends Controller
         
     }
 
-	/**
-	 * getLogger
-	 * 
-	 * Monolog\Logger
-	 */
-	 protected function getLogger(){
-	 	return $this->get('commerce.logger');
-	 }
+    /**
+     * getLogger
+     * 
+     * Monolog\Logger
+     */
+     protected function getLogger(){
+         return $this->get('commerce.logger');
+     }
 }
