@@ -41,8 +41,6 @@
                 	        <p>Only ${{ commerce_product_price(product,1) }}</p>
                 	        <p><strong>Availability:</strong> <span class="product-availability{{ product.availability }}">{{ product.availabilityName }}</span></p>
                 	    </blockquote>
-                       	    
-    					
     					
     					{% if product.tierPrices|length %}
     						{{  include("SplicedCommerceBundle:Product:tier_price_table.html.twig", {'includeNoTier' : true }) }}

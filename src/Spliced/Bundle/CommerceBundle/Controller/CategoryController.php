@@ -55,22 +55,6 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Template("SplicedCommerceBundle:Category:Blocks/menu.html.twig")
-     *
-     * Loads a Top Level Category Menu
-     */
-    public function menuAction()
-    {
-        $categories = $this->getDoctrine()
-          ->getRepository('SplicedCommerceBundle:Category')
-          ->getAllTopLevel();
-
-        return array(
-            'categories' => $categories
-        );
-    }
-
-    /**
      * Loads the view for a single category, displaying children categories
      * as well as related paginated products
      *
@@ -117,26 +101,6 @@ class CategoryController extends Controller
     }
     
     /**
-     * filterBlockAction
-     *
-     * @Template("SplicedCommerceBundle:Category/Blocks:filter.html.twig")
-     */
-    public function filterBlockAction()
-    {
-
-    }
-
-    /**
-     * getCategoryFilters
-     *
-     * Gets the filter preferences saved in the session
-     */
-    protected function getCategoryFilters()
-    {
-        return array_merge($this->getDefaultCategoryFilters(),$this->get('session')->get('commerce.category.filters',array()));
-    }
-
-    /**
      * setCategoryBreadcrumbs
 
      * @param CategoryInterface $category
@@ -170,7 +134,20 @@ class CategoryController extends Controller
         $breadcrumb->createBreadcrumb($category->getName(), $category->getName(), $category->getUrlSlug(), 4, true);
 
     }
-
+    
+    /**
+     * getCategoryFilters
+     *
+     * Gets the filter preferences saved in the session
+     */
+    protected function getCategoryFilters()
+    {
+        return array_merge_recursive(
+            $this->getDefaultCategoryFilters(),
+            $this->get('session')->get('commerce.category.filters', array())
+        );
+    }
+    
     /**
      * setCategoryFilters
      * Sets the filter preferences saved in the session
@@ -178,7 +155,10 @@ class CategoryController extends Controller
      */
     protected function setCategoryFilters(array $filters)
     {
-        $this->get('session')->set('commerce.category.filters',array_merge($this->getCategoryFilters(),$filters));
+        $this->get('session')->set('commerce.category.filters', array_merge_recursive(
+            $this->getCategoryFilters(),
+            $filters
+        ));
 
         return $this;
     }
@@ -191,53 +171,106 @@ class CategoryController extends Controller
         return array(
             'perPage' => 10,
             'orderChoices' => 'price_asc',
-            'listMethod' => 'list'
+            'listMethod' => 'list',
+            'manufacturers' => array(),
+            'specifications' => array(),
         );
     }
     
     /**
-     * @Route("/categories/update-attribute-fiter/{attributeOptionId}/{attributeOptionValueId}/{action}",
-     *   requirements={"attributeOptionId" = "\d+","attributeOptionValueId" = "\d+"},
-     *   defaults={"action" = "update"},
-     *   name="category_update_attribute_filter"
+     * @Route("/category/{categoryId}/filter/manufacturer/{manufacturerId}/{action}",
+     *   name="category_update_filter_manufacturer"
      * )
      */
-    public function updateAttributeFilterAction($attributeOptionId, $attributeOptionValueId, $action)
+    public function updateFilterManufacturerAction($categoryId, $manufacturerId, $action = 'add')
     {
-         $referer = $this->getRequest()->server->get('HTTP_REFERER');
-
-         try {
-             $attributeOption = $this->getDoctrine()->getRepository('SplicedCommerceBundle:ProductAttributeOption')
-              ->findOneById($attributeOptionId);
-
-              $attributeOptionValue = $this->getDoctrine()->getRepository('SplicedCommerceBundle:ProductAttributeOptionValue')
-              ->findOneById($attributeOptionValueId);
-
-         } catch (NoResultException $e) {
-             $this->get('session')->getFlashBag()->add('error','Attribute(s) Not Found');
-             return $this->redirect(empty($referer) ? $this->generateUrl('homepage') : $referer);
-         }
-
-         if (strtolower($action) == 'delete') {
-            $this->get('commerce.product.filter_manager')->removeAttribute($attributeOption, $attributeOptionValue);
-         } else {
-            $this->get('commerce.product.filter_manager')->addAttribute($attributeOption, $attributeOptionValue);
-         }
-         
-         $this->get('session')->getFlashBag()->add('success', 'Filter Updated Successfully');
-
-         return $this->redirect(empty($referer) ? $this->generateUrl('homepage') : $referer);
-    }
-
-    /**
-     * @Route("/categories/reset-attribute-fiter",
-     *   name="category_reset_attribute_filter"
-     * )
-     */
-    public function resetAttributeFilterAction()
-    {
+        $referer = $this->getRequest()->server->get('HTTP_REFERER');
+        $filterManager = $this->get('commerce.product.filter_manager');
+        $request = $this->getRequest();
         
-        //TODO
+        $category = $this->get('commerce.document_manager')
+          ->getRepository('SplicedCommerceBundle:Category')
+          ->findOneById($categoryId);
+        
+        if(!$category){
+            throw $this->createNotFoundException('Category Not Found');
+        }
+        
+        $manufacturer = $this->get('commerce.document_manager')
+        ->getRepository('SplicedCommerceBundle:Manufacturer')
+        ->findOneById($manufacturerId);
+        
+        if(!$manufacturer){
+            throw $this->createNotFoundException('Manufacturer Not Found');
+        }  
+
+        if ($action == 'add') {
+            $filterManager->addSelectedManufacturer($manufacturer->getId(), $category->getId());
+            
+        } else if ($action == 'delete') {
+            $filterManager->removeSelectedManufacturer($manufacturer->getId(), $category->getId());
+        }        
+
+        $this->get('session')->getFlashBag()->add('success', 'Filter Updated Successfully');
+        
+        return $this->redirect(empty($referer) ? $this->generateUrl('homepage') : $referer);
+    }
+    
+    /**
+     * @Route("/category/{categoryId}/filter/specification/{specificationId}/{value}/{action}",
+     *   name="category_update_filter_specification"
+     * )
+     */
+    public function updateFilterSpecificationAction($categoryId, $specificationId, $value, $action = 'add')
+    {
+        $referer = $this->getRequest()->server->get('HTTP_REFERER');
+        $filterManager = $this->get('commerce.product.filter_manager');
+        $request = $this->getRequest();
+    
+        $category = $this->get('commerce.document_manager')
+        ->getRepository('SplicedCommerceBundle:Category')
+        ->findOneById($categoryId);
+    
+        if(!$category){
+            throw $this->createNotFoundException('Category Not Found');
+        }
+    
+        $specification = $this->get('commerce.document_manager')
+        ->getRepository('SplicedCommerceBundle:ProductSpecificationOption')
+        ->findOneById($specificationId);
+    
+        if(!$specification){
+            throw $this->createNotFoundException('Specification Not Found');
+        }
+
+        if ($action == 'add') {
+            if ($specification->hasValue($value)) {
+                $filterManager->addSelectedSpecification($specification->getId(), $value, $category->getId());
+            }
+        } else if ($action == 'delete') {
+            $filterManager->removeSelectedManufacturer($specification->getId(), $value, $category->getId());
+        }
+    
+        $this->get('session')->getFlashBag()->add('success', 'Filter Updated Successfully');
+    
+        return $this->redirect(empty($referer) ? $this->generateUrl('homepage') : $referer);
+    }
+    
+    /**
+     * @Route("/categories/reset-fiter/{categoryId}",
+     *   name="category_reset_filter"
+     * )
+     */
+    public function resetFilterAction($categoryId)
+    {
+        $filterManager = $this->get('commerce.product.filter_manager');
+        
+        $filterManager
+        ->setSelectedManufacturers(array(), $categoryId)
+        ->setSelectedSpecifications(array(), $categoryId);
+        
+        $referer = $this->getRequest()->server->get('HTTP_REFERER');
+        return $this->redirect(empty($referer) ? $this->generateUrl('homepage') : $referer);
     }
     
     
@@ -280,12 +313,11 @@ class CategoryController extends Controller
     protected function renderCategoryView(CategoryInterface $category)
     {
     	$this->setCategoryBreadcrumbs($category);
-    	
     	$productFilterManager = $this->get('commerce.product.filter_manager');
+
     	
-    	$productFilterManager->setCategory($category);
-    	
-    	$specificationFilters = $productFilterManager->getAvailableSpecifications();
+    	 $productFilterManager->setCategory($category)
+    	  ->prepareView();
     	
     	// load paginated and filtered products
     	$products = $this->get('knp_paginator')->paginate(
@@ -297,9 +329,7 @@ class CategoryController extends Controller
     	return array(
     		'category'  => $category,
     		'products'  => $products,
-    		'viewMode'  => $productFilterManager->getDisplayMode(),
     		'productFilterManager' => $productFilterManager,
-    		'specificationFilters' => $specificationFilters,
     	);
     }
 }

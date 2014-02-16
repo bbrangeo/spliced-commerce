@@ -24,6 +24,7 @@ class ProductSpecification extends BaseProductSpecification
     
     /**
      * @MongoDB\ReferenceOne(targetDocument="ProductSpecificationOption")
+     * @MongoDB\Index
      */
     protected $option;
     

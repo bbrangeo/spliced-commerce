@@ -19,7 +19,7 @@
 {% block left %}
 	{{ include("SplicedCommerceBundle:Category:Blocks/sub_categories.html.twig", {}) }}
 
-	{{ include('SplicedCommerceBundle:Category/Blocks:specification_filter.html.twig') }}
+	{{ include('SplicedCommerceBundle:Category/Blocks:filters.html.twig') }}
 {% endblock %}
 
 
@@ -33,32 +33,12 @@
 	{% endif %}
 
 	{{ include('SplicedCommerceBundle:Category/View:sort_order_bar.html.twig', {}) }}
-
-	    {# if productFilterManager is defined and productFilterManager.attributes|length %}
-    	<div class="alert alert-info current-search-filters-body">
-    
-    	    <div class="pull-left text-right"><strong>Currently set search filters:</strong></div>
-    	    <div class="pull-right text-right"><a href="#" title="" class="blue"><i class="icon-trash"></i> Remove All Search Filters</a></div>
-    	    <div class="clearfix"></div>
-        	<ul class="unstyled">
-        	{% for setAttributeOption in productFilterManager.attributes %}
-        		<li>
-        			{{ setAttributeOption.label }} - {{ setAttributeOption.value }}
-        			<a href="{{ path("category_update_attribute_filter", { "attributeOptionId" : setAttributeOption.option_id, "attributeOptionValueId":setAttributeOption.value_id, "action" : "delete" }) }}" title="Remove Filter">
-        				<i class="icon-trash"></i>
-        			</a>
-        		</li>
-        	{% endfor %}
-        	</ul>
-        	
-    	</div>
-    	{% endif #}
 	
     {% if products is defined %}
 	    {{ knp_pagination_render(products) }}
 	{% endif %}
 	
-	{%  if viewMode == 'grid' %}
+	{%  if productFilterManager.displayMode == 'grid' %}
 		{{ include('SplicedCommerceBundle:Product:view_grid.html.twig') }}
 	{%  else %}
 		{{ include('SplicedCommerceBundle:Product:view_list.html.twig') }}

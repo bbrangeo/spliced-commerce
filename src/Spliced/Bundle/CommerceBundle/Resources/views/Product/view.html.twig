@@ -11,7 +11,7 @@
 {% block title %}{{ product.name }} | {{ commerce_get_config('commerce.store.name') }}{% endblock %}
 
 {% block head %}
-<link rel="canonical" href="{{ commerce_get_config('commerce.store.url') }}{{ path(product.route.requestPath) }}" />
+<link rel="canonical" href="{{ commerce_get_config('commerce.store.url') }}{{ path('commerce_product_by_slug', { 'slug' : product.urlSlug }) }}" />
 {% endblock %}
 
 

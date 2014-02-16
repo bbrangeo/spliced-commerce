@@ -124,7 +124,7 @@ class CategoryController extends BaseFilterableController
     /**
      * Displays a form to edit an existing Category entity.
      *
-     * @Route("/{id}/edit", name="commerce_admin_category_edit")
+     * @Route("/edit/{id}", name="commerce_admin_category_edit")
      * @Method("GET")
      * @Template()
      */
@@ -161,7 +161,7 @@ class CategoryController extends BaseFilterableController
     /**
      * Updates an existing Category entity.
      *
-     * @Route("/{id}/update", name="commerce_admin_category_update")
+     * @Route("/update/{id}", name="commerce_admin_category_update")
      * @Method({"PUT","POST"})
      * @Template("SplicedCommerceAdminBundle:Category:edit.html.twig")
      */
@@ -204,7 +204,7 @@ class CategoryController extends BaseFilterableController
     /**
      * Deletes a Category entity.
      *
-     * @Route("/{id}", name="commerce_admin_category_delete")
+     * @Route("/delete/{id}", name="commerce_admin_category_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)

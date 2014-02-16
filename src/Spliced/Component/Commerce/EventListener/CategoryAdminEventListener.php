@@ -55,8 +55,8 @@ class CategoryAdminEventListener
     protected function getDocumentManager()
     {
     	return $this->configurationManager->getDocumentManager();
-    }
-
+    } 
+    
     /**
      * onCategorySave
      * 
@@ -69,9 +69,9 @@ class CategoryAdminEventListener
     	$this->getDocumentManager()->persist($category);
     	$this->getDocumentManager()->flush();
     	
-    	if($category->getParent()) {
+    	/*if($category->getParent()) {
     	    $this->updateCategoryTree($category->getParent(), true, true, false);
-    	}
+    	}*/
     	
     	$this->getDocumentManager()->flush();
     }
@@ -85,19 +85,12 @@ class CategoryAdminEventListener
     {
     	$category = $event->getCategory();
 
-    	$route->setRequestPath($category->getUrlSlug());
-    	
-    	$this->getDocumentManager()->persist($route);
-    	
-    	$category->setRoute($route);
-
-		$this->updateCategoryTree($category, false, true, false);    	
+		#$this->updateCategoryTree($category, false, true, false);    	
     	
     	$this->getDocumentManager()->persist($category);
 
     	$this->getDocumentManager()->flush();
     	
-    	// TODO: update product category embeded documents
     }
     
     /**
@@ -126,7 +119,7 @@ class CategoryAdminEventListener
     private function updateCategoryTree(CategoryInterface $category, $persist = false, $persistParent = true, $isRecursiveCall = false)
     {
     	// update and children
-    	$children = $route = $this->getDocumentManager()
+    	$children = $this->getDocumentManager()
     	->getRepository($this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_CATEGORY))
     	->createQueryBuilder()
     	->field('parent')->exists(true)

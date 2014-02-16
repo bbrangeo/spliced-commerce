@@ -382,6 +382,23 @@ abstract class ProductSpecificationOption implements ProductSpecificationOptionI
     }
     
     /**
+     * hasValue
+     * 
+     * Check for a value by string
+     * 
+     * @param string $value
+     */
+    public function hasValue($value)
+    {
+        foreach ($this->values as $_value) {
+            if (strtolower($_value->getPublicValue()) == strtolower($value)) {
+               return true; 
+            }
+        }
+        return false;
+    }
+    
+    /**
      * getValues
      *
      * @return Collection

@@ -42,21 +42,33 @@ class Controller extends BaseController
 	}
 	
 	/**
-	 * getOrderManager
+	 * getCheckoutManager
 	 *
-	 * @return OrderManager
+	 * @return CheckoutManager
 	 */
-	public function getConfigurationManager()
+	public function getCheckoutManager()
 	{
-		return $this->get('commerce.order_manager');
+		return $this->get('commerce.checkout_manager');
 	}
 	
 	/**
-	 * getProductRepository
-	 *
+	 * getShippingManager
+	 * 
+	 * @return ShippingManager
 	 */
-	public function getProductRepository()
+	public function getShippingManager()
 	{
-		return $this->get('commerce.product.repository');
+		return $this->get('commerce.shipping_manager');
+	}
+	
+
+	/**
+	 * getPaymentManager
+	 *
+	 * @return PaymentManager
+	 */
+	public function getPaymentManager()
+	{
+	    return $this->get('commerce.payment_manager');
 	}
 }

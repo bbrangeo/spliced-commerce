@@ -69,18 +69,7 @@ class ProductAdminEventListener
      */
     public function onProductSave(ProductSaveEvent $event)
     {
-        $product = $event->getProduct();
-        
-        $route = $this->getConfigurationManager()->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE)
-        ->setRequestPath($product->getUrlSlug())
-        ->setTargetPath('SplicedCommerceBundle:Product:view')
-        ->setProduct($product)
-        ->setOptions(array());
-        
-        $this->getObjectManager()->persist($route);
-        
-        $product->setRoute($route);
-        
+               
     }
     
     /**
@@ -102,22 +91,7 @@ class ProductAdminEventListener
                     );
                 }
             }
-        }
-        
-        // handle product route
-        if($product->getRoute()){
-        	$route = $this->getObjectManager()
-        	->getRepository($this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE))
-        	->findOneById($product->getRoute()->getId());
-        } else {
-        	// no route, we need to create one
-        	$route = $this->createRoute($product)
-        	->setTargetPath('SplicedCommerceBundle:Product:view')
-        	->setOptions(array());
-        } 
-        $route->setRequestPath($product->getUrlSlug());
-        $this->getObjectManager()->persist($route);
-                      
+        }                      
     }
     
     /**
@@ -129,18 +103,7 @@ class ProductAdminEventListener
     {
         
         $product = $event->getProduct();
-        
-        // remove the route
-        if($product->getRoute()){
-            $route = $this->getObjectManager()
-            ->getRepository($this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE))
-            ->findOneById($product->getRoute()->getId());
-            
-            if($route){
-                $this->getObjectManager()->remove($route);
-            }
-        }
-        
+               
         
         // remove images on filesystem
         foreach($product->getImages() as $image){

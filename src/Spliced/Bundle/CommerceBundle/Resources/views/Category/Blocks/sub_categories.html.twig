@@ -5,12 +5,9 @@
 
 	@var categories
 #}
-{% if category is defined %}
+{% if category is defined and category.children|length %}
 <div class="panel panel-default panel-category-tree-block">
 	<div class="panel-heading">{{ category.name }}</div>
-	{% if category.description|length %}
-	<div class="panel-body">{{ category.description }}</div>
-	{% endif %}
 	<ul class="list-group">
 	    {% if category.children|length %}
 	     <li class="list-group-item"><strong>Sub Categories</strong></li>

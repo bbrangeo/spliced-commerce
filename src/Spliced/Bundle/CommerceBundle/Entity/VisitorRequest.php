@@ -10,7 +10,7 @@ use Spliced\Component\Commerce\Model\VisitorRequest as BaseVisitorRequest;
  *
  * @ORM\Table(name="visitor_request")
  * @ORM\Entity()
- * @ORM\MappedSuperClass()
+ * @ORM\MappedSuperclass()
  */
 class VisitorRequest extends BaseVisitorRequest
 {

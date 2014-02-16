@@ -324,9 +324,7 @@ class CheckoutController extends Controller
         
         $update = $paymentProvider->cancelRemotePayment($order, $request);
 
-        return $update instanceof Response ?
-              $update
-            : $this->redirect($this->generateUrl('commerce_checkout', array('step' => CheckoutManager::STEP_PAYMENT)));
+        return $update instanceof Response ? $update : $this->redirect($this->generateUrl('commerce_checkout', array('step' => CheckoutManager::STEP_PAYMENT)));
     }
     
 
@@ -345,11 +343,11 @@ class CheckoutController extends Controller
     public function remotelyProcessedCompleteAction($provider, $order)
     {
         $cartManager      = $this->get('commerce.cart');
-        $orderManager      = $this->get('commerce.order_manager');
-        $customer          = $this->get('security.context')->getToken()->getUser();
-        $checkoutManager = $this->get('commerce.checkout_manager');
-        $dispatcher      = $this->get('event_dispatcher');
-        $request         = $this->getRequest();
+        $orderManager     = $this->get('commerce.order_manager');
+        $customer         = $this->get('security.context')->getToken()->getUser();
+        $checkoutManager  = $this->get('commerce.checkout_manager');
+        $dispatcher       = $this->get('event_dispatcher');
+        $request          = $this->getRequest();
                 
         try{
             $paymentProvider = $checkoutManager->getPaymentManager()->getProvider($provider);
@@ -385,7 +383,7 @@ class CheckoutController extends Controller
     /**
      * getLogger
      * 
-     * Monolog\Logger
+     * @return Logger
      */
      protected function getLogger(){
          return $this->get('commerce.logger');

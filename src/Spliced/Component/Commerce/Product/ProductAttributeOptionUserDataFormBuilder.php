@@ -246,13 +246,13 @@ class ProductAttributeOptionUserDataFormBuilder {
 			if (isset($options['collection_type']) && $options['collection_type'] == 1 && $quantityInCart > 1) {
 				$hasFormFields = true;
 				for($current = 1; $current <= $quantityInCart; $current ++) {
-					$builder->add($attribute->getOption()->getName() . ($current !== 1 ? '_'.$current : ''), $formFieldType, array_merge($formFieldOptions, array(
+					$builder->add($attribute->getOption()->getKey() . ($current !== 1 ? '_'.$current : ''), $formFieldType, array_merge($formFieldOptions, array(
 						'label' => $attribute->getOption()->getPublicLabel() . ' ' . $current,
 					))); 
 				}
 			} else {
 				$hasFormFields = true;
-				$builder->add($attribute->getOption()->getName(), $formFieldType, $formFieldOptions);
+				$builder->add($attribute->getOption()->getKey(), $formFieldType, $formFieldOptions);
 			}
 		}
 		

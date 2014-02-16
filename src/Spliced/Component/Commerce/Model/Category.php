@@ -63,6 +63,7 @@ abstract class Category implements CategoryInterface
 
     /**
      * @MongoDB\String
+     * @MongoDB\UniqueIndex
      * @Gedmo\Slug(fields={"name"})
      */
     protected $urlSlug;
@@ -130,11 +131,6 @@ abstract class Category implements CategoryInterface
     protected $children;
 
     /**
-     * @MongoDB\EmbedOne(targetDocument="Route")
-     */
-    protected $route;
-
-    /**
      * @Gedmo\TreeLockTime
      * @MongoDB\Date(nullable=true)
      */
@@ -191,23 +187,23 @@ abstract class Category implements CategoryInterface
     {
         return $this->parent;
     }
+    
     /**
-     * Set parent_id
+     * setRoutes
      *
-     * @param $route
+     * @param Collection $routes
      */
-    public function setRoute(RouteInterface $route)
+    public function setRoutes(Collection $routes)
     {
-        $this->route = $route->setCategory($this);
+        $this->routes = $routes;
         return $this;
     }
 
     /**
-     * Get parent_id
+     * getRoutes
      *
-     * @return bigint
      */
-    public function getRoute()
+    public function getRoutes()
     {
         return $this->route;
     }

@@ -46,7 +46,7 @@ class SplicedCommerceAdminExtension extends Extension
             $loader->load('services.xml');
             $loader->load('twig.xml');
             
-            $frontLoader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../../../../../../commerce-bundle/src/Spliced/Bundle/CommerceBundle/Resources/config'));
+            $frontLoader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../../CommerceBundle/Resources/config'));
             $frontLoader->load('payment.xml');
             $frontLoader->load('shipping.xml');
     		$frontLoader->load('product_types.xml');
