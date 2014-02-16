@@ -16,5 +16,5 @@ namespace Spliced\Component\Commerce\Helper;
  */
 abstract class Helper
 {
-	
+    
 }

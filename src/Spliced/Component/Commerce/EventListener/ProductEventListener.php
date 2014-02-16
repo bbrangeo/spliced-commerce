@@ -47,7 +47,7 @@ class ProductEventListener
      */
     public function onProductView(ProductViewEvent $event)
     {
-		
+        
     }
     
 }

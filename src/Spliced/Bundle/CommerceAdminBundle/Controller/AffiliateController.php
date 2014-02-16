@@ -29,7 +29,7 @@ class AffiliateController extends BaseFilterableController
      */
     public function indexAction()
     {
-		// load affiliates
+        // load affiliates
         $affiliates = $this->get('knp_paginator')->paginate(
             $this->get('commerce.admin.document_manager')
                 ->getRepository('SplicedCommerceAdminBundle:Affiliate')
@@ -247,36 +247,36 @@ class AffiliateController extends BaseFilterableController
         $methodName = 'batch'.ucwords($action);
 
         if(method_exists($this,$methodName)) {
-        	return call_user_func($this, $methodName, $ids);
+            return call_user_func($this, $methodName, $ids);
         }
         
         throw new \InvalidArgumentException(sprintf('Method %s does not exist',$methodName));
     }
     
 
-	/**
-	* batchDelete
-	* 
-	* @param array $ids
-	*/
-	protected function batchDelete(array $ids)
-	{
-		$entities = $em->getRepository('SplicedCommerceAdminBundle:Affiliate')->findById($id);
-		
-		$count = count($entities);
-		
-		foreach($entities as $entity) {
-			$em->remove($entity);
-		}
-		
-		try{
-			$em->flush();
-			$this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s records.', $count));
-		} catch( \Exception $e) {
-			$this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
-		}
-		
-		return $this->redirect($this->generateUrl('affiliate'));
-	}
+    /**
+    * batchDelete
+    * 
+    * @param array $ids
+    */
+    protected function batchDelete(array $ids)
+    {
+        $entities = $em->getRepository('SplicedCommerceAdminBundle:Affiliate')->findById($id);
+        
+        $count = count($entities);
+        
+        foreach($entities as $entity) {
+            $em->remove($entity);
+        }
+        
+        try{
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s records.', $count));
+        } catch( \Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
+        }
+        
+        return $this->redirect($this->generateUrl('affiliate'));
+    }
 
 }

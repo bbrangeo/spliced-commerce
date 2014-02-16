@@ -13,12 +13,12 @@ use Spliced\Component\Commerce\Configuration\ConfigurationManager;
  */
 class ProductExtension extends \Twig_Extension
 {
-	/**
-	 * Constructor
-	 * 
-	 * @param ConfigurationManager $configurationManager, 
-	 * @param ImageManager $imageManager
-	 */
+    /**
+     * Constructor
+     * 
+     * @param ConfigurationManager $configurationManager, 
+     * @param ImageManager $imageManager
+     */
     public function __construct(ConfigurationManager $configurationManager, ImageManager $imageManager )
     {
        $this->configurationManager = $configurationManager;

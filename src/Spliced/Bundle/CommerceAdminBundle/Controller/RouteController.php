@@ -32,8 +32,8 @@ class RouteController extends BaseFilterableController
      * @Template()
      */
     public function listAction()
-    {		
-		// load routes
+    {        
+        // load routes
         $routes = $this->get('knp_paginator')->paginate(
             $this->get('commerce.admin.document_manager')
                 ->getRepository('SplicedCommerceAdminBundle:Route')
@@ -108,10 +108,10 @@ class RouteController extends BaseFilterableController
         $em = $this->getDoctrine()->getManager();
 
         try{
-        	$entity = $em->getRepository('SplicedCommerceAdminBundle:Route')->findOneById($id);
-		} catch(NoResultException $e) {
-			throw $this->createNotFoundException('Unable to find Route.');
-		}
+            $entity = $em->getRepository('SplicedCommerceAdminBundle:Route')->findOneById($id);
+        } catch(NoResultException $e) {
+            throw $this->createNotFoundException('Unable to find Route.');
+        }
 
         $editForm = $this->createForm(new RouteType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
@@ -252,77 +252,77 @@ class RouteController extends BaseFilterableController
         $methodName = 'batch'.ucwords($action);
 
         if(method_exists($this,$methodName)) {
-        	return call_user_func($this, $methodName, $ids);
+            return call_user_func($this, $methodName, $ids);
         }
         
         throw new \InvalidArgumentException(sprintf('Method %s does not exist',$methodName));
     }
     
 
-	/**
-	* batchDelete
-	* 
-	* @param array $ids
-	*/
-	protected function batchDelete(array $ids)
-	{
-		$entities = $em->getRepository('SplicedCommerceAdminBundle:Route')->findById($id);
-		
-		$count = count($entities);
-		
-		foreach($entities as $entity) {
-			$em->remove($entity);
-		}
-		
-		try{
-			$em->flush();
-			$this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s records.', $count));
-		} catch( \Exception $e) {
-			$this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
-		}
-		
-		return $this->redirect($this->generateUrl('route'));
-	}
-	
-	
-	/**
-	 * Check Route
-	 *
-	 * @Route("/check-route", name="commerce_admin_route_check")
-	 * @Template()
-	 */
-	public function checkRouteAction()
-	{
-		if(!$this->getRequest()->isXmlHttpRequest()) {
-			throw $this->createNotFoundException('Invalid Request Type');
-		} else if(!$this->getRequest()->request->has('path')){
-			throw new \InvalidArgumentException('Path POST variable required to check route');
-		}
+    /**
+    * batchDelete
+    * 
+    * @param array $ids
+    */
+    protected function batchDelete(array $ids)
+    {
+        $entities = $em->getRepository('SplicedCommerceAdminBundle:Route')->findById($id);
+        
+        $count = count($entities);
+        
+        foreach($entities as $entity) {
+            $em->remove($entity);
+        }
+        
+        try{
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s records.', $count));
+        } catch( \Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
+        }
+        
+        return $this->redirect($this->generateUrl('route'));
+    }
+    
+    
+    /**
+     * Check Route
+     *
+     * @Route("/check-route", name="commerce_admin_route_check")
+     * @Template()
+     */
+    public function checkRouteAction()
+    {
+        if(!$this->getRequest()->isXmlHttpRequest()) {
+            throw $this->createNotFoundException('Invalid Request Type');
+        } else if(!$this->getRequest()->request->has('path')){
+            throw new \InvalidArgumentException('Path POST variable required to check route');
+        }
 
-		$requestPath = $this->getRequest()->request->get('path');
-		
-		if(!preg_match('/^\//', $requestPath)){
-			$requestPath = '/'.$requestPath;
-		}
-		
-		$route = $this->get('commerce.admin.document_manager')
-		  ->getRepository('SplicedCommerceAdminBundle:Route')
-		  ->findOneByRequestPath($requestPath);
-			
-		if(!$route){
-			return new JsonResponse(array(
-				'success' => true,
-				'message' => 'Route Does Not Exist',
-			));
-		}
-		
-		return new JsonResponse(array(
-			'success' => false,
-			'message' => 'Route Exists',
-			'id' => $route->getId(),
-			'request_path' => $route->getRequestPath(),
-			'target_path' => $route->getTargetPath(),
-		));
-	}
+        $requestPath = $this->getRequest()->request->get('path');
+        
+        if(!preg_match('/^\//', $requestPath)){
+            $requestPath = '/'.$requestPath;
+        }
+        
+        $route = $this->get('commerce.admin.document_manager')
+          ->getRepository('SplicedCommerceAdminBundle:Route')
+          ->findOneByRequestPath($requestPath);
+            
+        if(!$route){
+            return new JsonResponse(array(
+                'success' => true,
+                'message' => 'Route Does Not Exist',
+            ));
+        }
+        
+        return new JsonResponse(array(
+            'success' => false,
+            'message' => 'Route Exists',
+            'id' => $route->getId(),
+            'request_path' => $route->getRequestPath(),
+            'target_path' => $route->getTargetPath(),
+        ));
+    }
 
 }

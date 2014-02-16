@@ -33,7 +33,7 @@ class CheckoutNotifierCompilerPass implements CompilerPassInterface
 
         
         foreach($container->findTaggedServiceIds('commerce.checkout_notifier') as $id => $attributes){
-        	$checkoutNotifierManager->addMethodCall('addNotifier', array(new Reference($id)));
+            $checkoutNotifierManager->addMethodCall('addNotifier', array(new Reference($id)));
         }
     }
 }

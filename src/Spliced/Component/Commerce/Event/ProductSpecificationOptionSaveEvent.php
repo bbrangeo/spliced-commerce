@@ -26,7 +26,7 @@ class ProductSpecificationOptionSaveEvent extends Event
      */
     public function __construct(ProductSpecificationOptionInterface $specificationOption)
     {
-        $this->specificationOption 	= $specificationOption;
+        $this->specificationOption     = $specificationOption;
     }
     
     /**

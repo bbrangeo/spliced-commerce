@@ -47,10 +47,10 @@ class CheckoutManager
     /* @var SecurityContext */
     protected $securityContext;
 
-    const SESSION_TAG_CURRENT_ORDER 		= 'commerce.cart.current_order_id';
-    const SESSION_TAG_CURRENT_STEP  		= 'commerce.cart.current_step';
-    const SESSION_TAG_LAST_COMPLETED_STEP  	= 'commerce.cart.last_completed_step';
-    const SESSION_TAG_LAST_COMPLETED_ORDER 	= 'commerce.cart.last_completed_order';
+    const SESSION_TAG_CURRENT_ORDER         = 'commerce.cart.current_order_id';
+    const SESSION_TAG_CURRENT_STEP          = 'commerce.cart.current_step';
+    const SESSION_TAG_LAST_COMPLETED_STEP      = 'commerce.cart.last_completed_step';
+    const SESSION_TAG_LAST_COMPLETED_ORDER     = 'commerce.cart.last_completed_order';
 
     /* Checkout Step Constants */
     const STARTING_STEP_POSITION = 1;
@@ -73,14 +73,14 @@ class CheckoutManager
     {
         $this->configurationManager = $configurationManager;
         $this->orderManager         = $orderManager;
-        $this->cartManager 			= $cartManager;
-        $this->paymentManager 		= $paymentManager;
-        $this->shippingManager 		= $shippingManager;
-        $this->session 				= $session;
-        $this->securityContext 		= $securityContext;
-        $this->customFieldManager 	= $customFieldManager;
-        $this->affiliateManager 	= $affiliateManager;
-        $this->formFactory 	        = $formFactory;
+        $this->cartManager             = $cartManager;
+        $this->paymentManager         = $paymentManager;
+        $this->shippingManager         = $shippingManager;
+        $this->session                 = $session;
+        $this->securityContext         = $securityContext;
+        $this->customFieldManager     = $customFieldManager;
+        $this->affiliateManager     = $affiliateManager;
+        $this->formFactory             = $formFactory;
         
         $this->stepHandlers = new ArrayCollection();
     }
@@ -140,7 +140,7 @@ class CheckoutManager
      */
     public function getCustomFieldManager()
     {
-    	return $this->customFieldManager;
+        return $this->customFieldManager;
     }
     
     /**
@@ -350,8 +350,8 @@ class CheckoutManager
         $checkoutForm = $this->getFormFactory()
         ->createNamedBuilder('checkout', 'form', $order, array_merge_recursive(array(
             'data_class' => get_class($order),
-        	'csrf_protection' => true, 
-        	'cascade_validation' => true,
+            'csrf_protection' => true, 
+            'cascade_validation' => true,
             'validation_groups' => array('checkout_step_'.$this->getCurrentStep())
         ), $formOptions));
         
@@ -518,13 +518,13 @@ class CheckoutManager
      */
     public function getLastStep()
     {
-    	$return = 1;
-    	foreach($this->getStepHandlers() as $stepHandler) {
-    		if($stepHandler->getStep() > $return){
-    			$return = $stepHandler->getStep();
-    		}
-    	}
-    	return $return;
+        $return = 1;
+        foreach($this->getStepHandlers() as $stepHandler) {
+            if($stepHandler->getStep() > $return){
+                $return = $stepHandler->getStep();
+            }
+        }
+        return $return;
     }
     
     /**
@@ -537,13 +537,13 @@ class CheckoutManager
      */
     public function validateStepHandlers()
     {
-    	$lastStep = $this->getLastStep();
-    	for($i = 1; $i < $lastStep; $i++) {
-    		if(!count($this->getStepHandlersByStep($i))){
-    			throw \RuntimeException('Checkout Step Handlers are in a non sequential order. 
-    					Make sure each step from step 1 to the last registered step exists.');
-    		}
-    	}
+        $lastStep = $this->getLastStep();
+        for($i = 1; $i < $lastStep; $i++) {
+            if(!count($this->getStepHandlersByStep($i))){
+                throw \RuntimeException('Checkout Step Handlers are in a non sequential order. 
+                        Make sure each step from step 1 to the last registered step exists.');
+            }
+        }
     }
 
 
@@ -562,7 +562,7 @@ class CheckoutManager
         if($this->getAffiliateManager()->getCurrentAffiliateId()){
             $affiliate = $this->getAffiliateManager()->findAffiliateById($this->getAffiliateManager()->getCurrentAffiliateId());
         } else if($order->getVisitor() && $order->getVisitor()->getInitialReferer()){
-        	$affiliate = $this->getAffiliateManager()->findAffiliateByName($order->getVisitor()->getInitialReferer());
+            $affiliate = $this->getAffiliateManager()->findAffiliateByName($order->getVisitor()->getInitialReferer());
         }
         
         if(isset($affiliate) && $affiliate instanceof AffiliateInterface){

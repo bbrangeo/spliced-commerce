@@ -14,8 +14,8 @@ use Spliced\Component\Commerce\Model\Route as BaseRoute;
 
 /**
  * @MongoDB\Document(
- * 	collection="route",
- * 	repositoryClass="Spliced\Bundle\CommerceBundle\Repository\RouteDocumentRepository"
+ *     collection="route",
+ *     repositoryClass="Spliced\Bundle\CommerceBundle\Repository\RouteDocumentRepository"
  * )
  * @MongoDB\EmbeddedDocument
  * @MongoDB\MappedSuperclass()

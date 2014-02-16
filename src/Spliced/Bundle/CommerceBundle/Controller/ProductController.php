@@ -41,7 +41,7 @@ class ProductController extends Controller
         if(!$product){
             throw $this->createNotFoundException('Product Not Found');
         }
-	
+    
         return $this->renderProductView($product);
     }
     
@@ -55,17 +55,17 @@ class ProductController extends Controller
      */
     public function viewBySlugAction($slug)
     {
-    	$productRepository = $this->get('commerce.document_manager')->getRepository('SplicedCommerceBundle:Product');
+        $productRepository = $this->get('commerce.document_manager')->getRepository('SplicedCommerceBundle:Product');
     
-    	// load product
-    	$product = $productRepository->findOneByUrlSlug($slug);
+        // load product
+        $product = $productRepository->findOneByUrlSlug($slug);
     
-    	if(!$product){
-    		throw $this->createNotFoundException('Product Not Found');
-    	}
+        if(!$product){
+            throw $this->createNotFoundException('Product Not Found');
+        }
     
     
-    	return $this->renderProductView($product);
+        return $this->renderProductView($product);
     }
     
     /**
@@ -73,20 +73,20 @@ class ProductController extends Controller
      */
     protected function renderProductView(ProductInterface $product)
     {
-    	// set crumbs
-    	$this->get('commerce.breadcrumb')
-    	->createBreadcrumb('Catalog', 'Catalog', $this->generateUrl('catalog_index'), null, true)
-    	->createBreadcrumb($product->getName(), $product->getName(), $product->getUrlSlug(), null, true);
-    	
-    	// dispatch a product viewed event
-    	$this->get('event_dispatcher')->dispatch(
-    			Events\Event::EVENT_PRODUCT_VIEW,
-    			new Events\ProductViewEvent($product)
-    	);
-    	
-    	return array(
-    		'product' => $product,
-    		'quantity' => $this->getRequest()->query->get('q', 1),
-    	);
+        // set crumbs
+        $this->get('commerce.breadcrumb')
+        ->createBreadcrumb('Catalog', 'Catalog', $this->generateUrl('catalog_index'), null, true)
+        ->createBreadcrumb($product->getName(), $product->getName(), $product->getUrlSlug(), null, true);
+        
+        // dispatch a product viewed event
+        $this->get('event_dispatcher')->dispatch(
+                Events\Event::EVENT_PRODUCT_VIEW,
+                new Events\ProductViewEvent($product)
+        );
+        
+        return array(
+            'product' => $product,
+            'quantity' => $this->getRequest()->query->get('q', 1),
+        );
     }
 }

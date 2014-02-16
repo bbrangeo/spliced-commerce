@@ -43,9 +43,9 @@ class VisitorEventListener
      * @param SecurityContext $securityContext
      * @param Session         $session
      * @param Request         $request
-	 * @param AffiliateManager $affiliateManager
+     * @param AffiliateManager $affiliateManager
      * @param VisitorManager $visitorManager
-	 * @param Logger   $logger
+     * @param Logger   $logger
      */
     public function __construct(ConfigurationManager $configurationManager, SecurityContext $securityContext, Session $session, AffiliateManager $affiliateManager, VisitorManager $visitorManager, Logger $logger)
     {
@@ -53,7 +53,7 @@ class VisitorEventListener
         $this->session = $session;
         $this->configurationManager = $configurationManager;
         $this->affiliateManager = $affiliateManager;
-		$this->visitorManager = $visitorManager;
+        $this->visitorManager = $visitorManager;
         $this->logger = $logger;      
     }
 
@@ -64,7 +64,7 @@ class VisitorEventListener
      */
     protected function getConfigurationManager()
     {
-    	return $this->configurationManager;
+        return $this->configurationManager;
     }
 
     /**
@@ -77,16 +77,16 @@ class VisitorEventListener
         return $this->visitorManager;
     }
     
-	/**
-	 * getLogger
-	 * 
-	 * @return Logger
-	 */
-	protected function getLogger()
-	{
-		return $this->logger;
-	}
-	
+    /**
+     * getLogger
+     * 
+     * @return Logger
+     */
+    protected function getLogger()
+    {
+        return $this->logger;
+    }
+    
     /**
      * getAffiliateManager
      * 
@@ -94,7 +94,7 @@ class VisitorEventListener
      */
     protected function getAffiliateManager()
     {
-    	return $this->affiliateManager;
+        return $this->affiliateManager;
     }
     
     /**
@@ -104,7 +104,7 @@ class VisitorEventListener
      */
     protected function getSession()
     {
-    	return $this->session;
+        return $this->session;
     }
     
     /**
@@ -114,7 +114,7 @@ class VisitorEventListener
      */
     protected function getSecurityContext()
     {
-    	 return $this->securityContext;
+         return $this->securityContext;
     }
     
     /**
@@ -124,7 +124,7 @@ class VisitorEventListener
      */
     protected function getEntityManager()
     {
-    	return $this->configurationManager->getEntityManager();	
+        return $this->configurationManager->getEntityManager();    
     }
     
     /**

@@ -27,7 +27,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 abstract class Order implements OrderInterface
 {
- 	/**
+     /**
      * @var bigint $id
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
@@ -298,9 +298,9 @@ abstract class Order implements OrderInterface
      */
     public function __construct($status = null)
     {
-    	$this->items = new ArrayCollection();
-    	$this->memos = new ArrayCollection();
-    	$this->customFields = new ArrayCollection();
+        $this->items = new ArrayCollection();
+        $this->memos = new ArrayCollection();
+        $this->customFields = new ArrayCollection();
         $this->setOrderStatus(!is_null($status) ? $status : static::STATUS_INCOMPLETE);
         $this->generateProtectCode();
         $this->createdAt = new \DateTime();
@@ -323,7 +323,7 @@ abstract class Order implements OrderInterface
      */
     public function getId()
     {
-    	return $this->id;
+        return $this->id;
     }
     
     /**
@@ -828,7 +828,7 @@ abstract class Order implements OrderInterface
      */
     public function getBillingPhoneNumber()
     {
-    	return $this->billingPhoneNumber;
+        return $this->billingPhoneNumber;
     }
     
     /**
@@ -838,8 +838,8 @@ abstract class Order implements OrderInterface
      */
     public function setBillingPhoneNumber($billingPhoneNumber = null)
     {
-    	$this->billingPhoneNumber = $billingPhoneNumber;
-    	return $this;
+        $this->billingPhoneNumber = $billingPhoneNumber;
+        return $this;
     }
 
     /**
@@ -847,7 +847,7 @@ abstract class Order implements OrderInterface
      */
     public function getShippingPhoneNumber()
     {
-    	return $this->shippingPhoneNumber;
+        return $this->shippingPhoneNumber;
     }
     
     /**
@@ -857,8 +857,8 @@ abstract class Order implements OrderInterface
      */
     public function setShippingPhoneNumber($shippingPhoneNumber = null)
     {
-    	$this->shippingPhoneNumber = $shippingPhoneNumber;
-    	return $this;
+        $this->shippingPhoneNumber = $shippingPhoneNumber;
+        return $this;
     }
     /**
      * setEmail
@@ -913,8 +913,8 @@ abstract class Order implements OrderInterface
      */
     public function setShipment(OrderShipmentInterface $shipment)
     {
-    	$shipment->setOrder($this);
-    	
+        $shipment->setOrder($this);
+        
         $this->shipment = $shipment;
 
         return $this;
@@ -935,8 +935,8 @@ abstract class Order implements OrderInterface
      */
     public function setPayment(OrderPaymentInterface $payment)
     {
-    	$payment->setOrder($this);
-    	
+        $payment->setOrder($this);
+        
         $this->payment = $payment;
 
         return $this;
@@ -1038,22 +1038,22 @@ abstract class Order implements OrderInterface
      */
     public function getItemByCartItem(CartItemInterface $cartItem)
     {
-    	$searchItemsFunction = function($items) use($cartItem, &$searchItemsFunction){
-    		foreach($items as $item){
-    			if($item->getCartItem() && $item->getCartItem()->getId() == $cartItem->getId()){
-    				return $item;
-    			}
-    			if($item->hasChildren()){
-    				$childMatch = $searchItemsFunction($item->getChildren());
-    				if($childMatch){
-    					return $childMatch;
-    				}
-    			}
-    		}
-    		return null;
-    	};
-    	    
-    	return $searchItemsFunction($this->getItems());
+        $searchItemsFunction = function($items) use($cartItem, &$searchItemsFunction){
+            foreach($items as $item){
+                if($item->getCartItem() && $item->getCartItem()->getId() == $cartItem->getId()){
+                    return $item;
+                }
+                if($item->hasChildren()){
+                    $childMatch = $searchItemsFunction($item->getChildren());
+                    if($childMatch){
+                        return $childMatch;
+                    }
+                }
+            }
+            return null;
+        };
+            
+        return $searchItemsFunction($this->getItems());
     } 
     
     /**
@@ -1063,22 +1063,22 @@ abstract class Order implements OrderInterface
      */
     public function removeItem(OrderItemInterface $orderItem)
     {
-    	
-    	$searchItems = function($items) use($orderItem, &$searchItems){
-    		foreach ($items as $key => $item) {
-    			if($item->getId() == $orderItem->getId()){
-    				$items->remove($key);
-    				return true;
-    			}
-    			if($item->hasChildren()){
-    				$childMatch = $searchItems($item->getChildren());
-    				if($childMatch){
-    					return true;
-    				}
-    			}
-    		}
-    		return false;
-    	};
+        
+        $searchItems = function($items) use($orderItem, &$searchItems){
+            foreach ($items as $key => $item) {
+                if($item->getId() == $orderItem->getId()){
+                    $items->remove($key);
+                    return true;
+                }
+                if($item->hasChildren()){
+                    $childMatch = $searchItems($item->getChildren());
+                    if($childMatch){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
 
         return $searchItems($this->getItems());
     }
@@ -1090,21 +1090,21 @@ abstract class Order implements OrderInterface
      */
     public function removeItemByCartItem(CartItemInterface $cartItem)
     {
-    	$searchItems = function($items) use($cartItem, &$searchItems){
-    		foreach ($items as $key => $item) {
-    			if($item->getCartItem() && $item->getCartItem()->getId() == $cartItem->getId()){
-    				$items->remove($key);
-    				return true;
-    			}
-    			if($item->hasChildren()){
-    				$childMatch = $searchItems($item->getChildren());
-    				if($childMatch){
-    					return true;
-    				}
-    			}
-    		}
-    		return false;
-    	};
+        $searchItems = function($items) use($cartItem, &$searchItems){
+            foreach ($items as $key => $item) {
+                if($item->getCartItem() && $item->getCartItem()->getId() == $cartItem->getId()){
+                    $items->remove($key);
+                    return true;
+                }
+                if($item->hasChildren()){
+                    $childMatch = $searchItems($item->getChildren());
+                    if($childMatch){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
 
         return $searchItems($this->getItems());
     }
@@ -1150,7 +1150,7 @@ abstract class Order implements OrderInterface
      */
     public function getCustomFields()
     {
-    	return $this->customFields;
+        return $this->customFields;
     }
     
     /**
@@ -1158,13 +1158,13 @@ abstract class Order implements OrderInterface
      */
     public function setCustomFields($customFieldValues)
     {
-    	if(is_array($customFieldValues)){
-    		$this->customFieldValues = new ArrayCollection($customFieldValues);
-    	} else if(!$customFieldValues instanceof ArrayCollection){
-    		throw new \Exception("customFieldValues must be instance of ArrayCollection or an array");
-    	}
-    	$this->customFields = $customFieldValues;
-    	return $this;
+        if(is_array($customFieldValues)){
+            $this->customFieldValues = new ArrayCollection($customFieldValues);
+        } else if(!$customFieldValues instanceof ArrayCollection){
+            throw new \Exception("customFieldValues must be instance of ArrayCollection or an array");
+        }
+        $this->customFields = $customFieldValues;
+        return $this;
     }
     
     /**
@@ -1172,8 +1172,8 @@ abstract class Order implements OrderInterface
      */
     public function addCustomField(OrderCustomFieldValueInterface $customFieldValue)
     {
-    	$this->customFields->add($customFieldValue->setOrder($this));
-    	return $this;
+        $this->customFields->add($customFieldValue->setOrder($this));
+        return $this;
     }
 
     /**
@@ -1183,12 +1183,12 @@ abstract class Order implements OrderInterface
      */
     public function getCustomField($fieldName)
     {
-    	foreach($this->customFields as $customFieldValue){
-    		if($customFieldValue->getField()->getFieldName() == $fieldName) {
-    			return $customFieldValue;
-    		}
-    	}
-    	return false;
+        foreach($this->customFields as $customFieldValue){
+            if($customFieldValue->getField()->getFieldName() == $fieldName) {
+                return $customFieldValue;
+            }
+        }
+        return false;
     }
     
     /**
@@ -1198,12 +1198,12 @@ abstract class Order implements OrderInterface
      */
     public function hasCustomField($fieldName)
     {
-    	foreach($this->customFields as $customFieldValue){
-    		if($customFieldValue->getField()->getFieldName() == $fieldName) {
-    			return true;
-    		}
-    	}
-    	return false;
+        foreach($this->customFields as $customFieldValue){
+            if($customFieldValue->getField()->getFieldName() == $fieldName) {
+                return true;
+            }
+        }
+        return false;
     }
     
     /**
@@ -1240,7 +1240,7 @@ abstract class Order implements OrderInterface
      */
     public function getSaveBillingAddress()
     {
-    	return $this->saveBillingAddress;
+        return $this->saveBillingAddress;
     }
     
     /**
@@ -1248,8 +1248,8 @@ abstract class Order implements OrderInterface
      */
     public function setSaveBillingAddress($saveBillingAddress)
     {
-    	$this->saveBillingAddress = $saveBillingAddress;
-    	return $this;
+        $this->saveBillingAddress = $saveBillingAddress;
+        return $this;
     }
     
     /**
@@ -1257,7 +1257,7 @@ abstract class Order implements OrderInterface
      */
     public function getSaveShippingAddress()
     {
-    	return $this->saveShippingAddress;
+        return $this->saveShippingAddress;
     }
     
     /**
@@ -1265,8 +1265,8 @@ abstract class Order implements OrderInterface
      */
     public function setSaveShippingAddress($saveShippingAddress)
     {
-    	$this->saveShippingAddress = $saveShippingAddress;
-    	return $this;
+        $this->saveShippingAddress = $saveShippingAddress;
+        return $this;
     }
     
 
@@ -1275,8 +1275,8 @@ abstract class Order implements OrderInterface
      */
     public function setCustomFieldValues($customFieldValues)
     {
-    	$this->customFieldValues = $customFieldValues;
-    	return $this;
+        $this->customFieldValues = $customFieldValues;
+        return $this;
     }
     
     /**
@@ -1284,6 +1284,6 @@ abstract class Order implements OrderInterface
      */
     public function getCustomFieldValues()
     {
-    	return $this->customFieldValues;
+        return $this->customFieldValues;
     }
 }

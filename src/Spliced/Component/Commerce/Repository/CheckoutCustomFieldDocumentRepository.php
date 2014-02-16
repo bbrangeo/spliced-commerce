@@ -18,17 +18,17 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  */
 abstract class CheckoutCustomFieldDocumentRepository extends DocumentRepository implements CheckoutCustomFieldRepositoryInterface
 {
-	/**
-	 * getAllActive
-	 *
-	 * @return array
-	 */
-	public function getAllActive()
-	{
-		return $this->createQueryBuilder()
-		  ->field('isActive')->equals(true)
-		  ->getQuery()
-		  ->execute();
-	}
+    /**
+     * getAllActive
+     *
+     * @return array
+     */
+    public function getAllActive()
+    {
+        return $this->createQueryBuilder()
+          ->field('isActive')->equals(true)
+          ->getQuery()
+          ->execute();
+    }
    
 }

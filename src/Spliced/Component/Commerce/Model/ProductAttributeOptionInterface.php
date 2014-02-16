@@ -16,17 +16,17 @@ namespace Spliced\Component\Commerce\Model;
  */
 interface ProductAttributeOptionInterface
 {
-	
-	/** 
-	 * Option type which represents a value collected by the user they are
-	 * able to type in
-	 */
+    
+    /** 
+     * Option type which represents a value collected by the user they are
+     * able to type in
+     */
     const OPTION_TYPE_USER_DATA_INPUT = 1;
     
 
     /**
-	 * Option type which represents a value collected by the user they are
-	 * able to type select from a set of choices
+     * Option type which represents a value collected by the user they are
+     * able to type select from a set of choices
      *
      * Can (optionally) alter price of product up or down
      */

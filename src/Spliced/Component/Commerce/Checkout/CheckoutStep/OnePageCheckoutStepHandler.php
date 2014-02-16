@@ -42,7 +42,7 @@ use Doctrine\ORM\NoResultException;
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 class OnePageCheckoutStepHandler extends CheckoutStepHandler
-{	
+{    
     /**
      * Constructor
      * 
@@ -111,162 +111,162 @@ class OnePageCheckoutStepHandler extends CheckoutStepHandler
         return $this->templatingEngine;
     }
      
-	/**
-	 * @var $position - Default position for this step
-	 */
-	protected $position = 1;
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getName()
-	{
-		return 'onepage';
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getProgressBarLabel()
-	{
-		return 'Checkout Details';
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function preBuildForm(OrderInterface $order)
-	{
+    /**
+     * @var $position - Default position for this step
+     */
+    protected $position = 1;
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return 'onepage';
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getProgressBarLabel()
+    {
+        return 'Checkout Details';
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function preBuildForm(OrderInterface $order)
+    {
 
-	}
+    }
 
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function buildFormOptions(OrderInterface $order, array $formOptions = array())
-	{
-	    return array('validation_groups' => array(
-	        $this->getName(),
-	    ));
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function buildForm(OrderInterface $order, FormBuilderInterface $builder)
-	{	 
-		$builder->add('billingFirstName', 'text', array(
-			'label' => 'First Name',
-			'constraints' => array(
-				new Constraints\NotBlank()
-			)
-		))
-		->add('billingLastName', 'text', array(
-			'label' => 'Last Name',
-			'constraints' => array(
-				new Constraints\NotBlank()
-			)
-		));
-		
-		 
-		if(!$this->getSecurityContext()->isGranted('ROLE_USER')){
-			$builder->add('email', 'email', array(
-			'required' => true,
-			'error_bubbling' => false,
-			'label' => 'E-Mail',
-			'constraints' => array(
-				new Constraints\NotBlank(),
-				new Constraints\Email()
-			)))
-			->add('customer', new CheckoutRegistrationFormType());
-		}
-		
-		$builder
-		->add('billingAddress', 'text', array(
-			'label' => 'Address',
-			'constraints' => array(
-				new Constraints\NotBlank(),
-			)
-		))
-		->add('billingAddress2', 'text', array('label' => '')) 
-		->add('billingCity', 'text', array(
-			'label' => 'City',
-			'constraints' => array(
-				new Constraints\NotBlank(),
-			)
-		))
-		->add('billingState', 'text', array(
-			'label' => 'State',
-			'constraints' => array(
-				new Constraints\NotBlank(),
-			)
-		))
-		->add('billingZipcode', 'text', array(
-			'label' => 'Zipcode',
-			'constraints' => array(
-				new Constraints\NotBlank(),
-			)
-		))
-		->add('billingCountry', 'country', array(
-			'empty_value' => 'Select Your Country',
-			'preferred_choices' => array('US','CA','GB'),
-			'label' => 'Country',
-			'constraints' => array(
-				new Constraints\NotBlank(),
-			)
-		))
-		->add('billingPhoneNumber', 'text', array(
-			'required' => false,
-			'label' => 'Phone Number',
-			'constraints' => array(
-				new Constraints\NotBlank(),
-			)
-		))
-		->add('shippingName', 'text', array(
-			'label' => 'Ship To',
-		))
-		->add('shippingAttn', 'text', array(
-			'label' => 'Attention To',
-		))
-		->add('shippingAddress', 'text', array(
-			'label' => 'Address',
-		))
-		->add('shippingAddress2', 'textarea', array(
-			'label' => '',
-		))
-		->add('shippingCity', 'text', array(
-			'label' => 'City',
-		))
-		->add('shippingState', 'text', array(
-			'label' => 'State',
-		))
-		->add('shippingZipcode', 'text', array(
-			'label' => 'Zipcode',
-		))
-		->add('shippingCountry', 'country', array(
-			'empty_value' => 'Select Your Country',
-			'preferred_choices' => array('US','CA','GB'),
-			'label' => 'Country',
-		))
-		->add('shippingPhoneNumber', 'text', array('required' => false, 'label' => 'Phone Number'));
-		
-		if($this->getSecurityContext()->isGranted('ROLE_USER')) {
-			$builder->add('saveBillingAddress', 'checkbox', array('required' => false, 'value' => 1))
-			->add('saveShippingAddress', 'checkbox', array('required' => false, 'value' => 1));
-		}
-		
-		$builder->add('shipment', new CheckoutShipmentFormType($order, $this->getCheckoutManager()));
-		$builder->add('payment', new CheckoutPaymentFormType($order, $this->getCheckoutManager()));
+    /**
+     * {@inheritDoc}
+     */
+    public function buildFormOptions(OrderInterface $order, array $formOptions = array())
+    {
+        return array('validation_groups' => array(
+            $this->getName(),
+        ));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function buildForm(OrderInterface $order, FormBuilderInterface $builder)
+    {     
+        $builder->add('billingFirstName', 'text', array(
+            'label' => 'First Name',
+            'constraints' => array(
+                new Constraints\NotBlank()
+            )
+        ))
+        ->add('billingLastName', 'text', array(
+            'label' => 'Last Name',
+            'constraints' => array(
+                new Constraints\NotBlank()
+            )
+        ));
+        
+         
+        if(!$this->getSecurityContext()->isGranted('ROLE_USER')){
+            $builder->add('email', 'email', array(
+            'required' => true,
+            'error_bubbling' => false,
+            'label' => 'E-Mail',
+            'constraints' => array(
+                new Constraints\NotBlank(),
+                new Constraints\Email()
+            )))
+            ->add('customer', new CheckoutRegistrationFormType());
+        }
+        
+        $builder
+        ->add('billingAddress', 'text', array(
+            'label' => 'Address',
+            'constraints' => array(
+                new Constraints\NotBlank(),
+            )
+        ))
+        ->add('billingAddress2', 'text', array('label' => '')) 
+        ->add('billingCity', 'text', array(
+            'label' => 'City',
+            'constraints' => array(
+                new Constraints\NotBlank(),
+            )
+        ))
+        ->add('billingState', 'text', array(
+            'label' => 'State',
+            'constraints' => array(
+                new Constraints\NotBlank(),
+            )
+        ))
+        ->add('billingZipcode', 'text', array(
+            'label' => 'Zipcode',
+            'constraints' => array(
+                new Constraints\NotBlank(),
+            )
+        ))
+        ->add('billingCountry', 'country', array(
+            'empty_value' => 'Select Your Country',
+            'preferred_choices' => array('US','CA','GB'),
+            'label' => 'Country',
+            'constraints' => array(
+                new Constraints\NotBlank(),
+            )
+        ))
+        ->add('billingPhoneNumber', 'text', array(
+            'required' => false,
+            'label' => 'Phone Number',
+            'constraints' => array(
+                new Constraints\NotBlank(),
+            )
+        ))
+        ->add('shippingName', 'text', array(
+            'label' => 'Ship To',
+        ))
+        ->add('shippingAttn', 'text', array(
+            'label' => 'Attention To',
+        ))
+        ->add('shippingAddress', 'text', array(
+            'label' => 'Address',
+        ))
+        ->add('shippingAddress2', 'textarea', array(
+            'label' => '',
+        ))
+        ->add('shippingCity', 'text', array(
+            'label' => 'City',
+        ))
+        ->add('shippingState', 'text', array(
+            'label' => 'State',
+        ))
+        ->add('shippingZipcode', 'text', array(
+            'label' => 'Zipcode',
+        ))
+        ->add('shippingCountry', 'country', array(
+            'empty_value' => 'Select Your Country',
+            'preferred_choices' => array('US','CA','GB'),
+            'label' => 'Country',
+        ))
+        ->add('shippingPhoneNumber', 'text', array('required' => false, 'label' => 'Phone Number'));
+        
+        if($this->getSecurityContext()->isGranted('ROLE_USER')) {
+            $builder->add('saveBillingAddress', 'checkbox', array('required' => false, 'value' => 1))
+            ->add('saveShippingAddress', 'checkbox', array('required' => false, 'value' => 1));
+        }
+        
+        $builder->add('shipment', new CheckoutShipmentFormType($order, $this->getCheckoutManager()));
+        $builder->add('payment', new CheckoutPaymentFormType($order, $this->getCheckoutManager()));
 
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function process(FormInterface $form, Request $request)
-	{
-	    if($request->getMethod() == 'POST') {
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function process(FormInterface $form, Request $request)
+    {
+        if($request->getMethod() == 'POST') {
             if($form->bind($request) && $form->isValid()) {
                 $order = $form->getData();
                 $shipment = $order->getShipment();
@@ -336,20 +336,20 @@ class OnePageCheckoutStepHandler extends CheckoutStepHandler
                 
                 // handle shipment
                 if($shipment->getUserSelection()){
-                    	
+                        
                     $shippingMethod = $this->getCheckoutManager()
                     ->getShippingManager()->getMethodByFullName($shipment->getUserSelection());
-                    	
+                        
                     $shippingProvider = $shippingMethod->getProvider();
-                    	
+                        
                     $shipment->setShipmentProvider($shippingProvider->getName())
                     ->setShipmentMethod($shippingMethod->getName());
-                    	
+                        
                 } else if($shipment->getShipmentProvider() && $shipment->getShipmentMethod()){
                     $shippingProvider = $this->getCheckoutManager()
                     ->getShippingProvider($shipment->getShipmentProvider());
                     $shippingMethod = $shippingProvider->getMethod($shipment->getShipmentMethod());
-                    	
+                        
                     $shipment->setShipmentProvider($shippingProvider->getName())
                     ->setShipmentMethod($shippingMethod->getName());
                 } else {
@@ -388,25 +388,25 @@ class OnePageCheckoutStepHandler extends CheckoutStepHandler
                     $this->getCheckoutManager()->getCurrentStep()
                 );
             }
-	    } 
-	    
-	    if($request->isXmlHttpRequest()) {
-	        return new JsonResponse(array(
-	            'success' => true,
-	            'replace_many' => array(
-	                '#checkout-content' => $this->getTemplatingEngine()->render('SplicedCommerceBundle:Checkout:index_content.html.twig',array(
-	                    'form' => $form->createView(),
-	                    'step' => $this->getCheckoutManager()->getCurrentStep(),  
-	                	'step_template' => 'onepage',
-	                ))
-	            )
-	        ));
-	    }
-	    
-	    return $this->getTemplatingEngine()->renderResponse('SplicedCommerceBundle:Checkout:index.html.twig', array(
-	        'form' => $form->createView(),
-	        'step' => $this->getCheckoutManager()->getCurrentStep(),
-	    	'step_template' => 'onepage', 
-	    ));
-	}
+        } 
+        
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array(
+                'success' => true,
+                'replace_many' => array(
+                    '#checkout-content' => $this->getTemplatingEngine()->render('SplicedCommerceBundle:Checkout:index_content.html.twig',array(
+                        'form' => $form->createView(),
+                        'step' => $this->getCheckoutManager()->getCurrentStep(),  
+                        'step_template' => 'onepage',
+                    ))
+                )
+            ));
+        }
+        
+        return $this->getTemplatingEngine()->renderResponse('SplicedCommerceBundle:Checkout:index.html.twig', array(
+            'form' => $form->createView(),
+            'step' => $this->getCheckoutManager()->getCurrentStep(),
+            'step_template' => 'onepage', 
+        ));
+    }
 }

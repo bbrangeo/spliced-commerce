@@ -19,26 +19,26 @@ use Spliced\Component\Commerce\Model\CustomerInterface;
  */
 class CheckoutMoveStepEvent extends CheckoutEvent
 {
-	
-	protected $currentStep;
-	
-	/**
-	 * @param OrderInterface $order
-	 */
-	public function __construct(OrderInterface $order, $currentStep)
-	{
-		$this->currentStep = $currentStep;
-		parent::__construct($order);
-	}
-	
-	/**
-	 * getCurrentStep
-	 * 
-	 * @return int
-	 */
-	public function getCurrentStep()
-	{
-	    return $this->currentStep;
-	}
+    
+    protected $currentStep;
+    
+    /**
+     * @param OrderInterface $order
+     */
+    public function __construct(OrderInterface $order, $currentStep)
+    {
+        $this->currentStep = $currentStep;
+        parent::__construct($order);
+    }
+    
+    /**
+     * getCurrentStep
+     * 
+     * @return int
+     */
+    public function getCurrentStep()
+    {
+        return $this->currentStep;
+    }
 
 }

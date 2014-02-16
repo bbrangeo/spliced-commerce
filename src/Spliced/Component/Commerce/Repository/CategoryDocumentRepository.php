@@ -19,27 +19,27 @@ use Gedmo\Tree\Document\MongoDB\Repository\MaterializedPathRepository;
  */
 abstract class CategoryDocumentRepository extends MaterializedPathRepository implements CategoryRepositoryInterface
 {
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getRoot()
-	{
-		return $this->createQueryBuilder('category')
-		->field('parent')->exists(false)
-		->eagerCursor(true)
-		->getQuery()
-		->execute();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	
-	public function getTree()
-	{
-		return $this->createQueryBuilder('category')
-		->field('parent')->exists(false)
-		->eagerCursor(true)
-		->getQuery()
-		->execute();
-	} */
+    /**
+     * {@inheritDoc}
+     */
+    public function getRoot()
+    {
+        return $this->createQueryBuilder('category')
+        ->field('parent')->exists(false)
+        ->eagerCursor(true)
+        ->getQuery()
+        ->execute();
+    }
+    
+    /**
+     * {@inheritDoc}
+    
+    public function getTree()
+    {
+        return $this->createQueryBuilder('category')
+        ->field('parent')->exists(false)
+        ->eagerCursor(true)
+        ->getQuery()
+        ->execute();
+    } */
 }

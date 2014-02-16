@@ -32,7 +32,7 @@ class ProductTypeCompilerPass implements CompilerPassInterface
         $productTypeManager = $container->getDefinition('commerce.product_type_manager');
 
         foreach($container->findTaggedServiceIds('commerce.product_type_handler') as $id => $attributes){
-        	$productTypeManager->addMethodCall('addHandler', array(new Reference($id)));
+            $productTypeManager->addMethodCall('addHandler', array(new Reference($id)));
         }
 
     }

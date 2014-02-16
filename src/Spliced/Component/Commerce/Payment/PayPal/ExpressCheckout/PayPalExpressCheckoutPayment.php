@@ -104,25 +104,25 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
         //
         
         $address = new AddressType();
-		if($order->hasAlternateShippingAddress()){
-	        $address->CityName = $order->getShippingCity();
-	        $address->Name = $order->getShippingName();
-	        $address->Street1 = $order->getShippingAddress();
-	        $address->Street2 = $order->getShippingAddress2();
-	        $address->StateOrProvince = $order->getShippingState();
-	        $address->PostalCode = $order->getShippingZipcode();
-	        $address->Country = $order->getShippingCountry();
-	        $address->Phone = $order->getShippingPhoneNumber();
-		} else {
-			$address->CityName = $order->getBillingCity();
-	        $address->Name = $order->getBillingFirstName().' '.$order->getBillingLastName();
-	        $address->Street1 = $order->getBillingAddress();
-	        $address->Street2 = $order->getBillingAddress2();
-	        $address->StateOrProvince = $order->getBillingState();
-	        $address->PostalCode = $order->getBillingZipcode();
-	        $address->Country = $order->getBillingCountry();
-	        $address->Phone = $order->getBillingPhoneNumber();
-		}        
+        if($order->hasAlternateShippingAddress()){
+            $address->CityName = $order->getShippingCity();
+            $address->Name = $order->getShippingName();
+            $address->Street1 = $order->getShippingAddress();
+            $address->Street2 = $order->getShippingAddress2();
+            $address->StateOrProvince = $order->getShippingState();
+            $address->PostalCode = $order->getShippingZipcode();
+            $address->Country = $order->getShippingCountry();
+            $address->Phone = $order->getShippingPhoneNumber();
+        } else {
+            $address->CityName = $order->getBillingCity();
+            $address->Name = $order->getBillingFirstName().' '.$order->getBillingLastName();
+            $address->Street1 = $order->getBillingAddress();
+            $address->Street2 = $order->getBillingAddress2();
+            $address->StateOrProvince = $order->getBillingState();
+            $address->PostalCode = $order->getBillingZipcode();
+            $address->Country = $order->getBillingCountry();
+            $address->Phone = $order->getBillingPhoneNumber();
+        }        
 
         $paymentDetails = new PaymentDetailsType();
         $paymentDetails->ShipToAddress = $address;
@@ -178,11 +178,11 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
             return $redirect;
         }
         
-		$errors = array();
-		foreach($response->Errors as $error) {
-			$errors[] = $error->LongMessage;
-		}
-		// return the error string for display to user
+        $errors = array();
+        foreach($response->Errors as $error) {
+            $errors[] = $error->LongMessage;
+        }
+        // return the error string for display to user
         return implode(', ', $errors);        
     } 
     
@@ -245,13 +245,13 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
         // add a payment memo for the payment being recieved, for each payment record
         foreach($doExpressCheckoutResponse->DoExpressCheckoutPaymentResponseDetails->PaymentInfo as $paymentInfo){
             
-        	$newStatus = $this->getOption('checkout_complete_status');
-        	
-        	if(strtolower($paymentInfo->PaymentStatus) == 'pending'){
-        		$newStatus = OrderInterface::STATUS_PENDING;
-        	}
-        	
-        	$paymentMemo = $this->getConfigurationManager()->createEntity(
+            $newStatus = $this->getOption('checkout_complete_status');
+            
+            if(strtolower($paymentInfo->PaymentStatus) == 'pending'){
+                $newStatus = OrderInterface::STATUS_PENDING;
+            }
+            
+            $paymentMemo = $this->getConfigurationManager()->createEntity(
                     ConfigurationManager::OBJECT_CLASS_TAG_ORDER_PAYMENT_MEMO
             )->setCreatedBy('paypal')
             ->setMemo('PayPal Payment Recieved '.$paymentInfo->PaymentStatus)

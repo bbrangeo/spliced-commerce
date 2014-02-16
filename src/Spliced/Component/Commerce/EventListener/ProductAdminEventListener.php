@@ -108,9 +108,9 @@ class ProductAdminEventListener
         // remove images on filesystem
         foreach($product->getImages() as $image){
             $event->getDispatcher()->dispatch(
-        		Event::EVENT_PRODUCT_IMAGE_DELETE,
-            	new ProductImageDeleteEvent($product, $image)
-            	
+                Event::EVENT_PRODUCT_IMAGE_DELETE,
+                new ProductImageDeleteEvent($product, $image)
+                
             );
         }
         
@@ -127,7 +127,7 @@ class ProductAdminEventListener
         $category = $event->getProductCategory();
         
         if(!$product->hasCategory($category)){
-        	$product->addCategory($category);
+            $product->addCategory($category);
         }
                 
         $this->getObjectManager()->persist($product);        
@@ -154,7 +154,7 @@ class ProductAdminEventListener
      * @param ProductImageAddEvent $event
      */
     public function onProductImageAdd(ProductImageAddEvent $event)
-    {    	
+    {        
         $product = $event->getProduct();
         $productImage = $event->getProductImage();
         $uploadedImage = $productImage->getUploadedImage();
@@ -205,8 +205,8 @@ class ProductAdminEventListener
      */
     private function createRoute(ProductInterface $product)
     {
-    	return $this->getConfigurationManager()->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE)
-    	->setProduct($product);
+        return $this->getConfigurationManager()->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE)
+        ->setProduct($product);
     }
     
        

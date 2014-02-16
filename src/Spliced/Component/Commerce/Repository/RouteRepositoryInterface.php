@@ -16,10 +16,10 @@ namespace Spliced\Component\Commerce\Repository;
  */
 interface RouteRepositoryInterface
 {
-	/**
-	 * matchRoute
-	 *
-	 * @param string $requestPath
-	 */
-	public function matchRoute($requestPath);
+    /**
+     * matchRoute
+     *
+     * @param string $requestPath
+     */
+    public function matchRoute($requestPath);
 }

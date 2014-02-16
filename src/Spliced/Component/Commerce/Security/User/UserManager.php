@@ -55,8 +55,8 @@ class UserManager implements UserProviderInterface
 
         /*
         $this->eventDispatcher->dispatch(
-        	Events\Event::EVENT_SECURITY_NEW_ACCOUNT_CREATED,
-			new Events\NewAccountEvent($user)
+            Events\Event::EVENT_SECURITY_NEW_ACCOUNT_CREATED,
+            new Events\NewAccountEvent($user)
         );*/
         
         return $user;

@@ -16,28 +16,28 @@ namespace Spliced\Component\Commerce\Model;
  */
 interface CartInterface
 {
-	/**
-	 * getCustomer
-	 *
-	 * @return CustomerInterface|null
-	 */
-	public function getCustomer();
-	
-	/**
-	 * getVisitor
-	 *
-	 * @return VisitorInterface
-	 */
-	public function getVisitor();
-	
-	/**
-	 * getItems
-	 *
-	 * @return array Collection
-	 */
-	public function getItems();
-	
-	
-	public function getCreatedAt();
+    /**
+     * getCustomer
+     *
+     * @return CustomerInterface|null
+     */
+    public function getCustomer();
+    
+    /**
+     * getVisitor
+     *
+     * @return VisitorInterface
+     */
+    public function getVisitor();
+    
+    /**
+     * getItems
+     *
+     * @return array Collection
+     */
+    public function getItems();
+    
+    
+    public function getCreatedAt();
 }
-	
+    

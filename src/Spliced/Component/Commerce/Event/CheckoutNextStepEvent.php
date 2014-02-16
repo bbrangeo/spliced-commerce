@@ -19,28 +19,28 @@ use Spliced\Component\Commerce\Model\CustomerInterface;
  */
 class CheckoutNextStepEvent extends CheckoutEvent
 {
-	/**
-	 * @param OrderInterface $order
-	 */
-	public function __construct(OrderInterface $order, CustomerInterface $newUser = null)
-	{
-		$this->customer = $newUser;
-		parent::__construct($order);
-	}
-	
-	/**
-	 * getCustomer()
-	 */
-	 public function getCustomer()
-	 {
-	 	return $this->customer;
-	 }
-	 
-	/**
-	 * hasRegistration
-	 */
-	public function hasNewCustomerRegistration()
-	{
-		return $this->customer instanceof CustomerInterface;
-	}
+    /**
+     * @param OrderInterface $order
+     */
+    public function __construct(OrderInterface $order, CustomerInterface $newUser = null)
+    {
+        $this->customer = $newUser;
+        parent::__construct($order);
+    }
+    
+    /**
+     * getCustomer()
+     */
+     public function getCustomer()
+     {
+         return $this->customer;
+     }
+     
+    /**
+     * hasRegistration
+     */
+    public function hasNewCustomerRegistration()
+    {
+        return $this->customer instanceof CustomerInterface;
+    }
 }

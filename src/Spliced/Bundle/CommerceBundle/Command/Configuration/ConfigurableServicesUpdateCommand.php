@@ -54,6 +54,6 @@ class ConfigurableServicesUpdateCommand extends BaseCommand
             $this->getContainer()->get('commerce.configuration')->processConfigurableService($this->getContainer()->get($serviceId));
             $this->writeLine(sprintf('Complete: %s', $serviceId));
         }
-    	
+        
     }
 }

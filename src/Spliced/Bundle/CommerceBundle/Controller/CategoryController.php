@@ -88,16 +88,16 @@ class CategoryController extends Controller
      */
     public function viewBySlugAction($slug)
     {
-    	// load category
-    	$category = $this->get('commerce.document_manager')
-    	->getRepository('SplicedCommerceBundle:Category')
-    	->findOneByUrlSlug($slug);
+        // load category
+        $category = $this->get('commerce.document_manager')
+        ->getRepository('SplicedCommerceBundle:Category')
+        ->findOneByUrlSlug($slug);
     
-    	if(!$category){
-    		throw $this->createNotFoundException('Category Not Found');
-    	}
+        if(!$category){
+            throw $this->createNotFoundException('Category Not Found');
+        }
     
-    	return $this->renderCategoryView($category);
+        return $this->renderCategoryView($category);
     }
     
     /**
@@ -312,24 +312,24 @@ class CategoryController extends Controller
     
     protected function renderCategoryView(CategoryInterface $category)
     {
-    	$this->setCategoryBreadcrumbs($category);
-    	$productFilterManager = $this->get('commerce.product.filter_manager');
+        $this->setCategoryBreadcrumbs($category);
+        $productFilterManager = $this->get('commerce.product.filter_manager');
 
-    	
-    	 $productFilterManager->setCategory($category)
-    	  ->prepareView();
-    	
-    	// load paginated and filtered products
-    	$products = $this->get('knp_paginator')->paginate(
-    		$productFilterManager->getPaginationQuery(),
-    		$this->getRequest()->query->get('page', 1),
-    		$productFilterManager->getPerPage()
-    	);
-    	
-    	return array(
-    		'category'  => $category,
-    		'products'  => $products,
-    		'productFilterManager' => $productFilterManager,
-    	);
+        
+         $productFilterManager->setCategory($category)
+          ->prepareView();
+        
+        // load paginated and filtered products
+        $products = $this->get('knp_paginator')->paginate(
+            $productFilterManager->getPaginationQuery(),
+            $this->getRequest()->query->get('page', 1),
+            $productFilterManager->getPerPage()
+        );
+        
+        return array(
+            'category'  => $category,
+            'products'  => $products,
+            'productFilterManager' => $productFilterManager,
+        );
     }
 }

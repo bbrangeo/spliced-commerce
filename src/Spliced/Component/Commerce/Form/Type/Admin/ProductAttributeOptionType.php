@@ -72,7 +72,7 @@ class ProductAttributeOptionType extends AbstractType
                 'empty_value' => '',
                 'choices' => array(
                     ProductAttributeOptionInterface::OPTION_TYPE_USER_DATA_INPUT => 'User Input',
-                	ProductAttributeOptionInterface::OPTION_TYPE_USER_DATA_SELECTION => 'User Selectable (Price Alterable)',
+                    ProductAttributeOptionInterface::OPTION_TYPE_USER_DATA_SELECTION => 'User Selectable (Price Alterable)',
                 ),
                 'multiple' => false,
                 //'expanded' => true,

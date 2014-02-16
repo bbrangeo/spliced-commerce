@@ -34,7 +34,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 class LoginRegisterCheckoutStepHandler extends CheckoutStepHandler
-{	
+{    
     /**
      * Constructor
      * 
@@ -103,90 +103,90 @@ class LoginRegisterCheckoutStepHandler extends CheckoutStepHandler
         return $this->templatingEngine;
     }
      
-	/**
-	 * @var $position - Default position for this step
-	 */
-	protected $position = 1;
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getName()
-	{
-		return 'login_register';
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getProgressBarLabel()
-	{
-		return 'Account';
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function preBuildForm(OrderInterface $order)
-	{
-	    if($this->getSecurityContext()->isGranted('ROLE_USER')){
-	        // we set the next step because we do not need to collect any
-	        // user information on this step as the user is already logged in
-	        $this->getCheckoutManager()->setLastCompletedStep($this->getStep());
-	        $this->getCheckoutManager()->setCurrentStep($this->getStep() + 1);
-	    }
-	}
+    /**
+     * @var $position - Default position for this step
+     */
+    protected $position = 1;
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return 'login_register';
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getProgressBarLabel()
+    {
+        return 'Account';
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function preBuildForm(OrderInterface $order)
+    {
+        if($this->getSecurityContext()->isGranted('ROLE_USER')){
+            // we set the next step because we do not need to collect any
+            // user information on this step as the user is already logged in
+            $this->getCheckoutManager()->setLastCompletedStep($this->getStep());
+            $this->getCheckoutManager()->setCurrentStep($this->getStep() + 1);
+        }
+    }
 
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function buildFormOptions(OrderInterface $order, array $formOptions = array())
-	{
-	    return array('validation_groups' => array(
-	        $this->getName(),
-	    ));
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function buildForm(OrderInterface $order, FormBuilderInterface $builder)
-	{	 
-		   
-	    $builder->add('billingFirstName', 'text', array(
-	    	'label' => 'First Name',
-	    	'constraints' => array(
-	    		new Constraints\NotBlank()
-	    	)
-	    ))
-    	->add('billingLastName', 'text', array(
-	    	'label' => 'Last Name',
-    	  	'constraints' => array(
-    	  		new Constraints\NotBlank()
-    	  	)
-    	))
-    	->add('email', 'email', array(
-	    	'required' => true,
-    	    'error_bubbling' => false,
-    	    'label' => 'E-Mail',
-    	  	'constraints' => array(
-    	  		new Constraints\NotBlank(),
-    	  		new Constraints\Email()
-	    	)
-    	)); 
-    	
-    	if(!$this->getSecurityContext()->isGranted('ROLE_USER')){
-    	    $builder->add('customer', new CheckoutRegistrationFormType());
-    	}
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function process(FormInterface $form, Request $request)
-	{
-	    if($request->getMethod() == 'POST') {
+    /**
+     * {@inheritDoc}
+     */
+    public function buildFormOptions(OrderInterface $order, array $formOptions = array())
+    {
+        return array('validation_groups' => array(
+            $this->getName(),
+        ));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function buildForm(OrderInterface $order, FormBuilderInterface $builder)
+    {     
+           
+        $builder->add('billingFirstName', 'text', array(
+            'label' => 'First Name',
+            'constraints' => array(
+                new Constraints\NotBlank()
+            )
+        ))
+        ->add('billingLastName', 'text', array(
+            'label' => 'Last Name',
+              'constraints' => array(
+                  new Constraints\NotBlank()
+              )
+        ))
+        ->add('email', 'email', array(
+            'required' => true,
+            'error_bubbling' => false,
+            'label' => 'E-Mail',
+              'constraints' => array(
+                  new Constraints\NotBlank(),
+                  new Constraints\Email()
+            )
+        )); 
+        
+        if(!$this->getSecurityContext()->isGranted('ROLE_USER')){
+            $builder->add('customer', new CheckoutRegistrationFormType());
+        }
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function process(FormInterface $form, Request $request)
+    {
+        if($request->getMethod() == 'POST') {
             if($form->bind($request) && $form->isValid()) {
                 $order = $form->getData();
                 
@@ -240,25 +240,25 @@ class LoginRegisterCheckoutStepHandler extends CheckoutStepHandler
                     $this->getCheckoutManager()->getCurrentStep()
                 );
             }
-	    }
-	    	    
-	    if($request->isXmlHttpRequest()) {
-	        return new JsonResponse(array(
-	            'success' => true,
-	            'replace_many' => array(
-	                '#checkout-content' => $this->getTemplatingEngine()->render('SplicedCommerceBundle:Checkout:index_content.html.twig',array(
-	                    'form' => $form->createView(),
-	                    'step' => $this->getCheckoutManager()->getCurrentStep(),   
-	                    'step_template' => 'login_register',
-	                ))
-	            )
-	        ));
-	    }
-	    
-	    return $this->getTemplatingEngine()->renderResponse('SplicedCommerceBundle:Checkout:index.html.twig', array(
-	        'form' => $form->createView(),
-	        'step' => $this->getCheckoutManager()->getCurrentStep(),
-	        'step_template' => 'login_register',
-	    ));
-	}
+        }
+                
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array(
+                'success' => true,
+                'replace_many' => array(
+                    '#checkout-content' => $this->getTemplatingEngine()->render('SplicedCommerceBundle:Checkout:index_content.html.twig',array(
+                        'form' => $form->createView(),
+                        'step' => $this->getCheckoutManager()->getCurrentStep(),   
+                        'step_template' => 'login_register',
+                    ))
+                )
+            ));
+        }
+        
+        return $this->getTemplatingEngine()->renderResponse('SplicedCommerceBundle:Checkout:index.html.twig', array(
+            'form' => $form->createView(),
+            'step' => $this->getCheckoutManager()->getCurrentStep(),
+            'step_template' => 'login_register',
+        ));
+    }
 }

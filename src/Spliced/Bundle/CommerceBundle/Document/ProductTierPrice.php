@@ -27,25 +27,25 @@ class ProductTierPrice extends BaseProductTierPrice
      * @MongoDB\Int
      */
     protected $minQuantity;
-	
-	/** 
-	 * @MongoDB\Int 
-	 */
-	protected $maxQuantity;
-	
-	/** 
-	 * @MongoDB\Int 
-	 */
-	protected $adjustmentType;
-	
-	/** 
-	 * @MongoDB\Float 
-	 */
-	protected $adjustment;
-	
-	/** 
-	 * @MongoDB\Hash 
-	 */
-	protected $options;
+    
+    /** 
+     * @MongoDB\Int 
+     */
+    protected $maxQuantity;
+    
+    /** 
+     * @MongoDB\Int 
+     */
+    protected $adjustmentType;
+    
+    /** 
+     * @MongoDB\Float 
+     */
+    protected $adjustment;
+    
+    /** 
+     * @MongoDB\Hash 
+     */
+    protected $options;
     
 }

@@ -33,11 +33,11 @@ class ShippingCompilerPass implements CompilerPassInterface
 
         
         foreach($container->findTaggedServiceIds('commerce.shipping_method') as $id => $attributes){
-        	$shippingManager->addMethodCall('addMethod', array(new Reference($id)));
+            $shippingManager->addMethodCall('addMethod', array(new Reference($id)));
         }
         
         foreach($container->findTaggedServiceIds('commerce.shipping_provider') as $id => $attributes){
-        	$shippingManager->addMethodCall('addProvider', array(new Reference($id)));
+            $shippingManager->addMethodCall('addProvider', array(new Reference($id)));
         }
              
         

@@ -240,8 +240,8 @@ abstract class User implements UserInterface
      */
     public function setSalt($salt)
     {
-    	$this->salt = $salt;
-    	return $this;
+        $this->salt = $salt;
+        return $this;
     }
     /**
      * getEmail

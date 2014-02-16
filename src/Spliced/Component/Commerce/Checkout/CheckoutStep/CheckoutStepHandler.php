@@ -25,88 +25,88 @@ use Spliced\Component\Commerce\Model\OrderInterface;
  */
 abstract class CheckoutStepHandler implements CheckoutStepHandlerInterface
 {
-	/**
-	 * @var int $step
-	 */
-	protected $step = null;
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getStep()
-	{
-		if(!isset($this->step) || is_null($this->step) || $this->step <= 0){
-			throw new \Exception('Step Not Set, Empty, or Zero');
-		}
-		return $this->step;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function setStep($step)
-	{
-		if(!is_numeric($step)|| $step <= 0){
-			throw new \InvalidArgumentException('Argument 1 must be a numeric value greather than zero');
-		}
-		$this->step = (int) $step;
-		return $this;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getPriority()
-	{
-	    return $this->priority;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function setPriority($priority)
-	{
-	    $this->priority = (int) $priority;
-	    return $this;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function preBuildForm(OrderInterface $order)
-	{
-	
-	}
+    /**
+     * @var int $step
+     */
+    protected $step = null;
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getStep()
+    {
+        if(!isset($this->step) || is_null($this->step) || $this->step <= 0){
+            throw new \Exception('Step Not Set, Empty, or Zero');
+        }
+        return $this->step;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function setStep($step)
+    {
+        if(!is_numeric($step)|| $step <= 0){
+            throw new \InvalidArgumentException('Argument 1 must be a numeric value greather than zero');
+        }
+        $this->step = (int) $step;
+        return $this;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = (int) $priority;
+        return $this;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function preBuildForm(OrderInterface $order)
+    {
+    
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function buildFormOptions(OrderInterface $order, array $formOptions = array())
-	{
-	    return array();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function buildForm(OrderInterface $order, FormBuilderInterface $builder)
-	{
-	     
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function process(FormInterface $form, Request $request)
-	{
-	
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function renderResponse()
-	{
-	
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function buildFormOptions(OrderInterface $order, array $formOptions = array())
+    {
+        return array();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function buildForm(OrderInterface $order, FormBuilderInterface $builder)
+    {
+         
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function process(FormInterface $form, Request $request)
+    {
+    
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function renderResponse()
+    {
+    
+    }
 }

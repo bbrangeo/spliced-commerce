@@ -105,9 +105,9 @@ abstract class OrderShipment implements OrderShipmentInterface
      */
     protected $memos;
     
-	/** @var string $userSelection */
-	protected $userSelection; // used to handle any form submissions to match shipping method by full name ({provider}_{method})
-	
+    /** @var string $userSelection */
+    protected $userSelection; // used to handle any form submissions to match shipping method by full name ({provider}_{method})
+    
     /**
      * Constructor
      */
@@ -116,7 +116,7 @@ abstract class OrderShipment implements OrderShipmentInterface
         $this->shipmentPaid = 0.0;
         $this->shipmentCost = 0.0;
         $this->shipmentStatus = OrderInterface::STATUS_INCOMPLETE;
-    	$this->memos = new ArrayCollection();
+        $this->memos = new ArrayCollection();
         $this->createdAt = new \DateTime('now');
         $this->updatedAt = new \DateTime('now');
     }   
@@ -128,7 +128,7 @@ abstract class OrderShipment implements OrderShipmentInterface
      */
     public function getId()
     {
-    	return $this->id;
+        return $this->id;
     }
     
     /**
@@ -342,32 +342,32 @@ abstract class OrderShipment implements OrderShipmentInterface
      */
     public function hasTrackingNumber($trackingNumber)
     {
-    	foreach($this->memos as $memo){
-    		if($memo->getTrackingNumber() == $trackingNumber) {
-    			return true;
-    		}
-    	}
-    	return false;
+        foreach($this->memos as $memo){
+            if($memo->getTrackingNumber() == $trackingNumber) {
+                return true;
+            }
+        }
+        return false;
     }
-	
-	/**
-	 * getUserSelection
-	 * 
-	 * @return string
-	 */
-	 public function getUserSelection()
-	 {
-	 	return $this->userSelection;
-	 }
-	 
-	 /**
-	  * setUserSelection
-	  * 
-	  * @param string $userSelection
-	  */
-	  public function setUserSelection($userSelection)
-	  {
-	  	$this->userSelection = $userSelection;
-		return $this;
-	  }
+    
+    /**
+     * getUserSelection
+     * 
+     * @return string
+     */
+     public function getUserSelection()
+     {
+         return $this->userSelection;
+     }
+     
+     /**
+      * setUserSelection
+      * 
+      * @param string $userSelection
+      */
+      public function setUserSelection($userSelection)
+      {
+          $this->userSelection = $userSelection;
+        return $this;
+      }
 }

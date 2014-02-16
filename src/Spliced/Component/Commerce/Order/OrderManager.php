@@ -53,13 +53,13 @@ class OrderManager
     public function __construct(
         ConfigurationManager $configurationManager, 
         CartManager $cartManager,
-    	OrderHelper $orderHelper,
-    	ProductPriceHelper $priceHelper,
-    	EncryptionManager $encryptionManager, 
-    	AffiliateManager $affiliateManager, 
-    	Session $session,
-    	SecurityContext $securityContext,
-    	Logger $logger
+        OrderHelper $orderHelper,
+        ProductPriceHelper $priceHelper,
+        EncryptionManager $encryptionManager, 
+        AffiliateManager $affiliateManager, 
+        Session $session,
+        SecurityContext $securityContext,
+        Logger $logger
     )
     {
         $this->configurationManager = $configurationManager;
@@ -172,7 +172,7 @@ class OrderManager
      */
     protected function getPriceHelper()
     {
-    	return $this->priceHelper;
+        return $this->priceHelper;
     }
      
     /**
@@ -287,9 +287,9 @@ class OrderManager
      */
     public function updateOrder(OrderInterface $order)
     {
-    	$this->getEntityManager()->persist($order);
-    	$this->getEntityManager()->flush();
-    	return $this;
+        $this->getEntityManager()->persist($order);
+        $this->getEntityManager()->flush();
+        return $this;
     }
      
     /**
@@ -317,112 +317,112 @@ class OrderManager
      */
     public function updateOrderItems(OrderInterface $order, $updateOrder = false)
     {
-    	
-    	$configurationManager = $this->getConfigurationManager();
-    	$priceHelper = $this->getPriceHelper();
-    	
-    	if(!$this->getCartManager()->getCart()){//no cart to process
-    		return $this;
-    	}
-    	
-    	$checkCartItems = function($items, $parentItem = null) use($order, $configurationManager, $priceHelper, &$checkCartItems){
-    		foreach($items as $item){
-    			
-    			$orderItem = $order->getItemByCartItem($item);
-    			
-    			if (!$orderItem) {
-    				$orderItem = $configurationManager
-    				->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_ORDER_ITEM)
-    				->setOrder($order)
-    				->setCartItem($item)
-    				->setSku($item->getProduct()->getSku())
-    				->setName($item->getProduct()->getName())
-    				->setProductId($item->getProduct()->getId());
-    			}
-    			
-    			$itemData = is_array($item->getItemData()) ? $item->getItemData() : array();
-    			
-    			// transform selected value id's to value labels for retention
-    			// in future reports/attribute value changes/deletions
-    			
-    			if(isset($itemData['user_data']) && is_array($itemData['user_data'])){
-    				foreach($itemData['user_data'] as $attributeName => &$attributeValue){
-    					$attribute = $item->getProduct()->getAttribute(preg_replace('/\_\d{1,}$/', '', $attributeName));
-    					if($attribute && $attribute->getOption()->getOptionType() == ProductAttributeOptionInterface::OPTION_TYPE_USER_DATA_SELECTION){
-    						foreach($attribute->getOption()->getValues() as $v){
-    							if($v->getId() == $attributeValue){
-    								$attributeValue = array(
-    									'option_id' => $attribute->getOption()->getId(),
-    									'option_name' => $attribute->getOption()->getName(),
-    									'option_label' => $attribute->getOption()->getPublicLabel(),
-    									'value' => $v->getValue(),
-    									'user_value' => $v->getPublicValue(),
-    									'price_adjustment_type' => $v->getPriceAdjustmentType(),
-    									'price_adjustment' => $v->getPriceAdjustment(),
-    								);
-    							}
-    						}
-    					} else if($attribute && $attribute->getOption()->getOptionType() == ProductAttributeOptionInterface::OPTION_TYPE_USER_DATA_INPUT){
-    						$attributeValue = array(
-    							'option_id' => $attribute->getOption()->getId(),
-    							'option_name' => $attribute->getOption()->getName(),
-    							'option_label' => $attribute->getOption()->getPublicLabel(),
-    							'value' => $attributeValue,
-    							'user_value' => $attributeValue,
-    						);
-    					}
-    				}
-    			}
-				
-    			$orderItem->setQuantity($item->getQuantity())
-    			  ->setCost($item->getProduct()->getCost())
-            	  ->setBasePrice($priceHelper->getBasePrice($item->getProduct()))
-            	  ->setSalePrice($priceHelper->getPrice($item->getProduct(), $item->getQuantity(), null, $item))
-            	  ->setTaxes($priceHelper->getTax($item->getProduct(), $item))
-            	  ->setTotalPrice($priceHelper->getPriceTotal($item->getProduct(), $item->getQuantity(), null, $item))
-            	  ->setFinalPrice($orderItem->getTotalPrice() + $orderItem->getTaxes())
-    			  ->setItemData($itemData); 
-    			
-    			if (!$orderItem->getId()) {
-    				$order->addItem($orderItem);
-    			}
-    			
-    			if(!is_null($parentItem)){
-    				$orderItem->setParent($parentItem);
-    			}
-    			
-    			if($item->hasChildren()){
-    				$checkCartItems($item->getChildren(), $orderItem);
-    			}
-    		}
-    	};
-    	
-    	$cart = $this->getCartManager()->getCart();
-    	
-    	$checkCartItems($cart->getItems());
+        
+        $configurationManager = $this->getConfigurationManager();
+        $priceHelper = $this->getPriceHelper();
+        
+        if(!$this->getCartManager()->getCart()){//no cart to process
+            return $this;
+        }
+        
+        $checkCartItems = function($items, $parentItem = null) use($order, $configurationManager, $priceHelper, &$checkCartItems){
+            foreach($items as $item){
+                
+                $orderItem = $order->getItemByCartItem($item);
+                
+                if (!$orderItem) {
+                    $orderItem = $configurationManager
+                    ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_ORDER_ITEM)
+                    ->setOrder($order)
+                    ->setCartItem($item)
+                    ->setSku($item->getProduct()->getSku())
+                    ->setName($item->getProduct()->getName())
+                    ->setProductId($item->getProduct()->getId());
+                }
+                
+                $itemData = is_array($item->getItemData()) ? $item->getItemData() : array();
+                
+                // transform selected value id's to value labels for retention
+                // in future reports/attribute value changes/deletions
+                
+                if(isset($itemData['user_data']) && is_array($itemData['user_data'])){
+                    foreach($itemData['user_data'] as $attributeName => &$attributeValue){
+                        $attribute = $item->getProduct()->getAttribute(preg_replace('/\_\d{1,}$/', '', $attributeName));
+                        if($attribute && $attribute->getOption()->getOptionType() == ProductAttributeOptionInterface::OPTION_TYPE_USER_DATA_SELECTION){
+                            foreach($attribute->getOption()->getValues() as $v){
+                                if($v->getId() == $attributeValue){
+                                    $attributeValue = array(
+                                        'option_id' => $attribute->getOption()->getId(),
+                                        'option_name' => $attribute->getOption()->getName(),
+                                        'option_label' => $attribute->getOption()->getPublicLabel(),
+                                        'value' => $v->getValue(),
+                                        'user_value' => $v->getPublicValue(),
+                                        'price_adjustment_type' => $v->getPriceAdjustmentType(),
+                                        'price_adjustment' => $v->getPriceAdjustment(),
+                                    );
+                                }
+                            }
+                        } else if($attribute && $attribute->getOption()->getOptionType() == ProductAttributeOptionInterface::OPTION_TYPE_USER_DATA_INPUT){
+                            $attributeValue = array(
+                                'option_id' => $attribute->getOption()->getId(),
+                                'option_name' => $attribute->getOption()->getName(),
+                                'option_label' => $attribute->getOption()->getPublicLabel(),
+                                'value' => $attributeValue,
+                                'user_value' => $attributeValue,
+                            );
+                        }
+                    }
+                }
+                
+                $orderItem->setQuantity($item->getQuantity())
+                  ->setCost($item->getProduct()->getCost())
+                  ->setBasePrice($priceHelper->getBasePrice($item->getProduct()))
+                  ->setSalePrice($priceHelper->getPrice($item->getProduct(), $item->getQuantity(), null, $item))
+                  ->setTaxes($priceHelper->getTax($item->getProduct(), $item))
+                  ->setTotalPrice($priceHelper->getPriceTotal($item->getProduct(), $item->getQuantity(), null, $item))
+                  ->setFinalPrice($orderItem->getTotalPrice() + $orderItem->getTaxes())
+                  ->setItemData($itemData); 
+                
+                if (!$orderItem->getId()) {
+                    $order->addItem($orderItem);
+                }
+                
+                if(!is_null($parentItem)){
+                    $orderItem->setParent($parentItem);
+                }
+                
+                if($item->hasChildren()){
+                    $checkCartItems($item->getChildren(), $orderItem);
+                }
+            }
+        };
+        
+        $cart = $this->getCartManager()->getCart();
+        
+        $checkCartItems($cart->getItems());
 
-    	// now we check to see if we need to remove any items
-    	foreach($order->getItems() as $item){
-    		if(!$item->getCartItem()){
-    			// no cart item relation, this should be deleted
-    			$this->getEntityManager()->remove($item);
-    			$order->removeItem($item);
-    			continue;
-    		}
-    		
-    		$cartItem = $cart->getItemById($item->getCartItem()->getId());
-    		
-    		if(!$cartItem){
-    			$this->getEntityManager()->remove($item);
-    			$order->removeItem($item);
-    		}
-    	} 
-    	
-    	if(true === $updateOrder){
-    		$this->updateOrder($order);
-    	}
+        // now we check to see if we need to remove any items
+        foreach($order->getItems() as $item){
+            if(!$item->getCartItem()){
+                // no cart item relation, this should be deleted
+                $this->getEntityManager()->remove($item);
+                $order->removeItem($item);
+                continue;
+            }
+            
+            $cartItem = $cart->getItemById($item->getCartItem()->getId());
+            
+            if(!$cartItem){
+                $this->getEntityManager()->remove($item);
+                $order->removeItem($item);
+            }
+        } 
+        
+        if(true === $updateOrder){
+            $this->updateOrder($order);
+        }
     
-    	return $this;
+        return $this;
     }
     
     /**

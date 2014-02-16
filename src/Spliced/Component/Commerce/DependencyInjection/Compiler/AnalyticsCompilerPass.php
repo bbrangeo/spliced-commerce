@@ -31,7 +31,7 @@ class AnalyticsCompilerPass implements CompilerPassInterface
 
         $analyticsManager = $container->getDefinition('commerce.analytics_manager');
 
-    	$services = $container->findTaggedServiceIds('commerce.analytics_subscriber');
+        $services = $container->findTaggedServiceIds('commerce.analytics_subscriber');
         foreach ($services as $id => $attributes) {
             $analyticsManager->addMethodCall('addSubscriber', array(new Reference($id)));
         }

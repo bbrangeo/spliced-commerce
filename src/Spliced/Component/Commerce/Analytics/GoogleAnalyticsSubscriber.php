@@ -35,71 +35,71 @@ class GoogleAnalyticsSubscriber implements AnalyticsSubscriberInterface
      * {@inheritDoc}
      */
      public function getConfigurationManager()
-	 {
-	 	return $this->configurationManager;
-	 }
-	 
-	 
+     {
+         return $this->configurationManager;
+     }
+     
+     
     /**
      * {@inheritDoc}
      */
      public function getName()
-	 {
-	 	return 'google_analytics';
-	 }
+     {
+         return 'google_analytics';
+     }
 
-	 /**
-	  * {@inheritDoc}
-	  */
-	 public function getOptions()
-	 {
-	     return $this->getConfigurationManager()->getByKeyExpression(sprintf('/^%s/',$this->getConfigPrefix()));
-	 }
-	 
-	 /**
-	  * {@inheritDoc}
-	  */
-	 public function getOption($key, $defaultValue = null)
-	 {
-	     return $this->getConfigurationManager()->get(sprintf('%s.%s',$this->getConfigPrefix(),$key),$defaultValue);
-	 }
-	 
-	 /**
-	  * {@inheritDoc}
-	  */
-	 public function getConfigPrefix()
-	 {
-	     return 'commerce.analytics.google';
-	 }
-	 
-	 /**
-	  * {@inheritDoc}
-	 */
-	 public function getRequiredConfigurationFields()
-	 {
-	 
-	     return array(
-	         'account_id' => array(
-	         	'type' => 'string', 
-	         	'value' => null,
-	         	'label' => 'Account ID',
-	         	'help' => 'The account ID of your Google Analytics Account',
-	         	'group' => 'Analytics/Google',
-	         	'position' => 0,
-	         	'required' => false,
-	         ),
-	     	'enabled' => array(
-	     		'type' => 'boolean',
-	         	'value' => true,
-	         	'label' => 'Enabled',
-	         	'help' => '',
-	         	'group' => 'Analytics/Google',
-	         	'position' => 1,
-	         	'required' => false,
-	     	),	
-	     );
-	 }
-	 
+     /**
+      * {@inheritDoc}
+      */
+     public function getOptions()
+     {
+         return $this->getConfigurationManager()->getByKeyExpression(sprintf('/^%s/',$this->getConfigPrefix()));
+     }
+     
+     /**
+      * {@inheritDoc}
+      */
+     public function getOption($key, $defaultValue = null)
+     {
+         return $this->getConfigurationManager()->get(sprintf('%s.%s',$this->getConfigPrefix(),$key),$defaultValue);
+     }
+     
+     /**
+      * {@inheritDoc}
+      */
+     public function getConfigPrefix()
+     {
+         return 'commerce.analytics.google';
+     }
+     
+     /**
+      * {@inheritDoc}
+     */
+     public function getRequiredConfigurationFields()
+     {
+     
+         return array(
+             'account_id' => array(
+                 'type' => 'string', 
+                 'value' => null,
+                 'label' => 'Account ID',
+                 'help' => 'The account ID of your Google Analytics Account',
+                 'group' => 'Analytics/Google',
+                 'position' => 0,
+                 'required' => false,
+             ),
+             'enabled' => array(
+                 'type' => 'boolean',
+                 'value' => true,
+                 'label' => 'Enabled',
+                 'help' => '',
+                 'group' => 'Analytics/Google',
+                 'position' => 1,
+                 'required' => false,
+             ),    
+         );
+     }
+     
     /**
      * {@inheritDoc}
      */

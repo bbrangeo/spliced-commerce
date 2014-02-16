@@ -109,15 +109,15 @@ class EncryptionManager implements EncryptorInterface, ConfigurableInterface
     public function getRequiredConfigurationFields()
     {
         return array(
-        	'iv' => array(
-        		'type' => 'string',
-        		'value' => $this->generateIv(),
-        		'label' => 'Encryption IV',
-        		'help' => '',
-        		'group' => 'Security/Encryption',
-        		'position' => 1,
-        		'required' => true,
-        	),
+            'iv' => array(
+                'type' => 'string',
+                'value' => $this->generateIv(),
+                'label' => 'Encryption IV',
+                'help' => '',
+                'group' => 'Security/Encryption',
+                'position' => 1,
+                'required' => true,
+            ),
         );
     }
 

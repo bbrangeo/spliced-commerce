@@ -48,22 +48,22 @@ class ProductAttribute
      */
     protected $values = array();
 
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		$this->values = array();
-	}
- 	
-	/**
-	 * getId
-	 */
-	public function getId()
-	{
-	    return $this->id;
-	}
-	
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->values = array();
+    }
+     
+    /**
+     * getId
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
     /**
      * @{inheritDoc}
      */
@@ -92,11 +92,11 @@ class ProductAttribute
      */
     public function hasValue($value)
     {
-    	foreach($this->getValues() as $_value){
-    		if($_value === $value){
-    			return true;
-    		}
-    	}
+        foreach($this->getValues() as $_value){
+            if($_value === $value){
+                return true;
+            }
+        }
         return false;
     }
     
@@ -109,10 +109,10 @@ class ProductAttribute
             return $this;
         }
         
-    	if($this->hasValue($value)){
-    		return $this;
-    	}
-    	
+        if($this->hasValue($value)){
+            return $this;
+        }
+        
         $this->values[] = $value;
         return $this;
     }
@@ -129,7 +129,7 @@ class ProductAttribute
         }
         return $this;
     }
-    	
+        
     /**
      * @{inheritDoc}
      */
@@ -138,7 +138,7 @@ class ProductAttribute
         $this->values = $values;
         return $this;
     }
-	
+    
     /**
      * @{inheritDoc}
      */

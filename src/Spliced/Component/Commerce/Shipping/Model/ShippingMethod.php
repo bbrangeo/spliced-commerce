@@ -18,10 +18,10 @@ use Spliced\Component\Commerce\Configuration\ConfigurationManager;
  */
 abstract class ShippingMethod implements ShippingMethodInterface
 {
-	/** @var string */
+    /** @var string */
     protected $name;
     
-	/** @var ShippingProviderInterface */
+    /** @var ShippingProviderInterface */
     protected $provider;
 
     /**
@@ -36,13 +36,13 @@ abstract class ShippingMethod implements ShippingMethodInterface
         $this->name = $name;
     }
 
-	/**
-	 * toString
-	 */
-	 public function __toString()
-	 {
-	 	return $this->getLabel();
-	 }
+    /**
+     * toString
+     */
+     public function __toString()
+     {
+         return $this->getLabel();
+     }
 
     /**
      * getProvider
@@ -72,11 +72,11 @@ abstract class ShippingMethod implements ShippingMethodInterface
         return $this->name;
     }
 
-	/**
-	 * getFullName
-	 * 
-	 * Returns the full name (provider name and method name)
-	 */
+    /**
+     * getFullName
+     * 
+     * Returns the full name (provider name and method name)
+     */
     public function getFullName()
     {
         return sprintf('%s_%s',$this->getProvider()->getName(), $this->getName());

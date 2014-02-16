@@ -72,7 +72,7 @@ abstract class ProductSpecificationOption implements ProductSpecificationOptionI
      * @MongoDB\Index()
      */
     protected $onView;
-	
+    
     /**
      * @MongoDB\Boolean
      * @MongoDB\Index()
@@ -102,10 +102,10 @@ abstract class ProductSpecificationOption implements ProductSpecificationOptionI
         $this->setCreatedAt(new \DateTime());
         $this->setUpdatedAt(new \DateTime());
         $this->setOptionType(static::OPTION_TYPE_SINGLE_VALUE);
-		$this->onView = false;
-		$this->onList = false;
-		$this->filterable = false;
-		$this->values = new ArrayCollection();
+        $this->onView = false;
+        $this->onList = false;
+        $this->filterable = false;
+        $this->values = new ArrayCollection();
     } 
 
     /**
@@ -250,7 +250,7 @@ abstract class ProductSpecificationOption implements ProductSpecificationOptionI
     {
         return $this->onList;
     }
-	
+    
     /**
      * setOnView
      *
@@ -365,7 +365,7 @@ abstract class ProductSpecificationOption implements ProductSpecificationOptionI
     public function addValue(ProductSpecificationOptionValue $value)
     {
         if(!$this->values->contains($value)){
-        	$this->values->add($value);
+            $this->values->add($value);
         }
         return $this;
     }

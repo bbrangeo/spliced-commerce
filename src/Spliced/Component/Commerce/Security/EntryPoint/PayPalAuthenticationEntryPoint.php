@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class PayPalAuthenticationEntryPoint implements AuthenticationEntryPointInterface
 {
-	/* @var OAuth2Client */
+    /* @var OAuth2Client */
     protected $paypal;
     /* @var array */
     protected $options;
@@ -49,7 +49,7 @@ class PayPalAuthenticationEntryPoint implements AuthenticationEntryPointInterfac
      */
     protected function getPaypal()
     {
-    	return $this->paypal;
+        return $this->paypal;
     }
 
     /**
@@ -57,6 +57,6 @@ class PayPalAuthenticationEntryPoint implements AuthenticationEntryPointInterfac
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-    	return new RedirectResponse($this->getPaypal()->getLoginUrl());
+        return new RedirectResponse($this->getPaypal()->getLoginUrl());
     }
 }

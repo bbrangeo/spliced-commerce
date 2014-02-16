@@ -17,8 +17,8 @@ use \SoapServer;
  * @Route("/service/soap")
  */
 class SoapServiceController extends Controller
-{	
-	
+{    
+    
     /**
      * Orders SOAP Server Entry
      *
@@ -27,9 +27,9 @@ class SoapServiceController extends Controller
      */
     public function ordersAction()
     {
-    	ini_set("soap.wsdl_cache_enabled", $this->get('kernel')->getEnvironment() == 'prod'); 
+        ini_set("soap.wsdl_cache_enabled", $this->get('kernel')->getEnvironment() == 'prod'); 
     
-    	try{
+        try{
             $server = new SoapServer(
                 $this->get('kernel')
                  ->locateResource('@SplicedCommerceAdminBundle/Resources/config/wsdl/orders.wsdl')
@@ -56,25 +56,25 @@ class SoapServiceController extends Controller
      */
     public function productsAction()
     {
-    	ini_set("soap.wsdl_cache_enabled", $this->get('kernel')->getEnvironment() == 'prod');
+        ini_set("soap.wsdl_cache_enabled", $this->get('kernel')->getEnvironment() == 'prod');
     
-    	try{
-    		$server = new SoapServer(
-    			$this->get('kernel')
-    			  ->locateResource('@SplicedCommerceAdminBundle/Resources/config/wsdl/products.wsdl')
-    		);
+        try{
+            $server = new SoapServer(
+                $this->get('kernel')
+                  ->locateResource('@SplicedCommerceAdminBundle/Resources/config/wsdl/products.wsdl')
+            );
     
-    		$server->setObject($this->get('commerce.webservice.soap.products'));
+            $server->setObject($this->get('commerce.webservice.soap.products'));
     
-    	} catch(\InvalidArgumentException $e) { // wsdl not found
-    		die($e->getMessage());
-    	} catch(\RuntimeException $e) { // invalid/unsafe characters
-    		die($e->getMessage());
-    	} catch(\Exception $e) { // other error
-    		die($e->getMessage());
-    	}
+        } catch(\InvalidArgumentException $e) { // wsdl not found
+            die($e->getMessage());
+        } catch(\RuntimeException $e) { // invalid/unsafe characters
+            die($e->getMessage());
+        } catch(\Exception $e) { // other error
+            die($e->getMessage());
+        }
     
-    	return $this->handleResponse($server);
+        return $this->handleResponse($server);
     }
     
     /**

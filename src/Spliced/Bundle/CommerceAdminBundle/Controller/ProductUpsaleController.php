@@ -15,7 +15,7 @@ use Spliced\Component\Commerce\Event as Events;
  * @Route("/product/{productId}/upsale")
  */
 class ProductUpsaleController extends Controller
-{	
+{    
     /**
      * @Route("/delete/{upsaleId}", name="commerce_admin_product_upsale_delete")
      * @Method({"GET","POST"})
@@ -27,47 +27,47 @@ class ProductUpsaleController extends Controller
           ->findOneById($productId);
         
         if(!$product) {
-        	if($this->getRequest()->isXmlHttpRequest()){
-        		return new JsonResponse(array(
-        			'success' => false,
-        			'message' => 'Product Not Found',
-        			'product_id' => $productId,
-        			'upsale_id' => $upsaleId,
-        		));
-        	}
+            if($this->getRequest()->isXmlHttpRequest()){
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Product Not Found',
+                    'product_id' => $productId,
+                    'upsale_id' => $upsaleId,
+                ));
+            }
             throw $this->createNotFoundException('Product Not Found');
         }
         
         $productUpsale = null;
         foreach($product->getUpsales() as $upsale) {
-        	if ($upsale->getId() == $upsaleId){
-        		$productUpsale = $upsale;
-        	}
+            if ($upsale->getId() == $upsaleId){
+                $productUpsale = $upsale;
+            }
         }
-		
-		if(!$productUpsale){
-			if($this->getRequest()->isXmlHttpRequest()){
-				return new JsonResponse(array(
-					'success' => false,
-					'message' => 'Product Upsale Not Found',
-					'product_id' => $product->getId(),
-					'upsale_id' => $upsaleId,
-				));
-			}
-        	throw new NoResultException('Product Upsale Not Found');
+        
+        if(!$productUpsale){
+            if($this->getRequest()->isXmlHttpRequest()){
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Product Upsale Not Found',
+                    'product_id' => $product->getId(),
+                    'upsale_id' => $upsaleId,
+                ));
+            }
+            throw new NoResultException('Product Upsale Not Found');
         }
         
         $product->removeUpsale($productUpsale);
                 
         $this->get('event_dispatcher')->dispatch(
-        	Events\Event::EVENT_PRODUCT_UPDATE,
-        	new Events\ProductUpdateEvent($product)
+            Events\Event::EVENT_PRODUCT_UPDATE,
+            new Events\ProductUpdateEvent($product)
         );
         
         if($this->getRequest()->isXmlHttpRequest()){
             return new JsonResponse(array(
                 'success' => true,
-            	'message' => 'Product Upsale Successfully Removed',
+                'message' => 'Product Upsale Successfully Removed',
                 'product_id' => $product->getId(),
                 'upsale_id' => $upsaleId,
             ));

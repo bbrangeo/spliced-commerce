@@ -139,13 +139,13 @@ class PaymentManager
      */
     public function getProvider($name)
     {
-    	foreach($this->getProviders(true) as $provider){
-    		if(strtolower($provider->getName()) == strtolower($name)){
-    			return $provider;
-    		}
-    	}
-    	
-    	throw new \Exception(sprintf('Payment Provider %s Does Not Exist',$name));
+        foreach($this->getProviders(true) as $provider){
+            if(strtolower($provider->getName()) == strtolower($name)){
+                return $provider;
+            }
+        }
+        
+        throw new \Exception(sprintf('Payment Provider %s Does Not Exist',$name));
     }
 
 }

@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 abstract class CartItem implements CartItemInterface
 {
-	
+    
 /**
      * @var bigint $id
      *
@@ -87,89 +87,89 @@ abstract class CartItem implements CartItemInterface
      * @ORM\Column(name="item_data", type="array")
      */
     protected $itemData;
-	
-	/**
-	 * @var CartInterface $cart
+    
+    /**
+     * @var CartInterface $cart
      * 
      * @ORM\ManyToOne(targetEntity="Cart", inversedBy="items")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="cart_id", referencedColumnName="id")
      * })
      */ 
-	protected $cart; 
-	
-	/**
-	 * @var CartItemInterface $parent
-	 *
+    protected $cart; 
+    
+    /**
+     * @var CartItemInterface $parent
+     *
      * @ORM\ManyToOne(targetEntity="CartItem", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-	 */
-	protected $parent;
-	
-	/** 
-	 * @var array $children
-	 *
+     */
+    protected $parent;
+    
+    /** 
+     * @var array $children
+     *
      * @ORM\OneToMany(targetEntity="CartItem", mappedBy="parent", cascade={"persist"})
-	 */
-	protected $children;
+     */
+    protected $children;
 
-	/**
-	 * Constructor
-	 */
-	 public function __construct()
-	 {
-	 	$this->children = new ArrayCollection();
+    /**
+     * Constructor
+     */
+     public function __construct()
+     {
+         $this->children = new ArrayCollection();
         $this->quantity = 0;
-	 }
+     }
 
-	 /**
-	  * getId
-	  */
-	 public function getId()
-	 {
-	 	return $this->id;
-	 }
-	 
-	/**
-	 * getCart
-	 */
-	 public function getCart()
-	 {
-	 	return $this->cart;
-	 }
-	 
-	 /**
-	  * setCart
-	  * 
-	  * @param CartInterface $cart
-	  */
-	  public function setCart(CartInterface $cart)
-	  {
-	  	$this->cart = $cart;
-		return $this;
-	  }
-	  
-	  /**
-	   * getParent
-	   * 
-	   * @return CartItemInterface|null
-	   */
-	  public function getParent()
-	  {
-	  	return $this->parent;
-	  }
-	  
-	  /**
-	   * setParent
-	   * 
-	   * @param CartItemInterface $parent
-	   */
-	  public function setParent(CartItemInterface $parent)
-	  {
-	  	$this->parent = $parent;
-		return $this;
-	  }
-	  
+     /**
+      * getId
+      */
+     public function getId()
+     {
+         return $this->id;
+     }
+     
+    /**
+     * getCart
+     */
+     public function getCart()
+     {
+         return $this->cart;
+     }
+     
+     /**
+      * setCart
+      * 
+      * @param CartInterface $cart
+      */
+      public function setCart(CartInterface $cart)
+      {
+          $this->cart = $cart;
+        return $this;
+      }
+      
+      /**
+       * getParent
+       * 
+       * @return CartItemInterface|null
+       */
+      public function getParent()
+      {
+          return $this->parent;
+      }
+      
+      /**
+       * setParent
+       * 
+       * @param CartItemInterface $parent
+       */
+      public function setParent(CartItemInterface $parent)
+      {
+          $this->parent = $parent;
+        return $this;
+      }
+      
       /**
        * isParent
        * 
@@ -184,69 +184,69 @@ abstract class CartItem implements CartItemInterface
            return false;
        }
        
-	  /**
-	   * getProduct
-	   * 
-	   * @return ProductInterface
-	   */
-	   public function getProduct()
-	   {
-	   	return $this->product;
-	   }
-	   
-	   /**
-	    * setProduct
-	    * 
-	    * @param ProductInterface $product|null
-	    */
-	   public function setProduct(ProductInterface $product = null)
-	   {
-	   		$this->product = $product;
-			return $this;
-	   }
-	   
-	   /**
-	    * getProductId
-	    *
-	    * @return int
-	    */
-	   public function getProductId()
-	   {
-			return $this->productId;
-	   }
-	   
-	   /**
-	    * setProductId
-	    *
-	    * @param int $productId
-	    */
-	   public function setProductId($productId)
-	   {
-	   		$this->productId = $productId;
-	   		return $this;
-	   }
-	   
-	   /**
-	    * getQuantity
-	    * 
-	    * @return int
-	    */
-	    public function getQuantity()
-		{
-			return $this->quantity;
-		}
-		
-		/**
-		 * setQuantity
-		 * 
-		 * @param int $quantity
-		 */
-		public function setQuantity($quantity)
-		{
-			$this->quantity = $quantity;
+      /**
+       * getProduct
+       * 
+       * @return ProductInterface
+       */
+       public function getProduct()
+       {
+           return $this->product;
+       }
+       
+       /**
+        * setProduct
+        * 
+        * @param ProductInterface $product|null
+        */
+       public function setProduct(ProductInterface $product = null)
+       {
+               $this->product = $product;
             return $this;
-		}
-		
+       }
+       
+       /**
+        * getProductId
+        *
+        * @return int
+        */
+       public function getProductId()
+       {
+            return $this->productId;
+       }
+       
+       /**
+        * setProductId
+        *
+        * @param int $productId
+        */
+       public function setProductId($productId)
+       {
+               $this->productId = $productId;
+               return $this;
+       }
+       
+       /**
+        * getQuantity
+        * 
+        * @return int
+        */
+        public function getQuantity()
+        {
+            return $this->quantity;
+        }
+        
+        /**
+         * setQuantity
+         * 
+         * @param int $quantity
+         */
+        public function setQuantity($quantity)
+        {
+            $this->quantity = $quantity;
+            return $this;
+        }
+        
         /**
          * isChild
          *  
@@ -267,26 +267,26 @@ abstract class CartItem implements CartItemInterface
              return $this->getChildren()->count() ? true : false;
          }
         
-		/**
-		 * getChildren
-		 * 
-		 * @return Collection|array
-		 */
-		public function getChildren()
-		{
-			return $this->children;
-		}
-		
-		/**
-		 * setChildren
-		 * 
-		 * @param Collection|array $children
-		 */
-		public function setChildren($children)
-		{
-			$this->children = $children;
-			return $this;
-		}
+        /**
+         * getChildren
+         * 
+         * @return Collection|array
+         */
+        public function getChildren()
+        {
+            return $this->children;
+        }
+        
+        /**
+         * setChildren
+         * 
+         * @param Collection|array $children
+         */
+        public function setChildren($children)
+        {
+            $this->children = $children;
+            return $this;
+        }
         
         /**
          * addChild
@@ -363,7 +363,7 @@ abstract class CartItem implements CartItemInterface
           */
          public function isIsBundled()
          {
-         	return $this->getIsBundled();
+             return $this->getIsBundled();
          }
           
          /**
@@ -371,7 +371,7 @@ abstract class CartItem implements CartItemInterface
           */
          public function getIsBundled()
          {
-         	return $this->isBundled;
+             return $this->isBundled;
          }
           
          /**
@@ -379,8 +379,8 @@ abstract class CartItem implements CartItemInterface
           */
          public function setIsBundled($isBundled)
          {
-         	$this->isBundled = $isBundled;
-         	return $this;
+             $this->isBundled = $isBundled;
+             return $this;
          }
 
          /**
@@ -388,7 +388,7 @@ abstract class CartItem implements CartItemInterface
           */
          public function allowTierPricing()
          {
-         	return $this->allowTierPricing;
+             return $this->allowTierPricing;
          }
          
          
@@ -397,7 +397,7 @@ abstract class CartItem implements CartItemInterface
           */
          public function getAllowTierPricing()
          {
-         	return $this->allowTierPricing;
+             return $this->allowTierPricing;
          }
          
          /**
@@ -405,8 +405,8 @@ abstract class CartItem implements CartItemInterface
           */
          public function setAllowTierPricing($allowTierPricing)
          {
-         	$this->allowTierPricing = $allowTierPricing;
-         	return $this;
+             $this->allowTierPricing = $allowTierPricing;
+             return $this;
          }
          
 
@@ -415,7 +415,7 @@ abstract class CartItem implements CartItemInterface
           */
          public function getPriceAdjustment()
          {
-         	return $this->priceAdjustment;
+             return $this->priceAdjustment;
          }
          
          /**
@@ -423,8 +423,8 @@ abstract class CartItem implements CartItemInterface
           */
          public function setPriceAdjustment($priceAdjustment)
          {
-         	$this->priceAdjustment = $priceAdjustment;
-         	return $this;
+             $this->priceAdjustment = $priceAdjustment;
+             return $this;
          }
          
          /**
@@ -432,7 +432,7 @@ abstract class CartItem implements CartItemInterface
           */
          public function getPriceAdjustmentType()
          {
-         	return $this->priceAdjustmentType;
+             return $this->priceAdjustmentType;
          }
          
          /**
@@ -440,8 +440,8 @@ abstract class CartItem implements CartItemInterface
           */
          public function setPriceAdjustmentType($priceAdjustmentType)
          {
-         	$this->priceAdjustmentType = $priceAdjustmentType;
-         	return $this;
+             $this->priceAdjustmentType = $priceAdjustmentType;
+             return $this;
          }
          
          /**
@@ -461,4 +461,4 @@ abstract class CartItem implements CartItemInterface
               return $this;
           }
 }
-	
+    

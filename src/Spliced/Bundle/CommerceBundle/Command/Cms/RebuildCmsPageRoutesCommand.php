@@ -23,9 +23,9 @@ use Doctrine\ORM\NoResultException;
  */
 class RebuildCmsPageRoutesCommand extends ContainerAwareCommand
 {
-	const ROUTE_DESCRIPTION_TAG = 'CmsPage';
-	const ROUTE_TARGET_PATH = 'SplicedCommerceBundle:Page:view';
-	
+    const ROUTE_DESCRIPTION_TAG = 'CmsPage';
+    const ROUTE_TARGET_PATH = 'SplicedCommerceBundle:Page:view';
+    
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
@@ -48,29 +48,29 @@ class RebuildCmsPageRoutesCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-    	
-    	$this->em->createQuery('DELETE FROM SplicedCommerceBundle:Route route WHERE route.page IS NOT NULL AND route.description = :desc')
-    	  ->setParameter('desc',static::ROUTE_DESCRIPTION_TAG)
-    	  ->execute();
-    	
-    	$pages = $this->em->createQuery("SELECT page FROM SplicedCommerceBundle:CmsPage page WHERE page.isActive = 1")
-    	  ->getResult();
-    	
-    	foreach($pages as $page) {
-    		
-    		$route = new Entity\Route();
-    		
-    		$route->setRequestPath('/'.preg_replace('/^\//','',$page->getUrlSlug()))
-    		  ->setTargetPath(static::ROUTE_TARGET_PATH)
-    		  ->setPage($page)
-    		  ->setDescription(static::ROUTE_DESCRIPTION_TAG);
-    		    		  
-    		 $this->em->persist($route); 
-    		
-    		
-    	}
-    	
-    	$this->em->flush();
+        
+        $this->em->createQuery('DELETE FROM SplicedCommerceBundle:Route route WHERE route.page IS NOT NULL AND route.description = :desc')
+          ->setParameter('desc',static::ROUTE_DESCRIPTION_TAG)
+          ->execute();
+        
+        $pages = $this->em->createQuery("SELECT page FROM SplicedCommerceBundle:CmsPage page WHERE page.isActive = 1")
+          ->getResult();
+        
+        foreach($pages as $page) {
+            
+            $route = new Entity\Route();
+            
+            $route->setRequestPath('/'.preg_replace('/^\//','',$page->getUrlSlug()))
+              ->setTargetPath(static::ROUTE_TARGET_PATH)
+              ->setPage($page)
+              ->setDescription(static::ROUTE_DESCRIPTION_TAG);
+                          
+             $this->em->persist($route); 
+            
+            
+        }
+        
+        $this->em->flush();
     }
     
 }

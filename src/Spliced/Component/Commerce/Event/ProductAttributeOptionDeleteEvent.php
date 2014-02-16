@@ -26,7 +26,7 @@ class ProductAttributeOptionDeleteEvent extends Event
      */
     public function __construct(ProductAttributeOptionInterface $attributeOption)
     {
-        $this->attributeOption 	= $attributeOption;
+        $this->attributeOption     = $attributeOption;
     }
     
     /**

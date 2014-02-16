@@ -32,21 +32,21 @@ abstract class CartRepository extends EntityRepository implements CartRepository
      */
     public function findOneByIdWithItems($id)
     {
-    	try{
-    		$cart = $this->createQueryBuilder('cart')
-	    	->select('cart, items')
-	    	->leftJoin('cart.items', 'items')
-	    	->leftJoin('items.children', 'childrenItems')
-	    	->where('cart.id = :id')
-	    	->setParameter('id', $id)
-	    	->getQuery()
-	    	->getSingleResult();
-    		
-    	} catch(NoResultException $e){
-    		return null;
-    	}
+        try{
+            $cart = $this->createQueryBuilder('cart')
+            ->select('cart, items')
+            ->leftJoin('cart.items', 'items')
+            ->leftJoin('items.children', 'childrenItems')
+            ->where('cart.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleResult();
+            
+        } catch(NoResultException $e){
+            return null;
+        }
  
-    	return $cart;
+        return $cart;
     }
 
     

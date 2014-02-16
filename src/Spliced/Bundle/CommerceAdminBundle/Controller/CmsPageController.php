@@ -29,11 +29,11 @@ class CmsPageController extends BaseFilterableController
      */
     public function listAction()
     {
-		// load products
+        // load products
         $pages = $this->get('knp_paginator')->paginate(
             $this->get('commerce.admin.document_manager')
-        	  ->getRepository('SplicedCommerceAdminBundle:CmsPage')
-        	  ->getAdminListQuery($this->getFilters()),
+              ->getRepository('SplicedCommerceAdminBundle:CmsPage')
+              ->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page',1),
             $this->getRequest()->query->get('limit',25)
         );
@@ -68,24 +68,24 @@ class CmsPageController extends BaseFilterableController
      */
     public function saveAction(Request $request)
     {
-    	$form = $this->get('commerce.admin.form_factory')->createCmsPageForm();
+        $form = $this->get('commerce.admin.form_factory')->createCmsPageForm();
 
-    	if ($form->bind($request) && $form->isValid()) {
-    	    
-    	    $this->get('event_dispatcher')->dispatch(
-    	        Events\Event::EVENT_CMS_PAGE_SAVE,
-    	        new Events\CmsPageEvent($form->getData())
-    	    );
+        if ($form->bind($request) && $form->isValid()) {
+            
+            $this->get('event_dispatcher')->dispatch(
+                Events\Event::EVENT_CMS_PAGE_SAVE,
+                new Events\CmsPageEvent($form->getData())
+            );
     
-    		$this->get('session')->getFlashBag()->add('success', 'CMS Page Successfully Added');
-    		return $this->redirect($this->generateUrl('commerce_admin_cms_page'));
-    	}
+            $this->get('session')->getFlashBag()->add('success', 'CMS Page Successfully Added');
+            return $this->redirect($this->generateUrl('commerce_admin_cms_page'));
+        }
     
-    	$this->get('session')->getFlashBag()->add('error', 'There was an error validating your data.');
-    	
-    	return array(
-    	    'form'   => $form->createView(),
-    	);
+        $this->get('session')->getFlashBag()->add('error', 'There was an error validating your data.');
+        
+        return array(
+            'form'   => $form->createView(),
+        );
     }
     
     /**
@@ -98,10 +98,10 @@ class CmsPageController extends BaseFilterableController
         $page = $this->get('commerce.admin.document_manager')
           ->getRepository('SplicedCommerceAdminBundle:CmsPage')
           ->findOneById($id);
-		
+        
         if(!$page) {
-			throw $this->createNotFoundException('Unable to find CmsPage.');
-		}
+            throw $this->createNotFoundException('Unable to find CmsPage.');
+        }
 
         $form = $this->get('commerce.admin.form_factory')
           ->createCmsPageForm($page);
@@ -125,10 +125,10 @@ class CmsPageController extends BaseFilterableController
         $page = $this->get('commerce.admin.document_manager')
           ->getRepository('SplicedCommerceAdminBundle:CmsPage')
           ->findOneById($id);
-		
+        
         if(!$page) {
-			throw $this->createNotFoundException('Unable to find CmsPage.');
-		}
+            throw $this->createNotFoundException('Unable to find CmsPage.');
+        }
 
         $deleteForm = $this->createDeleteForm($id);
         $form = $this->get('commerce.admin.form_factory')->createCmsPageForm($page);
@@ -239,36 +239,36 @@ class CmsPageController extends BaseFilterableController
         $methodName = 'batch'.ucwords($action);
 
         if(method_exists($this,$methodName)) {
-        	return call_user_func($this, $methodName, $ids);
+            return call_user_func($this, $methodName, $ids);
         }
         
         throw new \InvalidArgumentException(sprintf('Method %s does not exist',$methodName));
     }
     
 
-	/**
-	* batchDelete
-	* 
-	* @param array $ids
-	*/
-	protected function batchDelete(array $ids)
-	{
-		$entities = $em->getRepository('SplicedCmsBundle:CmsPage')->findById($id);
-		
-		$count = count($entities);
-		
-		foreach($entities as $entity) {
-			$em->remove($entity);
-		}
-		
-		try{
-			$em->flush();
-			$this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s records.', $count));
-		} catch( \Exception $e) {
-			$this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
-		}
-		
-		return $this->redirect($this->generateUrl('cms_page_admin'));
-	}
+    /**
+    * batchDelete
+    * 
+    * @param array $ids
+    */
+    protected function batchDelete(array $ids)
+    {
+        $entities = $em->getRepository('SplicedCmsBundle:CmsPage')->findById($id);
+        
+        $count = count($entities);
+        
+        foreach($entities as $entity) {
+            $em->remove($entity);
+        }
+        
+        try{
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s records.', $count));
+        } catch( \Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
+        }
+        
+        return $this->redirect($this->generateUrl('cms_page_admin'));
+    }
 
 }

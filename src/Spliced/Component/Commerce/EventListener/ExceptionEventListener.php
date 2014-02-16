@@ -40,9 +40,9 @@ class ExceptionEventListener
         $this->kernel = $kernel;
         $this->mailer = $mailer;
         $this->configurationManager = $configurationManager;
-		$this->logger = $logger;
+        $this->logger = $logger;
     }
-	
+    
     /**
      * getLogger
      *
@@ -50,9 +50,9 @@ class ExceptionEventListener
      */
     protected function getLogger()
     {
-    	return $this->logger;
+        return $this->logger;
     }
-	  
+      
     /**
      * getConfigurationManager
      *
@@ -60,7 +60,7 @@ class ExceptionEventListener
      */
     protected function getConfigurationManager()
     {
-    	return $this->configurationManager;
+        return $this->configurationManager;
     }
     
     
@@ -71,7 +71,7 @@ class ExceptionEventListener
      */
     protected function getMailer()
     {
-    	return $this->mailer;
+        return $this->mailer;
     }
     
     /**
@@ -127,59 +127,59 @@ class ExceptionEventListener
                     'exception' => $exception
                 )));
             } else if($exception instanceof ServiceUnavailableHttpException){
-            	$response->setStatusCode(503)
-            	->setContent($this->getTemplating()->render('SplicedCommerceBundle:Error:503.html.twig', array(
-            		'exception' => $exception
-            	)));
+                $response->setStatusCode(503)
+                ->setContent($this->getTemplating()->render('SplicedCommerceBundle:Error:503.html.twig', array(
+                    'exception' => $exception
+                )));
             } else {
-            	$response->setStatusCode(503)
-            	->setContent($this->getTemplating()->render('SplicedCommerceBundle:Error:503.html.twig', array(
-            		'exception' => $exception
-            	)));
+                $response->setStatusCode(503)
+                ->setContent($this->getTemplating()->render('SplicedCommerceBundle:Error:503.html.twig', array(
+                    'exception' => $exception
+                )));
             }
         }
 
-		if(!$exception instanceof NotFoundHttpException) {
-			$this->getLogger()->exception(sprintf('Uncaught Exception: %s - %s', get_class($exception), $exception->getMessage()));
-		}
+        if(!$exception instanceof NotFoundHttpException) {
+            $this->getLogger()->exception(sprintf('Uncaught Exception: %s - %s', get_class($exception), $exception->getMessage()));
+        }
 
 
         if(($emailOnException || $emailOn404Exception) && $environment == 'prod'){
-        	$notificationMessage = \Swift_Message::newInstance()
-        	  ->setFrom($this->getConfigurationManager()->get('commerce.store.email.webmaster'))
-        	  ->setTo($this->getConfigurationManager()->get('commerce.store.email.webmaster'))
-        	  ->setReturnPath($this->getConfigurationManager()->get('commerce.store.email.bounced'));
-        	
-        	if($exception instanceof NotFoundHttpException) {
-        		
-				$this->getLogger()->pageNotFound($exception->getMessage()); 
-				
-        		if($emailOn404Exception){
-            		$notificationMessage->setSubject($this->getConfigurationManager()->get('commerce.store.name').' - 404 Not Found')
-            		->setBody($this->getTemplating()->render('SplicedCommerceBundle:Email:404.html.twig', array(
-            			'exception' => $exception,
-            		)), 'text/html');
-            			
-            		$this->getMailer()->send($notificationMessage);
-        		} 
-				
-        	} else {
-        		
-				$this->getLogger()->exception($exception->getMessage());
-				
-        		$notificationMessage->setSubject($this->getConfigurationManager()->get('commerce.store.name').' - Website Exception')
-        		->setBody($this->getTemplating()->render('SplicedCommerceBundle:Email:exception.html.twig', array(
-        		  'exception' => $exception,
-        		  'class' => get_class($exception),
-        		)), 'text/html');
-        		
-        		$this->getMailer()->send($notificationMessage);
-        	}       	 
+            $notificationMessage = \Swift_Message::newInstance()
+              ->setFrom($this->getConfigurationManager()->get('commerce.store.email.webmaster'))
+              ->setTo($this->getConfigurationManager()->get('commerce.store.email.webmaster'))
+              ->setReturnPath($this->getConfigurationManager()->get('commerce.store.email.bounced'));
+            
+            if($exception instanceof NotFoundHttpException) {
+                
+                $this->getLogger()->pageNotFound($exception->getMessage()); 
+                
+                if($emailOn404Exception){
+                    $notificationMessage->setSubject($this->getConfigurationManager()->get('commerce.store.name').' - 404 Not Found')
+                    ->setBody($this->getTemplating()->render('SplicedCommerceBundle:Email:404.html.twig', array(
+                        'exception' => $exception,
+                    )), 'text/html');
+                        
+                    $this->getMailer()->send($notificationMessage);
+                } 
+                
+            } else {
+                
+                $this->getLogger()->exception($exception->getMessage());
+                
+                $notificationMessage->setSubject($this->getConfigurationManager()->get('commerce.store.name').' - Website Exception')
+                ->setBody($this->getTemplating()->render('SplicedCommerceBundle:Email:exception.html.twig', array(
+                  'exception' => $exception,
+                  'class' => get_class($exception),
+                )), 'text/html');
+                
+                $this->getMailer()->send($notificationMessage);
+            }            
         }
                 
         if($response->getContent()){
-        	$event->stopPropagation();
-        	$event->setResponse($response);
+            $event->stopPropagation();
+            $event->setResponse($response);
         }
     }
     
@@ -191,14 +191,14 @@ class ExceptionEventListener
      */
     public function onAdminKernelException(GetResponseForExceptionEvent $event)
     {
-    	$exception = $event->getException();
-    	
-    	$notificationMessage = \Swift_Message::newInstance()
-    	  ->setFrom($this->getConfigurationManager()->get('commerce.store.email.noreply'))
+        $exception = $event->getException();
+        
+        $notificationMessage = \Swift_Message::newInstance()
+          ->setFrom($this->getConfigurationManager()->get('commerce.store.email.noreply'))
           ->setTo($this->getConfigurationManager()->get('commerce.store.email.webmaster'))
           ->setSubject('Admin Exception')
-    	  ->setBody($exception->getMessage().PHP_EOL.$exception->getTraceAsString());
-    	 
-    	$this->getMailer()->send($notificationMessage);
+          ->setBody($exception->getMessage().PHP_EOL.$exception->getTraceAsString());
+         
+        $this->getMailer()->send($notificationMessage);
     }
 }

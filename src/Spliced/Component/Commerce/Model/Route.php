@@ -126,7 +126,7 @@ abstract class Route implements RouteInterface
      */
     public function getProduct()
     {
-    	return $this->product;
+        return $this->product;
     }
     
     /**

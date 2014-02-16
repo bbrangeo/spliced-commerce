@@ -28,12 +28,12 @@ class CustomerRepository extends BaseCustomerRepository
     
     public function getRecentlyCreated($limit = 10)
     {
-    	return $this->createQueryBuilder('customer')
-    	->select('customer, profile')
-    	->leftJoin('customer.profile','profile')
-    	->orderBy('customer.id', 'DESC')
-    	->getQuery()
-    	->setMaxResults($limit)
-    	->getResult();
+        return $this->createQueryBuilder('customer')
+        ->select('customer, profile')
+        ->leftJoin('customer.profile','profile')
+        ->orderBy('customer.id', 'DESC')
+        ->getQuery()
+        ->setMaxResults($limit)
+        ->getResult();
     }
 }

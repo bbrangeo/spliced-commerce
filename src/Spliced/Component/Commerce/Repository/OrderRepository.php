@@ -24,24 +24,24 @@ use Doctrine\ORM\Query\Expr;
 abstract class OrderRepository extends EntityRepository
 {
 
-	/**
-	 * findOneById
-	 * 
-	 * @param int $id
-	 */
+    /**
+     * findOneById
+     * 
+     * @param int $id
+     */
     public function findOneById($id)
     {
-    	
-    	$query = $this->createQueryBuilder('_order')
-    	  ->select('_order')
-    	  ->where('_order.id = :id')
-    	  ->setParameter('id', $id);
-    	
-    	$this->addAllQueries($query);
-    	
-    	return $query->getQuery()
-    	  //->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-    	  ->getSingleResult();
+        
+        $query = $this->createQueryBuilder('_order')
+          ->select('_order')
+          ->where('_order.id = :id')
+          ->setParameter('id', $id);
+        
+        $this->addAllQueries($query);
+        
+        return $query->getQuery()
+          //->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+          ->getSingleResult();
     }
     
     /**
@@ -52,15 +52,15 @@ abstract class OrderRepository extends EntityRepository
     public function findOneByOrderNumber($orderNumber)
     {
         $query = $this->createQueryBuilder('_order')
-    	  ->select('_order')
-    	  ->where('_order.orderNumber = :orderNumber')
-    	  ->setParameter('orderNumber', $orderNumber);
-    	
-    	$this->addAllQueries($query);
-    	
-    	return $query->getQuery()
-    	  ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-    	  ->getSingleResult();
+          ->select('_order')
+          ->where('_order.orderNumber = :orderNumber')
+          ->setParameter('orderNumber', $orderNumber);
+        
+        $this->addAllQueries($query);
+        
+        return $query->getQuery()
+          ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+          ->getSingleResult();
     }
 
     /**
@@ -71,39 +71,39 @@ abstract class OrderRepository extends EntityRepository
      */
     public function findOneByOrderNumberForCustomer($orderNumber, CustomerInterface $customer)
     {
-    	$query = $this->createQueryBuilder('_order')
-    	->select('_order')
-    	->where('_order.orderNumber = :orderNumber AND customer.id = :customer')
-    	->setParameter('orderNumber', $orderNumber)
-    	->setParameter('customer', $customer->getId());
-    	 
-    	$this->addAllQueries($query);
-    	
-    	return $query->getQuery()
-    	  //->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-    	  ->getSingleResult();
+        $query = $this->createQueryBuilder('_order')
+        ->select('_order')
+        ->where('_order.orderNumber = :orderNumber AND customer.id = :customer')
+        ->setParameter('orderNumber', $orderNumber)
+        ->setParameter('customer', $customer->getId());
+         
+        $this->addAllQueries($query);
+        
+        return $query->getQuery()
+          //->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+          ->getSingleResult();
     }
     
-	/**
-	 * findOneByOrderNumberAndEmail
-	 * 
-	 * @param string $orderNumber
-	 * @param string $email
-	 */
+    /**
+     * findOneByOrderNumberAndEmail
+     * 
+     * @param string $orderNumber
+     * @param string $email
+     */
     public function findOneByOrderNumberAndEmail($orderNumber, $email)
     {
-    	
-    	$query = $this->createQueryBuilder('_order')
-    	  ->select('_order')
-    	  ->where('_order.orderNumber = :orderNumber AND _order.email = :email')
-    	  ->setParameter('orderNumber', $orderNumber)
+        
+        $query = $this->createQueryBuilder('_order')
+          ->select('_order')
+          ->where('_order.orderNumber = :orderNumber AND _order.email = :email')
+          ->setParameter('orderNumber', $orderNumber)
           ->setParameter('email', $email);
-    	
-    	$this->addAllQueries($query);
-    	 
-    	return $query->getQuery()
-    	//->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-    	->getSingleResult();
+        
+        $this->addAllQueries($query);
+         
+        return $query->getQuery()
+        //->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+        ->getSingleResult();
     }
     
     /**
@@ -114,17 +114,17 @@ abstract class OrderRepository extends EntityRepository
      */
     public function findOneByEmailAndBillingZipcode($email, $billingZipcode)
     {
-    	$query = $this->createQueryBuilder('_order')
-    	  ->select('_order')
-    	  ->where('_order.billingZipcode = :billingZipcode AND _order.email = :email')
-    	  ->setParameter('billingZipcode', $billingZipcode)
-    	  ->setParameter('email', $email);
-    	 
-    	$this->addAllQueries($query);
-    	
-    	return $query->getQuery()
-    	  //->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-    	  ->getSingleResult();
+        $query = $this->createQueryBuilder('_order')
+          ->select('_order')
+          ->where('_order.billingZipcode = :billingZipcode AND _order.email = :email')
+          ->setParameter('billingZipcode', $billingZipcode)
+          ->setParameter('email', $email);
+         
+        $this->addAllQueries($query);
+        
+        return $query->getQuery()
+          //->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+          ->getSingleResult();
     }
     
     
@@ -135,21 +135,21 @@ abstract class OrderRepository extends EntityRepository
      */
     public function findByOrderedSku($sku)
     {
-    	$query = $this->createQueryBuilder('_order')
-    	->select('_order');
-    	 
-    	$this->addItemsQuery($query)
-    	->addCustomerQuery($query)
-    	->addVisitorQuery($query);
-    	 
-    	$query->where('items.sku = :sku AND _order.orderStatus NOT IN(:orderStatuses)')
-    	->setParameter('sku', $sku)
-    	->setParameter('orderStatuses', array(Order::STATUS_INCOMPLETE,Order::STATUS_ABANDONED));
-    	 
-    	return $query->getQuery()
-    	->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-    	->getResult();
-    	 
+        $query = $this->createQueryBuilder('_order')
+        ->select('_order');
+         
+        $this->addItemsQuery($query)
+        ->addCustomerQuery($query)
+        ->addVisitorQuery($query);
+         
+        $query->where('items.sku = :sku AND _order.orderStatus NOT IN(:orderStatuses)')
+        ->setParameter('sku', $sku)
+        ->setParameter('orderStatuses', array(Order::STATUS_INCOMPLETE,Order::STATUS_ABANDONED));
+         
+        return $query->getQuery()
+        ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+        ->getResult();
+         
     }
     
     /**
@@ -176,10 +176,10 @@ abstract class OrderRepository extends EntityRepository
             $_ids[] = $o['id'];
         }
         
-		if(!count($_ids)){
-			return array();
-		}
-		
+        if(!count($_ids)){
+            return array();
+        }
+        
         $query = $this->createQueryBuilder('_order')
         ->select('_order')
         ->where('_order.id IN(:ids)')
@@ -199,13 +199,13 @@ abstract class OrderRepository extends EntityRepository
      */
     public function getOrdersForCustomerListQuery(CustomerInterface $customer)
     {
-    	$query = $this->createQueryBuilder('_order')
-    	  ->select('_order')
-    	  ->where('_order.customer = :customer AND _order.orderStatus NOT IN (:statusIncomplete)')
-    	  ->setParameter('customer', $customer->getId())
+        $query = $this->createQueryBuilder('_order')
+          ->select('_order')
+          ->where('_order.customer = :customer AND _order.orderStatus NOT IN (:statusIncomplete)')
+          ->setParameter('customer', $customer->getId())
           ->setParameter('statusIncomplete', array(Order::STATUS_INCOMPLETE,Order::STATUS_ABANDONED));
-    	
-    	return $query;
+        
+        return $query;
     }
          
     /**
@@ -215,18 +215,18 @@ abstract class OrderRepository extends EntityRepository
      */
     public function getOrdersForCustomerQuery(CustomerInterface $customer)
     {
-    	$query = $this->createQueryBuilder('_order')
-    	->select('_order')
-    	->where('_order.customer = :customer AND _order.orderStatus NOT IN (:statusIncomplete)')
-    	->setParameter('customer', $customer->getId())
+        $query = $this->createQueryBuilder('_order')
+        ->select('_order')
+        ->where('_order.customer = :customer AND _order.orderStatus NOT IN (:statusIncomplete)')
+        ->setParameter('customer', $customer->getId())
         ->setParameter('statusIncomplete', array(Order::STATUS_INCOMPLETE,Order::STATUS_ABANDONED));
-    	
-    	$this->addAllQueries($query);
-    	 
-    	return $query->getQuery()
-    	->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-    	->getResult();
-    	
+        
+        $this->addAllQueries($query);
+         
+        return $query->getQuery()
+        ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+        ->getResult();
+        
     }
     
 
@@ -239,12 +239,12 @@ abstract class OrderRepository extends EntityRepository
      */
     public function addPaymentQuery(QueryBuilder $query, $on = '_order')
     {
-    	$query->addSelect('payment, paymentMemos, creditCard')
-    	->leftJoin($on.'.payment', 'payment')
-    	->leftJoin('payment.memos', 'paymentMemos')
-    	->leftJoin('payment.creditCard', 'creditCard');
-    	 
-    	return $this;
+        $query->addSelect('payment, paymentMemos, creditCard')
+        ->leftJoin($on.'.payment', 'payment')
+        ->leftJoin('payment.memos', 'paymentMemos')
+        ->leftJoin('payment.creditCard', 'creditCard');
+         
+        return $this;
     }
     
     /**
@@ -255,11 +255,11 @@ abstract class OrderRepository extends EntityRepository
      */
     public function addShipmentQuery(QueryBuilder $query, $on = '_order')
     {
-    	$query->addSelect('shipment, shipmentMemos')
-    	->leftJoin($on.'.shipment', 'shipment')
-    	->leftJoin('shipment.memos', 'shipmentMemos');
-    	 
-    	return $this;
+        $query->addSelect('shipment, shipmentMemos')
+        ->leftJoin($on.'.shipment', 'shipment')
+        ->leftJoin('shipment.memos', 'shipmentMemos');
+         
+        return $this;
     }
     
     /**
@@ -270,10 +270,10 @@ abstract class OrderRepository extends EntityRepository
      */
     public function addCustomFieldsQuery(QueryBuilder $query, $on = '_order')
     {
-    	$query->addSelect('customFields')
-    	->leftJoin($on.'.customFields', 'customFields');
+        $query->addSelect('customFields')
+        ->leftJoin($on.'.customFields', 'customFields');
     
-    	return $this;
+        return $this;
     }
     
     /**
@@ -284,11 +284,11 @@ abstract class OrderRepository extends EntityRepository
      */
     public function addItemsQuery(QueryBuilder $query, $on = '_order')
     {
-    	$query->addSelect('items, childrenItems')
-    	->leftJoin($on.'.items', 'items', Expr\Join::WITH, 'items.parent IS NULL')
+        $query->addSelect('items, childrenItems')
+        ->leftJoin($on.'.items', 'items', Expr\Join::WITH, 'items.parent IS NULL')
         ->leftJoin('items.children', 'childrenItems');
     
-    	return $this;
+        return $this;
     }
     
     /**
@@ -299,10 +299,10 @@ abstract class OrderRepository extends EntityRepository
      */
     public function addCustomerQuery(QueryBuilder $query, $on = '_order')
     {
-    	$query->addSelect('customer')
-    	->leftJoin($on.'.customer', 'customer');
+        $query->addSelect('customer')
+        ->leftJoin($on.'.customer', 'customer');
     
-    	return $this;
+        return $this;
     }
     
     /**
@@ -313,10 +313,10 @@ abstract class OrderRepository extends EntityRepository
      */
     public function addVisitorQuery(QueryBuilder $query, $on = '_order')
     {
-    	$query->addSelect('visitor')
-    	->leftJoin($on.'.visitor', 'visitor');
+        $query->addSelect('visitor')
+        ->leftJoin($on.'.visitor', 'visitor');
     
-    	return $this;
+        return $this;
     }
     
     /**
@@ -327,10 +327,10 @@ abstract class OrderRepository extends EntityRepository
      */
     public function addVisitorRequestsQuery(QueryBuilder $query, $on = 'visitor')
     {
-    	$query->addSelect('visitorRequests')
-    	->leftJoin($on.'.requests', 'visitorRequests');
+        $query->addSelect('visitorRequests')
+        ->leftJoin($on.'.requests', 'visitorRequests');
     
-    	return $this;
+        return $this;
     }
     
     /**
@@ -341,14 +341,14 @@ abstract class OrderRepository extends EntityRepository
      */
     protected function addAllQueries(QueryBuilder $query, $on = '_order')
     {
-    	$this->addPaymentQuery($query, $on)
-    	->addShipmentQuery($query, $on)
-    	->addItemsQuery($query, $on)
-    	->addCustomFieldsQuery($query, $on)
-    	->addVisitorQuery($query, $on)
-    	->addVisitorRequestsQuery($query, 'visitor')
-    	->addCustomerQuery($query, $on);
-    	
-    	return $this;
+        $this->addPaymentQuery($query, $on)
+        ->addShipmentQuery($query, $on)
+        ->addItemsQuery($query, $on)
+        ->addCustomFieldsQuery($query, $on)
+        ->addVisitorQuery($query, $on)
+        ->addVisitorRequestsQuery($query, 'visitor')
+        ->addCustomerQuery($query, $on);
+        
+        return $this;
     }
 }

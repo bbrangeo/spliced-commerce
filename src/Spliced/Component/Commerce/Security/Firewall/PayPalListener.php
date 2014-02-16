@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PayPalListener extends AbstractAuthenticationListener
 {
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     protected function attemptAuthentication(Request $request)
     {
         return $this->getAuthenticationManager()
@@ -28,6 +28,6 @@ class PayPalListener extends AbstractAuthenticationListener
      */
     protected function getAuthenticationManager()
     {
-    	return $this->authenticationManager;
+        return $this->authenticationManager;
     }
 }

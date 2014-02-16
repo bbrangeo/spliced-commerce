@@ -241,16 +241,16 @@ class CustomerController extends Controller
      */
     public function addressBookAction()
     {
-    	try {
-    		$customer = $this->get('doctrine.orm.entity_manager')->getRepository("SplicedCommerceBundle:Customer")
-    		->findOneForView($this->get('security.context')->getToken()->getUser());
-    	} catch (NoResultException $e) {
-    		return $this->redirect($this->generateUrl('commerce_account'));
-    	}
-    	
-    	return array(
-    		'customer' => $customer,
-    	);
+        try {
+            $customer = $this->get('doctrine.orm.entity_manager')->getRepository("SplicedCommerceBundle:Customer")
+            ->findOneForView($this->get('security.context')->getToken()->getUser());
+        } catch (NoResultException $e) {
+            return $this->redirect($this->generateUrl('commerce_account'));
+        }
+        
+        return array(
+            'customer' => $customer,
+        );
     }
 
     /**
@@ -374,42 +374,42 @@ class CustomerController extends Controller
      */
     public function editAddressAction($id)
     {
-    	try {
-    		$customer = $this->getDoctrine()->getManager()->getRepository("SplicedCommerceBundle:Customer")
-    		->findOneForView($this->get('security.context')->getToken()->getUser());
-    		
-    		$address = $this->get('doctrine.orm.entity_manager')->getRepository('SplicedCommerceBundle:CustomerAddress')
-    		->findAddressByIdForCustomer($customer, $id); 
-    		
-    	} catch (NoResultException $e) {
-    		return $this->redirect($this->generateUrl('commerce_account_address_book'));
-    	}
+        try {
+            $customer = $this->getDoctrine()->getManager()->getRepository("SplicedCommerceBundle:Customer")
+            ->findOneForView($this->get('security.context')->getToken()->getUser());
+            
+            $address = $this->get('doctrine.orm.entity_manager')->getRepository('SplicedCommerceBundle:CustomerAddress')
+            ->findAddressByIdForCustomer($customer, $id); 
+            
+        } catch (NoResultException $e) {
+            return $this->redirect($this->generateUrl('commerce_account_address_book'));
+        }
     
-    	$form = $this->createForm(new CustomerAddressFormType(), $address);
+        $form = $this->createForm(new CustomerAddressFormType(), $address);
     
-    	if ($this->getRequest()->getMethod() == 'POST' ) {
-    		$form->bind($this->getRequest());
-    		if ($form->isValid()) {
+        if ($this->getRequest()->getMethod() == 'POST' ) {
+            $form->bind($this->getRequest());
+            if ($form->isValid()) {
     
-    			$address = $form->getData();
-    			$address->setCustomer($customer);
+                $address = $form->getData();
+                $address->setCustomer($customer);
     
-    			$this->getDoctrine()->getManager()->persist($address);
-    			$this->getDoctrine()->getManager()->flush();
+                $this->getDoctrine()->getManager()->persist($address);
+                $this->getDoctrine()->getManager()->flush();
     
-    			$this->get('session')->getFlashBag()->add('success', 'Address successfully updated.');
+                $this->get('session')->getFlashBag()->add('success', 'Address successfully updated.');
     
-    			return $this->redirect($this->generateUrl('commerce_account_address_book'));
-    		} else {
-    			$this->get('session')->getFlashBag()->add('error', 'There was a problem validating your submission.');
-    		}
-    	}
+                return $this->redirect($this->generateUrl('commerce_account_address_book'));
+            } else {
+                $this->get('session')->getFlashBag()->add('error', 'There was a problem validating your submission.');
+            }
+        }
     
-    	return array(
-    		'form' => $form->createView(),
-    		'customer' => $customer,
-    		'address' => $address,
-    	);
+        return array(
+            'form' => $form->createView(),
+            'customer' => $customer,
+            'address' => $address,
+        );
     }
     
     
@@ -447,7 +447,7 @@ class CustomerController extends Controller
             'state' => $address->getState(),
             'zipcode' => $address->getZipcode(),
             'country' => $address->getCountry(),
-        	'phoneNumber' => $address->getPhoneNumber(),
+            'phoneNumber' => $address->getPhoneNumber(),
         ));
     }
 
@@ -479,33 +479,33 @@ class CustomerController extends Controller
             
             if($form->bind($this->getRequest()) && $form->isValid()) {
                 
-            	$user = $form->getData();
+                $user = $form->getData();
                 // lets look for an existing email by the submitted email
                 try{
-                	$searchedUser = $this->getDoctrine()->getRepository('SplicedCommerceBundle:Customer')
-                	  ->findOneByEmail($user->getEmail()); 
+                    $searchedUser = $this->getDoctrine()->getRepository('SplicedCommerceBundle:Customer')
+                      ->findOneByEmail($user->getEmail()); 
 
                 } catch(NoResultException $e){
-                	// do nothing here, continue as normal
+                    // do nothing here, continue as normal
                 }
                 
                 if(isset($searchedUser) && $searchedUser instanceof CustomerInterface && $user->getId() != $searchedUser->getId()) {
-                	$this->get('session')->getFlashBag()->add('error',
-                		sprintf('Looks like the email address you provided is already registered. <a href="%s" title="Recover your password">
-                				Did you forget your password?</a>', $this->generateUrl('commerce_forgot_password'))
-                	);
-                	$user->setEmail($originalEmail);
+                    $this->get('session')->getFlashBag()->add('error',
+                        sprintf('Looks like the email address you provided is already registered. <a href="%s" title="Recover your password">
+                                Did you forget your password?</a>', $this->generateUrl('commerce_forgot_password'))
+                    );
+                    $user->setEmail($originalEmail);
                 } else {
-                	$this->get('commerce.customer.manager')->updatePassword($user);
+                    $this->get('commerce.customer.manager')->updatePassword($user);
                 
-                	$user->setForceCollectEmail(false)
-                	->setForcePasswordReset(false);
+                    $user->setForceCollectEmail(false)
+                    ->setForcePasswordReset(false);
                 
-                	$this->getDoctrine()->getManager()->persist($user);
-                	$this->getDoctrine()->getManager()->flush();
+                    $this->getDoctrine()->getManager()->persist($user);
+                    $this->getDoctrine()->getManager()->flush();
                 
-                	$this->get('session')->getFlashBag()->add('success', 'Your account has been updated. Your account registration has been completed and is now ready for use.');
-                	return $this->redirect($this->generateUrl('homepage'));
+                    $this->get('session')->getFlashBag()->add('success', 'Your account has been updated. Your account registration has been completed and is now ready for use.');
+                    return $this->redirect($this->generateUrl('homepage'));
                 }               
                                 
             } else {

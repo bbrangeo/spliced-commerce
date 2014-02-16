@@ -23,36 +23,36 @@ use Doctrine\Common\Collections\Collection;
  */
 class AnalyticsManager 
 {
-	/** @var ArrayCollection */
-	protected $subscribers = array();
-	
+    /** @var ArrayCollection */
+    protected $subscribers = array();
+    
     /**
      * Constructor
      * 
      * @param ConfigurationManager $configurationManager
      */
     public function __construct(ConfigurationManager $configurationManager)
-	{
-		$this->subscribers = new ArrayCollection();
-		$this->configurationManager = $configurationManager;
-	}
-	
-	/**
-	 * addSubscriber
-	 * 
-	 * @param AnalyticsSubscriberInterface $subscriber
-	 */
-	public function addSubscriber(AnalyticsSubscriberInterface $subscriber)
-	{
-		$this->subscribers->add($subscriber);
-		return $this;
-	}
-	
-	/**
-	 * getSubscribers
-	 * 
-	 * @return Collection
-	 */
+    {
+        $this->subscribers = new ArrayCollection();
+        $this->configurationManager = $configurationManager;
+    }
+    
+    /**
+     * addSubscriber
+     * 
+     * @param AnalyticsSubscriberInterface $subscriber
+     */
+    public function addSubscriber(AnalyticsSubscriberInterface $subscriber)
+    {
+        $this->subscribers->add($subscriber);
+        return $this;
+    }
+    
+    /**
+     * getSubscribers
+     * 
+     * @return Collection
+     */
     public function getSubscribers()
     {
         return $this->subscribers;

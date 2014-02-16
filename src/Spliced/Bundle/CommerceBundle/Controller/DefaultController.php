@@ -29,8 +29,8 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-    	
-    	return $this->render('SplicedCommerceBundle:Default:index.html.twig');
+        
+        return $this->render('SplicedCommerceBundle:Default:index.html.twig');
     }
     /**
      * @Route("/test-stuff", name="commerce_test_bed")
@@ -41,13 +41,13 @@ class DefaultController extends Controller
         $client = new \Spliced\Component\Apple\iDevice\ActivationClient();
         
         echo '<pre>';
-    	foreach($this->get('commerce.checkout_manager')->getStepHandlersByStep(1) as $h){
-    	    var_dump(array(
-    	        'name' => $h->getName(),
-    	        'step' => $h->getStep(),
-    	        'priority' => $h->getPriority(),
-    	    ));
-    	}
-    	die();
+        foreach($this->get('commerce.checkout_manager')->getStepHandlersByStep(1) as $h){
+            var_dump(array(
+                'name' => $h->getName(),
+                'step' => $h->getStep(),
+                'priority' => $h->getPriority(),
+            ));
+        }
+        die();
     }
 }

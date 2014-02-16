@@ -44,9 +44,9 @@ class ProductImageController extends BaseFilterableController
  
         $productImage = null;
         foreach($product->getImages() as $image){
-        	if ($image->getId() == $imageId) {
-        		$productImage = $image;
-        	}
+            if ($image->getId() == $imageId) {
+                $productImage = $image;
+            }
         }
         
         if(!$productImage){

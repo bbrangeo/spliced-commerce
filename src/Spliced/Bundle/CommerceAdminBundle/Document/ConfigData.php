@@ -14,8 +14,8 @@ use Spliced\Component\Commerce\Model\ConfigData as BaseConfigData;
 
 /**
  * @MongoDB\Document(
- * 	collection="config_data", 
- * 	repositoryClass="Spliced\Bundle\CommerceAdminBundle\Repository\ConfigDataDocumentRepository"
+ *     collection="config_data", 
+ *     repositoryClass="Spliced\Bundle\CommerceAdminBundle\Repository\ConfigDataDocumentRepository"
  * )
  * @MongoDB\MappedSuperclass()
  */

@@ -18,10 +18,10 @@ use Spliced\Component\Commerce\Shipping\Model\ShippingProvider as BaseShippingPr
  */
 class Provider extends BaseShippingProvider
 {
-	
-	/**
-	 * {@inheritDoc}
-	 */
+    
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return BaseShippingProvider::PROVIDER_USPS;

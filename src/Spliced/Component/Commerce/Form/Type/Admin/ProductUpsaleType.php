@@ -28,11 +28,11 @@ class ProductUpsaleType extends AbstractType
     /**
      * Constructor
      * 
-	 * @param ConfigurationManager $configurationManager
+     * @param ConfigurationManager $configurationManager
      */
     public function __construct(ConfigurationManager $configurationManager)
     {
-		$this->configurationManager = $configurationManager;
+        $this->configurationManager = $configurationManager;
     }
     
     /**
@@ -42,7 +42,7 @@ class ProductUpsaleType extends AbstractType
      */
     protected function getConfigurationManager()
     {
-    	return $this->configurationManager;
+        return $this->configurationManager;
     }
     
     /**
@@ -52,7 +52,7 @@ class ProductUpsaleType extends AbstractType
      */
     protected function getObjectManager()
     {
-    	return $this->getConfigurationManager()->getDocumentManager();
+        return $this->getConfigurationManager()->getDocumentManager();
     }
     
     /**
@@ -65,16 +65,16 @@ class ProductUpsaleType extends AbstractType
          return $this->getObjectManager()
            ->getRepository($this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT));
      }
-	
-	/**
-	 * {@inheritDoc}
-	 */
+    
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $typeaheadTransformer = new ProductTypeaheadTransformer($this->getProductRepository());
         
         $builder->add($builder->create('product', 'text', array('required' => true))
-        		->addModelTransformer($typeaheadTransformer));
+                ->addModelTransformer($typeaheadTransformer));
     }
     
     /**
@@ -91,8 +91,8 @@ class ProductUpsaleType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-    	$resolver->setDefaults(array(
-    		'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_UPSALE),
-    	));
+        $resolver->setDefaults(array(
+            'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_UPSALE),
+        ));
     }
 }

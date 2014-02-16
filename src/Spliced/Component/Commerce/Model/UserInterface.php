@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 
 interface UserInterface extends AdvancedUserInterface, \Serializable
 {
-    const ROLE_DEFAULT 	= 'ROLE_USER';
+    const ROLE_DEFAULT     = 'ROLE_USER';
     const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
     /**

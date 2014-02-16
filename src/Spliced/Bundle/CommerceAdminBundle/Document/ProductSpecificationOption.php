@@ -19,8 +19,8 @@ use Spliced\Component\Commerce\Model\ProductSpecificationOption as BaseProductSp
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  * 
  * @MongoDB\Document(
- * 	collection="product_specification_option", 
- * 	repositoryClass="Spliced\Bundle\CommerceAdminBundle\Repository\ProductSpecificationOptionDocumentRepository"
+ *     collection="product_specification_option", 
+ *     repositoryClass="Spliced\Bundle\CommerceAdminBundle\Repository\ProductSpecificationOptionDocumentRepository"
  * )
  * @MongoDB\MappedSuperclass()
  */

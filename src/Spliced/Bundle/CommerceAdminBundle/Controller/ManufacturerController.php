@@ -16,23 +16,23 @@ use Spliced\Bundle\CommerceAdminBundle\Form\Type\ManufacturerFilterType;
  */
 class ManufacturerController extends BaseFilterableController
 {
-	
-	const FILTER_TAG = 'commerce.manufacturer';
-	const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Form\Type\ManufacturerFilterType';
-	
-	/**
-	 * @Route("/", name="commerce_admin_manufacturer")
-	 * @Method("GET")
-	 * @Template()
-	 */
-	public function listAction()
-	{
+    
+    const FILTER_TAG = 'commerce.manufacturer';
+    const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Form\Type\ManufacturerFilterType';
+    
+    /**
+     * @Route("/", name="commerce_admin_manufacturer")
+     * @Method("GET")
+     * @Template()
+     */
+    public function listAction()
+    {
 
-		// load products
+        // load products
         $manufacturers = $this->get('knp_paginator')->paginate(
             $this->get('commerce.admin.document_manager')
-        	  ->getRepository('SplicedCommerceAdminBundle:Manufacturer')
-        	  ->getAdminListQuery($this->getFilters()),
+              ->getRepository('SplicedCommerceAdminBundle:Manufacturer')
+              ->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page',1),
             $this->getRequest()->query->get('limit',25)
         );
@@ -43,7 +43,7 @@ class ManufacturerController extends BaseFilterableController
             'manufacturers' => $manufacturers,
             'filterForm' => $filterForm->createView(),
         );
-	}
+    }
 
     /**
      * @Route("/new", name="commerce_admin_manufacturer_new")
@@ -71,7 +71,7 @@ class ManufacturerController extends BaseFilterableController
         $form = $this->get('commerce.admin.form_factory')->createManufacturerForm();
         
         if ($form->bind($this->getRequest()) && $form->isValid()) {
-            	
+                
             $this->get('commerce.admin.document_manager')->persist($form->getData());
             $this->get('commerce.admin.document_manager')->flush();
         

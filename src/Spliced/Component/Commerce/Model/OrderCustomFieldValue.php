@@ -22,88 +22,88 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class OrderCustomFieldValue implements OrderCustomFieldValueInterface
 {
 
-	/**
-	 * @var bigint $id
-	 *
-	 * @ORM\Column(name="id", type="bigint", nullable=false)
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="IDENTITY")
-	 */
-	protected $id;
-	
-	/**
-	 * @var string $fieldValue
-	 *
-	 * @ORM\Column(name="field_value", type="string", nullable=false)
-	 */
-	protected $fieldValue;
+    /**
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    protected $id;
+    
+    /**
+     * @var string $fieldValue
+     *
+     * @ORM\Column(name="field_value", type="string", nullable=false)
+     */
+    protected $fieldValue;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="Order", inversedBy="customFields")
-	 * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
-	 */
-	protected $order;
-	
+    /**
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="customFields")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $order;
+    
 
-	/**
-	 * getId
-	 *
-	 * @return integer
-	 */
-	public function getId()
-	{
-	    return $this->id;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function setOrder(OrderInterface $order)
-	{
-		$this->order = $order;
-		return $this;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	*/
-	public function getOrder()
-	{
-		return $this->order;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	*/
-	public function setField(CheckoutCustomFieldInterface $field)
-	{
-		$this->field = $field;
-		return $this;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	*/
-	public function getField()
-	{
-		return $this->field;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	*/
-	public function setFieldValue($fieldValue)
-	{
-		$this->fieldValue = $fieldValue;
-		return $this;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	*/
-	public function getFieldValue()
-	{
-		return $this->fieldValue;
-	}
-	
+    /**
+     * getId
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function setOrder(OrderInterface $order)
+    {
+        $this->order = $order;
+        return $this;
+    }
+    
+    /**
+     * {@inheritDoc}
+    */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+    
+    /**
+     * {@inheritDoc}
+    */
+    public function setField(CheckoutCustomFieldInterface $field)
+    {
+        $this->field = $field;
+        return $this;
+    }
+    
+    /**
+     * {@inheritDoc}
+    */
+    public function getField()
+    {
+        return $this->field;
+    }
+    
+    /**
+     * {@inheritDoc}
+    */
+    public function setFieldValue($fieldValue)
+    {
+        $this->fieldValue = $fieldValue;
+        return $this;
+    }
+    
+    /**
+     * {@inheritDoc}
+    */
+    public function getFieldValue()
+    {
+        return $this->fieldValue;
+    }
+    
 }

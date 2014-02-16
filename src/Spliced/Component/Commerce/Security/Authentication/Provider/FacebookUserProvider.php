@@ -115,8 +115,8 @@ class FacebookUserProvider implements AuthenticationProviderInterface
             $this->userChecker->checkPostAuth($user);
 
             $this->dispatcher->dispatch(
-            	Events\Event::EVENT_SECURITY_FACEBOOK_LOGIN, 
-            	new Events\FacebookLoginEvent($user, $userProfile)
+                Events\Event::EVENT_SECURITY_FACEBOOK_LOGIN, 
+                new Events\FacebookLoginEvent($user, $userProfile)
             );
 
             $this->userProvider->update($user);
@@ -150,8 +150,8 @@ class FacebookUserProvider implements AuthenticationProviderInterface
           ->addRoles(array('ROLE_FACEBOOK','ROLE_USER'));
 
         $this->dispatcher->dispatch(
-        	Events\Event::EVENT_SECURITY_FACEBOOK_LOGIN_CREATE_USER, 
-        	new Events\FacebookLoginEvent($user, $userProfile)
+            Events\Event::EVENT_SECURITY_FACEBOOK_LOGIN_CREATE_USER, 
+            new Events\FacebookLoginEvent($user, $userProfile)
         );
 
         return $this->userProvider->create($user);

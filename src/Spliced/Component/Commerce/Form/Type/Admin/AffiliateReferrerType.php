@@ -20,9 +20,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class AffiliateReferrerType extends AbstractType
 {
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
               

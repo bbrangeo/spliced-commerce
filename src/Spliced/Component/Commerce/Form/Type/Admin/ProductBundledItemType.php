@@ -28,11 +28,11 @@ class ProductBundledItemType extends AbstractType
     /**
      * Constructor
      * 
-	 * @param ConfigurationManager $configurationManager
+     * @param ConfigurationManager $configurationManager
      */
     public function __construct(ConfigurationManager $configurationManager)
     {
-		$this->configurationManager = $configurationManager;
+        $this->configurationManager = $configurationManager;
     }
     
     /**
@@ -42,7 +42,7 @@ class ProductBundledItemType extends AbstractType
      */
     protected function getConfigurationManager()
     {
-    	return $this->configurationManager;
+        return $this->configurationManager;
     }
     
     /**
@@ -52,7 +52,7 @@ class ProductBundledItemType extends AbstractType
      */
     protected function getObjectManager()
     {
-    	return $this->getConfigurationManager()->getDocumentManager();
+        return $this->getConfigurationManager()->getDocumentManager();
     }
     
     /**
@@ -67,15 +67,15 @@ class ProductBundledItemType extends AbstractType
                $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT)
            );
      }
-	
-	/**
-	 * {@inheritDoc}
-	 */
+    
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
-        	$builder->create('product', 'text', array('required' => true))
-        	  ->addModelTransformer(new ProductTypeaheadTransformer($this->getProductRepository()))
+            $builder->create('product', 'text', array('required' => true))
+              ->addModelTransformer(new ProductTypeaheadTransformer($this->getProductRepository()))
         )
         ->add('quantity', 'number', array('required' => true))
         ->add('allowTierPricing', 'checkbox', array('required' => false, 'value' => true))
@@ -112,8 +112,8 @@ class ProductBundledItemType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-    	$resolver->setDefaults(array(
-    		'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_BUNDLED_ITEM),
-    	));
+        $resolver->setDefaults(array(
+            'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_BUNDLED_ITEM),
+        ));
     }
 }

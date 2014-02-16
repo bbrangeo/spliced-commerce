@@ -22,11 +22,11 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class ShippingManager
 {
-	/** @var ArrayCollection */
-	protected $providers;
-	
-	/** @var ArrayCollection */
-	protected $methods;
+    /** @var ArrayCollection */
+    protected $providers;
+    
+    /** @var ArrayCollection */
+    protected $methods;
 
     /**
      * Constructor
@@ -36,10 +36,10 @@ class ShippingManager
      */
     public function __construct(ConfigurationManager $configurationManager, CartManager $cartManager)
     {
-    	$this->methods = new ShippingMethodCollection();
-    	$this->providers = new ShippingProviderCollection();      
-    	$this->cartManager = $cartManager;
-    	$this->configurationManager = $configurationManager;  
+        $this->methods = new ShippingMethodCollection();
+        $this->providers = new ShippingProviderCollection();      
+        $this->cartManager = $cartManager;
+        $this->configurationManager = $configurationManager;  
     }
     
     /**
@@ -70,8 +70,8 @@ class ShippingManager
      */
     public function addMethod(ShippingMethodInterface $method)
     {
-    	$this->methods->add($method);
-    	return $this;
+        $this->methods->add($method);
+        return $this;
     }
     
     /**
@@ -81,7 +81,7 @@ class ShippingManager
      */
     public function getMethods()
     {
-    	return $this->methods;
+        return $this->methods;
     }
     
     /**
@@ -91,20 +91,20 @@ class ShippingManager
      */
     public function addProvider(ShippingProviderInterface $provider)
     {
-    	$methods = new ArrayCollection();
-    	foreach($this->getMethods() as $method) {
-    		if($method->getProvider()->getName() == $provider->getName()){
-    			$provider->addMethod($method);
-    		}
-    	}
+        $methods = new ArrayCollection();
+        foreach($this->getMethods() as $method) {
+            if($method->getProvider()->getName() == $provider->getName()){
+                $provider->addMethod($method);
+            }
+        }
 
-    	$this->providers->set($provider->getName(), $provider);
-    	return $this;
+        $this->providers->set($provider->getName(), $provider);
+        return $this;
     }
 
     /**
      * getProviders
-	 *
+     *
      * @return ArrayCollection
      */
     public function getProviders()
@@ -134,19 +134,19 @@ class ShippingManager
      */
     public function getMethodByFullName($fullName)
     {
-    	$searchName = strtolower($fullName);
-    	foreach($this->getProviders() as $provider) {
-    		foreach($provider->getMethods() as $method){
-    			$matchName = strtolower(sprintf('%s_%s', $provider->getName(), $method->getName()));
-				if($searchName == $matchName){
-					return $method;
-				}
-    		}
-    	}
+        $searchName = strtolower($fullName);
+        foreach($this->getProviders() as $provider) {
+            foreach($provider->getMethods() as $method){
+                $matchName = strtolower(sprintf('%s_%s', $provider->getName(), $method->getName()));
+                if($searchName == $matchName){
+                    return $method;
+                }
+            }
+        }
         
         throw new \Exception(sprintf('Shipping Method %s Does Not Exist',$searchName));
     }
-	
+    
     /**
      * getAvailableMethodsForDesination
      *
@@ -179,17 +179,17 @@ class ShippingManager
             }
         }
         
-		// sort methods by lowest price
-		$sortedMethods = array();
-		foreach($methods as $method){
-			$price = $method->getPrice();
-			while(isset($sortedMethods[$price])){
-				$price += 0.01;
-			}
-			$sortedMethods[$price] = $method;
-		}
-		ksort($sortedMethods);
-	    return new ShippingMethodCollection($sortedMethods);		
+        // sort methods by lowest price
+        $sortedMethods = array();
+        foreach($methods as $method){
+            $price = $method->getPrice();
+            while(isset($sortedMethods[$price])){
+                $price += 0.01;
+            }
+            $sortedMethods[$price] = $method;
+        }
+        ksort($sortedMethods);
+        return new ShippingMethodCollection($sortedMethods);        
     }
 
 }

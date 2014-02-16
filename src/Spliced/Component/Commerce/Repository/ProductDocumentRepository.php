@@ -19,13 +19,13 @@ use Spliced\Component\Commerce\Model\CategoryInterface;
  */
 abstract class ProductDocumentRepository extends DocumentRepository implements ProductRepositoryInterface
 {
-	/**
-	 * {@inheritDoc}
-	 */
-	public function findByCategoryQuery(CategoryInterface $category)
-	{
-		return $this->createQueryBuilder('product')
-		  ->eagerCursor(false)
-		  ->field('categories.id')->equals($category->getId());
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function findByCategoryQuery(CategoryInterface $category)
+    {
+        return $this->createQueryBuilder('product')
+          ->eagerCursor(false)
+          ->field('categories.id')->equals($category->getId());
+    }
 }

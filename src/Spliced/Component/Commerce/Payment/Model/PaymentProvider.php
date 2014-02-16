@@ -36,16 +36,16 @@ abstract class PaymentProvider implements PaymentProviderInterface
         $this->defaultConfigurationValues = $defaultConfigurationValues;
     }
 
-	/**
-	 * toString
-	 * 
-	 * @return string
-	 */
-	 public function __toString()
-	 {
-	 	return $this->getLabel();	
-	 }
-	 
+    /**
+     * toString
+     * 
+     * @return string
+     */
+     public function __toString()
+     {
+         return $this->getLabel();    
+     }
+     
     /**
      * {@inheritDoc}
      */

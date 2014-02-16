@@ -10,7 +10,7 @@ namespace Spliced\Bundle\CommerceAdminBundle\Model;
  */
 class ListFilter extends Object
 {
-	
+    
     public function serialize()
     {
         $data = $this->data;

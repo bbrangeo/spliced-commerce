@@ -32,10 +32,10 @@ class GoogleUserProvider implements AuthenticationProviderInterface
     public function __construct($providerKey, OAuth2Client $google, UserProviderInterface $userProvider, UserCheckerInterface $userChecker , EventDispatcherInterface $dispatcher)
     {
         $this->providerKey  = $providerKey;
-        $this->google 		= $google;
+        $this->google         = $google;
         $this->userProvider = $userProvider;
         $this->userChecker  = $userChecker;
-        $this->dispatcher 	= $dispatcher;
+        $this->dispatcher     = $dispatcher;
     }
 
     /**

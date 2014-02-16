@@ -95,20 +95,20 @@ class ProductSpecificationOptionType extends AbstractType
                 'label' => 'Type',
                 'empty_value' => '',
                 'choices' => array(
-                     ProductSpecificationOptionInterface::OPTION_TYPE_SINGLE_VALUE 		=> 'Single Value',
-                     ProductSpecificationOptionInterface::OPTION_TYPE_MULTIPLE_VALUE 	=> 'Multiple Value',
+                     ProductSpecificationOptionInterface::OPTION_TYPE_SINGLE_VALUE         => 'Single Value',
+                     ProductSpecificationOptionInterface::OPTION_TYPE_MULTIPLE_VALUE     => 'Multiple Value',
                 ),
                 'multiple' => false,
             ));
               
               
         } else {
-        	$builder->add('values', 'collection', array(
-        		'type' => new ProductSpecificationOptionValueType($this->getConfigurationManager()),
+            $builder->add('values', 'collection', array(
+                'type' => new ProductSpecificationOptionValueType($this->getConfigurationManager()),
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_delete' => false,
-        	));
+            ));
         }
 
     }
@@ -129,7 +129,7 @@ class ProductSpecificationOptionType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->getConfigurationManager()
-        		->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION),
+                ->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION),
         ));
     }
 }

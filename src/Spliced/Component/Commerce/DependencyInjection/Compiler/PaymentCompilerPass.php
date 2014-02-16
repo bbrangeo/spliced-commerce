@@ -33,7 +33,7 @@ class PaymentCompilerPass implements CompilerPassInterface
 
         
         foreach($container->findTaggedServiceIds('commerce.payment_provider') as $id => $attributes){
-        	$paymentManager->addMethodCall('addProvider', array(new Reference($id)));
+            $paymentManager->addMethodCall('addProvider', array(new Reference($id)));
         }
         
     }

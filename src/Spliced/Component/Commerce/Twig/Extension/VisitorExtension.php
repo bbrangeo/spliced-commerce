@@ -40,20 +40,20 @@ class VisitorExtension extends \Twig_Extension
         return parse_url($url);
     }
     
-	/**
-	 * parseUserAgent
-	 * 
-	 * @param string $string
-	 * @param bool $toString
-	 */
-	public function parseUserAgent($string, $toString = false)
-	{
-		if($toString === true) {
-			$data = UserAgentHelper::parseUserAgent($string);
-			return $data['browser'].' '.$data['version'];
-		}
-		return UserAgentHelper::parseUserAgent($string);
-	}
+    /**
+     * parseUserAgent
+     * 
+     * @param string $string
+     * @param bool $toString
+     */
+    public function parseUserAgent($string, $toString = false)
+    {
+        if($toString === true) {
+            $data = UserAgentHelper::parseUserAgent($string);
+            return $data['browser'].' '.$data['version'];
+        }
+        return UserAgentHelper::parseUserAgent($string);
+    }
     /**
      * {@inheritdoc}
      */

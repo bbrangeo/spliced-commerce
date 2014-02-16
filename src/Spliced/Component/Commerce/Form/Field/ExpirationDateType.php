@@ -23,7 +23,7 @@ use Symfony\Component\Form\Extension\Core\DataTransformer\ValueToDuplicatesTrans
  */
 class ExpirationDateType extends AbstractType
 {
-	
+    
     /**
      * {@inheritdoc}
      */
@@ -46,7 +46,7 @@ class ExpirationDateType extends AbstractType
             ->add($options['second_name'], $options['type'], array_merge($options['options'], $options['second_options']))
         ;
     }
-		
+        
     /**
      * {@inheritdoc}
      */
@@ -62,60 +62,60 @@ class ExpirationDateType extends AbstractType
             'error_bubbling' => false,
         ));
     }
-	
-	/**
-	 * {@inheritDoc}
-	 */
+    
+    /**
+     * {@inheritDoc}
+     */
     public function getParent()
     {
         return 'repeated';
     }
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'expiration_date';
     }
-	
-	/**
-	 * getMonthChoices
-	 * 
-	 * @return array
-	 */
-	 protected function getMonthChoices()
-	 {
-	 	return array(
-	 		1 => 'January',
-	 		2 => 'February',
-	 		3 => 'March',
-	 		4 => 'April',
-	 		5 => 'May',
-	 		6 => 'June',
-	 		7 => 'July',
-	 		8 => 'August',
-	 		9 => 'September',
-	 		10 => 'October',
-	 		11 => 'November',
-	 		12 => 'December',
-		);
-	 }
-	 
-	
-	/**
-	 * getYearChoices
-	 * 
-	 * @return array
-	 */
-	 protected function getYearChoices($startingYear = null)
-	 {
-	 	$return = array();
-		$currentYear = is_null($startingYear) ? date('Y') : (int) $startingYear;
-		
-		for($i = $currentYear; $i <= $currentYear+15; $i++){
-			$return[$i] = $i;
-		}
-		return $return;
-	 }
+    
+    /**
+     * getMonthChoices
+     * 
+     * @return array
+     */
+     protected function getMonthChoices()
+     {
+         return array(
+             1 => 'January',
+             2 => 'February',
+             3 => 'March',
+             4 => 'April',
+             5 => 'May',
+             6 => 'June',
+             7 => 'July',
+             8 => 'August',
+             9 => 'September',
+             10 => 'October',
+             11 => 'November',
+             12 => 'December',
+        );
+     }
+     
+    
+    /**
+     * getYearChoices
+     * 
+     * @return array
+     */
+     protected function getYearChoices($startingYear = null)
+     {
+         $return = array();
+        $currentYear = is_null($startingYear) ? date('Y') : (int) $startingYear;
+        
+        for($i = $currentYear; $i <= $currentYear+15; $i++){
+            $return[$i] = $i;
+        }
+        return $return;
+     }
 }

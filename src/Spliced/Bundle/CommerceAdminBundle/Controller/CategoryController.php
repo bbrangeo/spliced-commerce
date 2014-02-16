@@ -20,25 +20,25 @@ use Spliced\Component\Commerce\Event as Events;
 class CategoryController extends BaseFilterableController
 {
 
-	const FILTER_TAG = 'commerce.category';
-	const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Form\Type\CategoryFilterType';
-	
-	/**
-	 * @Route("/", name="commerce_admin_category")
-	 * @Method("GET")
-	 * @Template()
-	 */
-	public function treeAction()
-	{
-		$categories = $this->get('commerce.admin.document_manager')
-		  ->getRepository('SplicedCommerceAdminBundle:Category')
-		  ->getRootNodes();
+    const FILTER_TAG = 'commerce.category';
+    const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Form\Type\CategoryFilterType';
+    
+    /**
+     * @Route("/", name="commerce_admin_category")
+     * @Method("GET")
+     * @Template()
+     */
+    public function treeAction()
+    {
+        $categories = $this->get('commerce.admin.document_manager')
+          ->getRepository('SplicedCommerceAdminBundle:Category')
+          ->getRootNodes();
 
-		return array(
-			'categories' => $categories,
-		);
-	}
-	
+        return array(
+            'categories' => $categories,
+        );
+    }
+    
     /**
      * Lists all Category entities.
      *
@@ -49,8 +49,8 @@ class CategoryController extends BaseFilterableController
     public function listAction()
     {
         $om = $this->get('commerce.admin.document_manager');
-		
-		// load categorys
+        
+        // load categorys
         $categories = $this->get('knp_paginator')->paginate(
             $om->getRepository('SplicedCommerceAdminBundle:Category')->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page',1),
@@ -93,31 +93,31 @@ class CategoryController extends BaseFilterableController
     public function saveAction(Request $request)
     {
     
-    	$form = $this->get('commerce.admin.form_factory')->createCategoryForm();    	
-    	
-    	if ($form->bind($this->getRequest()) && $form->isValid()) {
+        $form = $this->get('commerce.admin.form_factory')->createCategoryForm();        
+        
+        if ($form->bind($this->getRequest()) && $form->isValid()) {
 
-    		$category = $form->getData();
-    		
-    		$this->get('event_dispatcher')->dispatch(
-        		Events\Event::EVENT_CATEGORY_SAVE,	
-    			new Events\CategorySaveEvent($category)
-    		);
-    		    
-    		$this->get('session')->getFlashBag()->add('success', 'Category Successfully Added');
-    		
-    		if($this->getRequest()->request->has('add_another')){
-    			return $this->redirect($this->generateUrl('commerce_admin_category_new'));
-    		} else {
-    			return $this->redirect($this->generateUrl('commerce_admin_category_edit', array('id' => $category->getId())));
-    		}
-    	}
-    	
-    	$this->get('session')->getFlashBag()->add('error', 'There was an error validating your data');
-    	
-    	return array(
-    		'form'   => $form->createView(),
-    	);
+            $category = $form->getData();
+            
+            $this->get('event_dispatcher')->dispatch(
+                Events\Event::EVENT_CATEGORY_SAVE,    
+                new Events\CategorySaveEvent($category)
+            );
+                
+            $this->get('session')->getFlashBag()->add('success', 'Category Successfully Added');
+            
+            if($this->getRequest()->request->has('add_another')){
+                return $this->redirect($this->generateUrl('commerce_admin_category_new'));
+            } else {
+                return $this->redirect($this->generateUrl('commerce_admin_category_edit', array('id' => $category->getId())));
+            }
+        }
+        
+        $this->get('session')->getFlashBag()->add('error', 'There was an error validating your data');
+        
+        return array(
+            'form'   => $form->createView(),
+        );
     }
     
     
@@ -134,10 +134,10 @@ class CategoryController extends BaseFilterableController
         $category = $this->get('commerce.admin.document_manager')
           ->getRepository('SplicedCommerceAdminBundle:Category')
           ->findOneById($id);
-        	
-		if(!$category){
-			throw $this->createNotFoundException('Category Not Found.');
-		}
+            
+        if(!$category){
+            throw $this->createNotFoundException('Category Not Found.');
+        }
 
         $editForm = $this->get('commerce.admin.form_factory')->createCategoryForm($category);
         
@@ -170,29 +170,29 @@ class CategoryController extends BaseFilterableController
         $category = $this->get('commerce.admin.document_manager')
           ->getRepository('SplicedCommerceAdminBundle:Category')
           ->findOneById($id);
-        	
-		if(!$category){
-			throw $this->createNotFoundException('Category Not Found.');
-		}
-		
+            
+        if(!$category){
+            throw $this->createNotFoundException('Category Not Found.');
+        }
+        
         $deleteForm = $this->createDeleteForm($id);
         $form = $this->get('commerce.admin.form_factory')->createCategoryForm($category);
 
-		if ($form->bind($this->getRequest()) && $form->isValid()) {
+        if ($form->bind($this->getRequest()) && $form->isValid()) {
 
-    		$category = $form->getData();
-    		
-    		$this->get('event_dispatcher')->dispatch(
-        		Events\Event::EVENT_CATEGORY_UPDATE,	
-    			new Events\CategoryUpdateEvent($category)
-    		);
-    		    
-    		$this->get('session')->getFlashBag()->add('success', 'Category Successfully Updated');
-    		
-    		return $this->redirect($this->generateUrl('commerce_admin_category_edit', array('id' => $category->getId())));
-    	}
-    	
-    	$this->get('session')->getFlashBag()->add('error', 'There was an error validating your data');
+            $category = $form->getData();
+            
+            $this->get('event_dispatcher')->dispatch(
+                Events\Event::EVENT_CATEGORY_UPDATE,    
+                new Events\CategoryUpdateEvent($category)
+            );
+                
+            $this->get('session')->getFlashBag()->add('success', 'Category Successfully Updated');
+            
+            return $this->redirect($this->generateUrl('commerce_admin_category_edit', array('id' => $category->getId())));
+        }
+        
+        $this->get('session')->getFlashBag()->add('error', 'There was an error validating your data');
 
         return array(
             'category'    => $category,
@@ -280,70 +280,70 @@ class CategoryController extends BaseFilterableController
         $methodName = 'batch'.ucwords($action);
 
         if(method_exists($this,$methodName)) {
-        	return call_user_func($this, $methodName, $ids);
+            return call_user_func($this, $methodName, $ids);
         }
         
         throw new \InvalidArgumentException(sprintf('Method %s does not exist',$methodName));
     }
     
 
-	/**
-	* batchDelete
-	* 
-	* @param array $ids
-	*/
-	protected function batchDelete(array $ids)
-	{
-		$entities = $em->getRepository('SplicedCommerceAdminBundle:Category')->findById($id);
-		
-		$count = count($entities);
-		
-		foreach($entities as $entity) {
-			$em->remove($entity);
-		}
-		
-		try{
-			$em->flush();
-			$this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s records.', $count));
-		} catch( \Exception $e) {
-			$this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
-		}
-		
-		return $this->redirect($this->generateUrl('category'));
-	}
-	
-	/**
-	 * checkUrlSlugAction
-	 *
-	 * @Route("/check-url-slug", name="commerce_admin_category_check_slug")
-	 * @Template()
-	 */
-	public function checkUrlSlugAction()
-	{
-	    if(!$this->getRequest()->isXmlHttpRequest()) {
-	        throw $this->createNotFoundException('Invalid Request Type');
-	    } else if(!$this->getRequest()->request->has('slug')){
-	        throw new \InvalidArgumentException('Slug POST variable required to check route');
-	    }
-	
-	    $urlSlug = preg_replace('/^\//', '', $this->getRequest()->request->get('slug'));
+    /**
+    * batchDelete
+    * 
+    * @param array $ids
+    */
+    protected function batchDelete(array $ids)
+    {
+        $entities = $em->getRepository('SplicedCommerceAdminBundle:Category')->findById($id);
+        
+        $count = count($entities);
+        
+        foreach($entities as $entity) {
+            $em->remove($entity);
+        }
+        
+        try{
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s records.', $count));
+        } catch( \Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
+        }
+        
+        return $this->redirect($this->generateUrl('category'));
+    }
+    
+    /**
+     * checkUrlSlugAction
+     *
+     * @Route("/check-url-slug", name="commerce_admin_category_check_slug")
+     * @Template()
+     */
+    public function checkUrlSlugAction()
+    {
+        if(!$this->getRequest()->isXmlHttpRequest()) {
+            throw $this->createNotFoundException('Invalid Request Type');
+        } else if(!$this->getRequest()->request->has('slug')){
+            throw new \InvalidArgumentException('Slug POST variable required to check route');
+        }
+    
+        $urlSlug = preg_replace('/^\//', '', $this->getRequest()->request->get('slug'));
 
-	    $category = $this->get('commerce.admin.document_manager')
-	    ->getRepository('SplicedCommerceAdminBundle:Category')
-	    ->findOneByUrlSlug($urlSlug);
-	    	
-	    if(!$category){
-	        return new JsonResponse(array(
-	            'success' => true,
-	            'message' => 'Category URL Slug Does Not Exist',
-	        ));
-	    }
-	
-	    return new JsonResponse(array(
-	        'success' => false,
-	        'message' => 'Category URL Slug Exists',
-	        'id' => $category->getId(),
-	        'url_slug' => $category->getUrlSlug(),
-	    ));
-	}
+        $category = $this->get('commerce.admin.document_manager')
+        ->getRepository('SplicedCommerceAdminBundle:Category')
+        ->findOneByUrlSlug($urlSlug);
+            
+        if(!$category){
+            return new JsonResponse(array(
+                'success' => true,
+                'message' => 'Category URL Slug Does Not Exist',
+            ));
+        }
+    
+        return new JsonResponse(array(
+            'success' => false,
+            'message' => 'Category URL Slug Exists',
+            'id' => $category->getId(),
+            'url_slug' => $category->getUrlSlug(),
+        ));
+    }
 }

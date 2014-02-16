@@ -35,7 +35,7 @@ class SecurityEventListener
         $this->loginManager = $loginManager;
         $this->mailer = $mailer;
         $this->templating = $templating;
-		$this->logger = $logger;
+        $this->logger = $logger;
     }
 
     /**
@@ -47,7 +47,7 @@ class SecurityEventListener
     {
         return $this->em;
     }
-	
+    
     /**
      * getLogger
      * 
@@ -57,7 +57,7 @@ class SecurityEventListener
     {
         return $this->logger;
     }
-	
+    
     /**
      * getUserManager
      * 
@@ -136,8 +136,8 @@ class SecurityEventListener
         $this->em->persist($customer);
 
         $event->getDispatcher()->dispatch(
-        	Events\Event::EVENT_SECURITY_NEW_ACCOUNT_CREATED,
-        	new Events\NewAccountEvent($customer)
+            Events\Event::EVENT_SECURITY_NEW_ACCOUNT_CREATED,
+            new Events\NewAccountEvent($customer)
         );
         
         try {
@@ -145,9 +145,9 @@ class SecurityEventListener
             $this->loginManager->loginUser('main', $customer, null);
         } catch (\Exception $e) {
             $this->getLogger()->exception(sprintf('Exception During Registration Complete Event - %s - %s', 
-            	get_class($e), 
-            	$e->getMessage()
-			));
+                get_class($e), 
+                $e->getMessage()
+            ));
         }
     }
 
@@ -158,7 +158,7 @@ class SecurityEventListener
      */
     public function onNewAccountCreated(Events\NewAccountEvent $event)
     {
-    	// send out notification
+        // send out notification
         $notificationMessage = \Swift_Message::newInstance()
         ->setSubject($this->getConfigurationManager()->get('commerce.sales.email.new_account.subject'))
         ->setFrom($this->getConfigurationManager()->get('commerce.store.email.noreply'))
@@ -167,7 +167,7 @@ class SecurityEventListener
             'user' => $event->getUser()
         )), 'text/html')
         ->addPart($this->getTemplating()->render($this->getConfigurationManager()->get('commerce.template.email.new_account_plain', 'SplicedCommerceBundle:Email:new_account.txt.twig'), array(
-        	'user' => $event->getUser()
+            'user' => $event->getUser()
         )), 'text/plain')
         ->setReturnPath($this->getConfigurationManager()->get('commerce.store.email.bounced'));
 
@@ -208,9 +208,9 @@ class SecurityEventListener
      */
     public function onPayPalLoginCreateUser(Events\PayPalLoginEvent $event)
     {
-        $customer 		= $event->getUser();
+        $customer         = $event->getUser();
         $payPalProfile  = $event->getPayPalProfile();
-        $profile 		= $customer->getProfile();
+        $profile         = $customer->getProfile();
 
         $profile->setFirstName($payPalProfile['result']['given_name'])
         ->setLastName($payPalProfile['result']['family_name']);
@@ -380,7 +380,7 @@ class SecurityEventListener
         ->setFrom($this->getConfigurationManager()->get('commerce.store.email.from'))
         ->setTo($user->getEmail())
         ->setBody($this->getTemplating()->render($this->getConfigurationManager()->get('commerce.template.email.password_reset', 'SplicedCommerceBundle:Email:password_reset.html.twig'), array(
-        	'user' => $user,
+            'user' => $user,
         )), 'text/html')
         ->addPart($this->getTemplating()->render($this->getConfigurationManager()->get('commerce.template.email.password_reset_plain', 'SplicedCommerceBundle:Email:password_reset.txt.twig'), array(
             'user' => $user,
@@ -425,10 +425,10 @@ class SecurityEventListener
         ->setFrom($this->getConfigurationManager()->get('commerce.store.email.from'))
         ->setTo($user->getEmail())
         ->setBody($this->getTemplating()->render($this->getConfigurationManager()->get('commerce.template.email.force_password_reset', 'SplicedCommerceBundle:Email:force_password_reset.html.twig'), array(
-        	'user' => $user,
+            'user' => $user,
         )), 'text/html')
         ->addPart($this->getTemplating()->render($this->getConfigurationManager()->get('commerce.template.email.force_password_reset_plain', 'SplicedCommerceBundle:Email:force_password_reset.txt.twig'), array(
-        	'user' => $user,
+            'user' => $user,
         )), 'text/plain')
         ->setReturnPath($this->getConfigurationManager()->get('commerce.store.email.bounced'));
         

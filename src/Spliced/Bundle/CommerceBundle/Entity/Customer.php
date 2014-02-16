@@ -193,30 +193,30 @@ class Customer extends BaseCustomer
      */
     public function hasSavedAddress(CustomerAddressInterface $compareAddress)
     {
-    	if(count($this->addresses)){
-    		foreach($this->addresses as $address){
-    			if(strtolower($address->__toString()) == strtolower($compareAddress->__toString())){
-    				return true;
-    			}
-    		}
-    	}
-    	return false;
+        if(count($this->addresses)){
+            foreach($this->addresses as $address){
+                if(strtolower($address->__toString()) == strtolower($compareAddress->__toString())){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-	
-	/**
-	 * 
-	 */
-	 public function getSaveAddress()
-	 {
-	 	return $this->saveAddress;
-	 }
-	 
-	 /**
-	  * 
-	  */
-	  public function setSaveAddress($saveAddress)
-	  {
-	  	$this->saveAddress = $saveAddress;
-		return $this;
-	  }
+    
+    /**
+     * 
+     */
+     public function getSaveAddress()
+     {
+         return $this->saveAddress;
+     }
+     
+     /**
+      * 
+      */
+      public function setSaveAddress($saveAddress)
+      {
+          $this->saveAddress = $saveAddress;
+        return $this;
+      }
 }

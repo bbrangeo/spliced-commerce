@@ -32,9 +32,9 @@ use Spliced\Component\Commerce\Event as Events;
 class OrderController extends BaseFilterableController
 {
 
-	const FILTER_TAG = 'commerce.order';
-	const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Form\Type\OrderFilterType';
-	
+    const FILTER_TAG = 'commerce.order';
+    const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Form\Type\OrderFilterType';
+    
     /**
      * Lists all Order entities.
      *
@@ -45,8 +45,8 @@ class OrderController extends BaseFilterableController
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-		
-		// load orders
+        
+        // load orders
         $orders = $this->get('knp_paginator')->paginate(
             $em->getRepository('SplicedCommerceAdminBundle:Order')->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page', 1),
@@ -70,24 +70,24 @@ class OrderController extends BaseFilterableController
      */
     public function incompleteAction()
     {
-    	$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
     
-    	$query = $em->getRepository('SplicedCommerceAdminBundle:Order')
-    		->getAdminIncompleteListQuery($this->getFilters('incomplete'));
-    	
-    	// load orders
-    	$entities = $this->get('knp_paginator')->paginate(
-    		$query,
-    		$this->getRequest()->query->get('page',1),
-    		$this->getRequest()->query->get('limit',25)
-    	);
+        $query = $em->getRepository('SplicedCommerceAdminBundle:Order')
+            ->getAdminIncompleteListQuery($this->getFilters('incomplete'));
+        
+        // load orders
+        $entities = $this->get('knp_paginator')->paginate(
+            $query,
+            $this->getRequest()->query->get('page',1),
+            $this->getRequest()->query->get('limit',25)
+        );
     
-    	$filterForm = $this->createForm(new OrderFilterType());
+        $filterForm = $this->createForm(new OrderFilterType());
     
-    	return array(
-    			'entities' => $entities,
-    			'filterForm' => $filterForm->createView(),
-    	);
+        return array(
+                'entities' => $entities,
+                'filterForm' => $filterForm->createView(),
+        );
     }
     
     /**
@@ -147,10 +147,10 @@ class OrderController extends BaseFilterableController
         $em = $this->getDoctrine()->getManager();
 
         try{
-        	$order = $em->getRepository('SplicedCommerceAdminBundle:Order')->findOneById($id);
-		} catch(NoResultException $e) {
-			throw $this->createNotFoundException('Unable to find Order.');
-		}
+            $order = $em->getRepository('SplicedCommerceAdminBundle:Order')->findOneById($id);
+        } catch(NoResultException $e) {
+            throw $this->createNotFoundException('Unable to find Order.');
+        }
 
         $editForm = $this->createForm(new OrderType(), $order);
         $deleteForm = $this->createDeleteForm($id);
@@ -207,18 +207,18 @@ class OrderController extends BaseFilterableController
      */
     public function viewAction($id)
     {
-    	$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
     
-    	try{
-    		$order = $em->getRepository('SplicedCommerceAdminBundle:Order')->findOneById($id);
-    	} catch(NoResultException $e) {
-    		throw $this->createNotFoundException('Unable to find Order.');
-    	}    
+        try{
+            $order = $em->getRepository('SplicedCommerceAdminBundle:Order')->findOneById($id);
+        } catch(NoResultException $e) {
+            throw $this->createNotFoundException('Unable to find Order.');
+        }    
     
-    	return array(
-    		'order'      => $order,
-    		'delete_form' => $this->createDeleteForm($id)->createView(),
-    	);
+        return array(
+            'order'      => $order,
+            'delete_form' => $this->createDeleteForm($id)->createView(),
+        );
     }
     
     /**
@@ -299,105 +299,105 @@ class OrderController extends BaseFilterableController
         $ids = $this->getRequest()->request->get('ids');
         
         if(!count($ids)){
-        	$this->get('session')->getFlashBag()->add('error', 'No orders were selected');
-        	return $this->redirect($this->generateUrl('commerce_admin_order'));
+            $this->get('session')->getFlashBag()->add('error', 'No orders were selected');
+            return $this->redirect($this->generateUrl('commerce_admin_order'));
         }
         
         $action = $this->getRequest()->request->get('batchAction');
         $methodName = 'batch'.str_replace(' ','',ucwords($action));
 
         if(method_exists($this,$methodName)) {
-        	return call_user_func(array($this, $methodName), $ids);
+            return call_user_func(array($this, $methodName), $ids);
         }
         
         throw new \InvalidArgumentException(sprintf('Method %s does not exist',$methodName));
     }
     
 
-	/**
-	* batchDelete
-	* 
-	* @param array $ids
-	*/
-	protected function batchDelete(array $ids)
-	{
-		$orders = $this->getDoctrine()->getRepository('SplicedCommerceAdminBundle:Order')->findById($ids);
-		
-		$count = count($orders);
-		
-		$deleted = 0;
-		$undeleteable = 0;
-		foreach($orders as $order) {
-			if(!in_array($order->getOrderStatus(), array(
-				OrderInterface::STATUS_CANCELLED,
-				OrderInterface::STATUS_ABANDONED
-			))){
-				$undeleteable++;
-				continue;
-			}
-			$this->getDoctrine()->getManager()->remove($order);
-			$deleted++;
-		} 
-		
-		try{
-			$this->getDoctrine()->getManager()->flush();
-			
-			if($deleted > 0){
-				$this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s orders.', $count));
-			}
-			if($undeleteable > 0){
-				$this->get('session')->getFlashBag()->add('error', sprintf('%s orders could not be deleted. Their current status prevents them from being deleted. You will need to change their status to cancelled before deleting.', $undeleteable));
-			}
-		} catch( \Exception $e) {
-			$this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
-		}
-		
-		return $this->redirect($this->generateUrl('commerce_admin_order'));
-	}
-	
-	/**
+    /**
+    * batchDelete
+    * 
+    * @param array $ids
+    */
+    protected function batchDelete(array $ids)
+    {
+        $orders = $this->getDoctrine()->getRepository('SplicedCommerceAdminBundle:Order')->findById($ids);
+        
+        $count = count($orders);
+        
+        $deleted = 0;
+        $undeleteable = 0;
+        foreach($orders as $order) {
+            if(!in_array($order->getOrderStatus(), array(
+                OrderInterface::STATUS_CANCELLED,
+                OrderInterface::STATUS_ABANDONED
+            ))){
+                $undeleteable++;
+                continue;
+            }
+            $this->getDoctrine()->getManager()->remove($order);
+            $deleted++;
+        } 
+        
+        try{
+            $this->getDoctrine()->getManager()->flush();
+            
+            if($deleted > 0){
+                $this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s orders.', $count));
+            }
+            if($undeleteable > 0){
+                $this->get('session')->getFlashBag()->add('error', sprintf('%s orders could not be deleted. Their current status prevents them from being deleted. You will need to change their status to cancelled before deleting.', $undeleteable));
+            }
+        } catch( \Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
+        }
+        
+        return $this->redirect($this->generateUrl('commerce_admin_order'));
+    }
+    
+    /**
      * @Route("/{id}/incomplete-followup", name="commerce_admin_order_incomplete_followup")
      * @Method("GET")
      * @Template()
      */
-	public function incompleteOrderFollowupAction($id)
-	{
-		$em = $this->getDoctrine()->getManager();
-		
-		try{
-			$order = $em->getRepository('SplicedCommerceAdminBundle:Order')->findOneById($id);
-		} catch(NoResultException $e) {
-			throw $this->createNotFoundException('Unable to find Order.');
-		}
-		
-		// available for notification
-		if(!in_array($order->getOrderStatus(), array(OrderInterface::STATUS_INCOMPLETE,OrderInterface::STATUS_ABANDONED))){ 
-			$this->get('session')->getFlashBag()->add('error', 'Order is not in a status to have a incomplete order follow up email');
-			return $this->redirect($this->generateUrl('commerce_admin_order_edit', array('id' => $order->getId())));
-		} else if(! $order->getEmail()){
-			$this->get('session')->getFlashBag()->add('error', 'Order has no email address to send an incomplete order follow up email');
-			return $this->redirect($this->generateUrl('commerce_admin_order_edit', array('id' => $order->getId())));
-		}
-		
-		// check if we have already sent one
-		$currentDateTime = new \DateTime('now');
-		foreach($order->getMemos() as $memo){
-			if($memo->getNotificationType() == 'incomplete_order_followup'){
-				if(!$currentDateTime->diff($memo->getCreatedAt())->format('%d')){
-					$this->get('session')->getFlashBag()->add('error', 'Notification Has Already Been Sent in the past 24 hours');
-					return $this->redirect($this->generateUrl('commerce_admin_order_edit', array('id' => $order->getId())));
-				}
-			}
-		}
-		
-		
-		$this->get('event_dispatcher')->dispatch(
-			Events\Event::EVENT_ORDER_INCOMPLETE_FOLLOWUP,
-			new Events\OrderUpdateEvent($order)
-		);
-		
-		$this->get('session')->getFlashBag()->add('success', 'Customer Successfully Notified');
-		return $this->redirect($this->generateUrl('commerce_admin_order_edit', array('id' => $order->getId())));
-	}
+    public function incompleteOrderFollowupAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        
+        try{
+            $order = $em->getRepository('SplicedCommerceAdminBundle:Order')->findOneById($id);
+        } catch(NoResultException $e) {
+            throw $this->createNotFoundException('Unable to find Order.');
+        }
+        
+        // available for notification
+        if(!in_array($order->getOrderStatus(), array(OrderInterface::STATUS_INCOMPLETE,OrderInterface::STATUS_ABANDONED))){ 
+            $this->get('session')->getFlashBag()->add('error', 'Order is not in a status to have a incomplete order follow up email');
+            return $this->redirect($this->generateUrl('commerce_admin_order_edit', array('id' => $order->getId())));
+        } else if(! $order->getEmail()){
+            $this->get('session')->getFlashBag()->add('error', 'Order has no email address to send an incomplete order follow up email');
+            return $this->redirect($this->generateUrl('commerce_admin_order_edit', array('id' => $order->getId())));
+        }
+        
+        // check if we have already sent one
+        $currentDateTime = new \DateTime('now');
+        foreach($order->getMemos() as $memo){
+            if($memo->getNotificationType() == 'incomplete_order_followup'){
+                if(!$currentDateTime->diff($memo->getCreatedAt())->format('%d')){
+                    $this->get('session')->getFlashBag()->add('error', 'Notification Has Already Been Sent in the past 24 hours');
+                    return $this->redirect($this->generateUrl('commerce_admin_order_edit', array('id' => $order->getId())));
+                }
+            }
+        }
+        
+        
+        $this->get('event_dispatcher')->dispatch(
+            Events\Event::EVENT_ORDER_INCOMPLETE_FOLLOWUP,
+            new Events\OrderUpdateEvent($order)
+        );
+        
+        $this->get('session')->getFlashBag()->add('success', 'Customer Successfully Notified');
+        return $this->redirect($this->generateUrl('commerce_admin_order_edit', array('id' => $order->getId())));
+    }
 
 }

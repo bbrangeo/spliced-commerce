@@ -25,7 +25,7 @@ class ProductAttributeController extends BaseFilterableController
      */
     public function deleteAction($productId, $attributeId)
     {
-    	$product = $this->get('commerce.admin.document_manager')
+        $product = $this->get('commerce.admin.document_manager')
           ->getRepository('SplicedCommerceAdminBundle:Product')
           ->findOneById($productId);
         
@@ -43,9 +43,9 @@ class ProductAttributeController extends BaseFilterableController
  
         $productAttribute = null;
         foreach($product->getAttributes() as $attribute){
-        	if ($attribute->getId() == $attributeId) {
-        		$productAttribute = $attribute;
-        	}
+            if ($attribute->getId() == $attributeId) {
+                $productAttribute = $attribute;
+            }
         }
         
         if(!$attribute){
@@ -63,8 +63,8 @@ class ProductAttributeController extends BaseFilterableController
         $product->removeAttribute($attribute);
         
         $this->get('event_dispatcher')->dispatch(
-        	Events\Event::EVENT_PRODUCT_UPDATE,
-        	new Events\ProductUpdateEvent($product)
+            Events\Event::EVENT_PRODUCT_UPDATE,
+            new Events\ProductUpdateEvent($product)
         );
         
         if($this->getRequest()->isXmlHttpRequest()){

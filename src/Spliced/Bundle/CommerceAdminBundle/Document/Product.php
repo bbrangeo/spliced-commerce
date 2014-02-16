@@ -14,8 +14,8 @@ use Spliced\Component\Commerce\Model\Product as BaseProduct;
 
 /**
  * @MongoDB\Document(
- * 	collection="product", 
- * 	repositoryClass="Spliced\Bundle\CommerceAdminBundle\Repository\ProductDocumentRepository"
+ *     collection="product", 
+ *     repositoryClass="Spliced\Bundle\CommerceAdminBundle\Repository\ProductDocumentRepository"
  * ) 
  * @MongoDB\MappedSuperclass()
  */ 

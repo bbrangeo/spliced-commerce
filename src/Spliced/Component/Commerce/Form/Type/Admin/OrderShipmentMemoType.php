@@ -27,15 +27,15 @@ class OrderShipmentMemoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$builder
-		  ->add('createdBy')
-		  ->add('trackingNumber', 'text')
-		  ->add('memo', 'textarea')
-		  ->add('notify', 'checkbox', array(
-		      'mapped' => false, 
-		      'required' => false, 
-		      'value' => 1
-		  ));
+        $builder
+          ->add('createdBy')
+          ->add('trackingNumber', 'text')
+          ->add('memo', 'textarea')
+          ->add('notify', 'checkbox', array(
+              'mapped' => false, 
+              'required' => false, 
+              'value' => 1
+          ));
     }
     
     /**

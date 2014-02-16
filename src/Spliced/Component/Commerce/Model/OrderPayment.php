@@ -80,17 +80,17 @@ abstract class OrderPayment implements OrderPaymentInterface
      * @Gedmo\Timestampable(on="update")
      */
     protected $updatedAt;
-	
+    
     /**
      * Constructor
      */
     public function __construct()
     {
-    	$this->memos = new ArrayCollection();
-    	$this->paymentStatus = OrderInterface::STATUS_INCOMPLETE;
+        $this->memos = new ArrayCollection();
+        $this->paymentStatus = OrderInterface::STATUS_INCOMPLETE;
     
-    	$this->createdAt = new \DateTime('now');
-    	$this->updatedAt = new \DateTime('now');
+        $this->createdAt = new \DateTime('now');
+        $this->updatedAt = new \DateTime('now');
     }
     
     /**
@@ -100,7 +100,7 @@ abstract class OrderPayment implements OrderPaymentInterface
      */
     public function getId()
     {
-    	return $this->id;
+        return $this->id;
     }
     
     /**
@@ -247,40 +247,40 @@ abstract class OrderPayment implements OrderPaymentInterface
         return $this;
     }
     
-	/**
-	 * 
-	 */
-	 public function getCreditCardMethods()
-	 {
-	 	return $this->creditCardMethods;
-	 }
+    /**
+     * 
+     */
+     public function getCreditCardMethods()
+     {
+         return $this->creditCardMethods;
+     }
     
-	/**
-	 * setCreditCardMethods
-	 * 
-	 * @param array $methods
-	 */
-	 public function setCreditCardMethods($methods)
-	 {
-	 	if(!is_array($methods)){
-	 		$unserialized = unserialize($methods);
-			if($unserialized !== false){
-				$this->creditCardMethods = $unserialized;
-				return $this;
-			}
-	 	}
-	 	$this->creditCardMethods = $methods;
-		return $this;
-	 }
-	 
-	/**
-	 * addCreditCardMethod
-	 * 
-	 * @param string $method
-	 */
-	 public function addCreditCardMethod($method)
-	 {
-	 	return $this->creditCardMethods[] = $method;
-	 }
-	 
+    /**
+     * setCreditCardMethods
+     * 
+     * @param array $methods
+     */
+     public function setCreditCardMethods($methods)
+     {
+         if(!is_array($methods)){
+             $unserialized = unserialize($methods);
+            if($unserialized !== false){
+                $this->creditCardMethods = $unserialized;
+                return $this;
+            }
+         }
+         $this->creditCardMethods = $methods;
+        return $this;
+     }
+     
+    /**
+     * addCreditCardMethod
+     * 
+     * @param string $method
+     */
+     public function addCreditCardMethod($method)
+     {
+         return $this->creditCardMethods[] = $method;
+     }
+     
 }

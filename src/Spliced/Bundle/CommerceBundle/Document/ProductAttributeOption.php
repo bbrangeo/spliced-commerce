@@ -14,8 +14,8 @@ use Spliced\Component\Commerce\Model\ProductAttributeOption as BaseProductAttrib
 
 /**
  * @MongoDB\Document(
- * 	collection="product_attribute_option", 
- * 	repositoryClass="Spliced\Bundle\CommerceBundle\Repository\ProductAttributeOptionDocumentRepository"
+ *     collection="product_attribute_option", 
+ *     repositoryClass="Spliced\Bundle\CommerceBundle\Repository\ProductAttributeOptionDocumentRepository"
  * )
  * @MongoDB\EmbeddedDocument()
  * @MongoDB\MappedSuperclass()

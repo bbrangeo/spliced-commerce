@@ -30,7 +30,7 @@ class ProductImageDeleteEvent extends Event
      */
     public function __construct(ProductInterface $product, ProductImage $productImage)
     {
-        $this->product 	= $product;
+        $this->product     = $product;
         $this->productImage = $productImage;
     }
 

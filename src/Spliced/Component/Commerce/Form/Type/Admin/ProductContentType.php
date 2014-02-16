@@ -22,51 +22,51 @@ use Spliced\Component\Commerce\Form\Field\KeyValueType;
  */
 class ProductContentType extends AbstractType
 {
-	/**
-	 * Constructor
-	 *
-	 * @param ConfigurationManager $configurationManager
-	 */
-	public function __construct(ConfigurationManager $configurationManager)
-	{
-		$this->configurationManager = $configurationManager;
-	}
-	
-	/**
-	 * getConfigurationManager
-	 *
-	 * @return ConfigurationManager
-	 */
-	protected function getConfigurationManager()
-	{
-		return $this->configurationManager;
-	}
-	
+    /**
+     * Constructor
+     *
+     * @param ConfigurationManager $configurationManager
+     */
+    public function __construct(ConfigurationManager $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+    }
+    
+    /**
+     * getConfigurationManager
+     *
+     * @return ConfigurationManager
+     */
+    protected function getConfigurationManager()
+    {
+        return $this->configurationManager;
+    }
+    
     /**
      * {@inheritDoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        	->add('language', 'language', array('required' => true, 'label' => 'Language'))
-        	->add('name', 'text', array('required' => false, 'label' => 'Product Name'))
-        	->add('metaDescription', 'textarea', array('required' => false, 'label' => 'META Description'))
-        	->add('metaKeywords', 'textarea', array('required' => false, 'label' => 'META Keywords'))
-        	->add('shortDescription', 'textarea', array('required' => false, 'label' => 'Short Description'))
-        	->add('longDescription', 'textarea', array('required' => false, 'label' => 'Long Description'))
-        	->add('viewLayout', 'text', array('required' => false))
+            ->add('language', 'language', array('required' => true, 'label' => 'Language'))
+            ->add('name', 'text', array('required' => false, 'label' => 'Product Name'))
+            ->add('metaDescription', 'textarea', array('required' => false, 'label' => 'META Description'))
+            ->add('metaKeywords', 'textarea', array('required' => false, 'label' => 'META Keywords'))
+            ->add('shortDescription', 'textarea', array('required' => false, 'label' => 'Short Description'))
+            ->add('longDescription', 'textarea', array('required' => false, 'label' => 'Long Description'))
+            ->add('viewLayout', 'text', array('required' => false))
             ->add('viewStylesheets', 'collection', array(
-	            'type' => 'text',
-	            'allow_add' => true,
-	            'by_reference' => false,
-	            'allow_delete' => true,
-	        ))	                	        
-        	->add('viewJavascripts', 'collection', array(
-	            'type' => 'text',
-	            'allow_add' => true,
-	            'by_reference' => false,
-	            'allow_delete' => true,
-	        ))
+                'type' => 'text',
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+            ))                                
+            ->add('viewJavascripts', 'collection', array(
+                'type' => 'text',
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+            ))
         ;
     }
 
@@ -83,8 +83,8 @@ class ProductContentType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-    	$resolver->setDefaults(array(
-    		'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_CONTENT),
-    	));
+        $resolver->setDefaults(array(
+            'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_CONTENT),
+        ));
     }
 }

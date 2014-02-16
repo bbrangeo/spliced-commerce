@@ -23,15 +23,15 @@ class CreditCardFormType extends AbstractType
 {
 
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('cardNumber',  'text')
             ->add('cardExpirationMonth',  'choice', array('choices' => $this->getMonthChoices(), 'empty_value' => '',))
-			->add('cardExpirationYear', 'choice', array('choices' => $this->getYearChoices(), 'empty_value' => '',))
+            ->add('cardExpirationYear', 'choice', array('choices' => $this->getYearChoices(), 'empty_value' => '',))
             ->add('cardCvv',  'text');
     }
   
@@ -46,42 +46,42 @@ class CreditCardFormType extends AbstractType
             'cascade_validation' => true,
         ));
     }
-	
-	/**
-	 * {@inheritDoc}
-	 */
+    
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'credit_card';
     }
-	
-	/**
-	 * getMonthChoices
-	 * 
-	 * @return array
-	 */
-	 protected function getMonthChoices()
-	 {
-	 	$return = array();
-		for($i=1; $i <= 12; $i++){
-			$padded = str_pad($i, 2, '0', STR_PAD_LEFT);
-			$return[$padded] = $padded;
-		}
-		return $return;
-	 }
-	 
-	
-	/**
-	 * getYearChoices
-	 * 
-	 * @return array
-	 */
-	 protected function getYearChoices()
-	 {
-	 	$return = array();
-		for($i=date('Y'); $i <= (date('Y')+8); $i++){
-			$return[$i] = $i;
-		}
-		return $return;
-	 }
+    
+    /**
+     * getMonthChoices
+     * 
+     * @return array
+     */
+     protected function getMonthChoices()
+     {
+         $return = array();
+        for($i=1; $i <= 12; $i++){
+            $padded = str_pad($i, 2, '0', STR_PAD_LEFT);
+            $return[$padded] = $padded;
+        }
+        return $return;
+     }
+     
+    
+    /**
+     * getYearChoices
+     * 
+     * @return array
+     */
+     protected function getYearChoices()
+     {
+         $return = array();
+        for($i=date('Y'); $i <= (date('Y')+8); $i++){
+            $return[$i] = $i;
+        }
+        return $return;
+     }
 }

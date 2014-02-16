@@ -72,7 +72,7 @@ abstract class ProductAttributeOption implements ProductAttributeOptionInterface
      * @MongoDB\Index()
      */
     protected $onView;
-	
+    
     /**
      * @MongoDB\Boolean
      * @MongoDB\Index()
@@ -108,10 +108,10 @@ abstract class ProductAttributeOption implements ProductAttributeOptionInterface
         $this->setCreatedAt(new \DateTime());
         $this->setUpdatedAt(new \DateTime());
         $this->setOptionType(ProductAttributeOptionInterface::OPTION_TYPE_USER_DATA_INPUT);
-		$this->onView = false;
-		$this->onList = false;
-		$this->filterable = false;
-		$this->optionData = array();
+        $this->onView = false;
+        $this->onList = false;
+        $this->filterable = false;
+        $this->optionData = array();
     }
 
     /**
@@ -256,7 +256,7 @@ abstract class ProductAttributeOption implements ProductAttributeOptionInterface
     {
         return $this->onList;
     }
-	
+    
     /**
      * setOnView
      *
@@ -436,27 +436,27 @@ abstract class ProductAttributeOption implements ProductAttributeOptionInterface
     {
         return $this->position;
     }
-	
-	/**
-	 * getOptionData
-	 * 
-	 * @return array
-	 */
-	 public function getOptionData()
-	 {
-	 	return $this->optionData;
-	 }
-	 
-	
-	/**
-	 * setOptionData
-	 * 
-	 * @param array $optionData
-	 */
-	 public function setOptionData(array $optionData = array())
-	 {
-	 	$this->optionData = $optionData;
-		return $this;
-	 }
-	 
+    
+    /**
+     * getOptionData
+     * 
+     * @return array
+     */
+     public function getOptionData()
+     {
+         return $this->optionData;
+     }
+     
+    
+    /**
+     * setOptionData
+     * 
+     * @param array $optionData
+     */
+     public function setOptionData(array $optionData = array())
+     {
+         $this->optionData = $optionData;
+        return $this;
+     }
+     
 }

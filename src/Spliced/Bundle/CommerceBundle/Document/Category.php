@@ -15,7 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @MongoDB\Document(
- * 	collection="category",
+ *     collection="category",
  *  repositoryClass="Spliced\Bundle\CommerceBundle\Repository\CategoryDocumentRepository"
  * )
  * @MongoDB\EmbeddedDocument

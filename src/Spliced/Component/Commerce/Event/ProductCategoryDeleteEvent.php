@@ -30,8 +30,8 @@ class ProductCategoryDeleteEvent extends Event
      */
     public function __construct(ProductInterface $product, CategoryInterface $productCategory)
     {
-        $this->product 	= $product;
-        $this->productCategory 	= $productCategory;
+        $this->product     = $product;
+        $this->productCategory     = $productCategory;
     }
 
     /**

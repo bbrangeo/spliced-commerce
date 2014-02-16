@@ -26,7 +26,7 @@ class CartExtension extends \Twig_Extension
     public function __construct(CartManager $cartManager, ProductPriceHelper $priceHelper)
     {
        $this->cartManager = $cartManager;
-	   $this->priceHelper = $priceHelper;
+       $this->priceHelper = $priceHelper;
     }
 
     /**
@@ -38,7 +38,7 @@ class CartExtension extends \Twig_Extension
     {
         return $this->priceHelper;
     }
-	
+    
     /**
      * getCartManager
      * 

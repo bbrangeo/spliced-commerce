@@ -19,7 +19,7 @@ use Spliced\Component\Commerce\Event as Events;
  */
 class ProductTierPriceController extends BaseFilterableController
 {
-	
+    
     /**
      * @Route("/delete/{tierPriceId}", name="commerce_admin_product_tier_price_delete")
      * @Method({"GET","POST"})
@@ -45,9 +45,9 @@ class ProductTierPriceController extends BaseFilterableController
         
         $tierPrice = null;
         foreach($product->getTierPrices() as $_tierPrice){
-        	if ($_tierPrice->getId() == $tierPriceId) {
-        		$tierPrice = $_tierPrice;
-        	}
+            if ($_tierPrice->getId() == $tierPriceId) {
+                $tierPrice = $_tierPrice;
+            }
         }
         
         if(!$tierPrice){

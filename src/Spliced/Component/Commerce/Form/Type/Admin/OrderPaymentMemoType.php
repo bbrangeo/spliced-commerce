@@ -25,10 +25,10 @@ class OrderPaymentMemoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-    	$builder
-    	->add('createdBy')
-    	->add('amountPaid', 'number')
-    	->add('memo', 'textarea');
+        $builder
+        ->add('createdBy')
+        ->add('amountPaid', 'number')
+        ->add('memo', 'textarea');
     }
     
     /**

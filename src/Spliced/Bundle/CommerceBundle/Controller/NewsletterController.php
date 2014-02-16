@@ -34,11 +34,11 @@ class NewsletterController extends Controller
         
         $newsletterSubscriber = new NewsletterSubscriber();
         
-    	if($this->get('security.context')->isGranted('ROLE_USER')){
-    		$newsletterSubscriber->setEmail($this->get('security.context')->getToken()->getUser()->getEmail());
-    	}
-    	
-    	$form = $this->createForm(new NewsletterSubscribeFormType(), $newsletterSubscriber);
+        if($this->get('security.context')->isGranted('ROLE_USER')){
+            $newsletterSubscriber->setEmail($this->get('security.context')->getToken()->getUser()->getEmail());
+        }
+        
+        $form = $this->createForm(new NewsletterSubscribeFormType(), $newsletterSubscriber);
         
         if($this->getRequest()->isMethod('POST')) {
             

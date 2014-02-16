@@ -57,145 +57,145 @@ class ProductCrawlCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
       
-    	$products = $this->getContainer()->get('commerce.product.repository')
-    	  ->createQueryBuilder('product')
-    	  ->select('product, route')
-    	  ->leftJoin('product.route', 'route')
-    	  ->orderBy('product.sku', 'ASC')
-    	  ->getQuery()
-    	  ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-    	  ->getResult();
-    	
-    	$this->writeLine(sprintf('Loaded %s Products for Crawl Testing', count($products)));
-    	
-    	if(!is_dir($this->kernel->getRootDir().'/../../reports')){
-    		mkdir($this->kernel->getRootDir().'/../../reports');
-    	}
-    	
-    	$fh = fopen($this->kernel->getRootDir().'/../../reports/product-crawl-report-'.time().'.csv', 'a+');
-    	
-    	foreach($products as $product){
-    		$currentRow = array(
-    			'id' => $product->getId(),
-    			'name' => $product->getName(),
-    			'sku' => $product->getSku(),
-    			'has_route' => 'Unchecked',
-    			'view_ok' => 'Unchecked',
-    			'add_ok' => 'Unchecked',
-    		);
-    		
-    		
-    		if($product->getRoute()){
-    			$currentRow['has_route'] = 'Yes';
-    			$viewUrl = sprintf('%s%s', 
+        $products = $this->getContainer()->get('commerce.product.repository')
+          ->createQueryBuilder('product')
+          ->select('product, route')
+          ->leftJoin('product.route', 'route')
+          ->orderBy('product.sku', 'ASC')
+          ->getQuery()
+          ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
+          ->getResult();
+        
+        $this->writeLine(sprintf('Loaded %s Products for Crawl Testing', count($products)));
+        
+        if(!is_dir($this->kernel->getRootDir().'/../../reports')){
+            mkdir($this->kernel->getRootDir().'/../../reports');
+        }
+        
+        $fh = fopen($this->kernel->getRootDir().'/../../reports/product-crawl-report-'.time().'.csv', 'a+');
+        
+        foreach($products as $product){
+            $currentRow = array(
+                'id' => $product->getId(),
+                'name' => $product->getName(),
+                'sku' => $product->getSku(),
+                'has_route' => 'Unchecked',
+                'view_ok' => 'Unchecked',
+                'add_ok' => 'Unchecked',
+            );
+            
+            
+            if($product->getRoute()){
+                $currentRow['has_route'] = 'Yes';
+                $viewUrl = sprintf('%s%s', 
                     $this->getContainer()->get('commerce.configuration')->get('commerce.store.url'),
                     $product->getRoute()->getRequestPath()
                 );
-    		} else {
-    			$currentRow['has_route'] = 'No';
-    			 $viewUrl = sprintf('%s/%s', 
-    			 $this->getContainer()->get('commerce.configuration')->get('commerce.store.url'),
-    			 $product->getUrlSlug()
+            } else {
+                $currentRow['has_route'] = 'No';
+                 $viewUrl = sprintf('%s/%s', 
+                 $this->getContainer()->get('commerce.configuration')->get('commerce.store.url'),
+                 $product->getUrlSlug()
                 );
-    		}
+            }
 
-    		if($currentRow['has_route'] == 'Yes'){
-    			$viewRequest = $this->client->createRequest(
-		            'GET',
-		            $viewUrl,
-		            array('Referer' => $this->getContainer()->get('commerce.configuration')->get('commerce.store.url')),
-		            null
-		        );
-    			
-    			// Let BrowserKit handle redirects
-    			$responseOk = false;
-    			try {
-    				$response = $viewRequest->send();
-    				
-    				$responseOk = true;
-    			} catch (CurlException $e) {			
-    				
-    				$response = $e->getResponse();
-    				$errorMessage = $e->getMessage();
-    				
-    			} catch (BadResponseException $e) {
-    				$response = $e->getResponse();
-    				$errorMessage = $e->getMessage();
-    				
-    			} catch(ClientErrorResponseException $e){
-    				$response = $e->getResponse();
-    				$errorMessage = $e->getMessage();
-    				
-    			} catch(ServerErrorResponseException $e){
-	    			$response = $e->getResponse();
-	    			$errorMessage = $e->getMessage();
-	    		}
-    			
-    			if($responseOk === true){
-	    			if($response->getStatusCode() == 200){
-	    				$currentRow['view_ok'] = 'Yes';
-	    			} else {
-	    				$currentRow['view_ok'] = 'No - '.$response->getStatusCode();
-	    			}
-	    			
-	    			
-	    			if($currentRow['view_ok'] == 'Yes'){
-	    				$addToCartRequest = $this->client->createRequest(
-	    					'POST',
-	    					$this->getContainer()->get('commerce.configuration')->get('commerce.store.url').'/cart/add',
-	    					array('X-Requested-With' => 'XMLHttpRequest'),
-	    					array(
-	    						'id' => $product->getId(),
-	    						'quantity' => 1, 
-	    					)
-	    				);
-	    				
-	    				$responseOk = false;
-	    				try {
-	    					$response = $addToCartRequest->send();
-	    				
-	    					$responseOk = true;
-	    				} catch (CurlException $e) {
-	    					$response = $e->getResponse();
-	    					$errorMessage = $e->getMessage();
-	    				} catch (BadResponseException $e) {
-	    					$response = $e->getResponse();
-	    					$errorMessage = $e->getMessage();
-	    				} catch(ServerErrorResponseException $e){
-	    					$response = $e->getResponse();
-	    					$errorMessage = $e->getMessage();
-	    				} catch(ClientErrorResponseException $e){
-    						$response = $e->getResponse();
-    						$errorMessage = $e->getMessage();
-    					}
-    					
-	    				//die($response->getBody(true));
-	    				
-	    				if($responseOk === true){
-	    					if($response->getStatusCode() == 200){
-	    						$currentRow['add_ok'] = 'Yes';
-	    					} else {
-	    						$currentRow['add_ok'] = 'No - '.$response->getStatusCode();
-	    					}
-	    				} else {
-	    					$currentRow['add_error'] = $errorMessage;
-	    				}
-	    			}
-    			} else {
-    				$currentRow['view_error'] = $errorMessage;
-    			}
-    		}
-    		
-    		$this->writeLine(sprintf('Product %s - Route: %s View: %s Add: %s  | %s %s',
-	    		$product->getSku(),	
-    			$currentRow['has_route'],
-    			$currentRow['view_ok'],
-    			$currentRow['add_ok'],
-    			isset($currentRow['view_error']) ? $currentRow['view_error'] : null,
-    			isset($currentRow['add_error']) ? $currentRow['add_error'] : null
-	    	));
-    		
-    		fputcsv($fh, $currentRow);
-    	}
+            if($currentRow['has_route'] == 'Yes'){
+                $viewRequest = $this->client->createRequest(
+                    'GET',
+                    $viewUrl,
+                    array('Referer' => $this->getContainer()->get('commerce.configuration')->get('commerce.store.url')),
+                    null
+                );
+                
+                // Let BrowserKit handle redirects
+                $responseOk = false;
+                try {
+                    $response = $viewRequest->send();
+                    
+                    $responseOk = true;
+                } catch (CurlException $e) {            
+                    
+                    $response = $e->getResponse();
+                    $errorMessage = $e->getMessage();
+                    
+                } catch (BadResponseException $e) {
+                    $response = $e->getResponse();
+                    $errorMessage = $e->getMessage();
+                    
+                } catch(ClientErrorResponseException $e){
+                    $response = $e->getResponse();
+                    $errorMessage = $e->getMessage();
+                    
+                } catch(ServerErrorResponseException $e){
+                    $response = $e->getResponse();
+                    $errorMessage = $e->getMessage();
+                }
+                
+                if($responseOk === true){
+                    if($response->getStatusCode() == 200){
+                        $currentRow['view_ok'] = 'Yes';
+                    } else {
+                        $currentRow['view_ok'] = 'No - '.$response->getStatusCode();
+                    }
+                    
+                    
+                    if($currentRow['view_ok'] == 'Yes'){
+                        $addToCartRequest = $this->client->createRequest(
+                            'POST',
+                            $this->getContainer()->get('commerce.configuration')->get('commerce.store.url').'/cart/add',
+                            array('X-Requested-With' => 'XMLHttpRequest'),
+                            array(
+                                'id' => $product->getId(),
+                                'quantity' => 1, 
+                            )
+                        );
+                        
+                        $responseOk = false;
+                        try {
+                            $response = $addToCartRequest->send();
+                        
+                            $responseOk = true;
+                        } catch (CurlException $e) {
+                            $response = $e->getResponse();
+                            $errorMessage = $e->getMessage();
+                        } catch (BadResponseException $e) {
+                            $response = $e->getResponse();
+                            $errorMessage = $e->getMessage();
+                        } catch(ServerErrorResponseException $e){
+                            $response = $e->getResponse();
+                            $errorMessage = $e->getMessage();
+                        } catch(ClientErrorResponseException $e){
+                            $response = $e->getResponse();
+                            $errorMessage = $e->getMessage();
+                        }
+                        
+                        //die($response->getBody(true));
+                        
+                        if($responseOk === true){
+                            if($response->getStatusCode() == 200){
+                                $currentRow['add_ok'] = 'Yes';
+                            } else {
+                                $currentRow['add_ok'] = 'No - '.$response->getStatusCode();
+                            }
+                        } else {
+                            $currentRow['add_error'] = $errorMessage;
+                        }
+                    }
+                } else {
+                    $currentRow['view_error'] = $errorMessage;
+                }
+            }
+            
+            $this->writeLine(sprintf('Product %s - Route: %s View: %s Add: %s  | %s %s',
+                $product->getSku(),    
+                $currentRow['has_route'],
+                $currentRow['view_ok'],
+                $currentRow['add_ok'],
+                isset($currentRow['view_error']) ? $currentRow['view_error'] : null,
+                isset($currentRow['add_error']) ? $currentRow['add_error'] : null
+            ));
+            
+            fputcsv($fh, $currentRow);
+        }
     }
 }

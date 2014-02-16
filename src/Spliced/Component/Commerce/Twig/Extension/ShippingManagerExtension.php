@@ -29,11 +29,11 @@ use Spliced\Component\Commerce\Shipping\ShippingManager;
      * 
      * @return ShippingManager
      */
-	protected function getShippingManager()
-	{
-		return $this->shippingManager;
-	}
-	
+    protected function getShippingManager()
+    {
+        return $this->shippingManager;
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -51,21 +51,21 @@ use Spliced\Component\Commerce\Shipping\ShippingManager;
     * 
     * @param string $fullName
     */
-	public function getShippingMethodByFullName($fullName)
-	{
-		return $this->getShippingManager()->getMethodByFullName($fullName);
-	}
-	
+    public function getShippingMethodByFullName($fullName)
+    {
+        return $this->getShippingManager()->getMethodByFullName($fullName);
+    }
+    
    /**
     * getShippingProvider
     * 
     * @param string $name
     */
-	public function getShippingProvider($name)
-	{
-		return $this->getShippingManager()->getProvider($name);
-	}
-	
+    public function getShippingProvider($name)
+    {
+        return $this->getShippingManager()->getProvider($name);
+    }
+    
     /**
      * {@inheritdoc}
      */

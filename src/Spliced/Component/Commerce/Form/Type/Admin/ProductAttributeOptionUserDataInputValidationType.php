@@ -28,27 +28,27 @@ class ProductAttributeOptionUserDataInputValidationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('type', 'choice', array(
-			'label' => 'Input Validation', 
-			'required' => true,
-			'empty_value' => '-Select One-',
-			'choices' => array(
-				//1 => 'No Validation',
-				2 => 'Alpha Only',
-				3 => 'Numeric Only',
-				4 => 'Alpha-Numeric',
-				5 => 'E-Mail Address',
-				6 => 'URL',
-				7 => 'Luhn Checksum',
-				8 => 'Regular Expression Match',
-			)
-		))
-		->add('error_message', 'text', array(
-			'required' => false,
-			'label' => 'Validation Error Message',
-		))
-		->add('regular_expression', 'text', array(
-			'required' => false,
-		));
+            'label' => 'Input Validation', 
+            'required' => true,
+            'empty_value' => '-Select One-',
+            'choices' => array(
+                //1 => 'No Validation',
+                2 => 'Alpha Only',
+                3 => 'Numeric Only',
+                4 => 'Alpha-Numeric',
+                5 => 'E-Mail Address',
+                6 => 'URL',
+                7 => 'Luhn Checksum',
+                8 => 'Regular Expression Match',
+            )
+        ))
+        ->add('error_message', 'text', array(
+            'required' => false,
+            'label' => 'Validation Error Message',
+        ))
+        ->add('regular_expression', 'text', array(
+            'required' => false,
+        ));
     }
     
     /**

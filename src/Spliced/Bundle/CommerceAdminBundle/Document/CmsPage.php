@@ -14,7 +14,7 @@ use Spliced\Component\Commerce\Model\CmsPage as BaseCmsPage;
 
 /**
  * @MongoDB\Document(
- * 	collection="cms_page", 
+ *     collection="cms_page", 
  *  repositoryClass="Spliced\Bundle\CommerceAdminBundle\Repository\CmsPageDocumentRepository"
  * )
  * @MongoDB\MappedSuperclass()

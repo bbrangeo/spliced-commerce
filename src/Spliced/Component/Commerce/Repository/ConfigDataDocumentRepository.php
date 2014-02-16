@@ -18,17 +18,17 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  */
 abstract class ConfigDataDocumentRepository extends DocumentRepository implements ConfigDataRepositoryInterface
 {
-	/**
-	* {@inheritDoc}
-	*/
-	public function getConfiguration($cache = true, $hydrate = true)
-	{
-		return $this->createQueryBuilder()
-		  ->sort('key', 'ASC')
-		  ->hydrate(false)
-		  ->getQuery()
-		  ->execute();
-	}
-	
+    /**
+    * {@inheritDoc}
+    */
+    public function getConfiguration($cache = true, $hydrate = true)
+    {
+        return $this->createQueryBuilder()
+          ->sort('key', 'ASC')
+          ->hydrate(false)
+          ->getQuery()
+          ->execute();
+    }
+    
 
 }

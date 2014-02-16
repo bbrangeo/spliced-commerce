@@ -108,8 +108,8 @@ abstract class OrderPaymentMemo implements OrderPaymentMemoInterface
      */
     public function __construct()
     {
-    	$this->createdAt = new \DateTime('now');
-    	$this->updatedAt = new \DateTime('now');
+        $this->createdAt = new \DateTime('now');
+        $this->updatedAt = new \DateTime('now');
     }
     
     /**
@@ -119,7 +119,7 @@ abstract class OrderPaymentMemo implements OrderPaymentMemoInterface
      */
     public function getId()
     {
-    	return $this->id;
+        return $this->id;
     }
     
     /**
@@ -173,12 +173,12 @@ abstract class OrderPaymentMemo implements OrderPaymentMemoInterface
      */
     public function getMemoData()
     {
-    	if(!is_array($this->memoData)){
-    		$unserialized = unserialize($this->memoData);
-			if($unserialized !== false){
-				$this->memoData = $unserialized;
-			}
-    	}
+        if(!is_array($this->memoData)){
+            $unserialized = unserialize($this->memoData);
+            if($unserialized !== false){
+                $this->memoData = $unserialized;
+            }
+        }
         return $this->memoData;
     }
 
@@ -241,7 +241,7 @@ abstract class OrderPaymentMemo implements OrderPaymentMemoInterface
      */
     public function getCreatedAt()
     {
-    	return $this->createdAt;
+        return $this->createdAt;
     }
     
     /**
@@ -249,8 +249,8 @@ abstract class OrderPaymentMemo implements OrderPaymentMemoInterface
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
-    	$this->createdAt = $createdAt;
-    	return $this;
+        $this->createdAt = $createdAt;
+        return $this;
     }
     
     /**
@@ -277,8 +277,8 @@ abstract class OrderPaymentMemo implements OrderPaymentMemoInterface
      */
     public function setAmountPaid($amountPaid)
     {
-    	$this->amountPaid = $amountPaid;
-    	return $this;
+        $this->amountPaid = $amountPaid;
+        return $this;
     }
     
     /**
@@ -288,7 +288,7 @@ abstract class OrderPaymentMemo implements OrderPaymentMemoInterface
      */
     public function getAmountPaid()
     {
-    	return $this->amountPaid;
+        return $this->amountPaid;
     }
     
     /**
@@ -298,8 +298,8 @@ abstract class OrderPaymentMemo implements OrderPaymentMemoInterface
      */
     public function setMerchantTransactionId($merchantTransactionId)
     {
-    	$this->merchantTransactionId = $merchantTransactionId;
-    	return $this;
+        $this->merchantTransactionId = $merchantTransactionId;
+        return $this;
     }
     
     /**
@@ -309,7 +309,7 @@ abstract class OrderPaymentMemo implements OrderPaymentMemoInterface
      */
     public function getMerchantTransactionId()
     {
-    	return $this->merchantTransactionId;
+        return $this->merchantTransactionId;
     }
 
     

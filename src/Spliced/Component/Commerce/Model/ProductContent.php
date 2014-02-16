@@ -315,11 +315,11 @@ class ProductContent
      */
     public function removeViewJavascript($viewJavascript)
     {
-    	 foreach ($this->viewJavascripts as $key => $_viewJavascript) {
-    	     if ($_viewJavascript == $viewJavascript) {
-    	         unset($this->viewJavascripts[$key]);
-    	     }
-    	 }
-    	 return $this;
+         foreach ($this->viewJavascripts as $key => $_viewJavascript) {
+             if ($_viewJavascript == $viewJavascript) {
+                 unset($this->viewJavascripts[$key]);
+             }
+         }
+         return $this;
     }
 }

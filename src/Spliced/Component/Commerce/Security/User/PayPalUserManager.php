@@ -42,8 +42,8 @@ class PayPalUserManager implements UserProviderInterface
     public function loadUserByUsername($paypalId)
     {
         return $this->userProvider
-        	->getRepository()
-        	->findOneByPayPalId($paypalId);
+            ->getRepository()
+            ->findOneByPayPalId($paypalId);
     }
 
     /**
@@ -92,9 +92,9 @@ class PayPalUserManager implements UserProviderInterface
         $profile->setTwitterId($twitterData['user_id']);
 
         $user->setProfile($profile);
-		*/
-    	//die('hita');
-    	$user = new $className;
+        */
+        //die('hita');
+        $user = new $className;
         return $this->userProvider->create($user);
 
     }

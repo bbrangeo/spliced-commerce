@@ -76,7 +76,7 @@ class YahooOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfac
     {
         array(
             'oauth_consumer_key' => null,
-            'oauth_nonce	' => null,
+            'oauth_nonce    ' => null,
             'oauth_signature_method' => null,
             'oauth_signature' => null,
             'oauth_timestamp' => null,

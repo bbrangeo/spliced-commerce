@@ -96,6 +96,6 @@ abstract class BaseCommand extends ContainerAwareCommand
         }
         $this->log->addInfo($msg);
     }
-	
+    
     
 }

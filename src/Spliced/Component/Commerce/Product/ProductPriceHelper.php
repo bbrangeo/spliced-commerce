@@ -32,7 +32,7 @@ class ProductPriceHelper
     
     /** Subtract Fixed Per Item - Tier Data field adjustment
      * will represent how much to subtract to each item price */
-    const ADJUSTMENT_SUBTRACT_FIXED_PER_ITEM 		= 2;    
+    const ADJUSTMENT_SUBTRACT_FIXED_PER_ITEM         = 2;    
     
     /** Subtract Percentage Per Item - Tier Data field adjustment
      * will represent a percentage to subtract from each item price */
@@ -43,11 +43,11 @@ class ProductPriceHelper
     const ADJUSTMENT_ADD_PERCENTAGE_PER_ITEM        = 4;
     /** Fixed Per Item - Tier Data field adjustment
      * will represent each item price */
-    const ADJUSTMENT_FIXED_PER_ITEM 				= 5;
+    const ADJUSTMENT_FIXED_PER_ITEM                 = 5;
 
     /** Value to used when a min/max quantity is -1, representing unlimited. Expressed as PHP max integer size */
     const ADJUSTMENT_UNLIMITED_VALUE = PHP_INT_MAX;
-	
+    
     /** Percicion for calucaltions */
     const BCSCALE_DEFAULT = 4;
 
@@ -101,7 +101,7 @@ class ProductPriceHelper
      */
     public function getBasePrice(ProductInterface $product)
     {
-    	// todo, account for special price dates
+        // todo, account for special price dates
         return $this->calculator->add($product->getSpecialPrice() ? $product->getSpecialPrice() : $product->getPrice(), static::ZERO_VALUE);
     }
 
@@ -122,17 +122,17 @@ class ProductPriceHelper
         $return = $basePrice;
 
         if(is_null($quantity)) {
-			$quantity = $cartItem ? $cartItem->getQuantity() : $this->getCartManager()->getQuantity($product);
+            $quantity = $cartItem ? $cartItem->getQuantity() : $this->getCartManager()->getQuantity($product);
         }
                 
         // handle tiered pricing, first checking if this is a bundled item 
         // and allowing tiered pricing to be applied
         if (is_null($tierPrice)) {
-        	if(!$cartItem){
-        		$tierPrice = $this->getMatchedTierPrice($product, $quantity);
-        	} else if($cartItem->allowTierPricing()){
-        		$tierPrice = $this->getMatchedTierPrice($product, $quantity);
-        	}             
+            if(!$cartItem){
+                $tierPrice = $this->getMatchedTierPrice($product, $quantity);
+            } else if($cartItem->allowTierPricing()){
+                $tierPrice = $this->getMatchedTierPrice($product, $quantity);
+            }             
         }
         
         if (!is_null($tierPrice) && (!$cartItem || $cartItem->allowTierPricing())) {
@@ -148,27 +148,27 @@ class ProductPriceHelper
         }
         
         if($cartItem){
-        	$cartItemData = $cartItem->getItemData();
+            $cartItemData = $cartItem->getItemData();
 
-        	// handle item price adjustments if this item has any specified
-        	if($cartItem->getPriceAdjustmentType() && 0 <= $cartItem->getPriceAdjustment()){
-        		$return = $this->doAdjustment($return, $cartItem->getPriceAdjustmentType(), $cartItem->getPriceAdjustment());
-        	}
+            // handle item price adjustments if this item has any specified
+            if($cartItem->getPriceAdjustmentType() && 0 <= $cartItem->getPriceAdjustment()){
+                $return = $this->doAdjustment($return, $cartItem->getPriceAdjustmentType(), $cartItem->getPriceAdjustment());
+            }
             
-        	if($product->hasPriceAlteringAttributes()){
-	            foreach($product->getPriceAlteringAttributes() as $attribute){
-	                $userSelection = isset($cartItemData['user_data'][$attribute->getOption()->getName()]) ?  
-	                    $cartItemData['user_data'][$attribute->getOption()->getName()] : null;
-	                    
-	                if($userSelection){
-	                    foreach($attribute->getOption()->getValues() as $value){
-	                        if($value->getId() == $userSelection && $value->getPriceAdjustmentType()){
-	                            $return = $this->doAdjustment($return, $value->getPriceAdjustmentType(), $value->getPriceAdjustment());
-	                        }
-	                    }
-	                }
-	            }
-        	}
+            if($product->hasPriceAlteringAttributes()){
+                foreach($product->getPriceAlteringAttributes() as $attribute){
+                    $userSelection = isset($cartItemData['user_data'][$attribute->getOption()->getName()]) ?  
+                        $cartItemData['user_data'][$attribute->getOption()->getName()] : null;
+                        
+                    if($userSelection){
+                        foreach($attribute->getOption()->getValues() as $value){
+                            if($value->getId() == $userSelection && $value->getPriceAdjustmentType()){
+                                $return = $this->doAdjustment($return, $value->getPriceAdjustmentType(), $value->getPriceAdjustment());
+                            }
+                        }
+                    }
+                }
+            }
         }
         
         return $return;

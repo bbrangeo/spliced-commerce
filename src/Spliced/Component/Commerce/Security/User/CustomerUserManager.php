@@ -55,8 +55,8 @@ class CustomerUserManager implements UserProviderInterface
         $this->em->flush();
 
         $this->eventDispatcher->dispatch(
-        	Events\Event::EVENT_SECURITY_NEW_ACCOUNT_CREATED,
-			new Events\NewAccountEvent($user)
+            Events\Event::EVENT_SECURITY_NEW_ACCOUNT_CREATED,
+            new Events\NewAccountEvent($user)
         );
         
         return $user;
@@ -66,7 +66,7 @@ class CustomerUserManager implements UserProviderInterface
     {
         /*if (!is_null($profile)) {
             $this->em->persist($profile);
-        }	  */
+        }      */
         $this->em->persist($user);
 
         $this->em->flush();

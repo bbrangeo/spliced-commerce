@@ -21,9 +21,9 @@ use Spliced\Component\Commerce\Model\CustomerCreditCard as BaseCustomerCreditCar
  * @ORM\Entity
  * @ORM\MappedSuperclass
  * @Assert\Callback(methods={
- * 	"validateCreditCardNumber",
- * 	"validateCreditCardExpiration",
- * 	"validateCreditCardCvv"
+ *     "validateCreditCardNumber",
+ *     "validateCreditCardExpiration",
+ *     "validateCreditCardCvv"
  * }, groups={"validate_credit_card"})
  *
  */

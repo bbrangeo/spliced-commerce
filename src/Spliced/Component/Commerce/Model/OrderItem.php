@@ -22,121 +22,121 @@ use Doctrine\ORM\Mapping as ORM;
  */
 abstract class OrderItem implements OrderItemInterface
 {
-	/**
-	 * @var integer
-	 *
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	protected $id;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="product_id", type="string")
-	 */
-	protected $productId;
-	
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="sku", type="string", length=100)
-	 */
-	protected $sku;
-	
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="name", type="string", length=255)
-	 */
-	protected $name;
-	
-	/**
-	 * @var float
-	 *
-	 * @ORM\Column(name="base_price", type="decimal")
-	 */
-	protected $basePrice;
-	
-	/**
-	 * @var float
-	 *
-	 * @ORM\Column(name="sale_price", type="decimal")
-	 */
-	protected $salePrice;
-	
-	/**
-	 * @var float
-	 *
-	 * @ORM\Column(name="taxes", type="decimal")
-	 */
-	protected $taxes;
-	
-	/**
-	 * @var float
-	 *
-	 * @ORM\Column(name="cost", type="decimal")
-	 */
-	protected $cost;
-	
-	/**
-	 * @var float
-	 *
-	 * @ORM\Column(name="total_price", type="decimal")
-	 */
-	protected $totalPrice;
-	
-	/**
-	 * @var float
-	 *
-	 * @ORM\Column(name="final_price", type="decimal")
-	 */
-	protected $finalPrice;
-	
-	/**
-	 * @var float
-	 *
-	 * @ORM\Column(name="quantity", type="integer")
-	 */
-	protected $quantity;
-	
-	/**
-	 * @var array $quantity
-	 *
-	 * @ORM\Column(name="item_data", type="array")
-	 */
-	protected $itemData;
-	
-	/**
-	 * @ORM\ManyToOne(targetEntity="Order", inversedBy="items")
-	 * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
-	 */
-	protected $order;
-	
-	/**
-	 * @var OrderItemInterface $parent
-	 *
-	 * @ORM\ManyToOne(targetEntity="OrderItem", inversedBy="children")
-	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
-	 */
-	protected $parent;
-	
-	/**
-	 * @var CartItemInterface $cartItem
-	 *
-	 * @ORM\OneToOne(targetEntity="CartItem", cascade={"persist"})
-	 * @ORM\JoinColumn(name="cart_item_id", referencedColumnName="id")
-	 */
-	protected $cartItem;
-	
-	/**
-	 * @var array $children
-	 *
-	 * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="parent", cascade={"persist"})
-	 */
-	protected $children;
-	
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="product_id", type="string")
+     */
+    protected $productId;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sku", type="string", length=100)
+     */
+    protected $sku;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    protected $name;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="base_price", type="decimal")
+     */
+    protected $basePrice;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="sale_price", type="decimal")
+     */
+    protected $salePrice;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="taxes", type="decimal")
+     */
+    protected $taxes;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="cost", type="decimal")
+     */
+    protected $cost;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="total_price", type="decimal")
+     */
+    protected $totalPrice;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="final_price", type="decimal")
+     */
+    protected $finalPrice;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="quantity", type="integer")
+     */
+    protected $quantity;
+    
+    /**
+     * @var array $quantity
+     *
+     * @ORM\Column(name="item_data", type="array")
+     */
+    protected $itemData;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="items")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $order;
+    
+    /**
+     * @var OrderItemInterface $parent
+     *
+     * @ORM\ManyToOne(targetEntity="OrderItem", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    protected $parent;
+    
+    /**
+     * @var CartItemInterface $cartItem
+     *
+     * @ORM\OneToOne(targetEntity="CartItem", cascade={"persist"})
+     * @ORM\JoinColumn(name="cart_item_id", referencedColumnName="id")
+     */
+    protected $cartItem;
+    
+    /**
+     * @var array $children
+     *
+     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="parent", cascade={"persist"})
+     */
+    protected $children;
+    
     /**
      * Constructor
      */
@@ -152,7 +152,7 @@ abstract class OrderItem implements OrderItemInterface
      */
     public function getId()
     {
-    	return $this->id;
+        return $this->id;
     }
      
     /**
@@ -278,9 +278,9 @@ abstract class OrderItem implements OrderItemInterface
      */
     public function setTotalPrice($totalPrice)
     {
-    	$this->totalPrice = $totalPrice;
+        $this->totalPrice = $totalPrice;
     
-    	return $this;
+        return $this;
     }
     
     /**
@@ -290,7 +290,7 @@ abstract class OrderItem implements OrderItemInterface
      */
     public function getTotalPrice()
     {
-    	return $this->totalPrice;
+        return $this->totalPrice;
     }
     
     /**
@@ -474,7 +474,7 @@ abstract class OrderItem implements OrderItemInterface
           */
          public function getCartItem()
          {
-         	return $this->cartItem;
+             return $this->cartItem;
          }
          
          /**
@@ -484,8 +484,8 @@ abstract class OrderItem implements OrderItemInterface
           */
          public function setCartItem(CartItemInterface $cartItem = null)
          {
-         	$this->cartItem = $cartItem;
-         	return $this;
+             $this->cartItem = $cartItem;
+             return $this;
          }
          
              
@@ -516,7 +516,7 @@ abstract class OrderItem implements OrderItemInterface
           */
          public function getProductId()
          {
-         	return $this->productId;
+             return $this->productId;
          }
          
          /**
@@ -526,8 +526,8 @@ abstract class OrderItem implements OrderItemInterface
           */
          public function setProductId($productId)
          {
-         	$this->productId = $productId;
-         	return $this;
+             $this->productId = $productId;
+             return $this;
          }
 
 }

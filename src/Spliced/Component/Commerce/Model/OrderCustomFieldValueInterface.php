@@ -16,46 +16,46 @@ namespace Spliced\Component\Commerce\Model;
  */
 interface OrderCustomFieldValueInterface
 {
-	
-	/**
-	 * setOrder
-	 * 
-	 *  @param OrderInterface $order
-	 */
-	public function setOrder(OrderInterface $order);
-	
-	/**
-	 * getOrder
-	 * 
-	 * @return OrderInterface
-	 */
-	public function getOrder();
-	
-	/**
-	 * setField
-	 * 
-	 * @param CheckoutCustomFieldInterface $field
-	 */
-	public function setField(CheckoutCustomFieldInterface $field);
-	
-	/**
-	 * getField
-	 * 
-	 * @return string
-	 */
-	public function getField();
-	
-	/**
-	 * setFieldValue
-	 * 
-	 * @param mixed $fieldValue;
-	 */
-	public function setFieldValue($fieldValue);
-	
-	/**
-	 * getFieldValue
-	 * 
-	 * @return mixed
-	 */
-	public function getFieldValue();
+    
+    /**
+     * setOrder
+     * 
+     *  @param OrderInterface $order
+     */
+    public function setOrder(OrderInterface $order);
+    
+    /**
+     * getOrder
+     * 
+     * @return OrderInterface
+     */
+    public function getOrder();
+    
+    /**
+     * setField
+     * 
+     * @param CheckoutCustomFieldInterface $field
+     */
+    public function setField(CheckoutCustomFieldInterface $field);
+    
+    /**
+     * getField
+     * 
+     * @return string
+     */
+    public function getField();
+    
+    /**
+     * setFieldValue
+     * 
+     * @param mixed $fieldValue;
+     */
+    public function setFieldValue($fieldValue);
+    
+    /**
+     * getFieldValue
+     * 
+     * @return mixed
+     */
+    public function getFieldValue();
 }

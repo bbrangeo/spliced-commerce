@@ -49,8 +49,8 @@ class SplicedCommerceAdminExtension extends Extension
             $frontLoader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../../CommerceBundle/Resources/config'));
             $frontLoader->load('payment.xml');
             $frontLoader->load('shipping.xml');
-    		$frontLoader->load('product_types.xml');
-    		$container->setParameter('commerce.checkout_notifiers', array());
+            $frontLoader->load('product_types.xml');
+            $container->setParameter('commerce.checkout_notifiers', array());
         }
         
         $container->setAlias('commerce.admin.entity_manager', $config['entity_manager']);

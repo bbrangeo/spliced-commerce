@@ -16,59 +16,59 @@ namespace Spliced\Component\Commerce\Product\TypeHandler;
  */
 class DigitalTypeHandler implements TypeHandlerInterface
 {
-	/**
-	 * @const TYPE_CODE
-	 * 
-	 * A unique integer representing this product type
-	 */
-	const TYPE_CODE = 3;
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getName()
-	{
-		return 'digital';
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getLabel()
-	{
-		return 'Digital';
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getTypeCode()
-	{
-		return static::TYPE_CODE;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function isShippable()
-	{
-		return false;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function isElectronicDelivery()
-	{
-		return true;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function isDownloadable()
-	{
-		return false;
-	}
+    /**
+     * @const TYPE_CODE
+     * 
+     * A unique integer representing this product type
+     */
+    const TYPE_CODE = 3;
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return 'digital';
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getLabel()
+    {
+        return 'Digital';
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getTypeCode()
+    {
+        return static::TYPE_CODE;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function isShippable()
+    {
+        return false;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function isElectronicDelivery()
+    {
+        return true;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function isDownloadable()
+    {
+        return false;
+    }
 
 }

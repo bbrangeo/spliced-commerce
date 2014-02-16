@@ -6,7 +6,7 @@ use Spliced\Component\Commerce\Security\Encryption\EncryptionManager;
 
 class EncryptionExtension extends \Twig_Extension
 {
-	/** @var EncryptionManager */
+    /** @var EncryptionManager */
     protected $encryptionManager;
 
     /**
@@ -26,7 +26,7 @@ class EncryptionExtension extends \Twig_Extension
      */
     protected function getEncryptionManager()
     {
-    	return $this->encryptionManager;	
+        return $this->encryptionManager;    
     }
 
     /**
@@ -35,8 +35,8 @@ class EncryptionExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-        	'commerce_encrypt' => new \Twig_Function_Method($this, 'encrypt'),
-        	'commerce_decrypt' => new \Twig_Function_Method($this, 'decrypt'),
+            'commerce_encrypt' => new \Twig_Function_Method($this, 'encrypt'),
+            'commerce_decrypt' => new \Twig_Function_Method($this, 'decrypt'),
         );
     }
 
@@ -47,7 +47,7 @@ class EncryptionExtension extends \Twig_Extension
      * @param string $value
      */
     public function encrypt($protectCode, $value){
-    	return $this->getEncryptionManager()->encrypt($protectCode, $value);
+        return $this->getEncryptionManager()->encrypt($protectCode, $value);
     }
 
     /**

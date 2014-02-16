@@ -29,14 +29,14 @@ class DimensionsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         
-    	$builder
-    	  ->add($options['length_name'], 'number', $options['length_options'])
-    	  ->add($options['width_name'], 'number', $options['width_options'])
-    	  ->add($options['height_name'], 'number', $options['height_options'])
-    	  ->add($options['unit_name'], 'choice', $options['unit_options']);
+        $builder
+          ->add($options['length_name'], 'number', $options['length_options'])
+          ->add($options['width_name'], 'number', $options['width_options'])
+          ->add($options['height_name'], 'number', $options['height_options'])
+          ->add($options['unit_name'], 'choice', $options['unit_options']);
     
     }
-		
+        
     /**
      * {@inheritdoc}
      */
@@ -44,41 +44,41 @@ class DimensionsType extends AbstractType
     {
         $resolver->setDefaults(array(
             'options'         => array('required' => false, 'precision' => 4),
-        	'length_options'  => array('required' => false, 'precision' => 4),
-        	'width_options'   => array('required' => false, 'precision' => 4),
-        	'height_options'  => array('required' => false, 'precision' => 4),
-        	'unit_options' => array(
-        		'required' => false,
-        		'empty_value' => '-Units-',
-        		'choices' => $this->getDimensionsMeasurementTypes()
-        	),
-        	'length_name'     => 'length',
-        	'width_name'      => 'width',
-        	'height_name'     => 'height',
-        	'unit_name'       => 'unit',
+            'length_options'  => array('required' => false, 'precision' => 4),
+            'width_options'   => array('required' => false, 'precision' => 4),
+            'height_options'  => array('required' => false, 'precision' => 4),
+            'unit_options' => array(
+                'required' => false,
+                'empty_value' => '-Units-',
+                'choices' => $this->getDimensionsMeasurementTypes()
+            ),
+            'length_name'     => 'length',
+            'width_name'      => 'width',
+            'height_name'     => 'height',
+            'unit_name'       => 'unit',
             'error_bubbling'  => false,
         ));
     }
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'dimensions';
     }
-	
-	/**
-	 * getDimensionsMeasurementTypes
-	 * 
-	 * @return array
-	 */
-	 protected function getDimensionsMeasurementTypes()
-	 {
-	 	return array(
-	 		'in' => 'Inches',
-	 		'ft' => 'Feet',
-	 		'yd' => 'Yards',
-		);
-	 }
+    
+    /**
+     * getDimensionsMeasurementTypes
+     * 
+     * @return array
+     */
+     protected function getDimensionsMeasurementTypes()
+     {
+         return array(
+             'in' => 'Inches',
+             'ft' => 'Feet',
+             'yd' => 'Yards',
+        );
+     }
 }

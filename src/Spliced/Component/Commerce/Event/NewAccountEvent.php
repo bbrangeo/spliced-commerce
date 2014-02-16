@@ -26,7 +26,7 @@ class NewAccountEvent extends Event
      */
     public function __construct(CustomerInterface $user)
     {
-    	$this->user = $user;
+        $this->user = $user;
     }
     
     /**
@@ -34,7 +34,7 @@ class NewAccountEvent extends Event
      */
     public function getUser()
     {
-    	return $this->user;
+        return $this->user;
     }
     
 }

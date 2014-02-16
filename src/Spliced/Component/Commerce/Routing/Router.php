@@ -62,14 +62,14 @@ class Router implements RouterInterface
      */
     public function __construct(RouterInterface $parentRouter, ConfigurationManager $configurationManager, ObjectManager $om, Session $session, AffiliateManager $affiliateManager, KernelInterface $kernel)
     {
-		$this->parentRouter = $parentRouter;
-		$this->om = $om;
-		$this->configurationManager = $configurationManager;
+        $this->parentRouter = $parentRouter;
+        $this->om = $om;
+        $this->configurationManager = $configurationManager;
         $this->session = $session;
         $this->affiliateManager = $affiliateManager;
         $this->kernel = $kernel;
     }
-	
+    
     /**
      * getParentRouter
      * 
@@ -87,7 +87,7 @@ class Router implements RouterInterface
      */
     protected function getConfigurationManager()
     {
-    	return $this->configurationManager;
+        return $this->configurationManager;
     }
     
     /**
@@ -129,7 +129,7 @@ class Router implements RouterInterface
     {
         return $this->kernel;
     }
-	
+    
     /**
     * {@inheritDoc}
     */ 
@@ -155,16 +155,16 @@ class Router implements RouterInterface
     }
 
     /**
-	 * {@inheritDoc}
+     * {@inheritDoc}
      */
     public function generate($name, $parameters = array(), $absolute = false)
     {
         try{
-        	$parentGenerated = $this->getParentRouter()->generate($name, $parameters, $absolute);
-			return $parentGenerated;
-		} catch(\Exception $e){
-		    	
-		}
+            $parentGenerated = $this->getParentRouter()->generate($name, $parameters, $absolute);
+            return $parentGenerated;
+        } catch(\Exception $e){
+                
+        }
         $routeCollection = $this->getRouteCollection();
         $routeCollection->add($name, new Route($name, array(), array('_scheme' => isset($parameters['_scheme']) ? $parameters['_scheme'] : 'http')));
 
@@ -172,14 +172,14 @@ class Router implements RouterInterface
     }
 
     /**
-	 * {@inheritDoc}
+     * {@inheritDoc}
      */
     public function match($url)
     {
 
         parse_str($_SERVER['QUERY_STRING'], $queryStringParams);
         
-		
+        
         
         // match an affiliate if it is part of the request       
         /*if (!$this->getAffiliateManager()->getCurrentAffiliateId()) {
@@ -214,36 +214,36 @@ class Router implements RouterInterface
             }
         }*/
 
-	    // parent router is our first choice to save a db query if it is not needed
-    	try{
-    		$parentMatch = $this->getParentRouter()->match($url);
-			return $parentMatch;
-    	}catch(ResourceNotFoundException $e){ /* DO NOTHING */}
+        // parent router is our first choice to save a db query if it is not needed
+        try{
+            $parentMatch = $this->getParentRouter()->match($url);
+            return $parentMatch;
+        }catch(ResourceNotFoundException $e){ /* DO NOTHING */}
 
-    	
-    	if($this->getObjectManager() instanceof DocumentManager){
-    		$route = $this->getObjectManager()
-    		  ->getRepository($this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE))
-    		  ->matchRoute($url);
-    		
-    		if(!$route){
-    			throw new ResourceNotFoundException();
-    		}
-    	} else {
-    		try {
-    			$route = $this->getObjectManager()
-    			 ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE))
-    			->matchRoute($url);
+        
+        if($this->getObjectManager() instanceof DocumentManager){
+            $route = $this->getObjectManager()
+              ->getRepository($this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE))
+              ->matchRoute($url);
+            
+            if(!$route){
+                throw new ResourceNotFoundException();
+            }
+        } else {
+            try {
+                $route = $this->getObjectManager()
+                 ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE))
+                ->matchRoute($url);
 
-    			if(!$route){
-    				throw new ResourceNotFoundException();
-    			}
-    		
-    		} catch (NoResultException $e) {
-    			throw new ResourceNotFoundException();
-    		}
-    	}
-   	
+                if(!$route){
+                    throw new ResourceNotFoundException();
+                }
+            
+            } catch (NoResultException $e) {
+                throw new ResourceNotFoundException();
+            }
+        }
+       
         
         $targetPath = $route->getTargetPath();
         $routeOptions = $route->getOptions();
@@ -265,16 +265,16 @@ class Router implements RouterInterface
 
 
         if($route->getProduct()){
-        	$params['id'] = $route->getProduct()->getId();
-        	
+            $params['id'] = $route->getProduct()->getId();
+            
         } else if($route->getCategory()){
-        	$params['id'] = $route->getCategory()->getId();
-        	
+            $params['id'] = $route->getCategory()->getId();
+            
         } else if($route->getPage()){
-        	$params['id'] = $route->getPage()->getId();
-        	
+            $params['id'] = $route->getPage()->getId();
+            
         } else if($route->getOtherId()){
-        	$params['id'] = $route->getOtherId();
+            $params['id'] = $route->getOtherId();
         }
                 
         unset($queryStringParams['id'],$queryStringParams['other_id']);
@@ -297,7 +297,7 @@ class Router implements RouterInterface
      */
     public function getGenerator(RouteCollection $collection)
     {
-		return new UrlGenerator($collection, $this->getContext());
+        return new UrlGenerator($collection, $this->getContext());
     }
 
 }

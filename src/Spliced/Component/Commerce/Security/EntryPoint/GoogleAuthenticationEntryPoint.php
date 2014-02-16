@@ -33,7 +33,7 @@ class GoogleAuthenticationEntryPoint implements AuthenticationEntryPointInterfac
      *
      * @param OAuth2Client $google
      * @param array        $options
-	 * @param array        $permissions
+     * @param array        $permissions
      */
     public function __construct(OAuth2Client $google, array $options = array(), array $permissions = array())
     {
@@ -47,7 +47,7 @@ class GoogleAuthenticationEntryPoint implements AuthenticationEntryPointInterfac
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-    	
+        
         return new RedirectResponse($this->google->getLoginUrl());
        /*
         if ($this->options->get('server_url') && $this->options->get('app_url')) {

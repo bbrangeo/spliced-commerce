@@ -46,7 +46,7 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
      */
     protected function getKernel()
     {
-    	return $this->kernel;
+        return $this->kernel;
     }
     
     /**
@@ -56,7 +56,7 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
      */
     public function getConfigurationManager()
     {
-    	return $this->configurationManager;
+        return $this->configurationManager;
     }
     
     /**
@@ -65,12 +65,12 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
     public function getLoginUrl()
     {
         
-    	$loginCheckUrl = sprintf('%s%sgoogle_login_check',
-    		$this->getConfigurationManager()->get('commerce.store.url_secure'),
-    		$this->getKernel()->getEnvironment() == 'dev' ? $_SERVER['SCRIPT_NAME'].'/' : '/'
-    	);
-    	
-    	return $this->getAuthenticationUrl(self::AUTH_ENDPOINT_URL, $loginCheckUrl, array(
+        $loginCheckUrl = sprintf('%s%sgoogle_login_check',
+            $this->getConfigurationManager()->get('commerce.store.url_secure'),
+            $this->getKernel()->getEnvironment() == 'dev' ? $_SERVER['SCRIPT_NAME'].'/' : '/'
+        );
+        
+        return $this->getAuthenticationUrl(self::AUTH_ENDPOINT_URL, $loginCheckUrl, array(
             'scope' => 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
         ));
 
@@ -84,19 +84,19 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
     public function exchangeAuthTokenForAccessToken($authCode)
     {
 
-    	$loginCheckUrl = sprintf('%s%sgoogle_login_check',
+        $loginCheckUrl = sprintf('%s%sgoogle_login_check',
             $this->getConfigurationManager()->get('commerce.store.url_secure'),
             $this->getKernel()->getEnvironment() == 'dev' ? $_SERVER['SCRIPT_NAME'].'/' : '/'
         );
-    	
-    	//echo $loginCheckUrl; exit();
-    	$accessToken = $this->getAccessToken(self::TOKEN_ENDPOINT_URL, self::GRANT_TYPE_AUTH_CODE, array(
+        
+        //echo $loginCheckUrl; exit();
+        $accessToken = $this->getAccessToken(self::TOKEN_ENDPOINT_URL, self::GRANT_TYPE_AUTH_CODE, array(
             'code' => $authCode,
             'redirect_uri' => $loginCheckUrl
         ));
     
-    	//var_dump ($accessToken);exit ();
-    	
+        //var_dump ($accessToken);exit ();
+        
         if (isset($accessToken['result']['error'])) {
             throw new GoogleOAuth2Exception("Auth Token Exchange Error: ".$accessToken['result']['error']);
         }

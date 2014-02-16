@@ -84,7 +84,7 @@ class ProductAttributeResizeFormListener extends ResizeFormListener
     
         
         // Then add all rows again in the correct order
-        foreach ($data as $name => $value) {        	
+        foreach ($data as $name => $value) {            
             $form->add($name, new ProductAttributeType($this->getConfigurationManager(), $this->getProduct(), $value), array_replace(array(
                 'property_path' => '['.$name.']',
             ), $this->options));

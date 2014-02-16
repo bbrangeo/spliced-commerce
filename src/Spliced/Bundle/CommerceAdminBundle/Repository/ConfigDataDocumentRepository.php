@@ -18,5 +18,5 @@ use Spliced\Component\Commerce\Repository\ConfigDataDocumentRepository as BaseCo
  */
 class ConfigDataDocumentRepository extends BaseConfigDataDocumentRepository
 {
-	
+    
 }

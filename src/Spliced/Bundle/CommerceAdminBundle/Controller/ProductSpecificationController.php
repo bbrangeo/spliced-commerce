@@ -25,7 +25,7 @@ class ProductSpecificationController extends BaseFilterableController
      */
     public function deleteAction($productId, $specificationId)
     {
-    	$product = $this->get('commerce.admin.document_manager')
+        $product = $this->get('commerce.admin.document_manager')
           ->getRepository('SplicedCommerceAdminBundle:Product')
           ->findOneById($productId);
         
@@ -43,9 +43,9 @@ class ProductSpecificationController extends BaseFilterableController
  
         $productSpecification = null;
         foreach($product->getSpecifications() as $specification){
-        	if ($specification->getId() == $specificationId) {
-        		$productSpecification = $specification;
-        	}
+            if ($specification->getId() == $specificationId) {
+                $productSpecification = $specification;
+            }
         }
         
         if(!$specification){
@@ -63,8 +63,8 @@ class ProductSpecificationController extends BaseFilterableController
         $product->removeSpecification($specification);
         
         $this->get('event_dispatcher')->dispatch(
-        	Events\Event::EVENT_PRODUCT_UPDATE,
-        	new Events\ProductUpdateEvent($product)
+            Events\Event::EVENT_PRODUCT_UPDATE,
+            new Events\ProductUpdateEvent($product)
         );
         
         if($this->getRequest()->isXmlHttpRequest()){

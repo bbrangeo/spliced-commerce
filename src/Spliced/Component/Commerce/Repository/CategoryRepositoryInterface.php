@@ -16,5 +16,5 @@ namespace Spliced\Component\Commerce\Repository;
  */
 interface CategoryRepositoryInterface
 {
-	
+    
 }

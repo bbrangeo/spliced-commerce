@@ -28,47 +28,47 @@ use Doctrine\ODM\MongoDB\Cursor;
  */
 class ConfigurationManager
 {
-	/** These are the default commerce implementations entity class tags for 
-	 * use with creating entities with this service. 
-	 */
-    const OBJECT_CLASS_TAG_AFFILIATE 			            = 'affiliate';
-    const OBJECT_CLASS_TAG_CUSTOMER 			            = 'customer';
-    const OBJECT_CLASS_TAG_CUSTOMER_ADDRESS 	            = 'customer_address';
-    const OBJECT_CLASS_TAG_CUSTOMER_PROFILE 	            = 'customer_profile';
+    /** These are the default commerce implementations entity class tags for 
+     * use with creating entities with this service. 
+     */
+    const OBJECT_CLASS_TAG_AFFILIATE                         = 'affiliate';
+    const OBJECT_CLASS_TAG_CUSTOMER                         = 'customer';
+    const OBJECT_CLASS_TAG_CUSTOMER_ADDRESS                 = 'customer_address';
+    const OBJECT_CLASS_TAG_CUSTOMER_PROFILE                 = 'customer_profile';
     const OBJECT_CLASS_TAG_CHECKOUT_CUSTOM_FIELD            = 'checkout_custom_field';
     const OBJECT_CLASS_TAG_CART                             = 'cart';
     const OBJECT_CLASS_TAG_CART_ITEM                        = 'cart_item';
     const OBJECT_CLASS_TAG_CATEGORY                         = 'category';
-    const OBJECT_CLASS_TAG_PRODUCT 				            = 'product';
-    const OBJECT_CLASS_TAG_PRODUCT_CONTENT 		            = 'product_content';
-    const OBJECT_CLASS_TAG_PRODUCT_CATEGORY 	            = 'product_category';
-    const OBJECT_CLASS_TAG_PRODUCT_IMAGE 		            = 'product_image';
-    const OBJECT_CLASS_TAG_PRODUCT_TIER_PRICE 		        = 'product_tier_price';
-    const OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE 				= 'product_attribute';
-    const OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION 	 	= 'product_attribute_option';
-    const OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION_VALUE 	= 'product_attribute_option_value';
+    const OBJECT_CLASS_TAG_PRODUCT                             = 'product';
+    const OBJECT_CLASS_TAG_PRODUCT_CONTENT                     = 'product_content';
+    const OBJECT_CLASS_TAG_PRODUCT_CATEGORY                 = 'product_category';
+    const OBJECT_CLASS_TAG_PRODUCT_IMAGE                     = 'product_image';
+    const OBJECT_CLASS_TAG_PRODUCT_TIER_PRICE                 = 'product_tier_price';
+    const OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE                 = 'product_attribute';
+    const OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION          = 'product_attribute_option';
+    const OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION_VALUE     = 'product_attribute_option_value';
     const OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION_VALUE_PRODUCT = 'product_attribute_option_value_product';
-    const OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION 			= 'product_specification';
-    const OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION 	 	= 'product_specification_option';
-    const OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION_VALUE 	= 'product_specification_option_value';
+    const OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION             = 'product_specification';
+    const OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION          = 'product_specification_option';
+    const OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION_VALUE     = 'product_specification_option_value';
     const OBJECT_CLASS_TAG_PRODUCT_BUNDLED_ITEM             = 'product_bundled_item';
     const OBJECT_CLASS_TAG_PRODUCT_UPSALE                   = 'product_upsale';
     const OBJECT_CLASS_TAG_MANUFACTURER                     = 'manufacturer';
-    const OBJECT_CLASS_TAG_ORDER 				            = 'order';
-    const OBJECT_CLASS_TAG_ORDER_ITEM			            = 'order_item';
-    const OBJECT_CLASS_TAG_ORDER_MEMO			            = 'order_memo';
-    const OBJECT_CLASS_TAG_ORDER_PAYMENT 		            = 'order_payment';
-    const OBJECT_CLASS_TAG_ORDER_PAYMENT_MEMO 	            = 'order_payment_memo';
-    const OBJECT_CLASS_TAG_ORDER_SHIPMENT 		            = 'order_shipment';
-    const OBJECT_CLASS_TAG_ORDER_SHIPMENT_MEMO 	            = 'order_shipment_memo';
+    const OBJECT_CLASS_TAG_ORDER                             = 'order';
+    const OBJECT_CLASS_TAG_ORDER_ITEM                        = 'order_item';
+    const OBJECT_CLASS_TAG_ORDER_MEMO                        = 'order_memo';
+    const OBJECT_CLASS_TAG_ORDER_PAYMENT                     = 'order_payment';
+    const OBJECT_CLASS_TAG_ORDER_PAYMENT_MEMO                 = 'order_payment_memo';
+    const OBJECT_CLASS_TAG_ORDER_SHIPMENT                     = 'order_shipment';
+    const OBJECT_CLASS_TAG_ORDER_SHIPMENT_MEMO                 = 'order_shipment_memo';
     const OBJECT_CLASS_TAG_ORDER_CUSTOM_FIELD_VALUE         = 'order_custom_field_value';
-    const OBJECT_CLASS_TAG_CONFIG_DATA 		                = 'config_data';
-    const OBJECT_CLASS_TAG_VISITOR 		                    = 'visitor';
-    const OBJECT_CLASS_TAG_VISITOR_REQUEST 		            = 'visitor_request';
-    const OBJECT_CLASS_TAG_SEARCH_TERM 		                = 'search_term';
-    const OBJECT_CLASS_TAG_NEWSLETTER_SUBSCRIBER 		    = 'newsletter_subscriber';
-    const OBJECT_CLASS_TAG_CONTACT_MESSAGE 		            = 'contact_message';
-    const OBJECT_CLASS_TAG_USER		           				= 'user';
+    const OBJECT_CLASS_TAG_CONFIG_DATA                         = 'config_data';
+    const OBJECT_CLASS_TAG_VISITOR                             = 'visitor';
+    const OBJECT_CLASS_TAG_VISITOR_REQUEST                     = 'visitor_request';
+    const OBJECT_CLASS_TAG_SEARCH_TERM                         = 'search_term';
+    const OBJECT_CLASS_TAG_NEWSLETTER_SUBSCRIBER             = 'newsletter_subscriber';
+    const OBJECT_CLASS_TAG_CONTACT_MESSAGE                     = 'contact_message';
+    const OBJECT_CLASS_TAG_USER                                   = 'user';
     const OBJECT_CLASS_TAG_ROUTE                            = 'route';
     const OBJECT_CLASS_TAG_TAG                              = 'tag';
     const OBJECT_CLASS_TAG_CMS_PAGE                         = 'cms_page';
@@ -78,8 +78,8 @@ class ConfigurationManager
     protected $om;
     protected $router;
     protected $data = false;
-	protected $configurableServices;
-	
+    protected $configurableServices;
+    
     /**
      * Constructor
      *
@@ -89,8 +89,8 @@ class ConfigurationManager
      */
     public function __construct(array $entityClasses, array $documentClasses, EntityManager $em, DocumentManager $dm, \AppKernel $kernel)
     {
-    	$this->em = $em;
-    	$this->dm = $dm;
+        $this->em = $em;
+        $this->dm = $dm;
         $this->entityClasses = $entityClasses;
         $this->documentClasses = $documentClasses;
         $this->kernel = $kernel;
@@ -104,7 +104,7 @@ class ConfigurationManager
      */
     public function getEntityManager()
     {
-    	return $this->em;
+        return $this->em;
     }
     
 
@@ -115,7 +115,7 @@ class ConfigurationManager
      */
     public function getDocumentManager()
     {
-    	return $this->dm;
+        return $this->dm;
     }
     
     /**
@@ -125,7 +125,7 @@ class ConfigurationManager
      */
     public function getKernel()
     {
-    	return $this->kernel;
+        return $this->kernel;
     }
     
     /**
@@ -145,22 +145,22 @@ class ConfigurationManager
      */
     public function init()
     {
-    	$data = $this->getDocumentManager()
-    	  ->getRepository($this->getDocumentClass(static::OBJECT_CLASS_TAG_CONFIG_DATA))
-    	  ->getConfiguration($this->getKernel()->getEnvironment() == 'prod');
-    	
-    	if($data instanceof Cursor){
-    		$data = $data->toArray();
-    	}
+        $data = $this->getDocumentManager()
+          ->getRepository($this->getDocumentClass(static::OBJECT_CLASS_TAG_CONFIG_DATA))
+          ->getConfiguration($this->getKernel()->getEnvironment() == 'prod');
+        
+        if($data instanceof Cursor){
+            $data = $data->toArray();
+        }
 
-    	$this->data = array();
-    	foreach ($data as $d) {
-    		if(isset($d['value']) && in_array($d['type'],array('array','serialized','countries','statuses')) && !is_array($d['value'])){
-    			$this->data[$d['key']] = unserialize($d['value']);
-    		} else {
-    			$this->data[$d['key']] =  isset($d['value']) ? $d['value'] : null;
-    		}
-    	}
+        $this->data = array();
+        foreach ($data as $d) {
+            if(isset($d['value']) && in_array($d['type'],array('array','serialized','countries','statuses')) && !is_array($d['value'])){
+                $this->data[$d['key']] = unserialize($d['value']);
+            } else {
+                $this->data[$d['key']] =  isset($d['value']) ? $d['value'] : null;
+            }
+        }
 
     }
     
@@ -174,10 +174,10 @@ class ConfigurationManager
      */
     public function get($key, $defaultValue = null)
     {
-    	if(!is_array($this->data)){
-    		$this->init();
-    	}
-    	
+        if(!is_array($this->data)){
+            $this->init();
+        }
+        
         return isset($this->data[$key]) ? $this->data[$key] : $defaultValue;
     }
 
@@ -190,11 +190,11 @@ class ConfigurationManager
      */
     public function has($key)
     {
-    	if(!is_array($this->data)){
-    		$this->init();
-    	}
-    	
-    	return array_key_exists($key, $this->data);
+        if(!is_array($this->data)){
+            $this->init();
+        }
+        
+        return array_key_exists($key, $this->data);
     }
 
     /**
@@ -209,10 +209,10 @@ class ConfigurationManager
     public function add($key, array $fieldParams)
     {
         if(!$this->data){
-    		$this->init();
-    	}
-    	
-    	if ($this->has($key)) {
+            $this->init();
+        }
+        
+        if ($this->has($key)) {
             return $this;
         }
 
@@ -249,10 +249,10 @@ class ConfigurationManager
     public function getByKeyExpression($expression)
     {
         if(!$this->data){
-    		$this->init();
-    	}
-    	
-    	$return = array();
+            $this->init();
+        }
+        
+        $return = array();
         array_walk($this->data, function($value,$key) use ($expression, &$return) {
             if (preg_match($expression,$key)) {
                 $return[$key] = $value;
@@ -272,7 +272,7 @@ class ConfigurationManager
      * @param ConfigurableInterface $configurationInterface
      */
     public function processConfiguration(ConfigurableInterface $configurationInterface){
-    	return $this->processConfigurableService($configurationInterface);
+        return $this->processConfigurableService($configurationInterface);
     }
     
     /**
@@ -297,11 +297,11 @@ class ConfigurationManager
      */
     public function processConfigurableServices(ContainerInterface $container)
     {
-    	foreach($this->getConfigurableServiceIds() as $configurableServiceId){
-    		if($container->has($configurableServiceId)){
-    			$this->processConfiguration($container->get($configurableServiceId));
-    		}
-    	}
+        foreach($this->getConfigurableServiceIds() as $configurableServiceId){
+            if($container->has($configurableServiceId)){
+                $this->processConfiguration($container->get($configurableServiceId));
+            }
+        }
     }
     
     /**
@@ -311,7 +311,7 @@ class ConfigurationManager
      */
     public function addConfigurableServiceId($configurableInterfaceServiceId)
     {
-    	$this->configurableServices->add($configurableInterfaceServiceId);
+        $this->configurableServices->add($configurableInterfaceServiceId);
     }
     
     /**
@@ -321,7 +321,7 @@ class ConfigurationManager
      */
     public function getConfigurableServiceIds()
     {
-    	return $this->configurableServices;
+        return $this->configurableServices;
     }
     
     /**
@@ -370,7 +370,7 @@ class ConfigurationManager
      */
     protected function getDocumentClasses()
     {
-    	return $this->documentClasses;
+        return $this->documentClasses;
     }
     
     /**
@@ -382,7 +382,7 @@ class ConfigurationManager
      */
     public function getDocumentClass($documentTag)
     {
-    	return isset($this->documentClasses[$documentTag]) ? $this->documentClasses[$documentTag] : null;
+        return isset($this->documentClasses[$documentTag]) ? $this->documentClasses[$documentTag] : null;
     }
     
     /**
@@ -394,11 +394,11 @@ class ConfigurationManager
      */
     public function createDocument($documentTag)
     {
-    	$class = $this->getDocumentClass($documentTag);
-    	if (!class_exists($class)) {
-    		throw new \Exception(sprintf('Class %s Does Not Exist From Tag %s',$class, $documentTag));
-    	}
+        $class = $this->getDocumentClass($documentTag);
+        if (!class_exists($class)) {
+            throw new \Exception(sprintf('Class %s Does Not Exist From Tag %s',$class, $documentTag));
+        }
     
-    	return new $class();
+        return new $class();
     }
 }

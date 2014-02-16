@@ -20,11 +20,11 @@ use Doctrine\ORM\Query;
 abstract class VisitorRepository extends EntityRepository
 {
 
-	/**
-	 * findOneBySessionId
-	 * 
-	 * @param string $sessionId
-	 */
+    /**
+     * findOneBySessionId
+     * 
+     * @param string $sessionId
+     */
     public function findOneBySessionId($sessionId)
     {
         return $this->createQueryBuilder('visitor')
@@ -35,24 +35,24 @@ abstract class VisitorRepository extends EntityRepository
           ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
           ->getSingleResult();
     }
-	
-		/**
-	 * findOneBySessionIdWithRequestCount
-	 * 
-	 * @param string $sessionId
-	 */
+    
+        /**
+     * findOneBySessionIdWithRequestCount
+     * 
+     * @param string $sessionId
+     */
     public function findOneBySessionIdWithRequestCount($sessionId)
     {
         return $this->createQueryBuilder('visitor')
           ->select('visitor, count(requests) as requestCount')
           ->where('visitor.sessionId = :sessionId')
-		  ->leftJoin('visitor.requests', 'requests')
+          ->leftJoin('visitor.requests', 'requests')
           ->setParameter('sessionId', $sessionId)
           ->getQuery()
           ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
           ->getSingleResult();
     }
-	
+    
     /**
      * findOneById
      * 
@@ -68,7 +68,7 @@ abstract class VisitorRepository extends EntityRepository
           ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
           ->getSingleResult();
     }
-	
+    
     /**
      * findOneByIdWithRequestCount
      * 
@@ -76,19 +76,19 @@ abstract class VisitorRepository extends EntityRepository
      */
     public function findOneByIdWithRequestCount($id)
     {
-    	$date = new \DateTime('now');
-    	
+        $date = new \DateTime('now');
+        
         return $this->createQueryBuilder('visitor')
           ->select('visitor, count(requests) as requestCount')
           ->where('visitor.id = :id')
-		  //->leftJoin('visitor.requests', 'requests')
-		  ->leftJoin('visitor.requests', 'requests', \Doctrine\ORM\Query\Expr\Join::WITH, 'requests.createdAt BETWEEN :date1 AND :date2')
+          //->leftJoin('visitor.requests', 'requests')
+          ->leftJoin('visitor.requests', 'requests', \Doctrine\ORM\Query\Expr\Join::WITH, 'requests.createdAt BETWEEN :date1 AND :date2')
           ->setParameter('id', $id)
-		  ->setParameters(array(
-		  	'id' => $id,
-		  	'date1' => $date->format('Y-m-d 00:00:01'),
-		  	'date2' => $date->format('Y-m-d 23:59:59'),
-		  ))
+          ->setParameters(array(
+              'id' => $id,
+              'date1' => $date->format('Y-m-d 00:00:01'),
+              'date2' => $date->format('Y-m-d 23:59:59'),
+          ))
           ->getQuery()
           ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
           ->getSingleResult();

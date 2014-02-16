@@ -31,8 +31,8 @@ class CustomerController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-		
-		// load products
+        
+        // load products
         $entities = $this->get('knp_paginator')->paginate(
             $em->getRepository('SplicedCommerceAdminBundle:Customer')->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page',1),
@@ -103,10 +103,10 @@ class CustomerController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         try{
-        	$entity = $em->getRepository('SplicedCommerceAdminBundle:Customer')->findOneById($id);
-		} catch(NoResultException $e) {
-			throw $this->createNotFoundException('Unable to find Customer.');
-		}
+            $entity = $em->getRepository('SplicedCommerceAdminBundle:Customer')->findOneById($id);
+        } catch(NoResultException $e) {
+            throw $this->createNotFoundException('Unable to find Customer.');
+        }
 
         $editForm = $this->createForm(new CustomerType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
@@ -269,36 +269,36 @@ class CustomerController extends Controller
         $methodName = 'batch'.ucwords($action);
 
         if(method_exists($this,$methodName)) {
-        	return call_user_func($this, $methodName, $ids);
+            return call_user_func($this, $methodName, $ids);
         }
         
         throw new \InvalidArgumentException(sprintf('Method %s does not exist',$methodName));
     }
     
 
-	/**
-	* batchDelete
-	* 
-	* @param array $ids
-	*/
-	protected function batchDelete(array $ids)
-	{
-		$entities = $em->getRepository('SplicedCommerceAdminBundle:Customer')->findById($id);
-		
-		$count = count($entities);
-		
-		foreach($entities as $entity) {
-			$em->remove($entity);
-		}
-		
-		try{
-			$em->flush();
-			$this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s records.', $count));
-		} catch( \Exception $e) {
-			$this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
-		}
-		
-		return $this->redirect($this->generateUrl('customer'));
-	}
+    /**
+    * batchDelete
+    * 
+    * @param array $ids
+    */
+    protected function batchDelete(array $ids)
+    {
+        $entities = $em->getRepository('SplicedCommerceAdminBundle:Customer')->findById($id);
+        
+        $count = count($entities);
+        
+        foreach($entities as $entity) {
+            $em->remove($entity);
+        }
+        
+        try{
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s records.', $count));
+        } catch( \Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
+        }
+        
+        return $this->redirect($this->generateUrl('customer'));
+    }
 
 }

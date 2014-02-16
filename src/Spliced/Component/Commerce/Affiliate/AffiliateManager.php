@@ -51,7 +51,7 @@ class AffiliateManager
      */
     public function getConfigurationManager()
     {
-    	return $this->configurationManager;
+        return $this->configurationManager;
     }
     
     /**
@@ -61,7 +61,7 @@ class AffiliateManager
      */
     protected function getObjectManager()
     {
-    	return $this->getConfigurationManager()->getDocumentManager();
+        return $this->getConfigurationManager()->getDocumentManager();
     }
 
     /**
@@ -71,7 +71,7 @@ class AffiliateManager
      */
     protected function getSession()
     {
-    	return $this->session;
+        return $this->session;
     }
     
     /**
@@ -102,16 +102,16 @@ class AffiliateManager
      */
     public function getAffiliates()
     {
-    	if($this->affiliates instanceof Collection){
-    		return $this->affiliates;
-    	}
-    	
-    	$this->affiliates = $this->getObjectManager()
-    	->getRepository($this->getConfigurationManager()
-    	->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_AFFILIATE))
-    	->findByIsActive(true);
-    	
-    	
+        if($this->affiliates instanceof Collection){
+            return $this->affiliates;
+        }
+        
+        $this->affiliates = $this->getObjectManager()
+        ->getRepository($this->getConfigurationManager()
+        ->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_AFFILIATE))
+        ->findByIsActive(true);
+        
+        
         return $this->affiliates;
     }
 

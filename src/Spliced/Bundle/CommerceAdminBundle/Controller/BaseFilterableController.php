@@ -36,7 +36,7 @@ class BaseFilterableController extends Controller
             
             $this->get('session')->getFlashBag()->add('success', 'Filters Updated');
         } else {
-        	$this->get('session')->getFlashBag()->add('error', 'Filter Form Was Invalid. Filters Not Updated');
+            $this->get('session')->getFlashBag()->add('error', 'Filter Form Was Invalid. Filters Not Updated');
         }
     }
     
@@ -47,10 +47,10 @@ class BaseFilterableController extends Controller
     public function clearFiltersActions()
     {
         $filters = new ListFilter();
-    	if($this->getRequest()->request->has('tag')){
-        	$this->get('session')->set(static::FILTER_TAG.'.'.$this->getRequest()->request->get('tag'), serialize($filters));
+        if($this->getRequest()->request->has('tag')){
+            $this->get('session')->set(static::FILTER_TAG.'.'.$this->getRequest()->request->get('tag'), serialize($filters));
         } else {
-        	$this->get('session')->set(static::FILTER_TAG, serialize($filters));
+            $this->get('session')->set(static::FILTER_TAG, serialize($filters));
         }
         $this->get('session')->getFlashBag()->add('notice', 'Filters Cleared');
     }

@@ -20,36 +20,36 @@ use Spliced\Component\Commerce\Model\OrderCustomFieldValue as BaseOrderCustomFie
  */
 class OrderCustomFieldValue extends BaseOrderCustomFieldValue
 {
-	/**
-	 * @var bigint $id
-	 *
-	 * @ORM\Column(name="id", type="bigint", nullable=false)
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="IDENTITY")
-	 */
-	protected $id;
-	
-	/**
-	 * @var string $fieldValue
-	 *
-	 * @ORM\Column(name="field_value", type="string", nullable=false)
-	 */
-	protected $fieldValue;
+    /**
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    protected $id;
+    
+    /**
+     * @var string $fieldValue
+     *
+     * @ORM\Column(name="field_value", type="string", nullable=false)
+     */
+    protected $fieldValue;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="Order", inversedBy="customFields")
-	 * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
-	 */
-	protected $order;
-	
-	/**
-	 * getId
-	 * 
-	 * @return integer
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
-	
+    /**
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="customFields")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $order;
+    
+    /**
+     * getId
+     * 
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
 }

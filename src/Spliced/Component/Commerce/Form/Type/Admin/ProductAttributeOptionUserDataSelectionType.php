@@ -33,39 +33,39 @@ class ProductAttributeOptionUserDataSelectionType extends AbstractType
             'label' => 'Required',
             'expanded' => false,
             'multiple' => false,
-			'choices' => array(
-				1 => 'Yes',
-				0 => 'No',
-			)
+            'choices' => array(
+                1 => 'Yes',
+                0 => 'No',
+            )
         ))
-		->add('collection_type', 'choice', array(
-			'label' => 'Data Collection Type', 
-			'required' => true,
-			'choices' => array(
-				1 => 'Once for each item in cart',
-				2 => 'Once for all items in cart',
-			)
-		))
-		->add('required_error_message', 'text', array(
-			'required' => false,
-			'label' => 'Required Error Message',
-		))
-		->add('help', 'textarea', array(
-			'required' => false,
-			'label' => 'Help HTML',
-		))
-		->add('input_class', 'text', array(
-			'required' => false,
-			'label' => 'Input Class',
-		))
-		->add('label_class', 'text', array(
-			'required' => false,
-			'label' => 'Label Class',
-		))
-		->add('wrapper_class', 'text', array(
-			'required' => false,
-			'label' => 'Wrapper Class',
-		));
+        ->add('collection_type', 'choice', array(
+            'label' => 'Data Collection Type', 
+            'required' => true,
+            'choices' => array(
+                1 => 'Once for each item in cart',
+                2 => 'Once for all items in cart',
+            )
+        ))
+        ->add('required_error_message', 'text', array(
+            'required' => false,
+            'label' => 'Required Error Message',
+        ))
+        ->add('help', 'textarea', array(
+            'required' => false,
+            'label' => 'Help HTML',
+        ))
+        ->add('input_class', 'text', array(
+            'required' => false,
+            'label' => 'Input Class',
+        ))
+        ->add('label_class', 'text', array(
+            'required' => false,
+            'label' => 'Label Class',
+        ))
+        ->add('wrapper_class', 'text', array(
+            'required' => false,
+            'label' => 'Wrapper Class',
+        ));
     }
     
     /**

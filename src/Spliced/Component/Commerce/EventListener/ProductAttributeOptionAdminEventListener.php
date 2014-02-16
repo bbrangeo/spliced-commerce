@@ -77,7 +77,7 @@ class ProductAttributeOptionAdminEventListener
      */
     public function onProductAttributeOptionUpdate(ProductAttributeOptionUpdateEvent $event)
     {
-    	
+        
     }
 
     /**

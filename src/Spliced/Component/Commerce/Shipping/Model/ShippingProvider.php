@@ -20,13 +20,13 @@ use Spliced\Component\Commerce\Shipping\ShippingManager;
  */
 abstract class ShippingProvider implements ShippingProviderInterface
 {
-	/** Provider Constants */
-	const PROVIDER_UPS 		= 'ups';
-	const PROVIDER_USPS 	= 'usps';
-	const PROVIDER_FEDEX 	= 'fedex';
-	const PROVIDER_DHL 		= 'dhl';
-	const PROVIDER_OTHER 	= 'other';
-	
+    /** Provider Constants */
+    const PROVIDER_UPS         = 'ups';
+    const PROVIDER_USPS     = 'usps';
+    const PROVIDER_FEDEX     = 'fedex';
+    const PROVIDER_DHL         = 'dhl';
+    const PROVIDER_OTHER     = 'other';
+    
     /**
      * ShippingMethodCollection
      */
@@ -37,8 +37,8 @@ abstract class ShippingProvider implements ShippingProviderInterface
      */
     public function __construct(ConfigurationManager $configurationManager, CartManager $cartManager)
     {
-    	$this->configurationManager = $configurationManager;
-    	$this->cartManager = $cartManager;
+        $this->configurationManager = $configurationManager;
+        $this->cartManager = $cartManager;
         $this->methods = new ShippingMethodCollection();
     }
         
@@ -76,25 +76,25 @@ abstract class ShippingProvider implements ShippingProviderInterface
     public function getMethod($name)
     {
         $value = null;
-		foreach($this->methods as $method){
-			if($method->getName() == $name){
-				return $method;
-			}
-		}
-		
+        foreach($this->methods as $method){
+            if($method->getName() == $name){
+                return $method;
+            }
+        }
+        
         throw new \Exception(sprintf('Shipping Method %s For Provider %s Does Not Exist. Available methods are %s',
-        	$name, 
-        	$this->getName(),
-        	implode(', ', $this->getAvailableMethodNames())
-		));
-	}
+            $name, 
+            $this->getName(),
+            implode(', ', $this->getAvailableMethodNames())
+        ));
+    }
 
     /**
      * @{inheritDoc}
      */
     public function hasMethod($name)
     {
-    	return $this->methods->has($name);
+        return $this->methods->has($name);
     }
     
 
@@ -103,19 +103,19 @@ abstract class ShippingProvider implements ShippingProviderInterface
      */
     public function addMethod(ShippingMethodInterface $method)
     {
-    	 $this->methods->set($method->getName(), $method);
-    	 return $this;
+         $this->methods->set($method->getName(), $method);
+         return $this;
     }
-	
-	/**
-	 * 
-	 */
-	 public function getAvailableMethodNames()
-	 {
-	 	$return = array();
-		foreach($this->methods as $method){
-			$return[] = $method->getName();
-		}
-		return $return;
-	 }
+    
+    /**
+     * 
+     */
+     public function getAvailableMethodNames()
+     {
+         $return = array();
+        foreach($this->methods as $method){
+            $return[] = $method->getName();
+        }
+        return $return;
+     }
 }

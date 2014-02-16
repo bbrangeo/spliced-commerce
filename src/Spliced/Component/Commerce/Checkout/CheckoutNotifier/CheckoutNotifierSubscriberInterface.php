@@ -18,26 +18,26 @@ use Spliced\Component\Commerce\Model\OrderInterface;
  */
 interface CheckoutNotifierSubscriberInterface
 {
-	
-	/**
-	 * getName
-	 * 
-	 * Returns a unique name for the notifier
-	 * 
-	 * @return string
-	 */
-	public function getName();
-	
-	/**
-	 * renderHeadHtml
-	 * 
-	 * Renders HTML for the HEAD of the Checkout Success Page
-	 * for the checkout notifier, if needed by the service.
-	 * 
-	 * @param OrderInterface $order
-	 * 
-	 * @return string
-	 */
+    
+    /**
+     * getName
+     * 
+     * Returns a unique name for the notifier
+     * 
+     * @return string
+     */
+    public function getName();
+    
+    /**
+     * renderHeadHtml
+     * 
+     * Renders HTML for the HEAD of the Checkout Success Page
+     * for the checkout notifier, if needed by the service.
+     * 
+     * @param OrderInterface $order
+     * 
+     * @return string
+     */
     public function renderHeadHtml(OrderInterface $order);
 
     /**

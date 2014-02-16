@@ -31,7 +31,7 @@ class CheckoutNotifierManager
     {
         $this->notifiers = new ArrayCollection();
     }
-	
+    
     /**
      * addNotifier
      * 
@@ -39,8 +39,8 @@ class CheckoutNotifierManager
      */
     public function addNotifier(CheckoutNotifierSubscriberInterface $notifier)
     {
-    	$this->notifiers->set($notifier->getName(), $notifier);
-    	return $this;
+        $this->notifiers->set($notifier->getName(), $notifier);
+        return $this;
     }
     
     /**
@@ -60,7 +60,7 @@ class CheckoutNotifierManager
      */
     public function getNotifier()
     {
-    	return $this->notifiers;
+        return $this->notifiers;
     }
     
     /**
@@ -70,7 +70,7 @@ class CheckoutNotifierManager
      */
     public function setNotifiers(ArrayCollection $notifiers)
     {
-    	$this->notifiers = $notifiers;
-    	return $this;
+        $this->notifiers = $notifiers;
+        return $this;
     }
 }

@@ -47,22 +47,22 @@ abstract class ProductSpecification
      */
     protected $values = array();
 
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		$this->values = array();
-	}
- 	
-	/**
-	 * getId
-	 */
-	public function getId()
-	{
-	    return $this->id;
-	}
-	
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->values = array();
+    }
+     
+    /**
+     * getId
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
     /**
      * @{inheritDoc}
      */
@@ -91,11 +91,11 @@ abstract class ProductSpecification
      */
     public function hasValue($value)
     {
-    	foreach($this->getValues() as $_value){
-    		if($_value === $value){
-    			return true;
-    		}
-    	}
+        foreach($this->getValues() as $_value){
+            if($_value === $value){
+                return true;
+            }
+        }
         return false;
     }
     
@@ -108,10 +108,10 @@ abstract class ProductSpecification
             return $this;
         }
         
-    	if($this->hasValue($value)){
-    		return $this;
-    	}
-    	
+        if($this->hasValue($value)){
+            return $this;
+        }
+        
         $this->values[] = $value;
         return $this;
     }
@@ -128,7 +128,7 @@ abstract class ProductSpecification
         }
         return $this;
     }
-    	
+        
     /**
      * @{inheritDoc}
      */
@@ -137,7 +137,7 @@ abstract class ProductSpecification
         $this->values = $values;
         return $this;
     }
-	
+    
     /**
      * @{inheritDoc}
      */

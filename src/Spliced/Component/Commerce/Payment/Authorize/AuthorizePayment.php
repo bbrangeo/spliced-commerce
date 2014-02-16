@@ -52,7 +52,7 @@ class AuthorizePayment extends PaymentProvider implements CreditCardPaymentProvi
      */
     public function process(OrderInterface $order)
     {
-        $payment	= $order->getPayment();
+        $payment    = $order->getPayment();
         $creditCard = $payment->getCreditCard();
 
         $amountToCharge = $this->getOrderHelper()->getOrderTotal($order);
@@ -62,7 +62,7 @@ class AuthorizePayment extends PaymentProvider implements CreditCardPaymentProvi
       
         if ($creditCard->isEncrypted()) { // decrypt if needed
             $creditCardNumber = $this->getEncryptionManager()
-            	->decrypt($order->getProtectCode(), $creditCardNumber);
+                ->decrypt($order->getProtectCode(), $creditCardNumber);
         }
        
         
@@ -118,7 +118,7 @@ class AuthorizePayment extends PaymentProvider implements CreditCardPaymentProvi
                
            throw new PaymentErrorException($order, $clientResponse->getMessage());   
         }
-		
+        
         
         // we had success, lets make a payment memo stating that
         $paymentMemo->setChangedStatus($this->getOption('checkout_complete_status'))

@@ -26,7 +26,7 @@ class CategorySaveEvent extends Event
      */
     public function __construct(CategoryInterface $category)
     {
-        $this->category	= $category;
+        $this->category    = $category;
     }
 
     /**

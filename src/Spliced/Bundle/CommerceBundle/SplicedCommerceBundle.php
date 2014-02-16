@@ -54,9 +54,9 @@ class SplicedCommerceBundle extends Bundle
         $container->addCompilerPass(new PaymentCompilerPass());
         $container->addCompilerPass(new ConfigurationCompilerPass());
         $container->addCompilerPass(new CheckoutNotifierCompilerPass());
-		$container->addCompilerPass(new RoutingCompilerPass());
-		$container->addCompilerPass(new ProductTypeCompilerPass());
-		$container->addCompilerPass(new CheckoutStepCompilerPass());
+        $container->addCompilerPass(new RoutingCompilerPass());
+        $container->addCompilerPass(new ProductTypeCompilerPass());
+        $container->addCompilerPass(new CheckoutStepCompilerPass());
 
     }
 

@@ -115,7 +115,7 @@ class ProductSpecificationResizeFormListener extends ResizeFormListener
         // Add all additional rows
         if ($this->allowAdd) {
             foreach ($data as $name => $value) {
-            	
+                
                 if (!$form->has($name)) {
                     $form->add($name, new ProductSpecificationType($this->getConfigurationManager(), $this->getProduct()), array_replace(array(
                         'property_path' => '['.$name.']',

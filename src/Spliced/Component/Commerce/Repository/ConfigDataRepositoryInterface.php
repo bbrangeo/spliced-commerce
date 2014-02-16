@@ -17,14 +17,14 @@ namespace Spliced\Component\Commerce\Repository;
 interface ConfigDataRepositoryInterface
 {
 
-	/**
-	 * getConfiguration
-	 * 
-	 * Loads the configuration as objects
-	 * 
-	 * @param bool $cache - To cache the query result or not
-	 * @param bool $hydrate - Return result as an array or as object
-	 */
-	public function getConfiguration($cache = true, $hydrate = true);
-	
+    /**
+     * getConfiguration
+     * 
+     * Loads the configuration as objects
+     * 
+     * @param bool $cache - To cache the query result or not
+     * @param bool $hydrate - Return result as an array or as object
+     */
+    public function getConfiguration($cache = true, $hydrate = true);
+    
 }

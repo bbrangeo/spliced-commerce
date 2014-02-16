@@ -112,7 +112,7 @@ class CheckoutProcessStepEvent extends CheckoutEvent
      */
     public function isLastStep()
     {
-    	return $this->lastStep;
+        return $this->lastStep;
     }
     
     /**
@@ -122,7 +122,7 @@ class CheckoutProcessStepEvent extends CheckoutEvent
      */
     public function setLastStep($lastStep)
     {
-    	$this->lastStep = $lastStep ? true : false;
-    	return $this;
+        $this->lastStep = $lastStep ? true : false;
+        return $this;
     }
 }

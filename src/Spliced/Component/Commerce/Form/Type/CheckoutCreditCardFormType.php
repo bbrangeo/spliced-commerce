@@ -33,41 +33,41 @@ class CheckoutCreditCardFormType extends CreditCardFormType
     {
         $this->checkoutManager = $checkoutManager;
         $this->order = $order;
-		$this->prependName = $prependName;
+        $this->prependName = $prependName;
     }
-	
-	/**
-	* getCheckoutManager
-	* 
-	* @return CheckoutManager
-	*/
-	protected function getCheckoutManager()
-	{
-		return $this->checkoutManager;
-	}
-	 
-	/**
-	* getOrder
-	* 
-	* @return OrderInterface
-	*/
-	protected function getOrder()
-	{
-		return $this->order;
-	}
+    
+    /**
+    * getCheckoutManager
+    * 
+    * @return CheckoutManager
+    */
+    protected function getCheckoutManager()
+    {
+        return $this->checkoutManager;
+    }
+     
+    /**
+    * getOrder
+    * 
+    * @return OrderInterface
+    */
+    protected function getOrder()
+    {
+        return $this->order;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder,$options);
 
     }
-	
-	/**
-	 * {@inheritDoc}
-	 */
+    
+    /**
+     * {@inheritDoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -78,9 +78,9 @@ class CheckoutCreditCardFormType extends CreditCardFormType
         ));
     }
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     protected function getValidationGroups()
     {
         $groups = array();
@@ -93,10 +93,10 @@ class CheckoutCreditCardFormType extends CreditCardFormType
 
         return $groups;
     }
-	
-	/**
-	 * {@inheritDoc}
-	 */
+    
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return isset($this->prependName) && !is_null($this->prependName) ? $this->prependName.'_credit_card'  : 'credit_card';

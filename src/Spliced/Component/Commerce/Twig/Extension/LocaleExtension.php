@@ -25,8 +25,8 @@ class LocaleExtension extends \Twig_Extension
         return array(
             'locale_get_display_name' => new \Twig_SimpleFunction('locale_get_display_name', 'locale_get_display_name'),
             'locale_get_display_language' => new \Twig_SimpleFunction('locale_get_display_language', 'locale_get_display_language'),
-        	'locale_lookup' => new \Twig_SimpleFunction('locale_lookup', 'locale_lookup'),
-        		
+            'locale_lookup' => new \Twig_SimpleFunction('locale_lookup', 'locale_lookup'),
+                
         );
     }
     

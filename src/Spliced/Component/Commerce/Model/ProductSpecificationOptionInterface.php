@@ -17,16 +17,16 @@ namespace Spliced\Component\Commerce\Model;
 interface ProductSpecificationOptionInterface
 {
 
-	/** 
-	 * Option type which represents a single option and single value  
-	 */
+    /** 
+     * Option type which represents a single option and single value  
+     */
     const OPTION_TYPE_SINGLE_VALUE = 1;
     
-	/** 
-	 * Option type which represents a single option with multiple values 
-	 */
+    /** 
+     * Option type which represents a single option with multiple values 
+     */
     const OPTION_TYPE_MULTIPLE_VALUE = 2;
-	
+    
     /**
      * Option type which represents a single option with a variable/custom value
      */

@@ -34,15 +34,15 @@ class CheckoutStepCompilerPass implements CompilerPassInterface
         // add each step that has been tagged as a checkout step handler
         $i = 1; // keep a counter for services which have not been tagged a step, add them sequentially
         foreach($container->findTaggedServiceIds('commerce.checkout_step') as $id => $attributes){
-        	$step = isset($attributes[0]['step']) ? $attributes[0]['step'] : $i;
-        	$priority = isset($attributes[0]['priority']) ? $attributes[0]['priority'] : 10;
-        	
-        	$checkoutManager->addMethodCall('addStepHandler', array(new Reference($id)));
+            $step = isset($attributes[0]['step']) ? $attributes[0]['step'] : $i;
+            $priority = isset($attributes[0]['priority']) ? $attributes[0]['priority'] : 10;
+            
+            $checkoutManager->addMethodCall('addStepHandler', array(new Reference($id)));
      
-        	$container->getDefinition($id)->addMethodCall('setStep', array($step))
-        	  ->addMethodCall('setPriority', array($priority));
-        	
-        	++$i;
+            $container->getDefinition($id)->addMethodCall('setStep', array($step))
+              ->addMethodCall('setPriority', array($priority));
+            
+            ++$i;
         } 
         
         // now we validate the steps added to make sure they 

@@ -18,6 +18,6 @@ use Spliced\Component\Commerce\Repository\CategoryDocumentRepository as BaseCate
  */
 class CategoryDocumentRepository extends BaseCategoryDocumentRepository
 {
-	
+    
 
 }

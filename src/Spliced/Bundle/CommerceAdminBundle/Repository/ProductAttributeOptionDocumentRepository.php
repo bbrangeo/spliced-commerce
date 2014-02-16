@@ -19,19 +19,19 @@ use Spliced\Bundle\CommerceAdminBundle\Model\ListFilter;
  */
 class ProductAttributeOptionDocumentRepository extends BaseProductAttributeOptionDocumentRepository
 {
-	/**
-	 * getAdminListQuery
-	 */
-	public function getAdminListQuery(ListFilter $filter = null, $toQuery = true)
-	{
-		$query = $this->createQueryBuilder()
-		->sort('id', "ASC");
-	
-		if($filter) {
-			//$this->applyListFilter($filter, $query);
-		}
-	
-		return $toQuery ?
-		$query->getQuery() : $query;
-	}
+    /**
+     * getAdminListQuery
+     */
+    public function getAdminListQuery(ListFilter $filter = null, $toQuery = true)
+    {
+        $query = $this->createQueryBuilder()
+        ->sort('id', "ASC");
+    
+        if($filter) {
+            //$this->applyListFilter($filter, $query);
+        }
+    
+        return $toQuery ?
+        $query->getQuery() : $query;
+    }
 }

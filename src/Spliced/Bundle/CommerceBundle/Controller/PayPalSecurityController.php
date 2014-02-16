@@ -24,7 +24,7 @@ class PayPalSecurityController extends Controller
      */
     public function loginAction()
     {
-    	//echo $this->get('commerce.security.authentication.entry_point.paypal.main')->start($this->getRequest()); return;
+        //echo $this->get('commerce.security.authentication.entry_point.paypal.main')->start($this->getRequest()); return;
         return $this->get('commerce.security.authentication.entry_point.paypal.main')->start($this->getRequest());
 
     }

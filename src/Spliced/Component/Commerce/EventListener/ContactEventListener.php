@@ -92,7 +92,7 @@ class ContactEventListener
          ->setFrom($contactMessage->getEmail())
          ->setTo($this->getConfigurationManager()->get('commerce.store.email.contact'))
          ->setBody($this->getTemplating()->render($this->getConfigurationManager()->get('commerce.template.email.contact_notification', 'SplicedCommerceBundle:Email:contact_notification.html.twig'), array(
-         	'submission' => $contactMessage,
+             'submission' => $contactMessage,
          )), 'text/html')
          ->setReturnPath($this->getConfigurationManager()->get('commerce.store.email.contact_bounced'));
          

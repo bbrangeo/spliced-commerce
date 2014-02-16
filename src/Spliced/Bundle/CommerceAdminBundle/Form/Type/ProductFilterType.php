@@ -20,64 +20,64 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ProductFilterType extends AbstractType
 {
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		$builder
-		->add('id', 'number', array('required' => '','label' => 'ID',))
-		->add('name', 'text', array('required' => '','label' => 'Name',))
-		->add('nameOptions', 'choice', array(
-				'required' => false,
-				'expanded' => true,
-				'multiple' => false,
-				'choices' => array(
-						0 => 'Normal',
-						1 => 'Regular Expression',
-						2 => 'Does Not Contain',
-						3 => 'From Begining',
-						4 => 'From End',
-				),
-				'label' => 'Name Filter Options',
-				'data' => 0,
-		))
-		->add('sku', 'text', array('required' => '','label' => 'SKU',))
-		->add('skuOptions', 'choice', array(
-				'required' => false,
-				'expanded' => true,
-				'multiple' => false,
-				'choices' => array(
-						0 => 'Normal',
-						1 => 'Regular Expression',
-						2 => 'Does Not Contain',
-						3 => 'From Begining',
-						4 => 'From End',
-				),
-				'label' => 'SKU Filter Options',
-				'data' => 0,
-		))
-		->add('priceFrom', 'number', array('required' => '','label' => 'Price From',))
-		->add('priceTo', 'number', array('required' => '','label' => 'Price To',))
-		->add('costFrom', 'number', array('required' => '','label' => 'Cost From',))
-		->add('costTo', 'number', array('required' => '','label' => 'Cost To',))
-		->add('status', 'choice', array(
-				'required' => false,
-				'label' => 'Availability Status',
-				'choices' => $this->getStatusChoices(),
-				'multiple' => true,
-		))
-		->add('isActive', 'choice', array(
-				'required' => false,
-				'label' => 'Active',
-				'empty_value' => '',
-				'choices' => array('1' => 'Yes','0' => 'No'),
-				'multiple' => false,
-		))
-		;
-	}
-	
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+        ->add('id', 'number', array('required' => '','label' => 'ID',))
+        ->add('name', 'text', array('required' => '','label' => 'Name',))
+        ->add('nameOptions', 'choice', array(
+                'required' => false,
+                'expanded' => true,
+                'multiple' => false,
+                'choices' => array(
+                        0 => 'Normal',
+                        1 => 'Regular Expression',
+                        2 => 'Does Not Contain',
+                        3 => 'From Begining',
+                        4 => 'From End',
+                ),
+                'label' => 'Name Filter Options',
+                'data' => 0,
+        ))
+        ->add('sku', 'text', array('required' => '','label' => 'SKU',))
+        ->add('skuOptions', 'choice', array(
+                'required' => false,
+                'expanded' => true,
+                'multiple' => false,
+                'choices' => array(
+                        0 => 'Normal',
+                        1 => 'Regular Expression',
+                        2 => 'Does Not Contain',
+                        3 => 'From Begining',
+                        4 => 'From End',
+                ),
+                'label' => 'SKU Filter Options',
+                'data' => 0,
+        ))
+        ->add('priceFrom', 'number', array('required' => '','label' => 'Price From',))
+        ->add('priceTo', 'number', array('required' => '','label' => 'Price To',))
+        ->add('costFrom', 'number', array('required' => '','label' => 'Cost From',))
+        ->add('costTo', 'number', array('required' => '','label' => 'Cost To',))
+        ->add('status', 'choice', array(
+                'required' => false,
+                'label' => 'Availability Status',
+                'choices' => $this->getStatusChoices(),
+                'multiple' => true,
+        ))
+        ->add('isActive', 'choice', array(
+                'required' => false,
+                'label' => 'Active',
+                'empty_value' => '',
+                'choices' => array('1' => 'Yes','0' => 'No'),
+                'multiple' => false,
+        ))
+        ;
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -104,19 +104,19 @@ class ProductFilterType extends AbstractType
      */
     protected function getStatusChoices()
     {
-    	$return = array();
-    	 
-    	try{
-    		$classInfo = new \ReflectionClass('Spliced\Component\Commerce\Model\ProductInterface');
-    	} catch(\Exception $e) {
-    		return array('ERROR' => 'ERROR');
-    	}
-    	 
-    	foreach($classInfo->getConstants() as $constant => $constantValue) {
-    		if(preg_match('/^AVAILABILITY\_/', $constant)) {
-    			$return[$constantValue] = ucwords(strtolower(str_replace(array('AVAILABILITY_','_'), array('',' '),$constant)));
-    		}
-    	}
-    	return $return;
+        $return = array();
+         
+        try{
+            $classInfo = new \ReflectionClass('Spliced\Component\Commerce\Model\ProductInterface');
+        } catch(\Exception $e) {
+            return array('ERROR' => 'ERROR');
+        }
+         
+        foreach($classInfo->getConstants() as $constant => $constantValue) {
+            if(preg_match('/^AVAILABILITY\_/', $constant)) {
+                $return[$constantValue] = ucwords(strtolower(str_replace(array('AVAILABILITY_','_'), array('',' '),$constant)));
+            }
+        }
+        return $return;
     }
 }

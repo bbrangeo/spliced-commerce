@@ -21,9 +21,9 @@ use Symfony\Component\Validator\ExecutionContext;
  * @ORM\Table(name="customer_credit_card")
  * @ORM\Entity
  * @Assert\Callback(methods={
- * 	"validateCreditCardNumber",
- * 	"validateCreditCardExpiration",
- * 	"validateCreditCardCvv"
+ *     "validateCreditCardNumber",
+ *     "validateCreditCardExpiration",
+ *     "validateCreditCardCvv"
  * }, groups={"validate_credit_card"})
  */
 abstract class CustomerCreditCard implements CustomerCreditCardInterface
@@ -50,7 +50,7 @@ abstract class CustomerCreditCard implements CustomerCreditCardInterface
      * @ORM\Column(name="card_expiration_month", type="string", length=2, nullable=true)
      */
     protected $cardExpirationMonth;
-	
+    
     /**
      * @var string $cardExpirationYear
      *
@@ -177,8 +177,8 @@ abstract class CustomerCreditCard implements CustomerCreditCardInterface
     {
         return $this->cardExpirationMonth;
     }
-	
-	    /**
+    
+        /**
      * Set cardExpirationYear
      *
      * @param string $cardExpirationYear
@@ -343,18 +343,18 @@ abstract class CustomerCreditCard implements CustomerCreditCardInterface
      */
     public function isEncrypted()
     {
-    	$creditCard = $this->getCardNumber();
-    	
-    	if(empty($creditCard)){
-    		return false;
-    	}
-    	
+        $creditCard = $this->getCardNumber();
+        
+        if(empty($creditCard)){
+            return false;
+        }
+        
         if(!preg_match('/^[0-9]{1,}$/', $creditCard)){
-        	return true;
+            return true;
         }
         
         if(strlen($creditCard) > 16){
-        	return true; // we can only assume so
+            return true; // we can only assume so
         }
         
         return false;

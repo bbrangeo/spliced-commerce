@@ -40,7 +40,7 @@ class CustomerAddressFormType extends AbstractType
                   'required' => true,
                   'empty_value' => 'Select a Country',
                   'preferred_choices' => array('US','CA','GB'), 
-          		  'data' => 'US',
+                    'data' => 'US',
           ))
           ->add('phoneNumber', 'text', array('required' => false));
     }

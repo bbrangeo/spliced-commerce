@@ -29,11 +29,11 @@ use Spliced\Component\Commerce\Model\OrderInterface;
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 class ReviewCheckoutStepHandler extends CheckoutStepHandler
-{	
-	/**
-	 * @var $position - Default position for this step
-	 */
-	protected $position = 5;
+{    
+    /**
+     * @var $position - Default position for this step
+     */
+    protected $position = 5;
 
     /**
      * Constructor
@@ -43,89 +43,89 @@ class ReviewCheckoutStepHandler extends CheckoutStepHandler
      */
     public function __construct(CheckoutManager $checkoutManager, EngineInterface $templatingEngine)
     {
-    	$this->checkoutManager = $checkoutManager;
+        $this->checkoutManager = $checkoutManager;
         $this->templatingEngine = $templatingEngine;
     }
-	
-	/**
-	 * getCheckoutManager
-	 *
-	 * @return CheckoutManager
-	 */
-	public function getCheckoutManager()
-	{
-	    return $this->checkoutManager;
-	}
-	
-	/**
-	 * getTemplatingEngine
-	 *
-	 * @return SecurityContext
-	 */
-	public function getTemplatingEngine()
-	{
-	    return $this->templatingEngine;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getName()
-	{
-		return 'review';
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getProgressBarLabel()
-	{
-		return 'Review';
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function buildFormOptions(OrderInterface $order, array $formOptions = array())
-	{
-	    return array('validation_groups' => array(
-	        $this->getName(),
-	    ));
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function process(FormInterface $form, Request $request)
-	{
-	    if($request->getMethod() == 'POST') {
-	        if($form->bind($request) && $form->isValid()) {
-	            $order = $form->getData();
-				
-	            
-	            return new CheckoutMoveStepEvent(
-	                $order,
-	                $this->getCheckoutManager()->getCurrentStep()
-	            );
-	        }
-	    }
-	     
-	    if($request->isXmlHttpRequest()) {
-	        return new JsonResponse(array(
-	            'success' => true,
-	            'replace_many' => array(
-	            '#checkout-content' => $this->getTemplatingEngine()->render('SplicedCommerceBundle:Checkout:index_content.html.twig',array(
-	                'form' => $form->createView(),
-	                'step' => $this->getCheckoutManager()->getCurrentStep(),
-	                'step_template' => 'review',
-	            ))
-	        )));
-	    }
-	     
-	    return $this->getTemplatingEngine()->renderResponse('SplicedCommerceBundle:Checkout:index.html.twig', array(
-	        'form' => $form->createView(),
-	        'step' => $this->getCheckoutManager()->getCurrentStep(),
-	        'step_template' => 'review',
-	    ));
-	}
+    
+    /**
+     * getCheckoutManager
+     *
+     * @return CheckoutManager
+     */
+    public function getCheckoutManager()
+    {
+        return $this->checkoutManager;
+    }
+    
+    /**
+     * getTemplatingEngine
+     *
+     * @return SecurityContext
+     */
+    public function getTemplatingEngine()
+    {
+        return $this->templatingEngine;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return 'review';
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getProgressBarLabel()
+    {
+        return 'Review';
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function buildFormOptions(OrderInterface $order, array $formOptions = array())
+    {
+        return array('validation_groups' => array(
+            $this->getName(),
+        ));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function process(FormInterface $form, Request $request)
+    {
+        if($request->getMethod() == 'POST') {
+            if($form->bind($request) && $form->isValid()) {
+                $order = $form->getData();
+                
+                
+                return new CheckoutMoveStepEvent(
+                    $order,
+                    $this->getCheckoutManager()->getCurrentStep()
+                );
+            }
+        }
+         
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array(
+                'success' => true,
+                'replace_many' => array(
+                '#checkout-content' => $this->getTemplatingEngine()->render('SplicedCommerceBundle:Checkout:index_content.html.twig',array(
+                    'form' => $form->createView(),
+                    'step' => $this->getCheckoutManager()->getCurrentStep(),
+                    'step_template' => 'review',
+                ))
+            )));
+        }
+         
+        return $this->getTemplatingEngine()->renderResponse('SplicedCommerceBundle:Checkout:index.html.twig', array(
+            'form' => $form->createView(),
+            'step' => $this->getCheckoutManager()->getCurrentStep(),
+            'step_template' => 'review',
+        ));
+    }
 }

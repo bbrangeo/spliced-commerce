@@ -12,7 +12,7 @@ use Spliced\Component\Commerce\DependencyInjection\Compiler\ProductTypeCompilerP
 
 class SplicedCommerceAdminBundle extends Bundle
 {
-	
+    
     /**
      * @param ContainerBuilder $container
      */
@@ -23,7 +23,7 @@ class SplicedCommerceAdminBundle extends Bundle
         $container->addCompilerPass(new ShippingCompilerPass());
         $container->addCompilerPass(new PaymentCompilerPass());
         $container->addCompilerPass(new ConfigurationCompilerPass());
-		$container->addCompilerPass(new ProductTypeCompilerPass());
+        $container->addCompilerPass(new ProductTypeCompilerPass());
     
     }
     

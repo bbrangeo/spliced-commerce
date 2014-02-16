@@ -26,7 +26,7 @@ class ProductSpecificationOptionValueDeleteEvent extends Event
      */
     public function __construct(ProductSpecificationOptionValueInterface $specificationOptionValue)
     {
-        $this->specificationOptionValue	= $specificationOptionValue;
+        $this->specificationOptionValue    = $specificationOptionValue;
     }
     
     /**

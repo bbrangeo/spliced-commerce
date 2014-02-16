@@ -60,61 +60,61 @@ class UpdateProductRoutesCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-		$continue = readline("THis will clear out any custom routes or slugs to products. Continue?");
-		
-		if(!in_array(strtolower($continue), array('yes','y','ok'))){
-			$this->writeLine('Exiting', true);
-		}
-		
-		// first set all url keys to null
-		$updated = $this->em
+        $continue = readline("THis will clear out any custom routes or slugs to products. Continue?");
+        
+        if(!in_array(strtolower($continue), array('yes','y','ok'))){
+            $this->writeLine('Exiting', true);
+        }
+        
+        // first set all url keys to null
+        $updated = $this->em
           ->createQuery('UPDATE SplicedCommerceBundle:Product product SET product.urlSlug = NULL')
-		  ->execute();
-		  
-		  $this->writeLine(sprintf('Updated %s Products', $updated));
-		  
-		// delete all routes
-		$deleted = $deleteRoutesQuery = $this->em
+          ->execute();
+          
+          $this->writeLine(sprintf('Updated %s Products', $updated));
+          
+        // delete all routes
+        $deleted = $deleteRoutesQuery = $this->em
           ->createQuery('DELETE FROM SplicedCommerceBundle:Route route WHERE route.product IS NOT NULL')
-		  ->execute();
-		  
-		$this->writeLine(sprintf('Deleted %s Routes', $deleted));
+          ->execute();
+          
+        $this->writeLine(sprintf('Deleted %s Routes', $deleted));
 
         $products = $this->em
           ->createQueryBuilder()
-		  ->select('product')
-		  ->from('SplicedCommerceBundle:Product', 'product')
-		  ->getQuery()
+          ->select('product')
+          ->from('SplicedCommerceBundle:Product', 'product')
+          ->getQuery()
           ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
- 		  ->getResult();
-		  
-		  $this->writeLine(sprintf('Loaded %s Products to Update Url Key', count($products)));
-		  
-		  foreach($products as $product) {
-		  	  $product->setUrlSlug(null);
-			  
-			  $this->em->persist($product);
-		  }         
+           ->getResult();
+          
+          $this->writeLine(sprintf('Loaded %s Products to Update Url Key', count($products)));
+          
+          foreach($products as $product) {
+                $product->setUrlSlug(null);
+              
+              $this->em->persist($product);
+          }         
 
-		  $this->writeLine('Saving New URL Slugs..');
-		  
-		  $this->em->flush();
-	  		  
-		  foreach($products as $product){
+          $this->writeLine('Saving New URL Slugs..');
+          
+          $this->em->flush();
+                
+          foreach($products as $product){
 
-			  $route = new Route();
-			  $route->setTargetPath('SplicedCommerceBundle:Product:view')
-			    ->setRequestPath($product->getUrlSlug())
-				->setOptions(array())
-				->setProduct($product);
-				
-				$this->em->persist($route);
-		  }
-		  
-		  $this->writeLine('Saving Routes');
-		  
-		  $this->em->flush();
-		  
-		  $this->writeLine('Done');
+              $route = new Route();
+              $route->setTargetPath('SplicedCommerceBundle:Product:view')
+                ->setRequestPath($product->getUrlSlug())
+                ->setOptions(array())
+                ->setProduct($product);
+                
+                $this->em->persist($route);
+          }
+          
+          $this->writeLine('Saving Routes');
+          
+          $this->em->flush();
+          
+          $this->writeLine('Done');
     }
 }

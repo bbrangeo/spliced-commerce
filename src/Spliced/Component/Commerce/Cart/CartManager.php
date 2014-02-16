@@ -34,8 +34,8 @@ use Doctrine\ODM\MongoDB\DocumentNotFoundException;
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 class CartManager {
-	
-	/** Tag used to save current cart id */
+    
+    /** Tag used to save current cart id */
     const SESSION_TAG_CURRENT_CART_ID = 'commerce.cart.id';
     
     /** Shipping quote related tags */
@@ -64,10 +64,10 @@ class CartManager {
      * @param VisitorManager $visitorManager
      */
     public function __construct(
-    	ConfigurationManager $configurationManager, 
-    	Session $session, SecurityContext $securityContext, 
-    	VisitorManager $visitorManager
-	) {
+        ConfigurationManager $configurationManager, 
+        Session $session, SecurityContext $securityContext, 
+        VisitorManager $visitorManager
+    ) {
         $this->session = $session;
         $this->configurationManager = $configurationManager;
         $this->securityContext = $securityContext;
@@ -108,7 +108,7 @@ class CartManager {
      * @return EntityManager
      */
     protected function getEntityManager() {
-    	return $this->getConfigurationManager()->getEntityManager();
+        return $this->getConfigurationManager()->getEntityManager();
     }
     
     /**
@@ -159,7 +159,7 @@ class CartManager {
         if (isset($this->cart) && $this->cart instanceof CartInterface) {
             return $this->cart;
         }
-		
+        
         // first try to find we have already saved the cart id to the session
         if ($this->getCartId()) {
             $this->cart = $this->getEntityManager()->getRepository($this->getConfigurationManager()
@@ -168,65 +168,65 @@ class CartManager {
         }
         
         if(!$this->cart instanceof CartInterface){
-        	if(true === $createIfNotFound){
-        		$this->createCart(false);
-        	} else {
-        		$this->setCartId(null);
-        		return false;
-        	}
+            if(true === $createIfNotFound){
+                $this->createCart(false);
+            } else {
+                $this->setCartId(null);
+                return false;
+            }
         }
         
         if($this->cart instanceof CartInterface) {
-	        /*$visitor = $this->getVisitorManager()->getCurrentVisitor();
-	        
-	        // check to make sure that this cart belongs to this visitor or customer
-	        if($visitor && $this->cart->getVisitor()->getId() != $visitor->getId()){
-	         
-	        } elseif($this->cart->getCustomer()
-	        		&& $this->getSecurityContext()->isGranted('ROLE_USER')
-	        		&& $this->cart->getCustomer()->getId() !== $this->getSecurityContext()->getToken()->getUser()->getId()){
-	         
-	        }*/
-        	
-        	$productIds = $this->getProductIds();
+            /*$visitor = $this->getVisitorManager()->getCurrentVisitor();
+            
+            // check to make sure that this cart belongs to this visitor or customer
+            if($visitor && $this->cart->getVisitor()->getId() != $visitor->getId()){
+             
+            } elseif($this->cart->getCustomer()
+                    && $this->getSecurityContext()->isGranted('ROLE_USER')
+                    && $this->cart->getCustomer()->getId() !== $this->getSecurityContext()->getToken()->getUser()->getId()){
+             
+            }*/
+            
+            $productIds = $this->getProductIds();
  
-        	if(!isset($this->products)){
-	        	// load products associated with the cart items and
-        		$this->products = $this->getDocumentManager()
-	        	  ->getRepository($this->getConfigurationManager()->getDocumentClass(
-	        	  	ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT
-				  ))->createQueryBuilder()
-        		  ->field('id')->in($productIds)
-        		->getQuery()
-        		->execute();
-        	
-	        	$setProducts = function(Collection $items, $products) use(&$setProducts) {
-	        		foreach($items as $item){
-	        			foreach($products as $product){
-	        				if($product->getId() == $item->getProductId()) {
-	        					$item->setProduct($product);
-	        				}
-	        			}
-	        			if($item->hasChildren()) {
-	        			    $setProducts($item->getChildren(), $products);
-	        			}
-	        		}
-	        	};
-	        	
-	        	$setProducts($this->cart->getItems(), $this->products);
-        	}
-        	
-        	 
-	        if($this->getSecurityContext()->isGranted('ROLE_USER')) {
-	            $this->cart->setCustomer($this->getSecurityContext()->getToken()->getUser());
-	        }
-	        
-	        $this->getEntityManager()->persist($this->cart);
-	        $this->getEntityManager()->flush();
-	
-	        $this->setCartId($this->cart->getId());
-	
-	        return $this->cart; 
+            if(!isset($this->products)){
+                // load products associated with the cart items and
+                $this->products = $this->getDocumentManager()
+                  ->getRepository($this->getConfigurationManager()->getDocumentClass(
+                      ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT
+                  ))->createQueryBuilder()
+                  ->field('id')->in($productIds)
+                ->getQuery()
+                ->execute();
+            
+                $setProducts = function(Collection $items, $products) use(&$setProducts) {
+                    foreach($items as $item){
+                        foreach($products as $product){
+                            if($product->getId() == $item->getProductId()) {
+                                $item->setProduct($product);
+                            }
+                        }
+                        if($item->hasChildren()) {
+                            $setProducts($item->getChildren(), $products);
+                        }
+                    }
+                };
+                
+                $setProducts($this->cart->getItems(), $this->products);
+            }
+            
+             
+            if($this->getSecurityContext()->isGranted('ROLE_USER')) {
+                $this->cart->setCustomer($this->getSecurityContext()->getToken()->getUser());
+            }
+            
+            $this->getEntityManager()->persist($this->cart);
+            $this->getEntityManager()->flush();
+    
+            $this->setCartId($this->cart->getId());
+    
+            return $this->cart; 
         }
         
         $this->setCartId(null);
@@ -243,16 +243,16 @@ class CartManager {
      */
     public function createCart($flush = false)
     {
-    	$this->cart = $this->getConfigurationManager()->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CART)
-    	->setVisitor($this->getVisitorManager()->getCurrentVisitor());
-    	
-    	if(true === $flush){
-    		$this->getEntityManager()->persist($this->cart);
-    		$this->getEntityManager()->flush();
-    		$this->setCartId($this->cart->getId());
-    	}
-    	
-    	return $this->cart;
+        $this->cart = $this->getConfigurationManager()->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CART)
+        ->setVisitor($this->getVisitorManager()->getCurrentVisitor());
+        
+        if(true === $flush){
+            $this->getEntityManager()->persist($this->cart);
+            $this->getEntityManager()->flush();
+            $this->setCartId($this->cart->getId());
+        }
+        
+        return $this->cart;
     }
     
     /**
@@ -266,9 +266,9 @@ class CartManager {
      */
     public function reset($flush = true) {
         $cart = $this->getCart();
-		
+        
         if(!$cart instanceof CartInterface){
-        	return $this;
+            return $this;
         }
                 
         $this->getEntityManager()->remove($cart);
@@ -294,14 +294,14 @@ class CartManager {
      */
     public function addFlash($type, $message)
     {
-    	$type = strtolower($type);
+        $type = strtolower($type);
     
-    	if(!in_array($type, array('error','info','success','warning'))){
-    		$type = 'info';
-    	}
+        if(!in_array($type, array('error','info','success','warning'))){
+            $type = 'info';
+        }
     
-    	$this->getSession()->getFlashBag()->add('cart_'.$type, $message);
-    	return $this;
+        $this->getSession()->getFlashBag()->add('cart_'.$type, $message);
+        return $this;
     }
     /**
      * add
@@ -314,21 +314,21 @@ class CartManager {
         $quantity = (int) $quantity;
 
         if ($quantity <= 0) { 
-        	// if we have a 0 or negative number, lets set it to the default of 1
+            // if we have a 0 or negative number, lets set it to the default of 1
             $quantity = 1;
         }
 
         if ($product->getMinOrderQuantity() && $product->getMinOrderQuantity() > $quantity) {
-        	$this->addFlash('info', sprintf('%s requires a minimum of %s. Quantity has been automatically adjusted.',
-        		$product->getName(), $product->getMinOrderQuantity()
-        	));
+            $this->addFlash('info', sprintf('%s requires a minimum of %s. Quantity has been automatically adjusted.',
+                $product->getName(), $product->getMinOrderQuantity()
+            ));
             $quantity = $product->getMinOrderQuantity();
         }
 
         if ($product->getMaxOrderQuantity() && $product->getMaxOrderQuantity() < $quantity) {
-        	$this->addFlash('info', sprintf('%s only allows a maximum of %s. Quantity has been automatically adjusted.',
-        		$product->getName(), $product->getMaxOrderQuantity()
-    		));
+            $this->addFlash('info', sprintf('%s only allows a maximum of %s. Quantity has been automatically adjusted.',
+                $product->getName(), $product->getMaxOrderQuantity()
+            ));
             $quantity = $product->getMaxOrderQuantity();
         }
 
@@ -379,7 +379,7 @@ class CartManager {
                
         // check and handle bundled items
         if($product->getBundledItems()){
-        	$this->processBundledItems($product, $cartItem);
+            $this->processBundledItems($product, $cartItem);
         }
                         
         if($product->hasPriceAlteringAttributes()){
@@ -408,7 +408,7 @@ class CartManager {
         $product = $item->getProduct();
         
         if(is_null($quantity)){
-        	$quantity = $item->getQuantity();
+            $quantity = $item->getQuantity();
         }
         
         if($quantity === 0){
@@ -417,23 +417,23 @@ class CartManager {
         }
 
         if ($product->getMinOrderQuantity() && $product->getMinOrderQuantity() > $quantity) {
-        	$this->addFlash('info', sprintf('%s requires a minimum of %s. Quantity has been automatically adjusted.',
-        		$product->getName(), $product->getMinOrderQuantity()
-        	));
+            $this->addFlash('info', sprintf('%s requires a minimum of %s. Quantity has been automatically adjusted.',
+                $product->getName(), $product->getMinOrderQuantity()
+            ));
             $quantity = $product->getMinOrderQuantity();
         }
 
         if ($product->getMaxOrderQuantity() && $product->getMaxOrderQuantity() < $quantity) {
-			$this->addFlash('info', sprintf('%s only allows a maximum of %s. Quantity has been automatically adjusted.',
-        		$product->getName(), $product->getMaxOrderQuantity()
-        	));
+            $this->addFlash('info', sprintf('%s only allows a maximum of %s. Quantity has been automatically adjusted.',
+                $product->getName(), $product->getMaxOrderQuantity()
+            ));
             $quantity = $product->getMaxOrderQuantity();
         }
         
         if(!$item->isChild()) {
-        	// let this method handle child item quantities on it
-        	// when it is called over each item in the shopping cart
-        	$item->setQuantity($quantity);
+            // let this method handle child item quantities on it
+            // when it is called over each item in the shopping cart
+            $item->setQuantity($quantity);
         }
         
         $this->getEntityManager()->persist($item);
@@ -445,10 +445,10 @@ class CartManager {
             $bundledItemQuantity = $item->getQuantity() * ($bundledItem->getQuantity() ? $bundledItem->getQuantity() : 1);
             
             if($item->hasChildProduct($bundledItem->getProduct())){
-               	$bundledCartItem = $item->getChildByProduct($bundledItem->getProduct())
-               	  ->setQuantity($bundledItemQuantity);
+                   $bundledCartItem = $item->getChildByProduct($bundledItem->getProduct())
+                     ->setQuantity($bundledItemQuantity);
 
-            	$this->getEntityManager()->persist($bundledCartItem);
+                $this->getEntityManager()->persist($bundledCartItem);
             }
         }
                
@@ -503,10 +503,10 @@ class CartManager {
      * @return bool
      */
     public function hasItem(CartItemInterface $cartItem, $searchChildren = true) {
-    	if($this->getCart()){
-    		return $this->getCart()->hasItem($cartItem, $searchChildren);
-    	}
-    	return false;
+        if($this->getCart()){
+            return $this->getCart()->hasItem($cartItem, $searchChildren);
+        }
+        return false;
     }
 
     
@@ -519,10 +519,10 @@ class CartManager {
      * @return bool
      */
     public function hasProduct(ProductInterface $product, $searchChildren = true) {
-    	if($this->getCart()){
-        	return $this->getCart()->hasProduct($product, $searchChildren);
-    	}
-    	return false;
+        if($this->getCart()){
+            return $this->getCart()->hasProduct($product, $searchChildren);
+        }
+        return false;
     }
 
     /**
@@ -532,9 +532,9 @@ class CartManager {
      * @return bool
      */
     public function hasSku($sku, $searchChildren = true) {
-    	if($this->getCart()){
-    		return $this->getCart()->hasSku($sku, $searchChildren);
-    	}
+        if($this->getCart()){
+            return $this->getCart()->hasSku($sku, $searchChildren);
+        }
         return false;
     }
 
@@ -545,10 +545,10 @@ class CartManager {
      * @param int $default
      */
     public function getQuantity(ProductInterface $product, $default = 0) {
-    	if(!$this->getCart()){
-    		return $default;
-    	}
-    	
+        if(!$this->getCart()){
+            return $default;
+        }
+        
         foreach ($this->getCart()->getItems() as $item) {
             if ($item->getProduct()->getId() == $product->getId()) {
                 return $item->getQuantity();
@@ -570,7 +570,7 @@ class CartManager {
     public function getTotalItems() {
 
         if(!$this->getCart()){
-        	return 0;
+            return 0;
         }
         
         $countItems = function($items) use(&$countItems){
@@ -617,11 +617,11 @@ class CartManager {
      * @param bool $flush - Flushes the ObjectManager after deletion
      */
     public function removeByProduct(ProductInterface $product, $flush = true) {
-    	
-    	if(!$this->getCart()){
-    		return $this;
-    	}
-    	
+        
+        if(!$this->getCart()){
+            return $this;
+        }
+        
         foreach($this->getCart()->getItems() as $item){
             if($item->getProduct()->getId() == $product->getId() && !$item->isNonRemovable()){
                 $this->getEntityManager()->remove($item);
@@ -643,23 +643,23 @@ class CartManager {
      * @return array
      */
     public function getProductIds() {
-    	
-    	if(!$this->getCart()){
-    		return array();
-    	}
-    	
-    	$searchItems = function(Collection $items) use(&$searchItems) {
-    		$return = array();
-    		foreach($items as $item) {
-    			$return[] = $item->getProductId();
-    			if($item->hasChildren()){
-    				 $return = array_merge($return, $searchItems($item->getChildren()));
-    			}
-    		}
-    		return array_unique($return);
-    	}; 
-	
-    	return $searchItems($this->getItems());
+        
+        if(!$this->getCart()){
+            return array();
+        }
+        
+        $searchItems = function(Collection $items) use(&$searchItems) {
+            $return = array();
+            foreach($items as $item) {
+                $return[] = $item->getProductId();
+                if($item->hasChildren()){
+                     $return = array_merge($return, $searchItems($item->getChildren()));
+                }
+            }
+            return array_unique($return);
+        }; 
+    
+        return $searchItems($this->getItems());
     }
     
     /**
@@ -670,9 +670,9 @@ class CartManager {
      * @return Collection
      */
     public function getItems() {
-    	if(!$this->getCart()){
-    		return new ArrayCollection();
-    	}
+        if(!$this->getCart()){
+            return new ArrayCollection();
+        }
         return $this->getCart()->getItems();
     }
 
@@ -779,42 +779,42 @@ class CartManager {
      */
     private function processBundledItems(ProductInterface $product, CartItemInterface $cartItem)
     {
-    	
-    	if(!count($product->getBundledItems())){
-    		return false;
-    	}
+        
+        if(!count($product->getBundledItems())){
+            return false;
+        }
  
-    	// check and handle bundled items
-    	foreach ($product->getBundledItems() as $bundledItem) {
-    		// bundled items quantity are set on a per parent item basis
-    		// quantity can be increased by setting a bundled items quantity
-    		// which will be multiplied by the parent item quantity if set
-    		$bundledItemQuantity = (int) ($cartItem->getQuantity() * ($bundledItem->getQuantity() ? $bundledItem->getQuantity() : 1));
-    	
-    		if($cartItem->hasChildProduct($bundledItem->getProduct())){
-    			$bundleCartItem = $cartItem->getChildByProduct($bundledItem->getProduct());
-    		} else {
-    			$bundleCartItem = $this->getConfigurationManager()
-    			->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CART_ITEM)
-    			->setProductId($bundledItem->getProduct()->getId())
-    			->setProduct($bundledItem->getProduct())
-    			->setCart($this->getCart())
-    			->setParent($cartItem);
-    		}
-    		 
-    		$bundleCartItem->setQuantity($bundledItemQuantity)
-    		  ->setNonRemovable(true)
-    		  ->setIsBundled(true)
-    		  ->setPriceAdjustment($bundledItem->getPriceAdjustment())
-    		  ->setPriceAdjustmentType($bundledItem->getPriceAdjustmentType());
-    		 
-    		$cartItem->addChild($bundleCartItem);
-    		
-    		// call recursively for bundled items of bundled items
-    		if(count($bundledItem->getProduct()->getBundledItems())){
-    			$this->processBundledItems($bundledItem->getProduct(), $bundleCartItem);
-    		}
-    	}
-    	return true;
+        // check and handle bundled items
+        foreach ($product->getBundledItems() as $bundledItem) {
+            // bundled items quantity are set on a per parent item basis
+            // quantity can be increased by setting a bundled items quantity
+            // which will be multiplied by the parent item quantity if set
+            $bundledItemQuantity = (int) ($cartItem->getQuantity() * ($bundledItem->getQuantity() ? $bundledItem->getQuantity() : 1));
+        
+            if($cartItem->hasChildProduct($bundledItem->getProduct())){
+                $bundleCartItem = $cartItem->getChildByProduct($bundledItem->getProduct());
+            } else {
+                $bundleCartItem = $this->getConfigurationManager()
+                ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CART_ITEM)
+                ->setProductId($bundledItem->getProduct()->getId())
+                ->setProduct($bundledItem->getProduct())
+                ->setCart($this->getCart())
+                ->setParent($cartItem);
+            }
+             
+            $bundleCartItem->setQuantity($bundledItemQuantity)
+              ->setNonRemovable(true)
+              ->setIsBundled(true)
+              ->setPriceAdjustment($bundledItem->getPriceAdjustment())
+              ->setPriceAdjustmentType($bundledItem->getPriceAdjustmentType());
+             
+            $cartItem->addChild($bundleCartItem);
+            
+            // call recursively for bundled items of bundled items
+            if(count($bundledItem->getProduct()->getBundledItems())){
+                $this->processBundledItems($bundledItem->getProduct(), $bundleCartItem);
+            }
+        }
+        return true;
     }
 }

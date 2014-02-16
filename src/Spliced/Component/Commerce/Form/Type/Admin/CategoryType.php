@@ -22,7 +22,7 @@ use Spliced\Component\Commerce\Configuration\ConfigurationManager;
  */
 class CategoryType extends AbstractType
 {
-	
+    
     /**
      * Constructor
      * 
@@ -31,8 +31,8 @@ class CategoryType extends AbstractType
      */
     public function __construct(CategoryInterface $category, ConfigurationManager $configurationManager)
     {
-		$this->category = $category;
-		$this->configurationManager = $configurationManager;
+        $this->category = $category;
+        $this->configurationManager = $configurationManager;
     }
     
     /**
@@ -42,7 +42,7 @@ class CategoryType extends AbstractType
      */
     protected function getCategory()
     {
-    	return $this->category;
+        return $this->category;
     }
     
     /**
@@ -52,27 +52,27 @@ class CategoryType extends AbstractType
      */
     protected function getConfigurationManager()
     {
-    	return $this->configurationManager;
+        return $this->configurationManager;
     }
     
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         
-		$builder
+        $builder
           ->add('parent', null, array('required' => false))
           ->add('name', 'text', array('required' => true))
           ->add('urlSlug', 'text', array('required' => true))
           ->add('position', 'number', array('required' => false, 'data' => 0))
           ->add('isActive', 'choice', array(
-          	'required' => false,
+              'required' => false,
             'label' => 'Active',
             'empty_value' => '',
             'choices' => array('1' => 'Yes','0' => 'No'), 
             'multiple' => false,
-          	'data' => 1,
+              'data' => 1,
            ))
            ->add('pageTitle', 'text', array('required' => false))
            ->add('description', 'textarea', array('required' => false))
@@ -94,8 +94,8 @@ class CategoryType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-    	$resolver->setDefaults(array(
-    		'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_CATEGORY),
-    	));
+        $resolver->setDefaults(array(
+            'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_CATEGORY),
+        ));
     }
 }

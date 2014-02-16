@@ -19,9 +19,9 @@ use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 class PayPalUserToken extends AbstractToken
 {
     /** @var */
-	private $providerKey;
-	
-	/** @var */
+    private $providerKey;
+    
+    /** @var */
     protected $accessToken;
 
     /**

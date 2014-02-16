@@ -37,6 +37,6 @@ class OrderPaymentUpdateEvent extends OrderUpdateEvent
      */
     public function getMemo()
     {
-    	return $this->memo;
+        return $this->memo;
     }
 }

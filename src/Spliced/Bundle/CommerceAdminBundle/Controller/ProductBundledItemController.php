@@ -17,7 +17,7 @@ use Spliced\Component\Commerce\Event as Events;
  */
 class ProductBundledItemController extends Controller
 {
-	
+    
     /**
      * @Route("/delete/{bundledItemId}", name="commerce_admin_product_bundled_item_delete")
      * @Method({"GET","POST"})
@@ -43,9 +43,9 @@ class ProductBundledItemController extends Controller
  
         $bundledItem = null;
         foreach($product->getBundledItems() as $_bundledItem){
-        	if ($_bundledItem->getId() == $bundledItemId) {
-        		$bundledItem = $_bundledItem;
-        	}
+            if ($_bundledItem->getId() == $bundledItemId) {
+                $bundledItem = $_bundledItem;
+            }
         }
         
         if(!$bundledItem){
@@ -63,8 +63,8 @@ class ProductBundledItemController extends Controller
         $product->removeBundledItem($bundledItem);
         
         $this->get('event_dispatcher')->dispatch(
-        	Events\Event::EVENT_PRODUCT_UPDATE,
-        	new Events\ProductUpdateEvent($product)
+            Events\Event::EVENT_PRODUCT_UPDATE,
+            new Events\ProductUpdateEvent($product)
         );
         
         if($this->getRequest()->isXmlHttpRequest()){

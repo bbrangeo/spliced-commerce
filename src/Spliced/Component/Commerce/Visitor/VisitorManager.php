@@ -35,13 +35,13 @@ class VisitorManager implements ConfigurableInterface
      */
     protected $visitor = false;
     
-	/**
-	 * Constructor
-	 * 
-	 * @param ConfigurationManager $configurationManager
-	 * @param AffiliateManager $affiliateManager
+    /**
+     * Constructor
+     * 
+     * @param ConfigurationManager $configurationManager
+     * @param AffiliateManager $affiliateManager
      * @param Session $session
-	 */
+     */
     public function __construct(ConfigurationManager $configurationManager, AffiliateManager $affiliateManager, Session $session)
     {
         $this->configurationManager = $configurationManager;
@@ -106,8 +106,8 @@ class VisitorManager implements ConfigurableInterface
         
         $visitorRepository = $this->getEntityManager()
         ->getRepository(
-        	$this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_VISITOR)
-		);
+            $this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_VISITOR)
+        );
         
         try {
                 
@@ -216,7 +216,7 @@ class VisitorManager implements ConfigurableInterface
      */
     public function getConfigPrefix()
     {
-    	return 'commerce.visitor';
+        return 'commerce.visitor';
     }
     
     /**
@@ -224,7 +224,7 @@ class VisitorManager implements ConfigurableInterface
      */
     public function getOptions()
     {
-    	return $this->getConfigurationManager()->getByKeyExpression(sprintf('/^%s/',$this->getConfigPrefix()));
+        return $this->getConfigurationManager()->getByKeyExpression(sprintf('/^%s/',$this->getConfigPrefix()));
     }
     
     /**
@@ -232,7 +232,7 @@ class VisitorManager implements ConfigurableInterface
      */
     public function getOption($key, $defaultValue = null)
     {
-    	return $this->getConfigurationManager()->get(sprintf('%s.%s',$this->getConfigPrefix(),$key),$defaultValue);
+        return $this->getConfigurationManager()->get(sprintf('%s.%s',$this->getConfigPrefix(),$key),$defaultValue);
     }
     
     /**
@@ -240,26 +240,26 @@ class VisitorManager implements ConfigurableInterface
      */
     public function getRequiredConfigurationFields()
     {
-    	return array(
-    		'log_visitor_requests' => array(
-	    		'type' => 'boolean',
-	    		'value' => true,
-	    		'label' => 'Log Visitor Requests',
-	    		'help' => '',
-	    		'group' => 'Visitor/Logging',
-	    		'position' => 1,
-	    		'required' => false,
-    		),
-    		'log_bot_requests' => array(
-    			'type' => 'boolean',
-    			'value' => true,
-    			'label' => 'Log Bot Requests',
-    			'help' => '',
-    			'group' => 'Visitor/Logging',
-    			'position' => 1,
-    			'required' => false,
-    		),
-    	);
+        return array(
+            'log_visitor_requests' => array(
+                'type' => 'boolean',
+                'value' => true,
+                'label' => 'Log Visitor Requests',
+                'help' => '',
+                'group' => 'Visitor/Logging',
+                'position' => 1,
+                'required' => false,
+            ),
+            'log_bot_requests' => array(
+                'type' => 'boolean',
+                'value' => true,
+                'label' => 'Log Bot Requests',
+                'help' => '',
+                'group' => 'Visitor/Logging',
+                'position' => 1,
+                'required' => false,
+            ),
+        );
     }    
     
 

@@ -31,33 +31,33 @@ class LoggerController extends Controller
      */
     public function logJavascriptErrorAction()
     {
-    	if(!$this->getRequest()->isXmlHttpRequest() || !$this->getRequest()->request->has('message')){
-    		return new JsonResponse(array('success' => false, 'message' => 'Message Required or Invalid Request Type'));
-    	}
-		
-		$message = $this->getRequest()->request->get('message');
-		
-		$_details = array(
-			'last_completed_checkout_step' => $this->get('commerce.checkout_manager')->getLastCompletedStep(),
-			'current_checkout_step' => $this->get('commerce.checkout_manager')->getCurrentStep(),
-			'current_order_id' => $this->get('commerce.checkout_manager')->getCurrentOrderId(),
-		);
-		
-		$details = array();
-		if($this->getRequest()->request->has('details')){
-			$_details = array_merge($_details,$this->getRequest()->request->get('details'));
-		}
-		
-		foreach($_details as $k => $v){
-			$details[$k] = $k.': '.(is_array($v) ? implode(', ', $v) : $v);
-		}
-		
-		$logMessage = sprintf('%s - Other Details: %s', $message, implode(', ', $details));
-		
-		$this->get('commerce.logger')->javascriptError($logMessage);
-		
-		return new JsonResponse(array('success' => true, 'message' => $logMessage));
-	}
+        if(!$this->getRequest()->isXmlHttpRequest() || !$this->getRequest()->request->has('message')){
+            return new JsonResponse(array('success' => false, 'message' => 'Message Required or Invalid Request Type'));
+        }
+        
+        $message = $this->getRequest()->request->get('message');
+        
+        $_details = array(
+            'last_completed_checkout_step' => $this->get('commerce.checkout_manager')->getLastCompletedStep(),
+            'current_checkout_step' => $this->get('commerce.checkout_manager')->getCurrentStep(),
+            'current_order_id' => $this->get('commerce.checkout_manager')->getCurrentOrderId(),
+        );
+        
+        $details = array();
+        if($this->getRequest()->request->has('details')){
+            $_details = array_merge($_details,$this->getRequest()->request->get('details'));
+        }
+        
+        foreach($_details as $k => $v){
+            $details[$k] = $k.': '.(is_array($v) ? implode(', ', $v) : $v);
+        }
+        
+        $logMessage = sprintf('%s - Other Details: %s', $message, implode(', ', $details));
+        
+        $this->get('commerce.logger')->javascriptError($logMessage);
+        
+        return new JsonResponse(array('success' => true, 'message' => $logMessage));
+    }
 
     /**
      * @Template()
@@ -67,32 +67,32 @@ class LoggerController extends Controller
      */
     public function logJavascriptNoticeAction()
     {
-		if(!$this->getRequest()->isXmlHttpRequest() || !$this->getRequest()->request->has('message')){
-    		return new JsonResponse(array('success' => false, 'message' => 'Message Required or Invalid Request Type'));
-    	}
-		
-		$message = $this->getRequest()->request->get('message');
-		
-		$_details = array(
-			'last_completed_checkout_step' => $this->get('commerce.checkout_manager')->getLastCompletedStep(),
-			'current_checkout_step' => $this->get('commerce.checkout_manager')->getCurrentStep(),
-			'current_order_id' => $this->get('commerce.checkout_manager')->getCurrentOrderId(),
-		);
-		
-		$details = array();
-		if($this->getRequest()->request->has('details')){
-			$_details = array_merge($_details,$this->getRequest()->request->get('details'));
-		}
-		
-		foreach($_details as $k => $v){
-			$details[$k] = $k.': '.$v;
-		}
-		
-		$logMessage = sprintf('%s - Other Details: %s', $message, implode(', ', $details));
-		
-		$this->get('commerce.logger')->javascriptNotice($logMessage);
-		
-		return new JsonResponse(array('success' => true, 'message' => $logMessage));
-	}
+        if(!$this->getRequest()->isXmlHttpRequest() || !$this->getRequest()->request->has('message')){
+            return new JsonResponse(array('success' => false, 'message' => 'Message Required or Invalid Request Type'));
+        }
+        
+        $message = $this->getRequest()->request->get('message');
+        
+        $_details = array(
+            'last_completed_checkout_step' => $this->get('commerce.checkout_manager')->getLastCompletedStep(),
+            'current_checkout_step' => $this->get('commerce.checkout_manager')->getCurrentStep(),
+            'current_order_id' => $this->get('commerce.checkout_manager')->getCurrentOrderId(),
+        );
+        
+        $details = array();
+        if($this->getRequest()->request->has('details')){
+            $_details = array_merge($_details,$this->getRequest()->request->get('details'));
+        }
+        
+        foreach($_details as $k => $v){
+            $details[$k] = $k.': '.$v;
+        }
+        
+        $logMessage = sprintf('%s - Other Details: %s', $message, implode(', ', $details));
+        
+        $this->get('commerce.logger')->javascriptNotice($logMessage);
+        
+        return new JsonResponse(array('success' => true, 'message' => $logMessage));
+    }
 
 }

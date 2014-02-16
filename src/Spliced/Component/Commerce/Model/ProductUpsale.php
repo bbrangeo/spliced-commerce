@@ -45,22 +45,22 @@ class ProductUpsale
      * 
      * @return ProductInterface
      */
-	public function getProduct()
-	{
-		return $this->product;
-	}
+    public function getProduct()
+    {
+        return $this->product;
+    }
 
-	/**
-	 * setProduct
-	 * 
-	 * @param ProductInterface $product
-	 */
-	public function setProduct(ProductInterface $product)
-	{
-		$this->product = $product;
-		return $this;
-	}	
-		
-	
-	
+    /**
+     * setProduct
+     * 
+     * @param ProductInterface $product
+     */
+    public function setProduct(ProductInterface $product)
+    {
+        $this->product = $product;
+        return $this;
+    }    
+        
+    
+    
 }

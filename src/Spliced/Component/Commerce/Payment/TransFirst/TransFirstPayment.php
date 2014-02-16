@@ -54,7 +54,7 @@ class TransFirstPayment extends PaymentProvider implements CreditCardPaymentProv
     {
         die("TODO"); // havent implemented
         
-	    $payment	= $order->getPayment();
+        $payment    = $order->getPayment();
         $creditCard = $payment->getCreditCard();
 
         $amountToCharge = $this->getOrderHelper()->getOrderTotal($order);
@@ -64,7 +64,7 @@ class TransFirstPayment extends PaymentProvider implements CreditCardPaymentProv
       
         if ($creditCard->isEncrypted()) { // decrypt if needed
             $creditCardNumber = $this->getEncryptionManager()
-            	->decrypt($order->getProtectCode(), $creditCardNumber);
+                ->decrypt($order->getProtectCode(), $creditCardNumber);
         }
        
         
@@ -120,7 +120,7 @@ class TransFirstPayment extends PaymentProvider implements CreditCardPaymentProv
                
            throw new PaymentErrorException($order, $clientResponse->getMessage());   
         }
-		
+        
         
         // we had success, lets make a payment memo stating that
         $paymentMemo->setChangedStatus($this->getOption('checkout_complete_status'))

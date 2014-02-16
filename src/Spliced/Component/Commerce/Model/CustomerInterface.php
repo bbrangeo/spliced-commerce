@@ -7,8 +7,8 @@ use Doctrine\Common\Collections\Collection;
 
 interface CustomerInterface extends AdvancedUserInterface, \Serializable
 {
-    const ROLE_DEFAULT 	= 'ROLE_USER';
-	const ROLE_USER		= 'ROLE_DEFAULT';
+    const ROLE_DEFAULT     = 'ROLE_USER';
+    const ROLE_USER        = 'ROLE_DEFAULT';
     const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
     const SESSION_TAG_VIEWED_PRODUCTS = 'commerce.products.viewed';

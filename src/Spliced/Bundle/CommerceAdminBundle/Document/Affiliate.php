@@ -14,8 +14,8 @@ use Spliced\Component\Commerce\Model\Affiliate as BaseAffiliate;
 
 /**
  * @MongoDB\Document(
- * 	collection="affiliate", 
- * 	repositoryClass="Spliced\Bundle\CommerceAdminBundle\Repository\AffiliateDocumentRepository"
+ *     collection="affiliate", 
+ *     repositoryClass="Spliced\Bundle\CommerceAdminBundle\Repository\AffiliateDocumentRepository"
  * ) 
  * @MongoDB\MappedSuperclass()
  */ 

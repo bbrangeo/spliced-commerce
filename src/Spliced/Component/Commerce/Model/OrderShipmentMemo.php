@@ -22,85 +22,85 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 abstract class OrderShipmentMemo implements OrderShipmentMemoInterface
 {
-	/**
-	 * @var integer
-	 *
-	 * @ORM\Column(name="id", type="integer")
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	protected $id;
-	
-	/**
-	 * @var bool
-	 *
-	 * @ORM\Column(name="customer_notified", type="boolean")
-	 */
-	protected $customerNotified;
-	
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="created_by", type="string", length=50)
-	 */
-	protected $createdBy;
-	
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="tracking_number", type="text")
-	 */
-	protected $trackingNumber;
-	
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="memo", type="text")
-	 */
-	protected $memo;
-	
-	/**
-	 * @var array
-	 *
-	 * @ORM\Column(name="memo_data", type="array")
-	 */
-	protected $memoData;
-	
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="previous_status", type="string", length=50)
-	 */
-	protected $previousStatus;
-	
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="changed_status", type="string", length=50)
-	 */
-	protected $changedStatus;
-	
-	/**
-	 * @ORM\ManyToOne(targetEntity="OrderShipment", inversedBy="memos")
-	 * @ORM\JoinColumn(name="shipment_id", referencedColumnName="id", onDelete="CASCADE")
-	 */
-	protected $shipment;
-	
-	/**
-	 * @var datetime $createdAt
-	 *
-	 * @ORM\Column(name="created_at", type="datetime", nullable=false)
-	 * @Gedmo\Timestampable(on="create")
-	 */
-	protected $createdAt;
-	
-	/**
-	 * @var datetime $updatedAt
-	 *
-	 * @ORM\Column(name="updated_at", type="datetime", nullable=false)
-	 * @Gedmo\Timestampable(on="update")
-	 */
-	protected $updatedAt;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+    
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="customer_notified", type="boolean")
+     */
+    protected $customerNotified;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="created_by", type="string", length=50)
+     */
+    protected $createdBy;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tracking_number", type="text")
+     */
+    protected $trackingNumber;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="memo", type="text")
+     */
+    protected $memo;
+    
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="memo_data", type="array")
+     */
+    protected $memoData;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="previous_status", type="string", length=50)
+     */
+    protected $previousStatus;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="changed_status", type="string", length=50)
+     */
+    protected $changedStatus;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="OrderShipment", inversedBy="memos")
+     * @ORM\JoinColumn(name="shipment_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $shipment;
+    
+    /**
+     * @var datetime $createdAt
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     * @Gedmo\Timestampable(on="create")
+     */
+    protected $createdAt;
+    
+    /**
+     * @var datetime $updatedAt
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
+     * @Gedmo\Timestampable(on="update")
+     */
+    protected $updatedAt;
 
     
     /**
@@ -108,8 +108,8 @@ abstract class OrderShipmentMemo implements OrderShipmentMemoInterface
      */
     public function __construct()
     {
-    	$this->createdAt = new \DateTime('now');
-    	$this->updatedAt = new \DateTime('now');
+        $this->createdAt = new \DateTime('now');
+        $this->updatedAt = new \DateTime('now');
     }
     
     /**
@@ -119,14 +119,14 @@ abstract class OrderShipmentMemo implements OrderShipmentMemoInterface
      */
     public function getId()
     {
-    	return $this->id;
+        return $this->id;
     }
     
     /**
      *
      */
     public function setCustomerNotified($customerNotified){
-    	$this->customerNotified = $customerNotified;
+        $this->customerNotified = $customerNotified;
     }
     
     /**
@@ -134,7 +134,7 @@ abstract class OrderShipmentMemo implements OrderShipmentMemoInterface
      */
     public function getCustomerNotified()
     {
-    	return $this->customerNotified;
+        return $this->customerNotified;
     }
     
     /**

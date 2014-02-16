@@ -40,9 +40,9 @@ class ImageManager
      */
     public function __construct(HttpKernelInterface $kernel)
     {
-        $this->kernel 		= $kernel;
-        $this->adapter 		= new Imagine();
-        $this->filesystem 	= new Filesystem();
+        $this->kernel         = $kernel;
+        $this->adapter         = new Imagine();
+        $this->filesystem     = new Filesystem();
         
         $this->cacheDir =  new \SplFileInfo($kernel->getRootDir().'/../web/catalog/media/cache/');
         $this->webDir   =  new \SplFileInfo($this->kernel->getRootDir().'/../web/');
@@ -134,7 +134,7 @@ class ImageManager
             $toHeight,
             $fileName
         );
-		
+        
         if ($this->hasCache($cacheName)) {
             return $this->getCache($cacheName);
         }
@@ -147,10 +147,10 @@ class ImageManager
             throw new \Exception(sprintf('Image Source (%s) Does Not Exists For Resize to Take Place',$sourceFile));
         }
 
-       	$image = $this->getAdapter()
-		  ->open($sourceFile)
-		  ->resize(new Box($toWidth, $toHeight))
-		  ->save($this->getCacheDir().$cacheName, $options);
+           $image = $this->getAdapter()
+          ->open($sourceFile)
+          ->resize(new Box($toWidth, $toHeight))
+          ->save($this->getCacheDir().$cacheName, $options);
 
         return $this->getCache($cacheName);
     }

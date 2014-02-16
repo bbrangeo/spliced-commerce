@@ -25,25 +25,25 @@ use Spliced\Component\Commerce\Configuration\ConfigurableInterface;
  */
 interface AnalyticsSubscriberInterface extends ConfigurableInterface
 {
-	
-	/**
-	 * getConfigurationManager
-	 * 
-	 * @return ConfigurationManager
-	 */
-	public function getConfigurationManager();
-	
-	/**
-	 * getName
-	 * 
-	 * @return string
-	 */
-	public function getName();
-	
+    
+    /**
+     * getConfigurationManager
+     * 
+     * @return ConfigurationManager
+     */
+    public function getConfigurationManager();
+    
+    /**
+     * getName
+     * 
+     * @return string
+     */
+    public function getName();
+    
     /**
      * renderTrackerHtml
-	 * 
-	 * @return string
+     * 
+     * @return string
      */
     public function renderTrackerHtml();
 

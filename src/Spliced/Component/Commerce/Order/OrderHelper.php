@@ -91,14 +91,14 @@ class OrderHelper
         }
         
         $searchItems = function($items, $searchChildren = true) use(&$searchItems) {
-        	$return = static::ZERO_VALUE;
-        	foreach($items as $item) {
-        		$return = $this->getCalculator()->add($return, $this->getCalculator()->multiply($item->getSalePrice(), $item->getQuantity()));
-        		if(true === $searchChildren && $item->hasChildren()) {
-        			$return = $this->getCalculator()->add($return, $searchItems($item->getChildren(), $searchChildren));
-        		}
-        	}
-        	return $return;
+            $return = static::ZERO_VALUE;
+            foreach($items as $item) {
+                $return = $this->getCalculator()->add($return, $this->getCalculator()->multiply($item->getSalePrice(), $item->getQuantity()));
+                if(true === $searchChildren && $item->hasChildren()) {
+                    $return = $this->getCalculator()->add($return, $searchItems($item->getChildren(), $searchChildren));
+                }
+            }
+            return $return;
         };
         
         return $this->getCalculator()->add($total, $searchItems($order->getItems(), $searchChildren));
@@ -116,14 +116,14 @@ class OrderHelper
         }
         
         $searchItems = function($items, $searchChildren = true) use(&$searchItems) {
-        	$return = static::ZERO_VALUE;
-        	foreach($items as $item) {
-        		$return = $this->getCalculator()->add($return, $item->getFinalPrice());
-        		if(true === $searchChildren && $item->hasChildren()) {
-        			$return = $this->getCalculator()->add($return, $searchItems($item->getChildren(), $searchChildren));
-        		}
-        	}
-        	return $return;
+            $return = static::ZERO_VALUE;
+            foreach($items as $item) {
+                $return = $this->getCalculator()->add($return, $item->getFinalPrice());
+                if(true === $searchChildren && $item->hasChildren()) {
+                    $return = $this->getCalculator()->add($return, $searchItems($item->getChildren(), $searchChildren));
+                }
+            }
+            return $return;
         };
         
         return $this->getCalculator()->add($total, $searchItems($order->getItems(), $searchChildren));
@@ -165,12 +165,12 @@ class OrderHelper
      */
     public function getOrderTotalItems(OrderInterface $order)
     {
-    	$total = static::ZERO_VALUE;
+        $total = static::ZERO_VALUE;
     
-    	foreach ($order->getItems() as $item) {
-    		$total = $this->getCalculator()->add($total, $item->getQuantity());
-    	}
+        foreach ($order->getItems() as $item) {
+            $total = $this->getCalculator()->add($total, $item->getQuantity());
+        }
     
-    	return $total;
+        return $total;
     }
 }

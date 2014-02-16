@@ -54,7 +54,7 @@ class CheckoutFormType extends AbstractType
      */
     protected function getCheckoutManager()
     {
-    	return $this->checkoutManager;
+        return $this->checkoutManager;
     }
     
     /**
@@ -64,7 +64,7 @@ class CheckoutFormType extends AbstractType
      */
     protected function getStep()
     {
-    	return $this->step;
+        return $this->step;
     }
     
     /**
@@ -74,7 +74,7 @@ class CheckoutFormType extends AbstractType
      */
     protected function getOrder()
     {
-    	return $this->order;
+        return $this->order;
     }
 
     /**
@@ -86,7 +86,7 @@ class CheckoutFormType extends AbstractType
     {
         return $this->isLoggedIn === true;
     }
-	
+    
     /**
      * {@inheritDoc}
      */
@@ -137,8 +137,8 @@ class CheckoutFormType extends AbstractType
             ->add('shippingPhoneNumber', 'text', array('required' => false));
             
             if($this->isLoggedIn()) {
-            	$builder->add('saveBillingAddress', 'checkbox', array('required' => false, 'value' => 1))
-            	->add('saveShippingAddress', 'checkbox', array('required' => false, 'value' => 1));
+                $builder->add('saveBillingAddress', 'checkbox', array('required' => false, 'value' => 1))
+                ->add('saveShippingAddress', 'checkbox', array('required' => false, 'value' => 1));
             }
         }
 
@@ -149,13 +149,13 @@ class CheckoutFormType extends AbstractType
         if ($this->getStep() == CheckoutManager::STEP_PAYMENT) {
             $builder->add('payment', new CheckoutPaymentFormType($this->order, $this->checkoutManager));
         }
-		
+        
                 
         if(count($this->customFields)){
-        	$builder->add(
-        		'customFieldValues', 
-        		new CheckoutCustomFieldsFormType($this->getOrder(), $this->customFields),
-        		array()
+            $builder->add(
+                'customFieldValues', 
+                new CheckoutCustomFieldsFormType($this->getOrder(), $this->customFields),
+                array()
             );
         }
     }
@@ -173,7 +173,7 @@ class CheckoutFormType extends AbstractType
             'cascade_validation' => true,
         ));
     }
-	
+    
     /**
      * {@inheridDoc}
      */
@@ -181,8 +181,8 @@ class CheckoutFormType extends AbstractType
     {
         return 'checkout';
     }
-	
-	/**
+    
+    /**
      * getValidationGroups
      *
      * @return array
@@ -194,9 +194,9 @@ class CheckoutFormType extends AbstractType
         if (!$this->isLoggedIn()) {
             $groups[] = 'checkout_guest';
         }
-		
+        
         if(count($this->customFields)){
-        	$groups[] = 'checkout_custom_fields';
+            $groups[] = 'checkout_custom_fields';
         }
         
         return $groups;

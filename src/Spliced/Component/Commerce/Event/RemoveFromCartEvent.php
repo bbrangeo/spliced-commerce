@@ -27,7 +27,7 @@ class RemoveFromCartEvent extends Event
      */
     public function __construct(ProductInterface $product)
     {
-        $this->product 	= $product;
+        $this->product     = $product;
     }
 
     /**

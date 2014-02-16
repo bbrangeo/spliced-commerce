@@ -47,7 +47,7 @@ class CartEventListener
      */
     protected function getOrderManager()
     {
-    	return $this->orderManager;
+        return $this->orderManager;
     }
     /**
      * onCartItemAdd
@@ -55,10 +55,10 @@ class CartEventListener
     public function onCartItemAdd(Events\AddToCartEvent $event)
     {
         if($this->getOrderManager()->hasCurrentOrder()){
-        	$order = $this->getOrderManager()->getOrder();
-        	if($order instanceof OrderInterface){
-        		$this->getOrderManager()->updateOrderItems($order, true);
-        	}
+            $order = $this->getOrderManager()->getOrder();
+            if($order instanceof OrderInterface){
+                $this->getOrderManager()->updateOrderItems($order, true);
+            }
         }
     }
 
@@ -67,12 +67,12 @@ class CartEventListener
      */
     public function onCartItemRemove(Events\RemoveFromCartEvent $event)
     {
-    	if($this->getOrderManager()->hasCurrentOrder()){
-    		$order = $this->getOrderManager()->getOrder();
-    		if($order instanceof OrderInterface){
-    			$this->getOrderManager()->updateOrderItems($order, true);
-    		}
-    	}
+        if($this->getOrderManager()->hasCurrentOrder()){
+            $order = $this->getOrderManager()->getOrder();
+            if($order instanceof OrderInterface){
+                $this->getOrderManager()->updateOrderItems($order, true);
+            }
+        }
     }
 
     /**
@@ -80,11 +80,11 @@ class CartEventListener
      */
     public function onCartUpdate(Events\CartUpdateEvent $event)
     {
-    	if($this->getOrderManager()->hasCurrentOrder()){
-    		$order = $this->getOrderManager()->getOrder();
-    		if($order instanceof OrderInterface){
-    			$this->getOrderManager()->updateOrderItems($order, true);
-    		}
-    	}  
+        if($this->getOrderManager()->hasCurrentOrder()){
+            $order = $this->getOrderManager()->getOrder();
+            if($order instanceof OrderInterface){
+                $this->getOrderManager()->updateOrderItems($order, true);
+            }
+        }  
     }
 }

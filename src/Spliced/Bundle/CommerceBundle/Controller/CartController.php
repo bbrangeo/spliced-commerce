@@ -42,12 +42,12 @@ class CartController extends Controller
         $cartContents = $cartManager->getItems();
 
         $this->get('commerce.breadcrumb')->createBreadcrumb(
-        	'Shopping Cart',
-        	'Shopping Cart',
-        	$this->generateUrl('commerce_cart'),
+            'Shopping Cart',
+            'Shopping Cart',
+            $this->generateUrl('commerce_cart'),
             null,
             true
-		);
+        );
 
         $shippingQuoteForm = $this->createForm(new CartShippingQuoteFormType());
         $shippingQuoteFormData = $cartManager->getShippingDestinationArray();
@@ -62,23 +62,23 @@ class CartController extends Controller
                 'success' => true,
                 'message' => 'Shopping Cart',
                 'modal' => $this->render('SplicedCommerceBundle:Cart:index_modal.html.twig',array(
-                	'items' => $products,
+                    'items' => $products,
                 ))->getContent(),
             ));
         }
         
   
-		$userDataForms = $this->get('commerce.product.attribute_option_user_data_form_builder')->buildForms();
+        $userDataForms = $this->get('commerce.product.attribute_option_user_data_form_builder')->buildForms();
         
         return array(
-            'cartContents' 	=> $cartContents,
+            'cartContents'     => $cartContents,
             'shippingQuoteForm' => $shippingQuoteForm->createView(),
             'shippingOptions' => isset($shippingOptions) ? $shippingOptions : null,
             'userDataForms' => array_map(function(&$userForm){
-            	if(is_object($userForm)){ 
-            		return $userForm->createView();
-            	}
-            	return null;
+                if(is_object($userForm)){ 
+                    return $userForm->createView();
+                }
+                return null;
             }, $userDataForms),
         );
     }
@@ -90,48 +90,48 @@ class CartController extends Controller
      */
     public function updateAction()
     {
-        $cartManager 	= $this->get('commerce.cart');
-        $dispatcher		= $this->get('event_dispatcher');
-		$hasUserDataValidationError = false;
-		
+        $cartManager     = $this->get('commerce.cart');
+        $dispatcher        = $this->get('event_dispatcher');
+        $hasUserDataValidationError = false;
+        
         if (!$this->getRequest()->request->has('cart')) {
             $this->get('session')->getFlashBag()->add('error', 'Invalid Request Type');
             return $this->redirect($this->generateUrl('commerce_cart'));
         }
-		
-		$userDataForms = $this->get('commerce.product.attribute_option_user_data_form_builder')
-		  ->buildForms();
+        
+        $userDataForms = $this->get('commerce.product.attribute_option_user_data_form_builder')
+          ->buildForms();
 
         foreach ($this->getRequest()->request->get('cart') as $itemId => $_item) {
-        	
+            
             $product = $this->get('commerce.document_manager')
               ->getRepository('SplicedCommerceBundle:Product')
               ->findOneById($_item['product']);
             
             $quantity = $_item['quantity'] < 0 ? 1 : (int) $_item['quantity'];
             
-			$item = $cartManager->getCart()->getItemById($itemId);
+            $item = $cartManager->getCart()->getItemById($itemId);
             
-			$itemData = $item->getItemData();
-			
+            $itemData = $item->getItemData();
+            
             if(is_null($itemData)){
                 $itemData = array();
             }
             
-			if($product->hasUserDataAttributes() && $quantity !== 0 ){
-				$userDataForm = isset($userDataForms[$item->getId()]) ? $userDataForms[$item->getId()] : null;
-				
-				if($userDataForm){
+            if($product->hasUserDataAttributes() && $quantity !== 0 ){
+                $userDataForm = isset($userDataForms[$item->getId()]) ? $userDataForms[$item->getId()] : null;
+                
+                if($userDataForm){
                     
-					if($userDataForm->bind($this->getRequest()) && $userDataForm->isValid()){
-						$itemData['user_data'] = $userDataForm->getData();
+                    if($userDataForm->bind($this->getRequest()) && $userDataForm->isValid()){
+                        $itemData['user_data'] = $userDataForm->getData();
                         
-					} else {
-						$this->get('session')->getFlashBag()->add('error', sprintf('%s Requires Some Additional Information', $product->getName()));
-						$hasUserDataValidationError = true;
-					}
-				}
-			}
+                    } else {
+                        $this->get('session')->getFlashBag()->add('error', sprintf('%s Requires Some Additional Information', $product->getName()));
+                        $hasUserDataValidationError = true;
+                    }
+                }
+            }
             
             if($quantity == 0 && !$item->isNonRemovable() && ! $item->isBundled()){
                 $cartManager->remove($item);
@@ -152,24 +152,24 @@ class CartController extends Controller
         $cartManager->setShippingDestination($shippingData['country'])
           ->setShippingDestinationZipcode($shippingData['zipcode']);
 
-		if($hasUserDataValidationError){
-	        return $this->render('SplicedCommerceBundle:Cart:index.html.twig', array(
-	            'cartContents' 	=> $cartManager->getItems(),
-	            'shippingQuoteForm' => $shippingQuoteForm->createView(),
-	            'shippingOptions' => isset($shippingOptions) ? $shippingOptions : null,
-	            'userDataForms' => array_map(function($userForm){
-	            	if($userForm instanceof FormInterface){
-	            		return $userForm->createView();
-	            	}
-	            	return $userForm;
-	            }, $userDataForms),
-	        ));
-		} 
-		
+        if($hasUserDataValidationError){
+            return $this->render('SplicedCommerceBundle:Cart:index.html.twig', array(
+                'cartContents'     => $cartManager->getItems(),
+                'shippingQuoteForm' => $shippingQuoteForm->createView(),
+                'shippingOptions' => isset($shippingOptions) ? $shippingOptions : null,
+                'userDataForms' => array_map(function($userForm){
+                    if($userForm instanceof FormInterface){
+                        return $userForm->createView();
+                    }
+                    return $userForm;
+                }, $userDataForms),
+            ));
+        } 
+        
         $dispatcher->dispatch(
-        	Event\Event::EVENT_CART_UPDATE, 
-        	new Event\CartUpdateEvent()
-		);
+            Event\Event::EVENT_CART_UPDATE, 
+            new Event\CartUpdateEvent()
+        );
 
         $this->get('session')->getFlashBag()->add('notice', 'Shopping Cart Updated');
 
@@ -184,16 +184,16 @@ class CartController extends Controller
      */
     public function addAction()
     {
-        $request 	= $this->get('request');
-        $cart 		= $this->get('commerce.cart');
-        $dispatcher	= $this->get('event_dispatcher');
+        $request     = $this->get('request');
+        $cart         = $this->get('commerce.cart');
+        $dispatcher    = $this->get('event_dispatcher');
         $productId = $request->request->get('id', $request->query->get('id'));
-		$quantity = $request->request->get('quantity', $request->query->get('quantity', 1));
-		
-		if($quantity < 1){
-			$quantity = 1; // set it to 1 in its 0 or less	
-		}
-		
+        $quantity = $request->request->get('quantity', $request->query->get('quantity', 1));
+        
+        if($quantity < 1){
+            $quantity = 1; // set it to 1 in its 0 or less    
+        }
+        
         if (!$request->request->has('id') && !$request->query->has('id')) {
             if ($request->isXmlHttpRequest()) {
                 return new JsonResponse(array(
@@ -213,11 +213,11 @@ class CartController extends Controller
           ->findOneById($productId);
 
         if(!$product instanceof ProductInterface){
-        	
-        	$this->get('commerce.logger')->error(sprintf('Attempted to add non-existant or inactive product with ID %s',
-        		$request->request->get('id', $productId)
-			));
-			
+            
+            $this->get('commerce.logger')->error(sprintf('Attempted to add non-existant or inactive product with ID %s',
+                $request->request->get('id', $productId)
+            ));
+            
             if ($request->isXmlHttpRequest()) {
                 return new JsonResponse(array(
                     'success' => false,
@@ -232,39 +232,39 @@ class CartController extends Controller
         }
 
         $success = $cart->add($product, $quantity, null, array());
-		
-		if(false === $success){
-			
-			$errorMessage = sprintf('An unexpected error occoured while adding product %s to cart', $product->getId());
-			
-			$this->get('commerce.logger')->error($errorMessage);
-			
-			if($request->isXmlHttpRequest()){
-				return new JsonResponse(array(
-	                'success' => false,
-	                'message' => 'Product Not Found',
-	                'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
-	                    'title' => 'Whoops',
-	                	'body' => '<p>'.$errorMessage.'</p>'
-	            	))->getContent()
-	            ));
-			}
-			
-			$this->get('session')->getFlashBag()->add('error', $errorMessage);
-			return $this->redirect($this->generateUrl('commerce_homepage'));
-		}
-		
+        
+        if(false === $success){
+            
+            $errorMessage = sprintf('An unexpected error occoured while adding product %s to cart', $product->getId());
+            
+            $this->get('commerce.logger')->error($errorMessage);
+            
+            if($request->isXmlHttpRequest()){
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Product Not Found',
+                    'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
+                        'title' => 'Whoops',
+                        'body' => '<p>'.$errorMessage.'</p>'
+                    ))->getContent()
+                ));
+            }
+            
+            $this->get('session')->getFlashBag()->add('error', $errorMessage);
+            return $this->redirect($this->generateUrl('commerce_homepage'));
+        }
+        
         $dispatcher->dispatch(
-        	Event\Event::EVENT_CART_ITEM_ADD, 
-        	new Event\AddToCartEvent($product, $quantity)
-		);
+            Event\Event::EVENT_CART_ITEM_ADD, 
+            new Event\AddToCartEvent($product, $quantity)
+        );
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse(array(
                 'success' => true,
                 'message' => 'Product Added To Cart',
                 'modal' => $this->render('SplicedCommerceBundle:Cart:product_add_modal.html.twig',array(
-                	'product' => $product,
+                    'product' => $product,
                     'added' => $quantity,
                     'total' => $cart->getQuantity($product),
                     'items' => $cart->getItems(),
@@ -283,70 +283,70 @@ class CartController extends Controller
      */
     public function removeAction($itemId)
     {
-        $request 	= $this->get('request');
+        $request     = $this->get('request');
         $cartManager = $this->get('commerce.cart');
-        $dispatcher	= $this->get('event_dispatcher');
-		$session = $this->get('session');
+        $dispatcher    = $this->get('event_dispatcher');
+        $session = $this->get('session');
 
         if(!$cartManager->getCart()){
-        	if($request->isXmlHttpRequest()){
-        		return new JsonResponse(array(
-        			'success' => false,
-        			'message' => 'There is nothing in your shopping cart',
-        			'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
-        					'title' => 'Shopping Cart Empty',
-        					'body' => '<p>Your shopping cart is empty.</p>',
-        			))->getContent(),
-        		));
-        	}
+            if($request->isXmlHttpRequest()){
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'There is nothing in your shopping cart',
+                    'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
+                            'title' => 'Shopping Cart Empty',
+                            'body' => '<p>Your shopping cart is empty.</p>',
+                    ))->getContent(),
+                ));
+            }
 
-        	return $this->redirect($this->generateUrl('commerce_cart'));
+            return $this->redirect($this->generateUrl('commerce_cart'));
         }
         
         $cartItem = $cartManager->getCart()->getItemById($itemId);
 
         if(!$cartItem) {
-        	if($request->isXmlHttpRequest()){
-        		return new JsonResponse(array(
-        			'success' => true,
-        			'message' => 'There is nothing in your shopping cart',
-        			'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
-        				'title' => 'Item Could Not Found',
-        				'body' => '<p>Item does not exist in your shopping cart.</p>',
-        			))->getContent(),
-        		));
-        	}
-        	 
-        	$session->getFlashBag()->add('error', 'Item does not exist in your shopping cart.');
-        	return $this->redirect($this->generateUrl('commerce_cart'));
+            if($request->isXmlHttpRequest()){
+                return new JsonResponse(array(
+                    'success' => true,
+                    'message' => 'There is nothing in your shopping cart',
+                    'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
+                        'title' => 'Item Could Not Found',
+                        'body' => '<p>Item does not exist in your shopping cart.</p>',
+                    ))->getContent(),
+                ));
+            }
+             
+            $session->getFlashBag()->add('error', 'Item does not exist in your shopping cart.');
+            return $this->redirect($this->generateUrl('commerce_cart'));
         }
         
         if($cartItem->isChild() && $cartItem->isNonRemovable()){
-        		
-        	if($request->isXmlHttpRequest()){
-        		return new JsonResponse(array(
-        			'success' => true,
-        			'message' => 'There is nothing in your shopping cart',
-        			'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
-        				'title' => 'Item Could Not Be Removed',
-        				'body' => sprintf('<p>Product is required by %s and is not removable unless it is removed.</p>',
-			            	$cartItem->getParent()->getProduct()->getName()
-			            ),
-        			))->getContent(),
-        		));
-        	}
-        	
-        	$session->getFlashBag()->add('error', sprintf('Product is required by %s and is not removable unless it is removed.',
-            	$cartItem->getParent()->getProduct()->getName()
+                
+            if($request->isXmlHttpRequest()){
+                return new JsonResponse(array(
+                    'success' => true,
+                    'message' => 'There is nothing in your shopping cart',
+                    'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
+                        'title' => 'Item Could Not Be Removed',
+                        'body' => sprintf('<p>Product is required by %s and is not removable unless it is removed.</p>',
+                            $cartItem->getParent()->getProduct()->getName()
+                        ),
+                    ))->getContent(),
+                ));
+            }
+            
+            $session->getFlashBag()->add('error', sprintf('Product is required by %s and is not removable unless it is removed.',
+                $cartItem->getParent()->getProduct()->getName()
             ));
-        	return $this->redirect($this->generateUrl('commerce_cart'));
+            return $this->redirect($this->generateUrl('commerce_cart'));
         }
 
         $cartManager->remove($cartItem);
-        		
+                
         $dispatcher->dispatch(
-        	Event\Event::EVENT_CART_ITEM_REMOVE,
-        	new Event\RemoveFromCartEvent($cartItem->getProduct())
+            Event\Event::EVENT_CART_ITEM_REMOVE,
+            new Event\RemoveFromCartEvent($cartItem->getProduct())
         );
                 
 

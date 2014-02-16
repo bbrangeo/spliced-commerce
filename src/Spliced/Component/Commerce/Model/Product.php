@@ -658,8 +658,8 @@ abstract class Product implements ProductInterface
     public function addContent(ProductContent $content)
     {
         if(!$this->content->contains($content)){
-    		$this->content->add($content);
-    	}
+            $this->content->add($content);
+        }
         return $this;
     }
     
@@ -772,7 +772,7 @@ abstract class Product implements ProductInterface
     public function addAttribute(ProductAttribute $attribute)
     {
         if(!$this->attributes->contains($attribute)){
-        	$this->attributes->add($attribute);
+            $this->attributes->add($attribute);
         }
     
         return $this;
@@ -931,9 +931,9 @@ abstract class Product implements ProductInterface
      */
     public function addBundledItem(ProductBundledItem $item)
     {
-    	if(!$this->bundledItems->contains($item)){
-    		$this->bundledItems->add($item);
-    	}
+        if(!$this->bundledItems->contains($item)){
+            $this->bundledItems->add($item);
+        }
         return $this;
     }
     
@@ -997,9 +997,9 @@ abstract class Product implements ProductInterface
      */
     public function addImage(ProductImage $image)
     {
-    	if(!$this->images->contains($image)){
-    		$this->images->add($image);
-    	}
+        if(!$this->images->contains($image)){
+            $this->images->add($image);
+        }
         return $this;
     }
     /**
@@ -1050,10 +1050,10 @@ abstract class Product implements ProductInterface
      */
     public function addTierPrice(ProductTierPrice $tierPrice)
     {
-    	if(!$this->tierPrices->contains($tierPrice)){
-    		$this->tierPrices->add($tierPrice);
-    	}
-    	        
+        if(!$this->tierPrices->contains($tierPrice)){
+            $this->tierPrices->add($tierPrice);
+        }
+                
         return $this;
     }
     
@@ -1133,7 +1133,7 @@ abstract class Product implements ProductInterface
     public function addUpsale(ProductUpsale $upsale)
     {
         if(!$this->upsales->contains($upsale)){
-        	$this->upsales->add($upsale);
+            $this->upsales->add($upsale);
         }
         return $this;
     }

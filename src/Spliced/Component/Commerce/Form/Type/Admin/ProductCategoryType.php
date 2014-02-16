@@ -20,13 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ProductCategoryType extends AbstractType
 {
-	
-	/**
-	 * {@inheritDoc}
-	 */
+    
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$builder->add('category', null, array('required' => true));            
+        $builder->add('category', null, array('required' => true));            
     }
     
     /**

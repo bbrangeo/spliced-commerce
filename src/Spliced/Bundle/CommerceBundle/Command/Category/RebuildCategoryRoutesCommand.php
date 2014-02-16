@@ -23,9 +23,9 @@ use Doctrine\ORM\NoResultException;
  */
 class RebuildCategoryRoutesCommand extends ContainerAwareCommand
 {
-	const ROUTE_DESCRIPTION_TAG = 'Category';
-	const ROUTE_TARGET_PATH = 'SplicedCommerceBundle:Category:view';
-	
+    const ROUTE_DESCRIPTION_TAG = 'Category';
+    const ROUTE_TARGET_PATH = 'SplicedCommerceBundle:Category:view';
+    
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         parent::initialize($input, $output);
@@ -48,29 +48,29 @@ class RebuildCategoryRoutesCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-    	
-    	$this->em->createQuery("DELETE FROM SplicedCommerceBundle:Route route WHERE route.category IS NOT NULL AND route.description = :desc")
-    	  ->setParameter('desc',static::ROUTE_DESCRIPTION_TAG)
-    	  ->execute();
-    	
-    	$categories = $this->em->createQuery("SELECT category FROM SplicedCommerceBundle:Category category WHERE category.isActive = 1")
-    	  ->getResult();
-    	
-    	foreach($categories as $category) {
-    		
-    		$route = new Entity\Route();
-    		
-    		$route->setRequestPath('/'.preg_replace('/^\//','',$category->getUrlSlug()))
-    		  ->setTargetPath(static::ROUTE_TARGET_PATH)
-    		  ->setCategory($category)
-    		  ->setDescription(static::ROUTE_DESCRIPTION_TAG);
-    		  
-    		 $this->em->persist($route); 
-    		
-    		
-    	}
-    	
-    	$this->em->flush();
+        
+        $this->em->createQuery("DELETE FROM SplicedCommerceBundle:Route route WHERE route.category IS NOT NULL AND route.description = :desc")
+          ->setParameter('desc',static::ROUTE_DESCRIPTION_TAG)
+          ->execute();
+        
+        $categories = $this->em->createQuery("SELECT category FROM SplicedCommerceBundle:Category category WHERE category.isActive = 1")
+          ->getResult();
+        
+        foreach($categories as $category) {
+            
+            $route = new Entity\Route();
+            
+            $route->setRequestPath('/'.preg_replace('/^\//','',$category->getUrlSlug()))
+              ->setTargetPath(static::ROUTE_TARGET_PATH)
+              ->setCategory($category)
+              ->setDescription(static::ROUTE_DESCRIPTION_TAG);
+              
+             $this->em->persist($route); 
+            
+            
+        }
+        
+        $this->em->flush();
     }
     
 }

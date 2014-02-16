@@ -57,7 +57,7 @@ class PayPalUserProvider implements AuthenticationProviderInterface
      */
     protected function getPaypal()
     {
-    	return $this->paypal;
+        return $this->paypal;
     }
     
     /**
@@ -65,7 +65,7 @@ class PayPalUserProvider implements AuthenticationProviderInterface
      */
     protected function getUserChecker()
     {
-    	return $this->userChecker;
+        return $this->userChecker;
     }
     
     /**
@@ -73,7 +73,7 @@ class PayPalUserProvider implements AuthenticationProviderInterface
      */
     protected function getUserProvider()
     {
-    	return $this->userProvider;
+        return $this->userProvider;
     }
     
     /**
@@ -81,7 +81,7 @@ class PayPalUserProvider implements AuthenticationProviderInterface
      */
     protected function getEventDispatcher()
     {
-    	return $this->dispatcher;
+        return $this->dispatcher;
     }
     
     /**
@@ -148,7 +148,7 @@ class PayPalUserProvider implements AuthenticationProviderInterface
                 Events\Event::EVENT_SECURITY_PAYPAL_LOGIN, 
                 new Events\PayPalLoginEvent($user, $userProfile)
             );
-			
+            
             $this->getUserProvider()->update($user);
 
         } catch (UsernameNotFoundException $e) {
@@ -180,8 +180,8 @@ class PayPalUserProvider implements AuthenticationProviderInterface
           ->addRoles(array('ROLE_PAYPAL','ROLE_USER'));
 
         $this->getEventDispatcher()->dispatch(
-        	Events\Event::EVENT_SECURITY_PAYPAL_LOGIN_CREATE_USER, 
-        	new Events\PayPalLoginEvent($user, $userProfile)
+            Events\Event::EVENT_SECURITY_PAYPAL_LOGIN_CREATE_USER, 
+            new Events\PayPalLoginEvent($user, $userProfile)
         );
 
         return $this->getUserProvider()->create($user);

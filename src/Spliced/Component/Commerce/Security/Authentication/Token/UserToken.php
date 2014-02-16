@@ -18,5 +18,5 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 class UserToken extends UsernamePasswordToken
 {
-	
+    
 }

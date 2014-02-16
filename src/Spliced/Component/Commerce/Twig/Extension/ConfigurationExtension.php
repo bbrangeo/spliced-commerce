@@ -18,14 +18,14 @@ class ConfigurationExtension extends \Twig_Extension
        $this->configurationManager = $configurationManager;
     }
 
-	/**
-	 * getConfigurationManager
-	 */
-	 protected function getConfigurationManager()
-	 {
-	 	return $this->configurationManager;
-	 }
-	 
+    /**
+     * getConfigurationManager
+     */
+     protected function getConfigurationManager()
+     {
+         return $this->configurationManager;
+     }
+     
     /**
      * {@inheritdoc}
      */

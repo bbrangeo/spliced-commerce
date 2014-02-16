@@ -17,13 +17,13 @@ namespace Spliced\Component\Commerce\Shipping\Model;
 interface ShippingProviderInterface
 {
 
-	/**
-	 * getName
-	 * 
-	 * @return string
-	 */
-	public function getName();
-	
+    /**
+     * getName
+     * 
+     * @return string
+     */
+    public function getName();
+    
     /**
      * getMethods
      * 

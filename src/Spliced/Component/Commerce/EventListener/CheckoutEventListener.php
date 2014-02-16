@@ -38,10 +38,10 @@ use Doctrine\ORM\NoResultException;
 class CheckoutEventListener
 {
     public function __construct(
-    	ConfigurationManager $configurationManager,
+        ConfigurationManager $configurationManager,
         CheckoutManager $checkoutManager, 
-    	OrderManager $orderManager,
-    	CartManager $cartManager,
+        OrderManager $orderManager,
+        CartManager $cartManager,
         SecurityContext $securityContext, 
         ProductPriceHelper $priceHelper,  
         Session $session, 
@@ -53,8 +53,8 @@ class CheckoutEventListener
         Logger $logger
     )
     {
-    	$this->checkoutManager = $checkoutManager;
-    	$this->orderManager = $orderManager;
+        $this->checkoutManager = $checkoutManager;
+        $this->orderManager = $orderManager;
         $this->cartManager = $cartManager;
         $this->securityContext = $securityContext;
         $this->priceHelper = $priceHelper;
@@ -63,9 +63,9 @@ class CheckoutEventListener
         $this->mailer = $mailer;
         $this->templating = $templating;
         $this->encryptionManager = $encryptionManager;
-		$this->logger = $logger;
-		$this->visitorManager = $visitorManager;
-		$this->router = $router;
+        $this->logger = $logger;
+        $this->visitorManager = $visitorManager;
+        $this->router = $router;
     }
     
     /**
@@ -75,7 +75,7 @@ class CheckoutEventListener
      */
     protected function getOrderManager()
     {
-    	return $this->orderManager;
+        return $this->orderManager;
     }
     
     /**
@@ -97,7 +97,7 @@ class CheckoutEventListener
     {
         return $this->logger;
     }
-	
+    
     /**
      * getSecurityContext
      *
@@ -216,18 +216,18 @@ class CheckoutEventListener
      */
     public function onCheckoutStart(Events\CheckoutEvent $event)
     {
-    	$order = $event->getOrder();
-    	
-    	if (!$order->getVisitor() && $this->getVisitorManager()->getCurrentVisitor() !== false) {
-    	    
+        $order = $event->getOrder();
+        
+        if (!$order->getVisitor() && $this->getVisitorManager()->getCurrentVisitor() !== false) {
+            
             $order->setVisitor($this->getVisitorManager()->getCurrentVisitor());
-                		
-    	}
-    	
-    	$this->getOrderManager()->updateOrderItems($order, false);
-    	
-    	$this->getOrderManager()->updateOrder($order);
-    	
+                        
+        }
+        
+        $this->getOrderManager()->updateOrderItems($order, false);
+        
+        $this->getOrderManager()->updateOrder($order);
+        
     }
     
     /**
@@ -260,11 +260,11 @@ class CheckoutEventListener
         }
 
         if($event->isComplete() && $moveStepEvent instanceof Events\CheckoutMoveStepEvent) {
-        	// the current step that has been processed is the final step?
-        	if($this->getCheckoutManager()->getLastStep() == $result->getCurrentStep()){
-        		$event->setLastStep(true);
-        	}
-        	        	
+            // the current step that has been processed is the final step?
+            if($this->getCheckoutManager()->getLastStep() == $result->getCurrentStep()){
+                $event->setLastStep(true);
+            }
+                        
             $event->getDispatcher()->dispatch(
                 Events\Event::EVENT_CHECKOUT_MOVE_STEP,
                 $moveStepEvent
@@ -381,7 +381,7 @@ class CheckoutEventListener
             } else {
                  
                 $this->getLogger()->error(sprintf('Order %s | Order Payment Decline', $order->getId()));
-                	
+                    
                 if ($request->isXmlHttpRequest()) {
                     $event->setResponse(new JsonResponse(array(
                         'success' => false,
@@ -438,18 +438,18 @@ class CheckoutEventListener
             'order' => $order
         )), 'text/html')
         ->addPart($this->getTemplating()->render($this->getConfigurationManager()->get('commerce.template.email.confirmation_plain', 'SplicedCommerceBundle:Email:order_confirmation_customer.txt.twig'), array(
-        	'order' => $order
+            'order' => $order
         )), 'text/plain')
         ->setReturnPath($this->getConfigurationManager()->get('commerce.sales.email.bounced'));
 
         if($this->getMailer()->send($notificationMessage)){
-        	$orderMemo = $this->getConfigurationManager()->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_ORDER_MEMO)
-        	->setOrder($event->getOrder())
-        	->setCreatedBy('system')
-        	->setNotificationType('order_confirmation_admin')
-        	->setMemo('Order Confirmation Email Sent');
+            $orderMemo = $this->getConfigurationManager()->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_ORDER_MEMO)
+            ->setOrder($event->getOrder())
+            ->setCreatedBy('system')
+            ->setNotificationType('order_confirmation_admin')
+            ->setMemo('Order Confirmation Email Sent');
         
-        	$order->addMemo($orderMemo);
+            $order->addMemo($orderMemo);
         }
      
         // send out notification to admin if email is set in config
@@ -458,20 +458,20 @@ class CheckoutEventListener
             ->setSubject($this->replaceEmailSubject($this->getConfigurationManager()->get('commerce.sales.email.confirmation_admin.subject'),$event->getOrder()))
             ->setFrom($this->getConfigurationManager()->get('commerce.sales.email.from'))
             ->setTo($this->getConfigurationManager()->get('commerce.sales.email.to_admin'))
-			//->setTo('ghassani@gmail.com')
+            //->setTo('ghassani@gmail.com')
             ->setBody($this->getTemplating()->render($this->getConfigurationManager()->get('commerce.template.email.confirmation_admin', 'SplicedCommerceBundle:Email:order_confirmation_admin.html.twig'), array(
-            	'order' => $order,
+                'order' => $order,
             )), 'text/html')
             ->setReturnPath($this->getConfigurationManager()->get('commerce.sales.email.bounced'));
 
             if($this->getMailer()->send($adminNotificationMessage)){
-            	$orderMemo = $this->getConfigurationManager()->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_ORDER_MEMO)
-            	->setOrder($order)
-            	->setCreatedBy('system')
-            	->setNotificationType('order_confirmation_admin')
-            	->setMemo('Admin Order Confirmation Email Sent');
-            	 
-            	$order->addMemo($orderMemo);
+                $orderMemo = $this->getConfigurationManager()->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_ORDER_MEMO)
+                ->setOrder($order)
+                ->setCreatedBy('system')
+                ->setNotificationType('order_confirmation_admin')
+                ->setMemo('Admin Order Confirmation Email Sent');
+                 
+                $order->addMemo($orderMemo);
             }
         }
 
@@ -502,7 +502,7 @@ class CheckoutEventListener
     {
         
         // persist the order to save any memos, etc
-    	$this->getOrderManager()->updateOrder($event->getOrder());
+        $this->getOrderManager()->updateOrder($event->getOrder());
     }
     
     /**
@@ -512,13 +512,13 @@ class CheckoutEventListener
      */
     public function onPaymentMethodChange(Events\CheckoutEvent $event)
     {
-        $cartManager	 = $this->getCartManager();
+        $cartManager     = $this->getCartManager();
         $checkoutManager = $this->getCheckoutManager();
         $securityContext = $this->getSecurityContext();
-        $em				 = $this->getEntityManager();
+        $em                 = $this->getEntityManager();
 
-        $order 		= $event->getOrder();
-        $payment 	= $order->getPayment();
+        $order         = $event->getOrder();
+        $payment     = $order->getPayment();
 
         $paymentMethod = $checkoutManager->getPaymentProvider($payment->getPaymentMethod());
 
@@ -562,32 +562,32 @@ class CheckoutEventListener
      */
     public function onCheckoutNextStep(Events\CheckoutEvent $event)
     {
-        $cartManager	 = $this->getCartManager();
+        $cartManager     = $this->getCartManager();
         $checkoutManager = $this->getCheckoutManager();
         $securityContext = $this->getSecurityContext();
-        $priceHelper	 = $this->getProductPriceHelper();
-        $em				 = $this->getEntityManager();
+        $priceHelper     = $this->getProductPriceHelper();
+        $em                 = $this->getEntityManager();
         $configurationManager = $this->getConfigurationManager();
         $session = $this->getSession();
 
-        $order 		= $event->getOrder();
-        $shipment 	= $order->getShipment();
-        $payment 	= $order->getPayment();
-        $items 		= $order->getItems();
+        $order         = $event->getOrder();
+        $shipment     = $order->getShipment();
+        $payment     = $order->getPayment();
+        $items         = $order->getItems();
 
         
         try {
             if (!$order->getVisitor()) {
                 try {
-	                if($this->getSession()->has('commerce.visitor_id')){
-		    			$visitor = $this->getEntityManager()
-		    			  ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_VISITOR))
-		    			  ->findOneById($this->getSession()->get('commerce.visitor_id'));
-	    			} else {
-	    				$visitor = $this->getEntityManager()
-	    				  ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_VISITOR))
-	    				  ->findOneBySessionId($this->getSession()->getId());
-	    			}
+                    if($this->getSession()->has('commerce.visitor_id')){
+                        $visitor = $this->getEntityManager()
+                          ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_VISITOR))
+                          ->findOneById($this->getSession()->get('commerce.visitor_id'));
+                    } else {
+                        $visitor = $this->getEntityManager()
+                          ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_VISITOR))
+                          ->findOneBySessionId($this->getSession()->getId());
+                    }
 
                     $order->setVisitor($visitor);
                     
@@ -605,7 +605,7 @@ class CheckoutEventListener
                 $order->setShippingCountry($order->getBillingCountry());
                 $order->setShippingPhoneNumber($order->getBillingPhoneNumber());
             }
-	
+    
             if ($shipment instanceof Model\OrderShipmentInterface) {
                 
                 if (!$shipment->getId()) {
@@ -617,23 +617,23 @@ class CheckoutEventListener
                     ->setUpdatedAt(new \DateTime());
                 }
                 
-				if($shipment->getUserSelection()){
-					
-					$shippingMethod = $checkoutManager->getShippingManager()->getMethodByFullName($shipment->getUserSelection());
-					$shippingProvider = $shippingMethod->getProvider();
-					
-					$shipment->setShipmentProvider($shippingProvider->getName())
-					  ->setShipmentMethod($shippingMethod->getName());
-					
-				} else if($shipment->getShipmentProvider() && $shipment->getShipmentMethod()){
-					$shippingProvider = $checkoutManager->getShippingProvider($shipment->getShipmentProvider());
-                	$shippingMethod = $shippingProvider->getMethod($shipment->getShipmentMethod());
-					
-					$shipment->setShipmentProvider($shippingProvider->getName())
-					  ->setShipmentMethod($shippingMethod->getName());
-				} else {
-					$this->getLogger()->error('No Shipping Method Selected!');
-				}						                
+                if($shipment->getUserSelection()){
+                    
+                    $shippingMethod = $checkoutManager->getShippingManager()->getMethodByFullName($shipment->getUserSelection());
+                    $shippingProvider = $shippingMethod->getProvider();
+                    
+                    $shipment->setShipmentProvider($shippingProvider->getName())
+                      ->setShipmentMethod($shippingMethod->getName());
+                    
+                } else if($shipment->getShipmentProvider() && $shipment->getShipmentMethod()){
+                    $shippingProvider = $checkoutManager->getShippingProvider($shipment->getShipmentProvider());
+                    $shippingMethod = $shippingProvider->getMethod($shipment->getShipmentMethod());
+                    
+                    $shipment->setShipmentProvider($shippingProvider->getName())
+                      ->setShipmentMethod($shippingMethod->getName());
+                } else {
+                    $this->getLogger()->error('No Shipping Method Selected!');
+                }                                        
 
                 $shipment->setShipmentCost($shippingMethod->getPrice());
                 $shipment->setShipmentPaid($shippingMethod->getPrice());
@@ -686,97 +686,97 @@ class CheckoutEventListener
             if (!$order->getEmail() && $securityContext->isGranted('ROLE_USER')) {
                 $order->setEmail($securityContext->getToken()->getUser()->getEmail());
             }
-			
+            
             // check for item changes in cart
             $this->getOrderManager()->updateOrderItems($order, false);
-			
+            
             // handle custom fields on step
             $customFields = $checkoutManager->getCustomFieldManager()->getFieldsByStep($checkoutManager->getCurrentStep());
             
             if(count($customFields)){
-            	$customFieldValues = $order->getCustomFieldValues();
-            	if(count($customFieldValues)) {
-                	foreach($customFieldValues as $field => $value) {
-                	    if(!preg_match('/_params$/',$field)) {
-                	        if($order->hasCustomField($field)){
-                	            $customField = $order->getCustomField($field);
-                	            $customField->setFieldValue($value);
-                	        } else {
-                	            $customField = $configurationManager->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_ORDER_CUSTOM_FIELD_VALUE)
-                	              ->setOrder($order)
-                	              ->setField($checkoutManager->getCustomFieldManager()->getFieldByName($field))
-                	              ->setFieldValue($value);
-                	        }
-                	        $this->getEntityManager()->persist($customField);
-                	    }
-                	}
-            	}
+                $customFieldValues = $order->getCustomFieldValues();
+                if(count($customFieldValues)) {
+                    foreach($customFieldValues as $field => $value) {
+                        if(!preg_match('/_params$/',$field)) {
+                            if($order->hasCustomField($field)){
+                                $customField = $order->getCustomField($field);
+                                $customField->setFieldValue($value);
+                            } else {
+                                $customField = $configurationManager->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_ORDER_CUSTOM_FIELD_VALUE)
+                                  ->setOrder($order)
+                                  ->setField($checkoutManager->getCustomFieldManager()->getFieldByName($field))
+                                  ->setFieldValue($value);
+                            }
+                            $this->getEntityManager()->persist($customField);
+                        }
+                    }
+                }
             }
             
             if($order->getSaveBillingAddress() && $securityContext->isGranted('ROLE_USER')){
-            	
-            	$savedBillingAddress = $configurationManager->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CUSTOMER_ADDRESS)
-            	  ->setCustomer($securityContext->getToken()->getUser())
-            	  ->setAddressLabel(null)
-            	  ->setFirstName($order->getBillingFirstName())
-            	  ->setLastName($order->getBillingLastName())
-            	  ->setAddress($order->getBillingAddress())
-            	  ->setAddress2($order->getBillingAddress2())
-            	  ->setCity($order->getBillingCity())
-            	  ->setState($order->getBillingState())
-            	  ->setZipcode($order->getBillingZipcode())
-            	  ->setCountry($order->getBillingCountry())
-            	  ->setPhoneNumber($order->getBillingPhoneNumber());
-            	
-            	if(!$securityContext->getToken()->getUser()->hasSavedAddress($savedBillingAddress)){
-            		$em->persist($savedBillingAddress);
-            	}
-            	
-            	$order->setSaveBillingAddress(false);
-            	
+                
+                $savedBillingAddress = $configurationManager->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CUSTOMER_ADDRESS)
+                  ->setCustomer($securityContext->getToken()->getUser())
+                  ->setAddressLabel(null)
+                  ->setFirstName($order->getBillingFirstName())
+                  ->setLastName($order->getBillingLastName())
+                  ->setAddress($order->getBillingAddress())
+                  ->setAddress2($order->getBillingAddress2())
+                  ->setCity($order->getBillingCity())
+                  ->setState($order->getBillingState())
+                  ->setZipcode($order->getBillingZipcode())
+                  ->setCountry($order->getBillingCountry())
+                  ->setPhoneNumber($order->getBillingPhoneNumber());
+                
+                if(!$securityContext->getToken()->getUser()->hasSavedAddress($savedBillingAddress)){
+                    $em->persist($savedBillingAddress);
+                }
+                
+                $order->setSaveBillingAddress(false);
+                
             } else if($event->hasNewCustomerRegistration()){
-            	if($event->getCustomer()->getSaveAddress()){
-	            	$order->setSaveBillingAddress(true); // for next step
-	            	
-	            	if($order->hasAlternateShippingAddress()){ // for next step
-	            		$order->setSaveShippingAddress(true);
-	            	}
-				}
+                if($event->getCustomer()->getSaveAddress()){
+                    $order->setSaveBillingAddress(true); // for next step
+                    
+                    if($order->hasAlternateShippingAddress()){ // for next step
+                        $order->setSaveShippingAddress(true);
+                    }
+                }
             }
             
             if($order->getSaveShippingAddress() && $securityContext->isGranted('ROLE_USER')){
-				// try to get their first and last name best we can
-				$name = explode(' ', $order->getShippingName());
-				if(count($name) > 2){
-					$firstName = $name[0];
-					unset($name[0]);
-					$lastName = implode(' ', $name);
-				} else if(count($name) == 2){
-					$firstName = $name[0];
-					$lastName = $name[1];
-				} else {
-					$firstName = $name[0];
-					$lastName = '';
-				}
-				
-            	$savedShippingAddress = $configurationManager->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CUSTOMER_ADDRESS)
-            	->setCustomer($securityContext->getToken()->getUser())
-            	->setAddressLabel(null)
-            	->setFirstName($firstName)
-            	->setLastName($lastName)
-            	->setAddress($order->getShippingAddress())
-            	->setAddress2($order->getShippingAddress2())
-            	->setCity($order->getShippingCity())
-            	->setState($order->getShippingState())
-            	->setZipcode($order->getShippingZipcode())
-            	->setCountry($order->getShippingCountry())
-            	->setPhoneNumber($order->getShippingPhoneNumber());
-            	
-            	if(!$securityContext->getToken()->getUser()->hasSavedAddress($savedShippingAddress)){
-            		$em->persist($savedShippingAddress);
-            	}
-            	
-            	$order->setSaveShippingAddress(false);
+                // try to get their first and last name best we can
+                $name = explode(' ', $order->getShippingName());
+                if(count($name) > 2){
+                    $firstName = $name[0];
+                    unset($name[0]);
+                    $lastName = implode(' ', $name);
+                } else if(count($name) == 2){
+                    $firstName = $name[0];
+                    $lastName = $name[1];
+                } else {
+                    $firstName = $name[0];
+                    $lastName = '';
+                }
+                
+                $savedShippingAddress = $configurationManager->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CUSTOMER_ADDRESS)
+                ->setCustomer($securityContext->getToken()->getUser())
+                ->setAddressLabel(null)
+                ->setFirstName($firstName)
+                ->setLastName($lastName)
+                ->setAddress($order->getShippingAddress())
+                ->setAddress2($order->getShippingAddress2())
+                ->setCity($order->getShippingCity())
+                ->setState($order->getShippingState())
+                ->setZipcode($order->getShippingZipcode())
+                ->setCountry($order->getShippingCountry())
+                ->setPhoneNumber($order->getShippingPhoneNumber());
+                
+                if(!$securityContext->getToken()->getUser()->hasSavedAddress($savedShippingAddress)){
+                    $em->persist($savedShippingAddress);
+                }
+                
+                $order->setSaveShippingAddress(false);
             }
             
             if ($checkoutManager->getCurrentStep() == CheckoutManager::STEP_REVIEW) {
@@ -795,10 +795,10 @@ class CheckoutEventListener
             $checkoutManager->setCurrentStep($checkoutManager->getCurrentStep()+1);
 
         } catch (\Exception $e) {
-        	$this->getLogger()->exception(sprintf('Exception Caught During Checkout Step Event: %s - %s',
-				get_class($e),
-				$e->getMessage()
-			));
+            $this->getLogger()->exception(sprintf('Exception Caught During Checkout Step Event: %s - %s',
+                get_class($e),
+                $e->getMessage()
+            ));
         }
     }
 
@@ -823,18 +823,18 @@ class CheckoutEventListener
      */
     protected function replaceEmailSubject($subject, Model\OrderInterface $order)
     { 
-    	$replacements = array(
-    		'{orderNumber}' => $order->getOrderNumber(),
-    		'{firstName}' => $order->getBillingFirstName(),
-    		'{lastName}' => $order->getBillingLastName(),
-    		'{email}' => $order->getEmail(),
-    		'{orderStatus}' => ucwords($order->getOrderStatus()),    	
-    		'{paymentStatus}' => ucwords($order->getPayment()->getPaymentStatus()),  
-    	);
-    	return str_replace(
-    		array_keys($replacements),
-    		array_values($replacements), 
-    		$subject
-    	);
+        $replacements = array(
+            '{orderNumber}' => $order->getOrderNumber(),
+            '{firstName}' => $order->getBillingFirstName(),
+            '{lastName}' => $order->getBillingLastName(),
+            '{email}' => $order->getEmail(),
+            '{orderStatus}' => ucwords($order->getOrderStatus()),        
+            '{paymentStatus}' => ucwords($order->getPayment()->getPaymentStatus()),  
+        );
+        return str_replace(
+            array_keys($replacements),
+            array_values($replacements), 
+            $subject
+        );
     }
 }

@@ -43,7 +43,7 @@ class UserEventListener
      * @param $router
      * @param SecurityContext $securityContext
      * @param Session         $session
-	 * @param Logger   $logger
+     * @param Logger   $logger
      */
     public function __construct(ConfigurationManager $configurationManager, $router, SecurityContext $securityContext, Session $session, Logger $logger)
     {
@@ -51,7 +51,7 @@ class UserEventListener
         $this->securityContext = $securityContext;
         $this->session = $session;
         $this->configurationManager = $configurationManager;
-		$this->logger = $logger;
+        $this->logger = $logger;
     }
 
     /**
@@ -61,19 +61,19 @@ class UserEventListener
      */
     protected function getConfigurationManager()
     {
-    	return $this->configurationManager;
+        return $this->configurationManager;
     }
     
-	/**
-	 * getLogger
-	 * 
-	 * @return Logger
-	 */
-	protected function getLogger()
-	{
-		return $this->logger;
-	}
-	
+    /**
+     * getLogger
+     * 
+     * @return Logger
+     */
+    protected function getLogger()
+    {
+        return $this->logger;
+    }
+    
     /**
      * getAffiliateManager
      * 
@@ -81,7 +81,7 @@ class UserEventListener
      */
     protected function getAffiliateManager()
     {
-    	return $this->affiliateManager;
+        return $this->affiliateManager;
     }
     
     /**
@@ -91,7 +91,7 @@ class UserEventListener
      */
     protected function getSession()
     {
-    	return $this->session;
+        return $this->session;
     }
 
     /**
@@ -101,7 +101,7 @@ class UserEventListener
      */
     protected function getRouter()
     {
-    	return $this->router;
+        return $this->router;
     }
     
     /**
@@ -111,7 +111,7 @@ class UserEventListener
      */
     protected function getSecurityContext()
     {
-    	 return $this->securityContext;
+         return $this->securityContext;
     }
     
     /**
@@ -121,7 +121,7 @@ class UserEventListener
      */
     protected function getEntityManager()
     {
-    	return $this->configurationManager->getEntityManager();	
+        return $this->configurationManager->getEntityManager();    
     }
     
     /**
@@ -154,7 +154,7 @@ class UserEventListener
             
             if(($user->getForceCollectEmail() || $user->getForcePasswordReset()) 
                 && !in_array($requestedRoute, array('commerce_account_finalize_registration'))
-            	&& !preg_match('/login\_check$/',$requestedRoute)){
+                && !preg_match('/login\_check$/',$requestedRoute)){
                 
                 $event->setResponse(new RedirectResponse(
                     $this->router->generate('commerce_account_finalize_registration')

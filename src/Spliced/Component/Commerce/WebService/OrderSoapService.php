@@ -32,7 +32,7 @@ class OrderSoapService
     public function __construct(
             ConfigurationManager $configurationManager, 
             OrderHelper $orderHelper, 
-    		EncryptionManager $encryptionManager,
+            EncryptionManager $encryptionManager,
             ContainerAwareEventDispatcher $eventDispatcher,
             EntityManager $em
     )
@@ -51,7 +51,7 @@ class OrderSoapService
      */
     protected function getEncryptionManager()
     {
-    	return $this->encryptionManager;
+        return $this->encryptionManager;
     }
     
     /**
@@ -61,7 +61,7 @@ class OrderSoapService
      */
     protected function getEventDispatcher()
     {
-    	return $this->eventDispatcher;
+        return $this->eventDispatcher;
     }
     
     /**
@@ -81,7 +81,7 @@ class OrderSoapService
      */
     protected function getEntityManager()
     {
-    	return $this->em;
+        return $this->em;
     }
 
     /**
@@ -91,7 +91,7 @@ class OrderSoapService
      */
     protected function getOrderHelper()
     {
-    	return $this->orderHelper;
+        return $this->orderHelper;
     }
     
     /**
@@ -104,16 +104,16 @@ class OrderSoapService
     public function getOrder($orderId)
     {
         try{
-        	$order = $this->getEntityManager()
-        	  ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_ORDER))
-        	  ->getWebServiceQuery()
-        	  ->where('_order.id = :order')
-        	  ->setParameter('order', $orderId)
-        	  ->getQuery()
-        	  ->getSingleResult(Query::HYDRATE_ARRAY);
-        	
+            $order = $this->getEntityManager()
+              ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_ORDER))
+              ->getWebServiceQuery()
+              ->where('_order.id = :order')
+              ->setParameter('order', $orderId)
+              ->getQuery()
+              ->getSingleResult(Query::HYDRATE_ARRAY);
+            
         } catch(NoResultException $e) {
-        	return json_encode(array('success' => false, 'error' => sprintf('Order %s Not Found',$orderId)));
+            return json_encode(array('success' => false, 'error' => sprintf('Order %s Not Found',$orderId)));
         }
         
         return json_encode($order);
@@ -166,8 +166,8 @@ class OrderSoapService
      */
     public function updateOrder($orderId, array $fields)
     {
-    	return json_encode(array('success'=>false,'error' => 'Not Yet Implemented'));
-    	
+        return json_encode(array('success'=>false,'error' => 'Not Yet Implemented'));
+        
         try{
             $order = $this->getEntityManager()
             ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_ORDER))
@@ -229,8 +229,8 @@ class OrderSoapService
             
         } catch(NoResultException $e) {
             return json_encode(array(
-            	'success' => false, 
-            	'error' => 'Shipment Not Found'
+                'success' => false, 
+                'error' => 'Shipment Not Found'
             ));
         }
         
@@ -248,7 +248,7 @@ class OrderSoapService
         }
         
         if( isset($userMemo['changedStatus']) 
-        	&& !in_array($userMemo['changedStatus'],$this->getOrderHelper()->getAvailableStatuses())){
+            && !in_array($userMemo['changedStatus'],$this->getOrderHelper()->getAvailableStatuses())){
             return json_encode(array(
                 'success' => false,
                 'error' => sprintf('Status %s not a valid status.',$userMemo['changedStatus'])
@@ -256,10 +256,10 @@ class OrderSoapService
         }
         
         if($order->getShipment()->hasTrackingNumber($userMemo['trackingNumber'])){
-        	return json_encode(array(
-        		'success' => false,
-        		'error' => sprintf('Order Shipment already has the tracking number %.',$userMemo['trackingNumber'])
-        	));
+            return json_encode(array(
+                'success' => false,
+                'error' => sprintf('Order Shipment already has the tracking number %.',$userMemo['trackingNumber'])
+            ));
         }
 
         $memo = $this->getConfigurationManager()
@@ -279,13 +279,13 @@ class OrderSoapService
           }
         
           $this->getEventDispatcher()->dispatch(
-          	Events\Event::EVENT_ORDER_SHIPMENT_UPDATE,
-          	new Events\OrderShipmentUpdateEvent($order, $memo)
+              Events\Event::EVENT_ORDER_SHIPMENT_UPDATE,
+              new Events\OrderShipmentUpdateEvent($order, $memo)
           );
           
           return json_encode(array(
-          	'success' => true, 
-          	'memoId' => $memo->getId()
+              'success' => true, 
+              'memoId' => $memo->getId()
           ));
     }
 
@@ -297,77 +297,77 @@ class OrderSoapService
      */
     public function addPaymentMemo($paymentId, array $userMemo)
     {
-    	try{
-    		$order = $this->getEntityManager()
-    		->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_ORDER))
-    		->getWebServiceQuery()
-    		->where('payment.id = :paymentId')
-    		->setParameter('paymentId',$paymentId)
-    		->getQuery()
-    		->getSingleResult();
-    	
-    	} catch(NoResultException $e) {
-    		return json_encode(array(
-    			'success' => false,
-    			'error' => 'Payment Not Found'
-    		));
-    	}
-    	
+        try{
+            $order = $this->getEntityManager()
+            ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_ORDER))
+            ->getWebServiceQuery()
+            ->where('payment.id = :paymentId')
+            ->setParameter('paymentId',$paymentId)
+            ->getQuery()
+            ->getSingleResult();
+        
+        } catch(NoResultException $e) {
+            return json_encode(array(
+                'success' => false,
+                'error' => 'Payment Not Found'
+            ));
+        }
+        
 
-    	if($order->getPayment()->getPaymentStatus() == OrderInterface::STATUS_COMPLETE){
-    		return json_encode(array(
-    			'success' => false,
-    			'error' => 'Order Payment has already been recieved'
-    		));
-    	}
-    	
-    	foreach(array(
-    	  'createdBy',
-    	  'memo',
-    	  'amountPaid') as $requiredField) {   	            
-    		if(!isset($userMemo[$requiredField])){
-    	    	return json_encode(array(
-    	        	'success' => false, 
-    	            'error' => sprintf('Memo data field %s is required',$requiredField)
-    	        ));
-    	    }
-    	}
-    	
-    	if( isset($userMemo['changedStatus'])
-    	&& !in_array($userMemo['changedStatus'],$this->getOrderHelper()->getAvailableStatuses())){
-    		return json_encode(array(
-    			'success' => false,
-    			'error' => sprintf('Status %s not a valid status.',$userMemo['changedStatus'])
-    		));
-    	}
+        if($order->getPayment()->getPaymentStatus() == OrderInterface::STATUS_COMPLETE){
+            return json_encode(array(
+                'success' => false,
+                'error' => 'Order Payment has already been recieved'
+            ));
+        }
+        
+        foreach(array(
+          'createdBy',
+          'memo',
+          'amountPaid') as $requiredField) {                   
+            if(!isset($userMemo[$requiredField])){
+                return json_encode(array(
+                    'success' => false, 
+                    'error' => sprintf('Memo data field %s is required',$requiredField)
+                ));
+            }
+        }
+        
+        if( isset($userMemo['changedStatus'])
+        && !in_array($userMemo['changedStatus'],$this->getOrderHelper()->getAvailableStatuses())){
+            return json_encode(array(
+                'success' => false,
+                'error' => sprintf('Status %s not a valid status.',$userMemo['changedStatus'])
+            ));
+        }
 
-    	
-    	$memo = $this->getConfigurationManager()
-    	->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_ORDER_PAYMENT_MEMO)
-    	->setPayment($order->getPayment())
-    	->setCreatedBy($userMemo['createdBy'])
-    	->setMemo($userMemo['memo'])
-    	->setAmountPaid($userMemo['amountPaid'])
-    	->setPreviousStatus($order->getPayment()->getPaymentStatus())
-    	->setChangedStatus(isset($userMemo['changedStatus']) ? $userMemo['changedStatus'] : OrderInterface::STATUS_COMPLETE)
-    	->setMerchantTransactionId(isset($userMemo['merchantTransactionId']) ? $userMemo['merchantTransactionId'] : null);
-    	
-    	if(isset($userMemo['memoData'])){
-    		if(!is_array($userMemo['memoData'])){
-    			$userMemo['memoData'] = array($userMemo['memoData']);
-    		}
-    		$memo->setMemoData($userMemo['memoData']);
-    	}
-    	
-    	$this->getEventDispatcher()->dispatch(
-    		Events\Event::EVENT_ORDER_PAYMENT_UPDATE,
-    		new Events\OrderPaymentUpdateEvent($order, $memo)
-    	);
-    	
-    	return json_encode(array(
-    		'success' => true, 
-    		'memoId' => $memo->getId()
-    	));
+        
+        $memo = $this->getConfigurationManager()
+        ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_ORDER_PAYMENT_MEMO)
+        ->setPayment($order->getPayment())
+        ->setCreatedBy($userMemo['createdBy'])
+        ->setMemo($userMemo['memo'])
+        ->setAmountPaid($userMemo['amountPaid'])
+        ->setPreviousStatus($order->getPayment()->getPaymentStatus())
+        ->setChangedStatus(isset($userMemo['changedStatus']) ? $userMemo['changedStatus'] : OrderInterface::STATUS_COMPLETE)
+        ->setMerchantTransactionId(isset($userMemo['merchantTransactionId']) ? $userMemo['merchantTransactionId'] : null);
+        
+        if(isset($userMemo['memoData'])){
+            if(!is_array($userMemo['memoData'])){
+                $userMemo['memoData'] = array($userMemo['memoData']);
+            }
+            $memo->setMemoData($userMemo['memoData']);
+        }
+        
+        $this->getEventDispatcher()->dispatch(
+            Events\Event::EVENT_ORDER_PAYMENT_UPDATE,
+            new Events\OrderPaymentUpdateEvent($order, $memo)
+        );
+        
+        return json_encode(array(
+            'success' => true, 
+            'memoId' => $memo->getId()
+        ));
     }
 
 
@@ -446,45 +446,45 @@ class OrderSoapService
      */
     public function getOrderDecryptedCreditCard($orderId, $deleteAfter = false)
     {
-    	try{
-    		$order = $this->getEntityManager()
-    		->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_ORDER))
-    		->getWebServiceQuery()
-    		->where('_order.id = :order')
-    		->setParameter('order', $orderId)
-    		->getQuery()
-    		->getSingleResult();
-    		 
-    	} catch(NoResultException $e) {
-    		return json_encode(array(
-    			'success' => false, 
-    			'error' => 'Order Not Found'
-    		));
-    	}
-    	
-    	$payment = $order->getPayment();
-    	
-    	
-    	if(!$payment || ! $payment->getCreditCard() || ! $payment->getCreditCard()->getCardNumber()){
-    		return json_encode(array(
-    			'success' => false,
-    			'error' => 'Order Has No Credit Card as Payment'
-    		));
-    	}
-    	  	
-    	$return = json_encode(array(
-    		'success' => true,
-    		'cardNumber' => $this->getEncryptionManager()->decrypt($order->getProtectCode(), $order->getPayment()->getCreditCard()->getCardNumber()),
-    		'cardExpiration' => $order->getPayment()->getCreditCard()->getCardExpiration(),
-    		'cardCvv'=> $order->getPayment()->getCreditCard()->getCardCvv(),
-    	));
-    	
-    	if(true === $deleteAfter) {
-    		$payment->getCreditCard()->setCardNumber(null);
-    		$this->getEntityManager()->persist($payment->getCreditCard());
-    		$this->getEntityManager()->flush();
-    	}
-    	
-    	return $return;
+        try{
+            $order = $this->getEntityManager()
+            ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_ORDER))
+            ->getWebServiceQuery()
+            ->where('_order.id = :order')
+            ->setParameter('order', $orderId)
+            ->getQuery()
+            ->getSingleResult();
+             
+        } catch(NoResultException $e) {
+            return json_encode(array(
+                'success' => false, 
+                'error' => 'Order Not Found'
+            ));
+        }
+        
+        $payment = $order->getPayment();
+        
+        
+        if(!$payment || ! $payment->getCreditCard() || ! $payment->getCreditCard()->getCardNumber()){
+            return json_encode(array(
+                'success' => false,
+                'error' => 'Order Has No Credit Card as Payment'
+            ));
+        }
+              
+        $return = json_encode(array(
+            'success' => true,
+            'cardNumber' => $this->getEncryptionManager()->decrypt($order->getProtectCode(), $order->getPayment()->getCreditCard()->getCardNumber()),
+            'cardExpiration' => $order->getPayment()->getCreditCard()->getCardExpiration(),
+            'cardCvv'=> $order->getPayment()->getCreditCard()->getCardCvv(),
+        ));
+        
+        if(true === $deleteAfter) {
+            $payment->getCreditCard()->setCardNumber(null);
+            $this->getEntityManager()->persist($payment->getCreditCard());
+            $this->getEntityManager()->flush();
+        }
+        
+        return $return;
     }
 }

@@ -21,12 +21,12 @@ use Spliced\Component\Commerce\Product\ProductPriceHelper;
  */
  class ProductPriceExtension extends \Twig_Extension
 {
-	
-	/**
-	 * Constructor
-	 * 
-	 * @param ProductPriceHelper $priceHelper
-	 */
+    
+    /**
+     * Constructor
+     * 
+     * @param ProductPriceHelper $priceHelper
+     */
     public function __construct(ProductPriceHelper $priceHelper)
     {
         $this->priceHelper = $priceHelper;

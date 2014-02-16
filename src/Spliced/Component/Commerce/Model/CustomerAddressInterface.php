@@ -16,11 +16,11 @@ namespace Spliced\Component\Commerce\Model;
  */
 interface CustomerAddressInterface
 {
-	/**
-	 * getCustomer
-	 * 
-	 * @return CustomerInterface
-	 */
+    /**
+     * getCustomer
+     * 
+     * @return CustomerInterface
+     */
     public function getCustomer();
 
     /**

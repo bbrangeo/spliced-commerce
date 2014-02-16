@@ -60,29 +60,29 @@ class CheckoutShipmentFormType extends AbstractType
     {
         $shippingMethods = $this->getShippingChoices();
 
-		if($this->getOrder()->getShipment() && $this->getOrder()->getShipment()->getShipmentProvider() && $this->getOrder()->getShipment()->getShipmentMethod()){
-			$selectedMethod = strtolower(sprintf('%s_%s',
-				$this->getOrder()->getShipment()->getShipmentProvider(),
-				$this->getOrder()->getShipment()->getShipmentMethod()
-			));
-		}
-		
-		if(!isset($selectedMethod) && $shippingMethods->count()){
-			$selectedMethod = $shippingMethods->first()->getFullName();
-		}
-		
-		$builder->add('userSelection', 'choice', array(
-			'choices' => $shippingMethods->toArray(),
-			'required' => true,
-			'data' => $selectedMethod,
-			'expanded' => true,
-			'error_bubbling' => false,
-		));
+        if($this->getOrder()->getShipment() && $this->getOrder()->getShipment()->getShipmentProvider() && $this->getOrder()->getShipment()->getShipmentMethod()){
+            $selectedMethod = strtolower(sprintf('%s_%s',
+                $this->getOrder()->getShipment()->getShipmentProvider(),
+                $this->getOrder()->getShipment()->getShipmentMethod()
+            ));
+        }
+        
+        if(!isset($selectedMethod) && $shippingMethods->count()){
+            $selectedMethod = $shippingMethods->first()->getFullName();
+        }
+        
+        $builder->add('userSelection', 'choice', array(
+            'choices' => $shippingMethods->toArray(),
+            'required' => true,
+            'data' => $selectedMethod,
+            'expanded' => true,
+            'error_bubbling' => false,
+        ));
     }
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -92,26 +92,26 @@ class CheckoutShipmentFormType extends AbstractType
         ));
     }
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'checkout_shipment';
     }
 
-	
-	/**
-	 * getShippingChoices
-	 */
-	 public function getShippingChoices()
-	 {
-	 	$return = new ShippingMethodCollection();
-		if($this->getOrder()->getDestinationCountry()){
-			foreach($this->getCheckoutManager()->getShippingManager()->getAvailableMethodsForDesination($this->getOrder()->getDestinationCountry()) as $method) {
-				$return->set($method->getFullName(), $method);
-			}
-		}
-		return $return;
-	 }
+    
+    /**
+     * getShippingChoices
+     */
+     public function getShippingChoices()
+     {
+         $return = new ShippingMethodCollection();
+        if($this->getOrder()->getDestinationCountry()){
+            foreach($this->getCheckoutManager()->getShippingManager()->getAvailableMethodsForDesination($this->getOrder()->getDestinationCountry()) as $method) {
+                $return->set($method->getFullName(), $method);
+            }
+        }
+        return $return;
+     }
 }

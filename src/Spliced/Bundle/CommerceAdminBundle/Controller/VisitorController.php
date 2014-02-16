@@ -22,9 +22,9 @@ use Spliced\Component\Commerce\Helper\UserAgent as UserAgentHelper;
 class VisitorController extends BaseFilterableController
 {
 
-	const FILTER_TAG = 'commerce.visitor';
-	const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Form\Type\VisitorFilterType';
-	
+    const FILTER_TAG = 'commerce.visitor';
+    const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Form\Type\VisitorFilterType';
+    
     /**
      * Lists all Visitor entities.
      *
@@ -35,12 +35,12 @@ class VisitorController extends BaseFilterableController
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-		
+        
     
-    	$query = $em->getRepository('SplicedCommerceAdminBundle:Visitor')->getAdminListQuery($this->getFilters('bots'), false)
-    	  ->andWhere('visitor.isBot != 1')
-    	  ->getQuery();
-    	
+        $query = $em->getRepository('SplicedCommerceAdminBundle:Visitor')->getAdminListQuery($this->getFilters('bots'), false)
+          ->andWhere('visitor.isBot != 1')
+          ->getQuery();
+        
         $visitors = $this->get('knp_paginator')->paginate(
             $query,
             $this->getRequest()->query->get('page',1),
@@ -63,24 +63,24 @@ class VisitorController extends BaseFilterableController
      */
     public function botsAction()
     {
-    	$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
     
-    	$query = $em->getRepository('SplicedCommerceAdminBundle:Visitor')->getAdminListQuery($this->getFilters('bots'), false)
-    	  ->andWhere('visitor.isBot = 1')
-    	  ->getQuery();
-    	
-    	$visitors = $this->get('knp_paginator')->paginate(
-    		$query,
-    		$this->getRequest()->query->get('page', 1),
-    		$this->getRequest()->query->get('limit', 25)
-    	);
+        $query = $em->getRepository('SplicedCommerceAdminBundle:Visitor')->getAdminListQuery($this->getFilters('bots'), false)
+          ->andWhere('visitor.isBot = 1')
+          ->getQuery();
+        
+        $visitors = $this->get('knp_paginator')->paginate(
+            $query,
+            $this->getRequest()->query->get('page', 1),
+            $this->getRequest()->query->get('limit', 25)
+        );
     
-    	$filterForm = $this->createForm(new VisitorFilterType());
+        $filterForm = $this->createForm(new VisitorFilterType());
     
-    	return array(
-    		'visitors' => $visitors,
-    		'filterForm' => $filterForm->createView(),
-    	);
+        return array(
+            'visitors' => $visitors,
+            'filterForm' => $filterForm->createView(),
+        );
     }
     
     /**
@@ -91,63 +91,63 @@ class VisitorController extends BaseFilterableController
      */
     public function browsersAction()
     {
-    	$em = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
     
-    	$from = new \DateTime(sprintf('first day of %s %s', date('F'), date('Y')));
-    	$to = new \DateTime(sprintf('last day of %s %s', date('F'), date('Y')));
-    	
-    	$baseCountQuery = $em->createQueryBuilder()
-    	->select('count(visitor.userAgent), visitor.userAgent')
-    	->from('SplicedCommerceAdminBundle:Visitor', 'visitor')
-    	->where('visitor.createdAt BETWEEN :dayStart AND :dayEnd')
-    	->groupBy('request.createdAt')
-    	->setParameter('dayStart', $from->format('Y-m-d'))
-    	->setParameter('dayEnd', $to->format('Y-m-d'))
-    	->groupBy('visitor.userAgent');
-    	 
-    	$count = $baseCountQuery->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+        $from = new \DateTime(sprintf('first day of %s %s', date('F'), date('Y')));
+        $to = new \DateTime(sprintf('last day of %s %s', date('F'), date('Y')));
+        
+        $baseCountQuery = $em->createQueryBuilder()
+        ->select('count(visitor.userAgent), visitor.userAgent')
+        ->from('SplicedCommerceAdminBundle:Visitor', 'visitor')
+        ->where('visitor.createdAt BETWEEN :dayStart AND :dayEnd')
+        ->groupBy('request.createdAt')
+        ->setParameter('dayStart', $from->format('Y-m-d'))
+        ->setParameter('dayEnd', $to->format('Y-m-d'))
+        ->groupBy('visitor.userAgent');
+         
+        $count = $baseCountQuery->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-    	$browsers = array();
-    	foreach($count as $row){
-    		$browserData = UserAgentHelper::parseUserAgent($row['userAgent']);
-    		
-    		if(empty($browserData['browser'])){
-    			$browserData['browser'] = 'Other/Bot';
-    		}
-    		
-    		$hasBrowser = false;
-    		$hasVersion = false;
-    		$browser = $browserData['browser'];
-    		$version = $browserData['version'];
-    		
-    		$label = $browserData['browser'].' '.$browserData['version'];
-    		foreach($browsers as &$dataSet){
-    			if(isset($dataSet[$browser])){
-    				$hasBrowser = true;
-    				$dataSet[$browser]['count'] += $row[1];
-    				if(isset($dataSet[$browser]['versions'][$version])){
-    					$dataSet[$browser]['versions'][$version] += $row[1];
-    				} else if(!isset($dataSet[$browser]['versions'])) {
-    					$dataSet[$browser]['versions'] = array($version => $row[1]);
-    				} else {
-    					$dataSet[$browser]['versions'][$version] = $row[1];
-    				}
-    				break;
-    			}
-    		}
-    		
-    		if(!$hasBrowser){
-    			$browsers[$browser] = $row[1];
-    		}
-    	}    	
-    	
-    	arsort($browsers);
-    	
-    	return array(
-    		'from' => $from,
-    		'to' => $to,
-    		'browsers' => $browsers,
-    	);
+        $browsers = array();
+        foreach($count as $row){
+            $browserData = UserAgentHelper::parseUserAgent($row['userAgent']);
+            
+            if(empty($browserData['browser'])){
+                $browserData['browser'] = 'Other/Bot';
+            }
+            
+            $hasBrowser = false;
+            $hasVersion = false;
+            $browser = $browserData['browser'];
+            $version = $browserData['version'];
+            
+            $label = $browserData['browser'].' '.$browserData['version'];
+            foreach($browsers as &$dataSet){
+                if(isset($dataSet[$browser])){
+                    $hasBrowser = true;
+                    $dataSet[$browser]['count'] += $row[1];
+                    if(isset($dataSet[$browser]['versions'][$version])){
+                        $dataSet[$browser]['versions'][$version] += $row[1];
+                    } else if(!isset($dataSet[$browser]['versions'])) {
+                        $dataSet[$browser]['versions'] = array($version => $row[1]);
+                    } else {
+                        $dataSet[$browser]['versions'][$version] = $row[1];
+                    }
+                    break;
+                }
+            }
+            
+            if(!$hasBrowser){
+                $browsers[$browser] = $row[1];
+            }
+        }        
+        
+        arsort($browsers);
+        
+        return array(
+            'from' => $from,
+            'to' => $to,
+            'browsers' => $browsers,
+        );
     }
     
     /**
@@ -247,12 +247,12 @@ class VisitorController extends BaseFilterableController
         $methodName = 'batch'.ucwords($action);
 
         if(method_exists($this,$methodName)) {
-        	return call_user_func($this, $methodName, $ids);
+            return call_user_func($this, $methodName, $ids);
         }
         
         throw new \InvalidArgumentException(sprintf('Method %s does not exist',$methodName));
     }
     
 
-	
+    
 }

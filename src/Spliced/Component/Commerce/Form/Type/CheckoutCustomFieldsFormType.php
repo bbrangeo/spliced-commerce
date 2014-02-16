@@ -30,8 +30,8 @@ class CheckoutCustomFieldsFormType extends AbstractType
      */
     public function __construct(Model\OrderInterface $order, array $fields)
     {
-    	$this->fields = $fields;
-    	$this->order = $order;
+        $this->fields = $fields;
+        $this->order = $order;
     }
     
     /**
@@ -41,7 +41,7 @@ class CheckoutCustomFieldsFormType extends AbstractType
      */
     public function getFields()
     {
-    	return $this->fields;
+        return $this->fields;
     }
 
     /**
@@ -51,7 +51,7 @@ class CheckoutCustomFieldsFormType extends AbstractType
      */
     public function getOrder()
     {
-    	return $this->order;
+        return $this->order;
     }
     
     /**
@@ -65,18 +65,18 @@ class CheckoutCustomFieldsFormType extends AbstractType
           
             $currentFieldValue = $this->getOrder()->getCustomField($field->getFieldName());
             
-	    	$builder->add(
-	        	$field->getFieldName(), 
-	        	$field->getFieldType(), 
-	        	array_merge(
-	        		array(
-	    				'data' => $currentFieldValue ? $currentFieldValue->getFieldValue() : null,
-	        			'label' => $field->getFieldLabel(),
-	        			'required' => false,
-	    			),
-	        		$field->getFieldParams()
-	        	)
-	        )->add($field->getFieldName().'_params','hidden', array('data' => serialize($field->getValidationParams())));
+            $builder->add(
+                $field->getFieldName(), 
+                $field->getFieldType(), 
+                array_merge(
+                    array(
+                        'data' => $currentFieldValue ? $currentFieldValue->getFieldValue() : null,
+                        'label' => $field->getFieldLabel(),
+                        'required' => false,
+                    ),
+                    $field->getFieldParams()
+                )
+            )->add($field->getFieldName().'_params','hidden', array('data' => serialize($field->getValidationParams())));
         }
     }
      

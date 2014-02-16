@@ -52,9 +52,9 @@ class ConfigDataType extends AbstractType
         );
         
         switch($this->getConfigData()->getType()){
-        	case 'html':
-        		$fieldType = 'textarea';
-        		break;
+            case 'html':
+                $fieldType = 'textarea';
+                break;
             case 'string':
                 $fieldType = 'text';
                 break;
@@ -73,17 +73,17 @@ class ConfigDataType extends AbstractType
                 );
                 break;
             case 'status':
-            	$fieldType = 'choice';
+                $fieldType = 'choice';
                 $fieldParams = array_merge(
-                	$fieldParams,
-                	array('choices' => $this->getStatusChoices())
+                    $fieldParams,
+                    array('choices' => $this->getStatusChoices())
                 );
                 break;
             case 'statuses':
-            	$fieldType = 'choice';
+                $fieldType = 'choice';
                 $fieldParams = array_merge(
-                	$fieldParams,
-                	array('choices' => $this->getStatusChoices(), 'multiple' => true)
+                    $fieldParams,
+                    array('choices' => $this->getStatusChoices(), 'multiple' => true)
                 );
                 break;
             case 'countries':
@@ -119,20 +119,20 @@ class ConfigDataType extends AbstractType
      */
     protected function getStatusChoices()
     {
-    	$return = array();
-    	
-    	try{
-    		$classInfo = new \ReflectionClass('Spliced\Component\Commerce\Model\OrderInterface');
-    	} catch(\Exception $e) {
-    		return array('ERROR' => 'ERROR');
-    	}
-    	
-    	foreach($classInfo->getConstants() as $constant => $constantValue) {
-    		if(preg_match('/^STATUS\_/', $constant)) {
-    			$return[$constantValue] = ucwords(strtolower(str_replace(array('STATUS_','_'), array('',' '),$constant)));
-    		}
-    	}
-    	return $return;
+        $return = array();
+        
+        try{
+            $classInfo = new \ReflectionClass('Spliced\Component\Commerce\Model\OrderInterface');
+        } catch(\Exception $e) {
+            return array('ERROR' => 'ERROR');
+        }
+        
+        foreach($classInfo->getConstants() as $constant => $constantValue) {
+            if(preg_match('/^STATUS\_/', $constant)) {
+                $return[$constantValue] = ucwords(strtolower(str_replace(array('STATUS_','_'), array('',' '),$constant)));
+            }
+        }
+        return $return;
     }
     
     /**

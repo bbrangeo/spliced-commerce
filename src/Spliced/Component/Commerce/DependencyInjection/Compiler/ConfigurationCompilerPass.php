@@ -31,8 +31,8 @@ class ConfigurationCompilerPass implements CompilerPassInterface
         
         $configurationInitializer = $container->getDefinition('commerce.configuration');
 
-    	$services = $container->findTaggedServiceIds('commerce.configurable');
-    	
+        $services = $container->findTaggedServiceIds('commerce.configurable');
+        
         foreach ($services as $id => $attributes) {
             $configurationInitializer->addMethodCall('addConfigurableServiceId', array($id));
         }

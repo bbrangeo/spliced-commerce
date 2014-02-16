@@ -27,7 +27,7 @@ class AddToCartEvent extends Event
      */
     public function __construct(ProductInterface $product, $quantity)
     {
-        $this->product 	= $product;
+        $this->product     = $product;
         $this->quantity = $quantity;
     }
 

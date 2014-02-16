@@ -26,23 +26,23 @@ class BaseConfiguration
      */
     protected function buildConfigurationTree($admin = false)
     {
-    	$treeBuilder = new TreeBuilder();
-    	
+        $treeBuilder = new TreeBuilder();
+        
         $rootNode = $treeBuilder->root($admin ? 'spliced_commerce_admin' : 'spliced_commerce');
                 
         $rootNode
-       		->addDefaultsIfNotSet()
-        	->children()
-        		->scalarNode('document_manager')
-        			->defaultValue('doctrine_mongodb.odm.document_manager')
-        		->end()
-        		->scalarNode('entity_manager')
-        			->defaultValue('doctrine.orm.entity_manager')
-        		->end()
-        		
-			->end()
+               ->addDefaultsIfNotSet()
+            ->children()
+                ->scalarNode('document_manager')
+                    ->defaultValue('doctrine_mongodb.odm.document_manager')
+                ->end()
+                ->scalarNode('entity_manager')
+                    ->defaultValue('doctrine.orm.entity_manager')
+                ->end()
+                
+            ->end()
         ->end();
-		
+        
         return $treeBuilder;
     }
 }

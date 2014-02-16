@@ -22,40 +22,40 @@ use Spliced\Bundle\CommerceAdminBundle\Entity\ProductCategory;
 class ProductCategoryController extends Controller
 {
 
-	/**
-	 * @Route("/add", name="commerce_admin_product_category_add")
-	 * @Method({"POST","GET"})
-	 * @Template("SplicedCommerceAdminBundle:ProductCategory:add.html.twig")
-	 */
-	public function addAction($productId)
-	{
+    /**
+     * @Route("/add", name="commerce_admin_product_category_add")
+     * @Method({"POST","GET"})
+     * @Template("SplicedCommerceAdminBundle:ProductCategory:add.html.twig")
+     */
+    public function addAction($productId)
+    {
         $categories = $this->getCategories();
         
-		$product = $this->get('commerce.admin.document_manager')
-		  ->getRepository('SplicedCommerceAdminBundle:Product')
-		  ->findOneById($productId);
-			
-		if(!$product){
-			throw $this->createNotFoundException('Product Not Found');			
-		}
-        		
+        $product = $this->get('commerce.admin.document_manager')
+          ->getRepository('SplicedCommerceAdminBundle:Product')
+          ->findOneById($productId);
+            
+        if(!$product){
+            throw $this->createNotFoundException('Product Not Found');            
+        }
+                
  
-		if($this->getRequest()->isXmlHttpRequest()){
-			return new JsonResponse(array(
+        if($this->getRequest()->isXmlHttpRequest()){
+            return new JsonResponse(array(
                 'success' => true,
                 'message' => 'Add Category To Product',
                 'modal' => $this->render('SplicedCommerceAdminBundle:ProductCategory:add_modal.html.twig',array(
-                 	'product' => $product,
+                     'product' => $product,
                     'categories' => $categories,
                 ))->getContent(),
             ));
-		}
-		
-		return array(
-			'product' => $product,
-			'categories' => $categories,
-		);
-	}
+        }
+        
+        return array(
+            'product' => $product,
+            'categories' => $categories,
+        );
+    }
 
     /**
      * @Route("/save/", name="commerce_admin_product_category_save")
@@ -66,25 +66,25 @@ class ProductCategoryController extends Controller
     {
         $categories = $this->getCategories();
         
-		$product = $this->get('commerce.admin.document_manager')
-		  ->getRepository('SplicedCommerceAdminBundle:Product')
-		  ->findOneById($productId);
-			
-		if(!$product){
-			throw $this->createNotFoundException('Product Not Found');			
-		}
-        		
+        $product = $this->get('commerce.admin.document_manager')
+          ->getRepository('SplicedCommerceAdminBundle:Product')
+          ->findOneById($productId);
+            
+        if(!$product){
+            throw $this->createNotFoundException('Product Not Found');            
+        }
+                
         
         if($this->getRequest()->request->has('categories')){
             $addedCategories = array();
             foreach($this->getRequest()->request->get('categories') as $categoryId){
                 $category = $this->get('commerce.admin.document_manager')
-		  		  ->getRepository('SplicedCommerceAdminBundle:Category')
+                    ->getRepository('SplicedCommerceAdminBundle:Category')
                   ->findOneById($categoryId);
                 
                 if($category && !$product->hasCategory($category)){
                     
-                	$product->addCategory($category);
+                    $product->addCategory($category);
                       
                     $this->get('event_dispatcher')->dispatch(
                         Events\Event::EVENT_PRODUCT_CATEGORY_ADD,
@@ -129,38 +129,38 @@ class ProductCategoryController extends Controller
         ); 
     }
     
-	/**
-	 * @Route("/delete/{productCategoryId}", name="commerce_admin_product_category_delete")
-	 * @Method({"POST","GET"})
-	 */
-	public function deleteAction($productId, $productCategoryId)
-	{
-	    try{
-	        $product = $this->get('commerce.product.repository')->findOneById($productId);
-	        	
-	    } catch(NoResultException $e) {
-	        throw $this->createNotFoundException('Product Not Found');
-	    }
-	    
-	    $productCategory = $this->getDoctrine()
-	        ->getRepository('SplicedCommerceAdminBundle:ProductCategory')
-	        ->findOneById($productCategoryId);
-	    
-	    if(!$productCategory){
-	        throw $this->createNotFoundException('Product Category Not Found');
-	    }
-	    
-	    if($productCategory->getProduct()->getId() != $product->getId()){
-	        throw $this->createNotFoundException('Product Category Not Associated With Specified Product');
-	    }
-	    
+    /**
+     * @Route("/delete/{productCategoryId}", name="commerce_admin_product_category_delete")
+     * @Method({"POST","GET"})
+     */
+    public function deleteAction($productId, $productCategoryId)
+    {
+        try{
+            $product = $this->get('commerce.product.repository')->findOneById($productId);
+                
+        } catch(NoResultException $e) {
+            throw $this->createNotFoundException('Product Not Found');
+        }
+        
+        $productCategory = $this->getDoctrine()
+            ->getRepository('SplicedCommerceAdminBundle:ProductCategory')
+            ->findOneById($productCategoryId);
+        
+        if(!$productCategory){
+            throw $this->createNotFoundException('Product Category Not Found');
+        }
+        
+        if($productCategory->getProduct()->getId() != $product->getId()){
+            throw $this->createNotFoundException('Product Category Not Associated With Specified Product');
+        }
+        
         $categoryId = $productCategory->getId();
         
-	    $this->get('event_dispatcher')->dispatch(
-	        Events\Event::EVENT_PRODUCT_CATEGORY_DELETE,
-	        new Events\ProductCategoryDeleteEvent($product, $productCategory)
-	    );
-	    
+        $this->get('event_dispatcher')->dispatch(
+            Events\Event::EVENT_PRODUCT_CATEGORY_DELETE,
+            new Events\ProductCategoryDeleteEvent($product, $productCategory)
+        );
+        
         if($this->getRequest()->isXmlHttpRequest()){
             return new JsonResponse(array(
                 'success' => true,
@@ -168,24 +168,24 @@ class ProductCategoryController extends Controller
             ));
         }
         
-	    $this->get('session')->getFlashBag()->add('success', 'Product Category Successfully Unrelated');
-	    
-	    return $this->redirect($this->generateUrl('commerce_admin_product_edit', array(
-	        'id' => $product->getId(),
-	    )));
-	}
-	
-	/**
-	 * getCategories
-	 *
-	 * @return Collection
-	 */
-	private function getCategories()
-	{
+        $this->get('session')->getFlashBag()->add('success', 'Product Category Successfully Unrelated');
+        
+        return $this->redirect($this->generateUrl('commerce_admin_product_edit', array(
+            'id' => $product->getId(),
+        )));
+    }
+    
+    /**
+     * getCategories
+     *
+     * @return Collection
+     */
+    private function getCategories()
+    {
         return $this->get('commerce.admin.document_manager')
           ->getRepository('SplicedCommerceAdminBundle:Category')
           ->getRoot();
-	}
-	
-	
+    }
+    
+    
 }

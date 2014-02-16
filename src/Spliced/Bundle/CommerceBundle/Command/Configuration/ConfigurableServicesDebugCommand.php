@@ -47,10 +47,10 @@ class ConfigurableServicesDebugCommand extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-		
-    	foreach($this->getContainer()->get('commerce.configuration')->getConfigurableServiceIds() as $serviceId){
-    		
-    		$this->writeLine(sprintf('Service: %s | %s', $serviceId, $this->getContainer()->has($serviceId) ? 'Ok' : 'Doesnt Exist'));
-    	}
+        
+        foreach($this->getContainer()->get('commerce.configuration')->getConfigurableServiceIds() as $serviceId){
+            
+            $this->writeLine(sprintf('Service: %s | %s', $serviceId, $this->getContainer()->has($serviceId) ? 'Ok' : 'Doesnt Exist'));
+        }
     }
 }

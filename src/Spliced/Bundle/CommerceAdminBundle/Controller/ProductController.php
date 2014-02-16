@@ -21,9 +21,9 @@ use Spliced\Component\Commerce\Model\ProductAttributeOptionInterface;
 class ProductController extends BaseFilterableController
 {
 
-	const FILTER_TAG = 'commerce.product';
-	const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Form\Type\ProductFilterType';
-	
+    const FILTER_TAG = 'commerce.product';
+    const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Form\Type\ProductFilterType';
+    
     /**
      * Lists all Product entities.
      *
@@ -33,11 +33,11 @@ class ProductController extends BaseFilterableController
      */
     public function listAction()
     {
-		
-		// load products
+        
+        // load products
         $products = $this->get('knp_paginator')->paginate(
             $this->get('commerce.admin.document_manager')
-        		->getRepository('SplicedCommerceAdminBundle:Product')->getAdminListQuery($this->getFilters()),
+                ->getRepository('SplicedCommerceAdminBundle:Product')->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page', 1),
             $this->getRequest()->query->get('limit', 25)
         );
@@ -110,23 +110,23 @@ class ProductController extends BaseFilterableController
      */
     public function editBySkuAction($sku)
     {
-    	try{
-    		$product = $this->get('commerce.object_manager')->getRepository('SplicedCommerceAdminBundle:Product')
-    		  ->findOneBySku($sku);
-    		 
-    	} catch(NoResultException $e) {
-    		throw $this->createNotFoundException('Unable to find Product.');
-    	}
-    	
-    	$form = $this->createForm(new ProductType(), $product);
-    	
-    	return array(
-    		'product'     => $product,
-    		'form'   => $form->createView(),
-    		'delete_form' => $this->createDeleteForm($id)->createView(),
-    		'affiliates'  => $this->getDoctrine()->getRepository('SplicedCommerceAdminBundle:Affiliate')->getAll(),
-    		'orders' => $this->getDoctrine()->getRepository('SplicedCommerceAdminBundle:Order')->findByOrderedSku($product->getSku()),
-    	);
+        try{
+            $product = $this->get('commerce.object_manager')->getRepository('SplicedCommerceAdminBundle:Product')
+              ->findOneBySku($sku);
+             
+        } catch(NoResultException $e) {
+            throw $this->createNotFoundException('Unable to find Product.');
+        }
+        
+        $form = $this->createForm(new ProductType(), $product);
+        
+        return array(
+            'product'     => $product,
+            'form'   => $form->createView(),
+            'delete_form' => $this->createDeleteForm($id)->createView(),
+            'affiliates'  => $this->getDoctrine()->getRepository('SplicedCommerceAdminBundle:Affiliate')->getAll(),
+            'orders' => $this->getDoctrine()->getRepository('SplicedCommerceAdminBundle:Order')->findByOrderedSku($product->getSku()),
+        );
     }
     
     /**
@@ -144,8 +144,8 @@ class ProductController extends BaseFilterableController
           ->findOneById($id);
         
         if(!$product){
-			throw $this->createNotFoundException('Unable to find Product.');
-		}
+            throw $this->createNotFoundException('Unable to find Product.');
+        }
 
         $form = $this->get('commerce.admin.form_factory')->createProductForm($product);
         
@@ -172,12 +172,12 @@ class ProductController extends BaseFilterableController
           ->findOneById($id);
 
         if(!$product){
-			throw $this->createNotFoundException('Unable to find Product.');
-		}
+            throw $this->createNotFoundException('Unable to find Product.');
+        }
         
-		
-		$form = $this->get('commerce.admin.form_factory')->createProductForm($product);
-		
+        
+        $form = $this->get('commerce.admin.form_factory')->createProductForm($product);
+        
         $deleteForm = $this->createDeleteForm($id);
         
         if($form->bind($this->getRequest()) && $form->isValid()) {
@@ -196,7 +196,7 @@ class ProductController extends BaseFilterableController
         
         return array(
             'product'     => $product,
-            'form'   	  => $form->createView(),
+            'form'         => $form->createView(),
             'delete_form' => $deleteForm->createView(),
             'orders'      => array(),
         );
@@ -284,132 +284,132 @@ class ProductController extends BaseFilterableController
         $methodName = 'batch'.ucwords($action);
 
         if(method_exists($this,$methodName)) {
-        	return call_user_func($this, $methodName, $ids);
+            return call_user_func($this, $methodName, $ids);
         }
         
         throw new \InvalidArgumentException(sprintf('Method %s does not exist',$methodName));
     }
     
 
-	/**
-	* batchDelete
-	* 
-	* @param array $ids
-	*/
-	protected function batchDelete(array $ids)
-	{
-		$entities = $em->getRepository('SplicedCommerceAdminBundle:Product')->findById($id);
-		
-		$count = count($entities);
-		
-		foreach($entities as $entity) {
-			$em->remove($entity);
-		}
-		
-		try{
-			$em->flush();
-			$this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s records.', $count));
-		} catch( \Exception $e) {
-			$this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
-		}
-		
-		return $this->redirect($this->generateUrl('product'));
-	}
-	
-	/**
-	 * Check Sku
-	 *
-	 * @Route("/check-sku", name="commerce_admin_product_check_sku")
-	 * @Template()
-	 */
-	public function checkSkuAction()
-	{
-	    if(!$this->getRequest()->isXmlHttpRequest()) {
-	        throw $this->createNotFoundException('Invalid Request Type');
-	    } else if(!$this->getRequest()->request->has('sku')){
-	        throw new \InvalidArgumentException('SKU POST variable required to check sku');
-	    }
-	
-	    $product = $this->get('commerce.admin.document_manager')
-	      ->getRepository('SplicedCommerceAdminBundle:Product')
-	      ->findOneBySku($this->getRequest()->request->get('sku'));
-	        	
-	    if(!$product){
-	        return new JsonResponse(array(
-	            'success' => true,
-	            'message' => 'Sku Does Not Exist',
-	        ));
-	    }
+    /**
+    * batchDelete
+    * 
+    * @param array $ids
+    */
+    protected function batchDelete(array $ids)
+    {
+        $entities = $em->getRepository('SplicedCommerceAdminBundle:Product')->findById($id);
+        
+        $count = count($entities);
+        
+        foreach($entities as $entity) {
+            $em->remove($entity);
+        }
+        
+        try{
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success', sprintf('Successfully deleted %s records.', $count));
+        } catch( \Exception $e) {
+            $this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
+        }
+        
+        return $this->redirect($this->generateUrl('product'));
+    }
+    
+    /**
+     * Check Sku
+     *
+     * @Route("/check-sku", name="commerce_admin_product_check_sku")
+     * @Template()
+     */
+    public function checkSkuAction()
+    {
+        if(!$this->getRequest()->isXmlHttpRequest()) {
+            throw $this->createNotFoundException('Invalid Request Type');
+        } else if(!$this->getRequest()->request->has('sku')){
+            throw new \InvalidArgumentException('SKU POST variable required to check sku');
+        }
+    
+        $product = $this->get('commerce.admin.document_manager')
+          ->getRepository('SplicedCommerceAdminBundle:Product')
+          ->findOneBySku($this->getRequest()->request->get('sku'));
+                
+        if(!$product){
+            return new JsonResponse(array(
+                'success' => true,
+                'message' => 'Sku Does Not Exist',
+            ));
+        }
 
-	    return new JsonResponse(array(
-	        'success' => false,
-	        'message' => 'Sku Exists',
-	        'id' => $product->getId()
-	    ));
-	}
-	
-	/**
-	 * Searches for Products by ID, Sku, or Description and returns
-	 * a JSON array 
-	 *
-	 * @Route("/ajax-search", name="commerce_admin_product_ajax_search")
-	 * @Template()
-	 */
-	public function ajaxSearchAction()
-	{
-		$query = $this->getRequest()->query->get('q', $this->getRequest()->request->get('q'));
-	
-		
-		$productsQuery = $this->get('commerce.admin.document_manager')->getRepository('SplicedCommerceAdminBundle:Product')
-		  ->createQueryBuilder('product');
-		
-		$productsQuery->addOr($productsQuery->expr()->field('name')->equals(array('$regex' => $query)))
-		  ->addOr($productsQuery->expr()->field('sku')->equals(array('$regex' => $query)));
-		  
-	    $products = $productsQuery->hydrate(false)->getQuery()->execute()->toArray();
-	    
-	    foreach($products as &$product){
-	        $product['value'] = sprintf('%s:%s - %s', $product['_id'], $product['name'], $product['sku']);
+        return new JsonResponse(array(
+            'success' => false,
+            'message' => 'Sku Exists',
+            'id' => $product->getId()
+        ));
+    }
+    
+    /**
+     * Searches for Products by ID, Sku, or Description and returns
+     * a JSON array 
+     *
+     * @Route("/ajax-search", name="commerce_admin_product_ajax_search")
+     * @Template()
+     */
+    public function ajaxSearchAction()
+    {
+        $query = $this->getRequest()->query->get('q', $this->getRequest()->request->get('q'));
+    
+        
+        $productsQuery = $this->get('commerce.admin.document_manager')->getRepository('SplicedCommerceAdminBundle:Product')
+          ->createQueryBuilder('product');
+        
+        $productsQuery->addOr($productsQuery->expr()->field('name')->equals(array('$regex' => $query)))
+          ->addOr($productsQuery->expr()->field('sku')->equals(array('$regex' => $query)));
+          
+        $products = $productsQuery->hydrate(false)->getQuery()->execute()->toArray();
+        
+        foreach($products as &$product){
+            $product['value'] = sprintf('%s:%s - %s', $product['_id'], $product['name'], $product['sku']);
             if(isset($product['images'][0])){
                 $product['thumbnail'] = $this->get('commerce.image_manager')->resizeProductImage($product['images'][0], 100, 100);
             }
-	    } 
+        } 
 
-	    return new JsonResponse($products);
-	}
-	
-	/**
-	 * checkUrlSlugAction
-	 *
-	 * @Route("/check-url-slug", name="commerce_admin_product_check_slug")
-	 * @Template()
-	 */
-	public function checkUrlSlugAction()
-	{
-	    if(!$this->getRequest()->isXmlHttpRequest()) {
-	        throw $this->createNotFoundException('Invalid Request Type');
-	    } else if(!$this->getRequest()->request->has('slug')){
-	        throw new \InvalidArgumentException('Slug POST variable required to check route');
-	    }
-	
-	    $urlSlug = preg_replace('/^\//', '', $this->getRequest()->request->get('slug'));
-	
-	    $product = $this->get('commerce.admin.document_manager')
-	    ->getRepository('SplicedCommerceAdminBundle:Product')
-	    ->findOneByUrlSlug($urlSlug);
-	
-	    if(!$product){
-	        return new JsonResponse(array(
-	            'success' => true,
-	            'message' => 'Product URL Slug Does Not Exist',
-	        ));
-	    }
-	
-	    return new JsonResponse(array(
-	        'success' => false,
-	        'message' => 'Product URL Slug Exists',
-	        'id' => $product->getId(),
-	        'url_slug' => $product->getUrlSlug(),
-	    ));
-	}
+        return new JsonResponse($products);
+    }
+    
+    /**
+     * checkUrlSlugAction
+     *
+     * @Route("/check-url-slug", name="commerce_admin_product_check_slug")
+     * @Template()
+     */
+    public function checkUrlSlugAction()
+    {
+        if(!$this->getRequest()->isXmlHttpRequest()) {
+            throw $this->createNotFoundException('Invalid Request Type');
+        } else if(!$this->getRequest()->request->has('slug')){
+            throw new \InvalidArgumentException('Slug POST variable required to check route');
+        }
+    
+        $urlSlug = preg_replace('/^\//', '', $this->getRequest()->request->get('slug'));
+    
+        $product = $this->get('commerce.admin.document_manager')
+        ->getRepository('SplicedCommerceAdminBundle:Product')
+        ->findOneByUrlSlug($urlSlug);
+    
+        if(!$product){
+            return new JsonResponse(array(
+                'success' => true,
+                'message' => 'Product URL Slug Does Not Exist',
+            ));
+        }
+    
+        return new JsonResponse(array(
+            'success' => false,
+            'message' => 'Product URL Slug Exists',
+            'id' => $product->getId(),
+            'url_slug' => $product->getUrlSlug(),
+        ));
+    }
 }

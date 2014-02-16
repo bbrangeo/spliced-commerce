@@ -79,9 +79,9 @@ class ProductAttributeType extends AbstractType
         return $this->getConfigurationManager()->getDocumentManager();
     }
     
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         

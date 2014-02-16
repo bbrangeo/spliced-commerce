@@ -27,9 +27,9 @@ use Spliced\Component\Commerce\Event as Events;
 class ProductSpecificationOptionController extends BaseFilterableController
 {
 
-	const FILTER_TAG = 'commerce.product.specification_option';
-	const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Model\ListFilter';
-	
+    const FILTER_TAG = 'commerce.product.specification_option';
+    const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Model\ListFilter';
+    
     /**
      * @Route("/", name="commerce_admin_product_specification_option")
      * @Template()
@@ -40,8 +40,8 @@ class ProductSpecificationOptionController extends BaseFilterableController
         // load orders
         $specificationOptions = $this->get('knp_paginator')->paginate(
             $this->get('commerce.admin.document_manager')
-        	  ->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
-        	  ->getAdminListQuery($this->getFilters()),
+              ->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
+              ->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page', 1),
             $this->getRequest()->query->get('limit', 25)
         );
@@ -145,7 +145,7 @@ class ProductSpecificationOptionController extends BaseFilterableController
             
             $specificationOption = $form->getData();
     
-						
+                        
             $this->get('commerce.product_specification_option_manager')->update($specificationOption);
             
             $this->get('session')->getFlashBag()->add('success', 'Product Specification Option Successfully Updated.');
@@ -169,18 +169,18 @@ class ProductSpecificationOptionController extends BaseFilterableController
      */
     public function deleteAction($id)
     {
-    	$specificationOption = $this->get('commerce.admin.document_manager')
-    	->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
-    	->findOneById($id);
-    	 
-    	if(!$specificationOption) {
-    		throw $this->createNotFoundException('Unable to find Product Specification Option.');
-    	}
-    	 
-    	$this->get('commerce.product_specification_option_manager')->delete($specificationOption);
-    	 
-    	$this->get('session')->getFlashBag()->add('success', 'Product Specification Option Sucessfully Deleted');
-    	return $this->redirect($this->generateUrl('commerce_admin_product_specification_option'));
+        $specificationOption = $this->get('commerce.admin.document_manager')
+        ->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
+        ->findOneById($id);
+         
+        if(!$specificationOption) {
+            throw $this->createNotFoundException('Unable to find Product Specification Option.');
+        }
+         
+        $this->get('commerce.product_specification_option_manager')->delete($specificationOption);
+         
+        $this->get('session')->getFlashBag()->add('success', 'Product Specification Option Sucessfully Deleted');
+        return $this->redirect($this->generateUrl('commerce_admin_product_specification_option'));
     }
     
     /**
@@ -189,62 +189,62 @@ class ProductSpecificationOptionController extends BaseFilterableController
      */
     public function deleteValueAction($id, $valueId)
     {
-    	
-    	$specification = $this->get('commerce.admin.document_manager')
-    	->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
-    	->findOneById($id);
-    	
-    	if(!$specification){
-    		if($this->getRequest()->isXmlHttpRequest()){
-    			return new JsonResponse(array(
-    				'success' => false,
-    				'message' => 'Specification Option Not Found',
-    				'specification_option_id' => $id,
-    				'value_id' => $valueId,
-    			));
-    		}
-    		throw $this->createNotFoundException('Specification Option Not Found');
-    	}
-    	
-    	$specificationValue = null;
-    	foreach($specification->getValues() as $value){
-    		if ($value->getId() == $valueId) {
-    			$specificationValue = $value;
-    		}
-    	}
-    	
-    	if(!$specificationValue){
-    		if($this->getRequest()->isXmlHttpRequest()){
-    			return new JsonResponse(array(
-    				'success' => false,
-    				'message' => 'Specification Option Value Not Found',
-    				'specification_option_id' => $specification->getId(),
-    				'value_id' => $valueId,
-    			));
-    		}
-    		throw $this->createNotFoundException('Specification Option Value Not Found');
-    	}
-    	
-    	$specification->removeValue($specificationValue);
-    	
-    	$this->get('event_dispatcher')->dispatch(
-        	Events\Event::EVENT_PRODUCT_SPECIFICATION_OPTION_UPDATE,
+        
+        $specification = $this->get('commerce.admin.document_manager')
+        ->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
+        ->findOneById($id);
+        
+        if(!$specification){
+            if($this->getRequest()->isXmlHttpRequest()){
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Specification Option Not Found',
+                    'specification_option_id' => $id,
+                    'value_id' => $valueId,
+                ));
+            }
+            throw $this->createNotFoundException('Specification Option Not Found');
+        }
+        
+        $specificationValue = null;
+        foreach($specification->getValues() as $value){
+            if ($value->getId() == $valueId) {
+                $specificationValue = $value;
+            }
+        }
+        
+        if(!$specificationValue){
+            if($this->getRequest()->isXmlHttpRequest()){
+                return new JsonResponse(array(
+                    'success' => false,
+                    'message' => 'Specification Option Value Not Found',
+                    'specification_option_id' => $specification->getId(),
+                    'value_id' => $valueId,
+                ));
+            }
+            throw $this->createNotFoundException('Specification Option Value Not Found');
+        }
+        
+        $specification->removeValue($specificationValue);
+        
+        $this->get('event_dispatcher')->dispatch(
+            Events\Event::EVENT_PRODUCT_SPECIFICATION_OPTION_UPDATE,
             new Events\ProductSpecificationOptionUpdateEvent($specification)
         );
-    	
-    	if($this->getRequest()->isXmlHttpRequest()){
-    		return new JsonResponse(array(
-    			'success' => true,
-    			'specification_option_id' => $specification->getId(),
-    			'value_id' => $valueId,
-    		));
-    	}
-    	
-    	$this->get('session')->getFlashBag()->add('success', 'Specification Option Value Successfully Deleted');
-    	
-    	return $this->redirect($this->generateUrl('commerce_admin_product_specification_option_edit', array(
-    		'id' => $specification->getId(),
-    	)));
+        
+        if($this->getRequest()->isXmlHttpRequest()){
+            return new JsonResponse(array(
+                'success' => true,
+                'specification_option_id' => $specification->getId(),
+                'value_id' => $valueId,
+            ));
+        }
+        
+        $this->get('session')->getFlashBag()->add('success', 'Specification Option Value Successfully Deleted');
+        
+        return $this->redirect($this->generateUrl('commerce_admin_product_specification_option_edit', array(
+            'id' => $specification->getId(),
+        )));
     }
     
     /**
@@ -299,7 +299,7 @@ class ProductSpecificationOptionController extends BaseFilterableController
             $specificationOption = $this->get('commerce.admin.document_manager')
             ->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
             ->findOneByName($this->getRequest()->request->get('name'));
-            	
+                
         } catch(NoResultException $e) {
             return new JsonResponse(array(
                 'success' => true,

@@ -50,7 +50,7 @@ class ProductSoapService
      */
     protected function getEntityManager()
     {
-    	return $this->em;
+        return $this->em;
     }
 
     /**
@@ -60,7 +60,7 @@ class ProductSoapService
      */
     protected function getProductPriceHelper()
     {
-    	return $this->productPriceHelper;
+        return $this->productPriceHelper;
     }
     
     /**
@@ -73,22 +73,22 @@ class ProductSoapService
     public function getProduct($value, $isSku = false)
     {
         try{
-        	$order = $this->getEntityManager()
+            $order = $this->getEntityManager()
               ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT))
-        	  ->getWebServiceQuery();
-        	
-        	if(!$isSku){
-        	  $order->where('product.id = :id')
-        	  ->setParameter('id', $value);
-        	} else {
-        		$order->where(' product.sku = :sku')
-        		->setParameter('sku', $value);
-        	}
-        	$order = $order->getQuery()
-        	  ->getSingleResult(Query::HYDRATE_ARRAY);
-        	
+              ->getWebServiceQuery();
+            
+            if(!$isSku){
+              $order->where('product.id = :id')
+              ->setParameter('id', $value);
+            } else {
+                $order->where(' product.sku = :sku')
+                ->setParameter('sku', $value);
+            }
+            $order = $order->getQuery()
+              ->getSingleResult(Query::HYDRATE_ARRAY);
+            
         } catch(NoResultException $e) {
-        	return json_encode(array('success' => false, 'error' => 'Product Not Found'));
+            return json_encode(array('success' => false, 'error' => 'Product Not Found'));
         }
         
         return json_encode($order);
@@ -118,13 +118,13 @@ class ProductSoapService
         }
             
         if(isset($filters['sku'])){
-        	if(is_array($filters['sku'])){
-        		$orderQuery->andWhere('product.sku IN (:skus)')
-        		->setParameter('skus', $filters['sku']);
-        	} else {
-        		$orderQuery->andWhere('product.sku = :sku')
-        		->setParameter('sku', $filters['sku']);
-        	}
+            if(is_array($filters['sku'])){
+                $orderQuery->andWhere('product.sku IN (:skus)')
+                ->setParameter('skus', $filters['sku']);
+            } else {
+                $orderQuery->andWhere('product.sku = :sku')
+                ->setParameter('sku', $filters['sku']);
+            }
         }
         $orders = $orderQuery->getQuery()
             ->getResult(Query::HYDRATE_ARRAY);

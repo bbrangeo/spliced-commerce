@@ -23,37 +23,37 @@ use Spliced\Component\Commerce\Configuration\ConfigurationManager;
 class ProductImageType extends AbstractType
 {
 
-	/**
-	 * Constructor
-	 *
-	 * @param ConfigurationManager $configurationManager
-	 */
-	public function __construct(ConfigurationManager $configurationManager, ProductInterface $product)
-	{
-		$this->configurationManager = $configurationManager;
-		$this->product = $product;
-	}
-	
-	/**
-	 * getProduct
-	 *
-	 * @return ProductInterface
-	 */
-	protected function getProduct()
-	{
-		return $this->product;
-	}
-	
-	/**
-	 * getConfigurationManager
-	 *
-	 * @return ConfigurationManager
-	 */
-	protected function getConfigurationManager()
-	{
-		return $this->configurationManager;
-	}
-	
+    /**
+     * Constructor
+     *
+     * @param ConfigurationManager $configurationManager
+     */
+    public function __construct(ConfigurationManager $configurationManager, ProductInterface $product)
+    {
+        $this->configurationManager = $configurationManager;
+        $this->product = $product;
+    }
+    
+    /**
+     * getProduct
+     *
+     * @return ProductInterface
+     */
+    protected function getProduct()
+    {
+        return $this->product;
+    }
+    
+    /**
+     * getConfigurationManager
+     *
+     * @return ConfigurationManager
+     */
+    protected function getConfigurationManager()
+    {
+        return $this->configurationManager;
+    }
+    
     /**
      * {@inheritDoc}
      */
@@ -78,8 +78,8 @@ class ProductImageType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-    	$resolver->setDefaults(array(
-    		'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_IMAGE),
-    	));
+        $resolver->setDefaults(array(
+            'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_IMAGE),
+        ));
     }
 }

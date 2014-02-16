@@ -123,8 +123,8 @@ abstract class Category implements CategoryInterface
     
     /**
      * @MongoDB\ReferenceMany(
-     * 	targetDocument="Category",
-     * 	sort={"position": "asc", "name" : "asc"}
+     *     targetDocument="Category",
+     *     sort={"position": "asc", "name" : "asc"}
      * )
      * @MongoDB\Index
      */
@@ -226,7 +226,7 @@ abstract class Category implements CategoryInterface
      */
     public function hasChild(CategoryInterface $child)
     {
-    	return $this->children->has($child);
+        return $this->children->has($child);
     }
     
     /**
@@ -236,7 +236,7 @@ abstract class Category implements CategoryInterface
      */
     public function getChild(CategoryInterface $child)
     {
-    	return $this->children->get($child);
+        return $this->children->get($child);
     }
         
     /**
@@ -256,16 +256,16 @@ abstract class Category implements CategoryInterface
      */
     public function setChildren($children)
     {
-    	if(!$children instanceof Collection){
-    		if(is_array($children)){
-    			$children = new ArrayCollection($children);
-    		} else {
-    			throw new \InvalidArgumentException('Children must be an array or instanceof Doctrine\Common\Collections\Collection');
-    		}	
-    	}
-    	
-    	$this->children = $children;
-    	return $this;
+        if(!$children instanceof Collection){
+            if(is_array($children)){
+                $children = new ArrayCollection($children);
+            } else {
+                throw new \InvalidArgumentException('Children must be an array or instanceof Doctrine\Common\Collections\Collection');
+            }    
+        }
+        
+        $this->children = $children;
+        return $this;
     }
     
     /**

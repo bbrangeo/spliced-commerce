@@ -21,8 +21,8 @@ class GoogleSecurityController extends Controller
 
     /**
      * loginAction
-	 * 
-	 * Starts the google login process
+     * 
+     * Starts the google login process
      */
     public function loginAction()
     {
@@ -33,8 +33,8 @@ class GoogleSecurityController extends Controller
 
     /**
      * checkAction
-	 * 
-	 * 
+     * 
+     * 
      */
     public function checkAction()
     {

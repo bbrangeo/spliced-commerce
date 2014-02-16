@@ -46,7 +46,7 @@ class PageController extends Controller
 
         return array(
             'layout' => $page->getPageLayout() ? 
-        		$page->getPageLayout() : $this->get('commerce.configuration')->get('commerce.cms.default_layout'),
+                $page->getPageLayout() : $this->get('commerce.configuration')->get('commerce.cms.default_layout'),
             'page' => $page,
         );
     }

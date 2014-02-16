@@ -31,9 +31,9 @@ use Spliced\Component\Commerce\Event as Events;
 class ProductAttributeOptionController extends BaseFilterableController
 {
 
-	const FILTER_TAG = 'commerce.product.attribute_option';
-	const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Model\ListFilter';
-	
+    const FILTER_TAG = 'commerce.product.attribute_option';
+    const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Model\ListFilter';
+    
     /**
      * @Route("/", name="commerce_admin_product_attribute_option")
      * @Template()
@@ -44,8 +44,8 @@ class ProductAttributeOptionController extends BaseFilterableController
         // load orders
         $attributeOptions = $this->get('knp_paginator')->paginate(
             $this->get('commerce.admin.document_manager')
-        	  ->getRepository('SplicedCommerceAdminBundle:ProductAttributeOption')
-        	  ->getAdminListQuery($this->getFilters()),
+              ->getRepository('SplicedCommerceAdminBundle:ProductAttributeOption')
+              ->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page', 1),
             $this->getRequest()->query->get('limit', 25)
         );
@@ -121,8 +121,8 @@ class ProductAttributeOptionController extends BaseFilterableController
         $form = $this->get('commerce.admin.form_factory')
           ->createProductAttributeOptionForm($attributeOption);
 
-		$viewVars = array();
-		
+        $viewVars = array();
+        
         return array_merge($viewVars, array(
             'attributeOption'     => $attributeOption,
             'form'   => $form->createView(),
@@ -151,7 +151,7 @@ class ProductAttributeOptionController extends BaseFilterableController
         if($form->bind($this->getRequest()) && $form->isValid()){
             
             $attributeOption = $form->getData();
-    			
+                
             $this->get('commerce.product_attribute_option_manager')->update($attributeOption);
             
             $this->get('session')->getFlashBag()->add('success', 'Product Attribute Option Successfully Updated.');
@@ -175,18 +175,18 @@ class ProductAttributeOptionController extends BaseFilterableController
      */
     public function deleteAction($id)
     {
-    	$attributeOption = $this->get('commerce.admin.document_manager')
-    	->getRepository('SplicedCommerceAdminBundle:ProductAttributeOption')
-    	->findOneById($id);
-    	
-    	if(!$attributeOption) {
-    		throw $this->createNotFoundException('Unable to find Product Attribute Option.');
-    	}
-    	
-    	$this->get('commerce.product_attribute_option_manager')->delete($attributeOption);
-    	
-    	$this->get('session')->getFlashBag()->add('success', 'Product Attribute Option Sucessfully Deleted');
-    	return $this->redirect($this->generateUrl('commerce_admin_product_attribute_option'));
+        $attributeOption = $this->get('commerce.admin.document_manager')
+        ->getRepository('SplicedCommerceAdminBundle:ProductAttributeOption')
+        ->findOneById($id);
+        
+        if(!$attributeOption) {
+            throw $this->createNotFoundException('Unable to find Product Attribute Option.');
+        }
+        
+        $this->get('commerce.product_attribute_option_manager')->delete($attributeOption);
+        
+        $this->get('session')->getFlashBag()->add('success', 'Product Attribute Option Sucessfully Deleted');
+        return $this->redirect($this->generateUrl('commerce_admin_product_attribute_option'));
     }
         
     /**
@@ -283,7 +283,7 @@ class ProductAttributeOptionController extends BaseFilterableController
             $attributeOption = $this->get('commerce.admin.document_manager')
             ->getRepository('SplicedCommerceAdminBundle:ProductAttributeOption')
             ->findOneByName($this->getRequest()->request->get('name'));
-            	
+                
         } catch(NoResultException $e) {
             return new JsonResponse(array(
                 'success' => true,

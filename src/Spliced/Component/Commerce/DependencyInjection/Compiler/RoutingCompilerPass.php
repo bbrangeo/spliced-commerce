@@ -30,7 +30,7 @@ class RoutingCompilerPass implements CompilerPassInterface
             return;
         }
 
-		if ($container->hasAlias('router')) {
+        if ($container->hasAlias('router')) {
             // router is an alias.
             $container->setAlias('commerce.router.parent', new Alias((string) $container->getAlias('router'), false));
         } else {

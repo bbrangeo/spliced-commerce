@@ -21,16 +21,16 @@ use Spliced\Component\Commerce\Configuration\ConfigurableInterface;
  */
 class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterface
 {/*
-    const AUTH_ENDPOINT_URL 	= 'https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize';
-    const LOGOUT_ENDPOINT_URL 	= 'https://www.paypal.com/webapps/auth/logout';
-    const TOKEN_ENDPOINT_URL 	= 'https://api.paypal.com/v1/identity/openidconnect/tokenservice';
-    const USER_ENDPOINT_URL 	= 'https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/userinfo';
-   	*/ 
-    const AUTH_ENDPOINT_URL 	= 'https://www.sandbox.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize';
-    const LOGOUT_ENDPOINT_URL 	= 'https://www.sandbox.paypal.com/webapps/auth/logout';
-    const TOKEN_ENDPOINT_URL 	= 'https://api.sandbox.paypal.com/v1/identity/openidconnect/tokenservice';
-    const USER_ENDPOINT_URL 	= 'https://www.sandbox.paypal.com/webapps/auth/protocol/openidconnect/v1/userinfo';
-	
+    const AUTH_ENDPOINT_URL     = 'https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize';
+    const LOGOUT_ENDPOINT_URL     = 'https://www.paypal.com/webapps/auth/logout';
+    const TOKEN_ENDPOINT_URL     = 'https://api.paypal.com/v1/identity/openidconnect/tokenservice';
+    const USER_ENDPOINT_URL     = 'https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/userinfo';
+       */ 
+    const AUTH_ENDPOINT_URL     = 'https://www.sandbox.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize';
+    const LOGOUT_ENDPOINT_URL     = 'https://www.sandbox.paypal.com/webapps/auth/logout';
+    const TOKEN_ENDPOINT_URL     = 'https://api.sandbox.paypal.com/v1/identity/openidconnect/tokenservice';
+    const USER_ENDPOINT_URL     = 'https://www.sandbox.paypal.com/webapps/auth/protocol/openidconnect/v1/userinfo';
+    
     /**
      * @parameter ConfigurationManager $configurationManager
      */
@@ -52,7 +52,7 @@ class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
      */
     protected function getKernel()
     {
-    	return $this->kernel;
+        return $this->kernel;
     }
     
     /**
@@ -62,7 +62,7 @@ class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
      */
     public function getConfigurationManager()
     {
-    	return $this->configurationManager;
+        return $this->configurationManager;
     }
     
     /**
@@ -71,11 +71,11 @@ class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
     public function getLoginUrl()
     {
         return $this->getAuthenticationUrl(
-        	self::AUTH_ENDPOINT_URL, 
-        	$this->getLoginCheckUrl(), 
-        	array(
-        		'scope' => 'profile email address'
-        	)
+            self::AUTH_ENDPOINT_URL, 
+            $this->getLoginCheckUrl(), 
+            array(
+                'scope' => 'profile email address'
+            )
         );
     }
 
@@ -87,12 +87,12 @@ class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
     public function exchangeAuthTokenForAccessToken($authCode)
     {
         $accessToken = $this->getAccessToken(
-        	self::TOKEN_ENDPOINT_URL, 
-        	self::GRANT_TYPE_AUTH_CODE, 
-        	array(
-            	'code' => $authCode,
-            	'redirect_uri' => $this->getLoginCheckUrl(),
-        	)
+            self::TOKEN_ENDPOINT_URL, 
+            self::GRANT_TYPE_AUTH_CODE, 
+            array(
+                'code' => $authCode,
+                'redirect_uri' => $this->getLoginCheckUrl(),
+            )
         );
 
         if (isset($accessToken['result']['error'])) {
@@ -112,7 +112,7 @@ class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
     protected function getLoginCheckUrl()
     {
 
-    	return sprintf('%s%spaypal_login_check',
+        return sprintf('%s%spaypal_login_check',
             $this->getConfigurationManager()->get('commerce.store.url_secure'),
             $this->getKernel()->getEnvironment() == 'dev' ? $_SERVER['SCRIPT_NAME'].'/' : '/'
         );
@@ -126,9 +126,9 @@ class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
     public function getUserProfile()
     {
         return $this->fetch(
-        	self::USER_ENDPOINT_URL, 
-        	array('schema' => 'openid'), 
-        	self::HTTP_METHOD_GET
+            self::USER_ENDPOINT_URL, 
+            array('schema' => 'openid'), 
+            self::HTTP_METHOD_GET
         );
     }
     

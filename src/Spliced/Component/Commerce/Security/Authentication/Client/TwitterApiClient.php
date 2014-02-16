@@ -51,7 +51,7 @@ class TwitterApiClient implements ConfigurableInterface
      */
     protected function getKernel()
     {
-    	return $this->kernel;
+        return $this->kernel;
     }
     
     /**
@@ -61,7 +61,7 @@ class TwitterApiClient implements ConfigurableInterface
      */
     public function getConfigurationManager()
     {
-    	return $this->configurationManager;
+        return $this->configurationManager;
     }
     
     /**
@@ -71,7 +71,7 @@ class TwitterApiClient implements ConfigurableInterface
      */
     protected function getSession()
     {
-    	return $this->session;
+        return $this->session;
     }
     
     public function setCallbackRoute(RouterInterface $router, $routeName)
@@ -153,14 +153,14 @@ class TwitterApiClient implements ConfigurableInterface
     private function getCallbackUrl()
     {
         return sprintf('%s%stwitter_login_check',
-    		$this->getConfigurationManager()->get('commerce.store.url_secure'),
-    		$this->getKernel()->getEnvironment() == 'dev' ? $_SERVER['SCRIPT_NAME'].'/' : '/'
-    	);
-		/*
+            $this->getConfigurationManager()->get('commerce.store.url_secure'),
+            $this->getKernel()->getEnvironment() == 'dev' ? $_SERVER['SCRIPT_NAME'].'/' : '/'
+        );
+        /*
         if (!empty($this->callbackRoute)) {
             return $this->router->generate($this->callbackRoute, array(), true);
         }
-		*/
+        */
         return null;
     }
     

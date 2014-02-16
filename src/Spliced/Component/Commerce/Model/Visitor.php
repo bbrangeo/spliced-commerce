@@ -145,9 +145,9 @@ abstract class Visitor implements VisitorInterface
      */
     public function setIp($ip)
     {
-    	$this->ip = $ip;
+        $this->ip = $ip;
     
-    	return $this;
+        return $this;
     }
     
     /**
@@ -157,7 +157,7 @@ abstract class Visitor implements VisitorInterface
      */
     public function getIp()
     {
-    	return $this->ip;
+        return $this->ip;
     }
     
     /**
@@ -168,9 +168,9 @@ abstract class Visitor implements VisitorInterface
      */
     public function setHostName($hostName)
     {
-    	$this->hostName = $hostName;
+        $this->hostName = $hostName;
     
-    	return $this;
+        return $this;
     }
     
     /**
@@ -180,7 +180,7 @@ abstract class Visitor implements VisitorInterface
      */
     public function getHostName()
     {
-    	return $this->hostName;
+        return $this->hostName;
     }
     
     /**
@@ -297,10 +297,10 @@ abstract class Visitor implements VisitorInterface
         if( ! $this->requests instanceof Collection) {
             $this->requests = new ArrayCollection(is_array($this->requests) ? $this->requests : array());
         }
-    	if(!$this->requests->contains($request)) {
-    	    $request->setVisitor($this);
+        if(!$this->requests->contains($request)) {
+            $request->setVisitor($this);
             $this->requests->add($request);
-    	}
+        }
         return $this;
     }
 
@@ -337,7 +337,7 @@ abstract class Visitor implements VisitorInterface
      */
     public function removeRequest(VisitorRequestInterface $request)
     {
-    	$this->requests->removeElement($request);
+        $this->requests->removeElement($request);
         return $this;
     }
 
@@ -349,9 +349,9 @@ abstract class Visitor implements VisitorInterface
      */
     public function setUserAgent($userAgent)
     {
-    	$this->userAgent = $userAgent;
+        $this->userAgent = $userAgent;
     
-    	return $this;
+        return $this;
     }
     
     /**
@@ -361,7 +361,7 @@ abstract class Visitor implements VisitorInterface
      */
     public function getUserAgent()
     {
-    	return $this->userAgent;
+        return $this->userAgent;
     }
     
     /**
@@ -371,7 +371,7 @@ abstract class Visitor implements VisitorInterface
      */
     public function getIsBot()
     {
-    	return $this->isBot;
+        return $this->isBot;
     }
 
     /**
@@ -381,8 +381,8 @@ abstract class Visitor implements VisitorInterface
      */
     public function setIsBot($isBot)
     {
-    	$this->isBot = $isBot;
-    	return $this;
+        $this->isBot = $isBot;
+        return $this;
     }
 
     /**
@@ -392,6 +392,6 @@ abstract class Visitor implements VisitorInterface
      */
     public function isBot()
     {
-    	return $this->isBot;
+        return $this->isBot;
     }
 }

@@ -21,33 +21,33 @@ use Spliced\Component\Commerce\Configuration\ConfigurationManager;
  */
 class CmsPageType extends AbstractType
 {
-	/**
-	 * Constructor
-	 *
-	 * @param ConfigurationManager $configurationManager
-	 */
-	public function __construct(ConfigurationManager $configurationManager)
-	{
-		$this->configurationManager = $configurationManager;
-	}
-	
-	/**
-	 * getConfigurationManager
-	 *
-	 * @return ConfigurationManager
-	 */
-	protected function getConfigurationManager()
-	{
-		return $this->configurationManager;
-	}
-	
+    /**
+     * Constructor
+     *
+     * @param ConfigurationManager $configurationManager
+     */
+    public function __construct(ConfigurationManager $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+    }
+    
+    /**
+     * getConfigurationManager
+     *
+     * @return ConfigurationManager
+     */
+    protected function getConfigurationManager()
+    {
+        return $this->configurationManager;
+    }
+    
     /**
      * {@inheritDoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        	->add('title')
+            ->add('title')
             ->add('pageTitle', 'textarea', array('required' => false))
             ->add('pageLayout', 'textarea', array('required' => false))
             ->add('urlSlug')
@@ -70,8 +70,8 @@ class CmsPageType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-    	$resolver->setDefaults(array(
-    		'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_CMS_PAGE),
-    	));
+        $resolver->setDefaults(array(
+            'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_CMS_PAGE),
+        ));
     }
 }

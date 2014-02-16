@@ -405,8 +405,8 @@ abstract class CustomerAddress implements CustomerAddressInterface
      */
     public function setPhoneNumber($phoneNumber)
     {
-    	$this->phoneNumber = trim($phoneNumber);
-    	return $this;
+        $this->phoneNumber = trim($phoneNumber);
+        return $this;
     }
     
     /**
@@ -416,7 +416,7 @@ abstract class CustomerAddress implements CustomerAddressInterface
     */
     public function getPhoneNumber()
     {
-    	return $this->phoneNumber;
+        return $this->phoneNumber;
     }
 
 

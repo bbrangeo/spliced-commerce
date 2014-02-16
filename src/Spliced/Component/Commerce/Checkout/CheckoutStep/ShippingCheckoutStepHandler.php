@@ -29,11 +29,11 @@ use Spliced\Component\Commerce\Model\OrderInterface;
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 class ShippingCheckoutStepHandler extends CheckoutStepHandler
-{	
-	/**
-	 * @var $position - Default position for this step
-	 */
-	protected $position = 3;
+{    
+    /**
+     * @var $position - Default position for this step
+     */
+    protected $position = 3;
 
     /**
      * Constructor
@@ -46,120 +46,120 @@ class ShippingCheckoutStepHandler extends CheckoutStepHandler
         $this->checkoutManager = $checkoutManager;
         $this->templatingEngine = $templatingEngine;
     }
-	
-	/**
-	 * getCheckoutManager
-	 *
-	 * @return CheckoutManager
-	 */
-	public function getCheckoutManager()
-	{
-	    return $this->checkoutManager;
-	}
-	
-	/**
-	 * getTemplatingEngine
-	 *
-	 * @return SecurityContext
-	 */
-	public function getTemplatingEngine()
-	{
-	    return $this->templatingEngine;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getName()
-	{
-		return 'shipping';
-	}
+    
+    /**
+     * getCheckoutManager
+     *
+     * @return CheckoutManager
+     */
+    public function getCheckoutManager()
+    {
+        return $this->checkoutManager;
+    }
+    
+    /**
+     * getTemplatingEngine
+     *
+     * @return SecurityContext
+     */
+    public function getTemplatingEngine()
+    {
+        return $this->templatingEngine;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return 'shipping';
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getProgressBarLabel()
-	{
-		return 'Shipping';
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function buildFormOptions(OrderInterface $order, array $formOptions = array())
-	{
-	    return array('validation_groups' => array(
-	        $this->getName(),
-	    ));
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public function buildForm(OrderInterface $order, FormBuilderInterface $builder)
-	{
-	    $builder->add('shipment', new CheckoutShipmentFormType($order, $this->getCheckoutManager()));
-	    
-	}
-	
+    /**
+     * {@inheritDoc}
+     */
+    public function getProgressBarLabel()
+    {
+        return 'Shipping';
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function buildFormOptions(OrderInterface $order, array $formOptions = array())
+    {
+        return array('validation_groups' => array(
+            $this->getName(),
+        ));
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function buildForm(OrderInterface $order, FormBuilderInterface $builder)
+    {
+        $builder->add('shipment', new CheckoutShipmentFormType($order, $this->getCheckoutManager()));
+        
+    }
+    
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function process(FormInterface $form, Request $request)
-	{
-	    if($request->getMethod() == 'POST') {
-	        if($form->bind($request) && $form->isValid()) {
-	            $order = $form->getData();
-				$shipment = $order->getShipment();
-				
-				if($shipment->getUserSelection()){
-					
-					$shippingMethod = $this->getCheckoutManager()
-					  ->getShippingManager()->getMethodByFullName($shipment->getUserSelection());
-					
-					$shippingProvider = $shippingMethod->getProvider();
-					
-					$shipment->setShipmentProvider($shippingProvider->getName())
-					  ->setShipmentMethod($shippingMethod->getName());
-					
-				} else if($shipment->getShipmentProvider() && $shipment->getShipmentMethod()){
-					$shippingProvider = $this->getCheckoutManager()
-					  ->getShippingProvider($shipment->getShipmentProvider());
-                	$shippingMethod = $shippingProvider->getMethod($shipment->getShipmentMethod());
-					
-					$shipment->setShipmentProvider($shippingProvider->getName())
-					  ->setShipmentMethod($shippingMethod->getName());
-				} else {
-					die('error! no method selected! handle!!');
-				}						                
+    /**
+     * {@inheritDoc}
+     */
+    public function process(FormInterface $form, Request $request)
+    {
+        if($request->getMethod() == 'POST') {
+            if($form->bind($request) && $form->isValid()) {
+                $order = $form->getData();
+                $shipment = $order->getShipment();
+                
+                if($shipment->getUserSelection()){
+                    
+                    $shippingMethod = $this->getCheckoutManager()
+                      ->getShippingManager()->getMethodByFullName($shipment->getUserSelection());
+                    
+                    $shippingProvider = $shippingMethod->getProvider();
+                    
+                    $shipment->setShipmentProvider($shippingProvider->getName())
+                      ->setShipmentMethod($shippingMethod->getName());
+                    
+                } else if($shipment->getShipmentProvider() && $shipment->getShipmentMethod()){
+                    $shippingProvider = $this->getCheckoutManager()
+                      ->getShippingProvider($shipment->getShipmentProvider());
+                    $shippingMethod = $shippingProvider->getMethod($shipment->getShipmentMethod());
+                    
+                    $shipment->setShipmentProvider($shippingProvider->getName())
+                      ->setShipmentMethod($shippingMethod->getName());
+                } else {
+                    die('error! no method selected! handle!!');
+                }                                        
 
                 $shipment->setShipmentCost($shippingMethod->getPrice());
                 $shipment->setShipmentPaid($shippingMethod->getPrice());
                 
-	            return new CheckoutMoveStepEvent(
-	                $order,
-	                $this->getCheckoutManager()->getCurrentStep()
-	            );
-	        }
-	    }
-	     
-	    if($request->isXmlHttpRequest()) {
-	        return new JsonResponse(array(
-	            'success' => true,
-	            'replace_many' => array(
-	            '#checkout-content' => $this->getTemplatingEngine()->render('SplicedCommerceBundle:Checkout:index_content.html.twig',array(
-	                'form' => $form->createView(),
-	                'step' => $this->getCheckoutManager()->getCurrentStep(),
-	                'step_template' => 'shipping',
-	            ))
-	        )));
-	    }
-	     
-	    return $this->getTemplatingEngine()->renderResponse('SplicedCommerceBundle:Checkout:index.html.twig', array(
-	        'form' => $form->createView(),
-	        'step' => $this->getCheckoutManager()->getCurrentStep(),
-	        'step_template' => 'shipping',
-	    ));
-	}
+                return new CheckoutMoveStepEvent(
+                    $order,
+                    $this->getCheckoutManager()->getCurrentStep()
+                );
+            }
+        }
+         
+        if($request->isXmlHttpRequest()) {
+            return new JsonResponse(array(
+                'success' => true,
+                'replace_many' => array(
+                '#checkout-content' => $this->getTemplatingEngine()->render('SplicedCommerceBundle:Checkout:index_content.html.twig',array(
+                    'form' => $form->createView(),
+                    'step' => $this->getCheckoutManager()->getCurrentStep(),
+                    'step_template' => 'shipping',
+                ))
+            )));
+        }
+         
+        return $this->getTemplatingEngine()->renderResponse('SplicedCommerceBundle:Checkout:index.html.twig', array(
+            'form' => $form->createView(),
+            'step' => $this->getCheckoutManager()->getCurrentStep(),
+            'step_template' => 'shipping',
+        ));
+    }
 }

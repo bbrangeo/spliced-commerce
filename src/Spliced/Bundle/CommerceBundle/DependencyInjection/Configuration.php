@@ -20,12 +20,12 @@ use Spliced\Component\Commerce\DependencyInjection\BaseConfiguration;
  */
 class Configuration extends BaseConfiguration implements ConfigurationInterface
 {
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getConfigTreeBuilder()
-	{	
-		return $this->buildConfigurationTree(false);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function getConfigTreeBuilder()
+    {    
+        return $this->buildConfigurationTree(false);
+    }
 
 }

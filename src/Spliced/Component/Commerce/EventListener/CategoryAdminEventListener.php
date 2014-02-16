@@ -44,7 +44,7 @@ class CategoryAdminEventListener
      */
     protected function getConfigurationManager()
     {
-    	return $this->configurationManager;
+        return $this->configurationManager;
     }
     
     /**
@@ -54,7 +54,7 @@ class CategoryAdminEventListener
      */
     protected function getDocumentManager()
     {
-    	return $this->configurationManager->getDocumentManager();
+        return $this->configurationManager->getDocumentManager();
     } 
     
     /**
@@ -64,16 +64,16 @@ class CategoryAdminEventListener
      */
     public function onCategorySave(CategorySaveEvent $event)
     {
-    	$category = $event->getCategory();
+        $category = $event->getCategory();
 
-    	$this->getDocumentManager()->persist($category);
-    	$this->getDocumentManager()->flush();
-    	
-    	/*if($category->getParent()) {
-    	    $this->updateCategoryTree($category->getParent(), true, true, false);
-    	}*/
-    	
-    	$this->getDocumentManager()->flush();
+        $this->getDocumentManager()->persist($category);
+        $this->getDocumentManager()->flush();
+        
+        /*if($category->getParent()) {
+            $this->updateCategoryTree($category->getParent(), true, true, false);
+        }*/
+        
+        $this->getDocumentManager()->flush();
     }
 
     /**
@@ -83,14 +83,14 @@ class CategoryAdminEventListener
      */
     public function onCategoryUpdate(CategoryUpdateEvent $event)
     {
-    	$category = $event->getCategory();
+        $category = $event->getCategory();
 
-		#$this->updateCategoryTree($category, false, true, false);    	
-    	
-    	$this->getDocumentManager()->persist($category);
+        #$this->updateCategoryTree($category, false, true, false);        
+        
+        $this->getDocumentManager()->persist($category);
 
-    	$this->getDocumentManager()->flush();
-    	
+        $this->getDocumentManager()->flush();
+        
     }
     
     /**
@@ -102,8 +102,8 @@ class CategoryAdminEventListener
      */
     private function createRoute(CategoryInterface $category)
     {
-    	return $this->getConfigurationManager()->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE)
-    	  ->setCategory($category);
+        return $this->getConfigurationManager()->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE)
+          ->setCategory($category);
     }
     
     /**
@@ -118,28 +118,28 @@ class CategoryAdminEventListener
      */
     private function updateCategoryTree(CategoryInterface $category, $persist = false, $persistParent = true, $isRecursiveCall = false)
     {
-    	// update and children
-    	$children = $this->getDocumentManager()
-    	->getRepository($this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_CATEGORY))
-    	->createQueryBuilder()
-    	->field('parent')->exists(true)
-    	->field('parent.id')->equals($category->getId())
-    	->getQuery()
-    	->execute();
-    	
-    	if(count($children)) {
-    		$category->setChildren($children->toArray());
-    	}
-    	
-    	if($category->getParent()) {
-    		$this->updateCategoryTree($category->getParent(), false, $persistParent, true);
-    	}
-    	
-    	if(true === $persist && false === $isRecursiveCall){
-    		$this->getDocumentManager()->persist($category);
-    	} else if(true === $persistParent && $isRecursiveCall === true){
-    		$this->getDocumentManager()->persist($category);
-    	}
-    	
+        // update and children
+        $children = $this->getDocumentManager()
+        ->getRepository($this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_CATEGORY))
+        ->createQueryBuilder()
+        ->field('parent')->exists(true)
+        ->field('parent.id')->equals($category->getId())
+        ->getQuery()
+        ->execute();
+        
+        if(count($children)) {
+            $category->setChildren($children->toArray());
+        }
+        
+        if($category->getParent()) {
+            $this->updateCategoryTree($category->getParent(), false, $persistParent, true);
+        }
+        
+        if(true === $persist && false === $isRecursiveCall){
+            $this->getDocumentManager()->persist($category);
+        } else if(true === $persistParent && $isRecursiveCall === true){
+            $this->getDocumentManager()->persist($category);
+        }
+        
     }
 }

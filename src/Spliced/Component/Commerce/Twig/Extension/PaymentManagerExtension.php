@@ -29,11 +29,11 @@ use Spliced\Component\Commerce\Payment\PaymentManager;
      * 
      * @return PaymentManager
      */
-	protected function getPaymentManager()
-	{
-		return $this->paymentManager;
-	}
-	
+    protected function getPaymentManager()
+    {
+        return $this->paymentManager;
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -47,10 +47,10 @@ use Spliced\Component\Commerce\Payment\PaymentManager;
    /**
     * 
     */
-	public function getPaymentProvider($name)
-	{
-		return $this->getPaymentManager()->getProvider($name);
-	}
+    public function getPaymentProvider($name)
+    {
+        return $this->getPaymentManager()->getProvider($name);
+    }
     /**
      * {@inheritdoc}
      */

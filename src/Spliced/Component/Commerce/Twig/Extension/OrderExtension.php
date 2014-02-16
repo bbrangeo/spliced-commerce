@@ -20,11 +20,11 @@ use Spliced\Component\Commerce\Helper\Order as OrderHelper;
  class OrderExtension extends \Twig_Extension
 {
 
-	/**
-	 * Constructor
-	 * 
-	 * @param OrderHelper $orderHelper
-	 */
+    /**
+     * Constructor
+     * 
+     * @param OrderHelper $orderHelper
+     */
     public function __construct(OrderHelper $orderHelper)
     {
         $this->orderHelper = $orderHelper;
@@ -36,7 +36,7 @@ use Spliced\Component\Commerce\Helper\Order as OrderHelper;
     public function getFunctions()
     {
         return array(            
-			'commerce_order_total' => new \Twig_Function_Method($this, 'orderTotal'),
+            'commerce_order_total' => new \Twig_Function_Method($this, 'orderTotal'),
             'commerce_order_subtotal' => new \Twig_Function_Method($this, 'orderSubTotal'),
             'commerce_order_tax' => new \Twig_Function_Method($this, 'orderTax'),
             'commerce_order_shipping' => new \Twig_Function_Method($this, 'orderShipping'),

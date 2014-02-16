@@ -26,108 +26,108 @@ use Doctrine\Common\Collections\ArrayCollection;
 abstract class Customer implements CustomerInterface
 {
 
-	/**
-	 * @ORM\Id
-	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	protected $id;
-	
-	/**
-	 * @ORM\Column(name="email", type="string", length=255, nullable=false)
-	 */
-	protected $email;
-	
-	/**
-	 *
-	 * @ORM\Column(name="enabled", type="boolean", nullable=true)
-	 */
-	protected $enabled;
-	
-	/**
-	 *
-	 * @ORM\Column(name="salt", type="string", length=255, nullable=false)
-	 */
-	protected $salt;
-	
-	/**
-	 * @ORM\Column(name="password", type="string", length=255, nullable=false)
-	 */
-	protected $password;
-	
-	/**
-	 * @var string $plainPassword
-	 */
-	protected $plainPassword;
-	
-	/**
-	 * @ORM\Column(name="last_login", type="datetime", nullable=true)
-	 */
-	protected $lastLogin;
-	
-	/**
-	 * @ORM\Column(name="confirmation_token", type="string", length=255, nullable=true)
-	 */
-	protected $confirmationToken;
-	
-	/**
-	 *@ORM\Column(name="password_requested_at", type="datetime", nullable=true)
-	 */
-	protected $passwordRequestedAt;
-	
-	/**
-	 * @ORM\Column(name="locked", type="boolean")
-	 */
-	protected $locked;
-	
-	/**
-	 * @ORM\Column(name="expired", type="boolean")
-	 */
-	protected $expired;
-	
-	/**
-	 * @ORM\Column(name="expires_at", type="datetime")
-	 */
-	protected $expiresAt;
-	
-	/**
-	 * @ORM\Column(name="roles", type="array")
-	 */
-	protected $roles;
-	
-	/**
-	 * @ORM\Column(name="credentials_expired", type="boolean")
-	 */
-	protected $credentialsExpired;
-	
-	/**
-	 * @ORM\Column(name="credentials_expire_at", type="datetime", nullable=true)
-	 */
-	protected $credentialsExpireAt;
-	
-	/**
-	 * @ORM\Column(name="force_password_reset", type="boolean")
-	 */
-	protected $forcePasswordReset;
-	
-	/**
-	 * @ORM\Column(name="force_collect_email", type="boolean")
-	 */
-	protected $forceCollectEmail;
-	
-	/**
-	 * @ORM\OneToOne(targetEntity="CustomerProfile", mappedBy="customer", cascade={"persist"} )
-	 */
-	protected $profile;
-	
-	/**
-	 * @ORM\OneToMany(targetEntity="CustomerAddress", mappedBy="customer", cascade={"persist"})
-	 * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
-	 */
-	protected $addresses;
-	
-	protected $registerForNewsletter;
-	protected $saveAddress;
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+    
+    /**
+     * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     */
+    protected $email;
+    
+    /**
+     *
+     * @ORM\Column(name="enabled", type="boolean", nullable=true)
+     */
+    protected $enabled;
+    
+    /**
+     *
+     * @ORM\Column(name="salt", type="string", length=255, nullable=false)
+     */
+    protected $salt;
+    
+    /**
+     * @ORM\Column(name="password", type="string", length=255, nullable=false)
+     */
+    protected $password;
+    
+    /**
+     * @var string $plainPassword
+     */
+    protected $plainPassword;
+    
+    /**
+     * @ORM\Column(name="last_login", type="datetime", nullable=true)
+     */
+    protected $lastLogin;
+    
+    /**
+     * @ORM\Column(name="confirmation_token", type="string", length=255, nullable=true)
+     */
+    protected $confirmationToken;
+    
+    /**
+     *@ORM\Column(name="password_requested_at", type="datetime", nullable=true)
+     */
+    protected $passwordRequestedAt;
+    
+    /**
+     * @ORM\Column(name="locked", type="boolean")
+     */
+    protected $locked;
+    
+    /**
+     * @ORM\Column(name="expired", type="boolean")
+     */
+    protected $expired;
+    
+    /**
+     * @ORM\Column(name="expires_at", type="datetime")
+     */
+    protected $expiresAt;
+    
+    /**
+     * @ORM\Column(name="roles", type="array")
+     */
+    protected $roles;
+    
+    /**
+     * @ORM\Column(name="credentials_expired", type="boolean")
+     */
+    protected $credentialsExpired;
+    
+    /**
+     * @ORM\Column(name="credentials_expire_at", type="datetime", nullable=true)
+     */
+    protected $credentialsExpireAt;
+    
+    /**
+     * @ORM\Column(name="force_password_reset", type="boolean")
+     */
+    protected $forcePasswordReset;
+    
+    /**
+     * @ORM\Column(name="force_collect_email", type="boolean")
+     */
+    protected $forceCollectEmail;
+    
+    /**
+     * @ORM\OneToOne(targetEntity="CustomerProfile", mappedBy="customer", cascade={"persist"} )
+     */
+    protected $profile;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="CustomerAddress", mappedBy="customer", cascade={"persist"})
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     */
+    protected $addresses;
+    
+    protected $registerForNewsletter;
+    protected $saveAddress;
 
     public function __construct()
     {
@@ -277,8 +277,8 @@ abstract class Customer implements CustomerInterface
      */
     public function setSalt($salt)
     {
-    	$this->salt = $salt;
-    	return $this;
+        $this->salt = $salt;
+        return $this;
     }
     /**
      * getEmail
@@ -765,10 +765,10 @@ abstract class Customer implements CustomerInterface
      */
     public function setProfile(CustomerProfileInterface $customerProfile = null)
     {
-    	if($customerProfile){
-    		$customerProfile->setCustomer($this);
-    	}
-    	
+        if($customerProfile){
+            $customerProfile->setCustomer($this);
+        }
+        
         $this->customerProfile = $customerProfile;
         return $this;
     }
@@ -815,8 +815,8 @@ abstract class Customer implements CustomerInterface
      */
     public function addCreditCard(CustomerCreditCardInterface $creditCard)
     {
-    	$this->creditCards->add($creditCard->setCustomer($this));
-    	return $this;
+        $this->creditCards->add($creditCard->setCustomer($this));
+        return $this;
     }
     
     /**
@@ -826,7 +826,7 @@ abstract class Customer implements CustomerInterface
      */
     public function getCreditCards()
     {
-    	return $this->creditCards;
+        return $this->creditCards;
     }
     
     /**
@@ -838,9 +838,9 @@ abstract class Customer implements CustomerInterface
      */
     public function setCreditCards(Collection $creditCards)
     {
-    	$this->creditCards = $creditCards;
+        $this->creditCards = $creditCards;
     
-    	return $this;
+        return $this;
     }
 
     /**

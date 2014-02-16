@@ -26,7 +26,7 @@ class CustomerListener extends UsernamePasswordFormAuthenticationListener
      */
     protected function attemptAuthentication(Request $request)
     {
-		//todo unused?
+        //todo unused?
         $accessToken = $request->get('access_token');
 
         return $this->authenticationManager->authenticate(new CustomerUserToken($this->providerKey, '', array(), $accessToken));

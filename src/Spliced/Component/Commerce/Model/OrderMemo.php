@@ -87,8 +87,8 @@ abstract class OrderMemo implements OrderMemoInterface
      */
     public function __construct()
     {
-    	$this->createdAt = new \DateTime('now');
-    	$this->updatedAt = new \DateTime('now');
+        $this->createdAt = new \DateTime('now');
+        $this->updatedAt = new \DateTime('now');
     }
     
     /**
@@ -98,7 +98,7 @@ abstract class OrderMemo implements OrderMemoInterface
      */
     public function getId()
     {
-    	return $this->id;
+        return $this->id;
     }
     
     
@@ -179,7 +179,7 @@ abstract class OrderMemo implements OrderMemoInterface
      */
     public function getCreatedAt()
     {
-    	return $this->createdAt;
+        return $this->createdAt;
     }
     
     /**
@@ -187,8 +187,8 @@ abstract class OrderMemo implements OrderMemoInterface
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
-    	$this->createdAt = $createdAt;
-    	return $this;
+        $this->createdAt = $createdAt;
+        return $this;
     }
     
     /**
@@ -214,9 +214,9 @@ abstract class OrderMemo implements OrderMemoInterface
      */
     public function setMemoData($memoData)
     {
-    	$this->memoData = $memoData;
+        $this->memoData = $memoData;
     
-    	return $this;
+        return $this;
     }
     
     /**
@@ -224,13 +224,13 @@ abstract class OrderMemo implements OrderMemoInterface
      */
     public function getMemoData()
     {
-    	if(!is_array($this->memoData)){
-    		$unserialized = unserialize($this->memoData);
-    		if($unserialized !== false){
-    			$this->memoData = $unserialized;
-    		}
-    	}
-    	return $this->memoData;
+        if(!is_array($this->memoData)){
+            $unserialized = unserialize($this->memoData);
+            if($unserialized !== false){
+                $this->memoData = $unserialized;
+            }
+        }
+        return $this->memoData;
     }
     
 }

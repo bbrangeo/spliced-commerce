@@ -22,19 +22,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class WeightType extends AbstractType
 {
-	
+    
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         
-    	$builder
-    	  ->add($options['weight_name'], 'number', $options['weight_options'])
-    	  ->add($options['unit_name'], 'choice', $options['unit_options']);
+        $builder
+          ->add($options['weight_name'], 'number', $options['weight_options'])
+          ->add($options['unit_name'], 'choice', $options['unit_options']);
     
     }
-		
+        
     /**
      * {@inheritdoc}
      */
@@ -44,9 +44,9 @@ class WeightType extends AbstractType
             'options'        => array('required' => false),
             'weight_options'  => array('precision' => 4, 'required' => false),
             'unit_options' => array(
-            	'required' => false,
-            	'empty_value' => '-Units-', 
-            	'choices' => $this->getWeightMeasurementTypes()
+                'required' => false,
+                'empty_value' => '-Units-', 
+                'choices' => $this->getWeightMeasurementTypes()
             ),
             'weight_name'     => 'weight',
             'unit_name'    => 'unit',
@@ -54,24 +54,24 @@ class WeightType extends AbstractType
         ));
     }
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     public function getName()
     {
         return 'weight';
     }
-	
-	/**
-	 * getWeightMeasurementTypes
-	 * 
-	 * @return array
-	 */
-	 protected function getWeightMeasurementTypes()
-	 {
-	 	return array(
-	 		'lb' => 'Pounds',
-	 		'oz' => 'Ounces',
-		);
-	 }
+    
+    /**
+     * getWeightMeasurementTypes
+     * 
+     * @return array
+     */
+     protected function getWeightMeasurementTypes()
+     {
+         return array(
+             'lb' => 'Pounds',
+             'oz' => 'Ounces',
+        );
+     }
 }

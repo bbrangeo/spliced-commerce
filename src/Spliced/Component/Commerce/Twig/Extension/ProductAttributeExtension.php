@@ -10,13 +10,13 @@ use Spliced\Component\Commerce\Product\ProductAttributeOptionUserDataFormBuilder
  */
 class ProductAttributeExtension extends \Twig_Extension
 {
-	/**
-	 * Constructor
-	 * 
-	 */
+    /**
+     * Constructor
+     * 
+     */
     public function __construct(ProductAttributeOptionUserDataFormBuilder $userDataFormBuilder)
     {
-	   $this->userDataFormBuilder = $userDataFormBuilder;
+       $this->userDataFormBuilder = $userDataFormBuilder;
     }
 
     /**
@@ -30,8 +30,8 @@ class ProductAttributeExtension extends \Twig_Extension
     }
 
     /**
-	 * getProductAttributeUserDataForm
-	 */
+     * getProductAttributeUserDataForm
+     */
     public function getProductAttributeUserDataForm(ProductInterface $product)
     {
         return $this->userDataFormBuilder->buildForm($product)->createView();

@@ -82,9 +82,9 @@ class ProductSpecificationType extends AbstractType
         return $this->getConfigurationManager()->getDocumentManager();
     }
     
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         
@@ -121,22 +121,22 @@ class ProductSpecificationType extends AbstractType
             
             if($specificationOption->getOptionType() == 1){
 
-            	$builder->add($builder->create('values', 'choice', array(
-            		'required' => false,
-            		'choices' => $this->getChoices(),
-            		'multiple' => false,
-            		'expanded' => false,
-            		'empty_value' => '- Select a Value-',
-            	))
-            	  ->addModelTransformer(new DataTransformer\ArrayToStringModelTransformer()) 
-            	); 
+                $builder->add($builder->create('values', 'choice', array(
+                    'required' => false,
+                    'choices' => $this->getChoices(),
+                    'multiple' => false,
+                    'expanded' => false,
+                    'empty_value' => '- Select a Value-',
+                ))
+                  ->addModelTransformer(new DataTransformer\ArrayToStringModelTransformer()) 
+                ); 
             } else {
-	            $builder->add('values', 'choice', array(
-	                'required' => false,
-	                'choices' => $this->getChoices(),
-	                'multiple' => true,
-	                'expanded' => false,
-	            ));
+                $builder->add('values', 'choice', array(
+                    'required' => false,
+                    'choices' => $this->getChoices(),
+                    'multiple' => true,
+                    'expanded' => false,
+                ));
             }
         }
     }

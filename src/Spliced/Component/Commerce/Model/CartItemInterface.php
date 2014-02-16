@@ -16,6 +16,6 @@ namespace Spliced\Component\Commerce\Model;
  */
 interface CartItemInterface
 {
-	
+    
 }
-	
+    
