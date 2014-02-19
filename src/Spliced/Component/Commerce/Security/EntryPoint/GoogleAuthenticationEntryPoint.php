@@ -24,7 +24,7 @@ use Spliced\Component\Commerce\Security\Authentication\Client\GoogleOAuth2Client
  */
 class GoogleAuthenticationEntryPoint implements AuthenticationEntryPointInterface
 {
-    protected $tootle;
+    protected $google;
     protected $options;
     protected $permissions;
 

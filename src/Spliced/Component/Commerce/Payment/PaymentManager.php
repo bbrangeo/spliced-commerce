@@ -22,10 +22,24 @@ use Symfony\Component\Routing\RouterInterface;
 /**
  * PaymentManager
  *
+ * This class handles the registration and fetching of all payment methods.
+ * During bundle compilation, services which implement the class:
+ * 
+ * Spliced\Component\Commerce\Payment\Model\PaymentProviderInterface
+ * 
+ * and are tagged with commerce.payment_provider will be automatically 
+ * registered.
+ * 
+ * In addition to the standard PaymentProviderInterface, you can also use:
+ * 
+ * Spliced\Component\Commerce\Payment\Model\CreditCardPaymentProviderInterface
+ * Spliced\Component\Commerce\Payment\Model\RemotelyProcessedPaymentProviderInterface
+ * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 class PaymentManager
 {
+    /** @var Collection $providers  */
     protected $providers;
 
     /**

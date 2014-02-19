@@ -13,7 +13,15 @@ use Spliced\Component\Commerce\Configuration\ConfigurableInterface;
 
 /**
  * ConfigurableShippingMethod
- *
+ * 
+ * Use this abstract class to construct your own shipping method
+ * which relies on options that can be changed by the user in the
+ * administration area.
+ * 
+ * For more information about Configurable services, see:
+ * 
+ * Spliced\Component\Commerce\Configuration\ConfigurableInterface
+ * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 abstract class ConfigurableShippingMethod extends ShippingMethod implements ConfigurableInterface

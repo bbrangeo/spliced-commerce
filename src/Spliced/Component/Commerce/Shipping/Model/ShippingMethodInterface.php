@@ -13,11 +13,23 @@ use Spliced\Component\Commerce\Configuration\ConfigurableInterface;
 
 /**
  * ShippingMethodInterface
+ * 
+ * All shipping methods must implement this interface and must 
+ * also be registered in the shipping manager to be known by the 
+ * application.
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 interface ShippingMethodInterface
 {
+    
+    /**
+     * getProvider
+     *
+     * @return ShippingProviderInterface
+     */
+    public function getProvider();
+    
     /**
      * getName
      *

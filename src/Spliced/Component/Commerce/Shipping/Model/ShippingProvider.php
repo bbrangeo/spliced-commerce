@@ -13,23 +13,23 @@ use Spliced\Component\Commerce\Configuration\ConfigurationManager;
 use Spliced\Component\Commerce\Cart\CartManager;
 use Spliced\Component\Commerce\Shipping\ShippingMethodCollection;
 use Spliced\Component\Commerce\Shipping\ShippingManager;
+
 /**
  * ShippingProvider
  *
+ * Use this class to get started creating your own shipping provider.
+ * You must still implement certain methods that are required by
+ * ShippingProviderInterface.
+ * 
+ * Tag your completed provider in the service container with 
+ * commerce.shipping_provider to register it.
+ * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 abstract class ShippingProvider implements ShippingProviderInterface
 {
-    /** Provider Constants */
-    const PROVIDER_UPS         = 'ups';
-    const PROVIDER_USPS     = 'usps';
-    const PROVIDER_FEDEX     = 'fedex';
-    const PROVIDER_DHL         = 'dhl';
-    const PROVIDER_OTHER     = 'other';
     
-    /**
-     * ShippingMethodCollection
-     */
+    /** @var Collection $methods  */
     protected $methods;
 
     /**
@@ -108,7 +108,9 @@ abstract class ShippingProvider implements ShippingProviderInterface
     }
     
     /**
+     * getAvailableMethodNames
      * 
+     * @return array
      */
      public function getAvailableMethodNames()
      {

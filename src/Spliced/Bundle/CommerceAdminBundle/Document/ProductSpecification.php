@@ -24,6 +24,7 @@ class ProductSpecification extends BaseProductSpecification
     
     /**
      * @MongoDB\ReferenceOne(targetDocument="ProductSpecificationOption")
+     * @MongoDB\Index
      */
     protected $option;
     
@@ -39,6 +40,7 @@ class ProductSpecification extends BaseProductSpecification
     
     /**
      * @MongoDB\Hash
+     * @MongoDB\Index
      */
     protected $values = array();
 }

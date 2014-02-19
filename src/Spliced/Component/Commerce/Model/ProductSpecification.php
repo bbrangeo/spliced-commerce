@@ -44,6 +44,7 @@ abstract class ProductSpecification
     
     /**
      * @MongoDB\Hash
+     * @MongoDB\Index
      */
     protected $values = array();
 

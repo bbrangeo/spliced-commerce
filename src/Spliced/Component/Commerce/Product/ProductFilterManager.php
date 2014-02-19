@@ -12,8 +12,6 @@ namespace Spliced\Component\Commerce\Product;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Spliced\Component\Commerce\Model\CategoryInterface;
 use Spliced\Component\Commerce\Configuration\ConfigurationManager;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * ProductFilterManager
@@ -24,7 +22,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class ProductFilterManager
 {
-    /* Available List Mods by Default */
+    /* Available List Modes by Default */
     const DISPLAY_MODE_GRID = 'grid';
     const DISPLAY_MODE_LIST = 'list';
 
@@ -55,9 +53,6 @@ class ProductFilterManager
     {
         $this->configurationManager = $configurationManager;
         $this->session = $session;
-        
-        $this->selectedSpecifications = new ArrayCollection();
-        $this->selectedManufacturers  = new ArrayCollection();
     }
 
     /**
@@ -241,22 +236,49 @@ class ProductFilterManager
          // apply specification filters
          if ($this->getCategory() && $this->getSelectedSpecifications($this->getCategory()->getId())) {
              
-             $selectedSpecifications = $this->getSelectedSpecifications($this->getCategory()->getId());
+            $selectedSpecifications = $this->getSelectedSpecifications($this->getCategory()->getId());
              
-             $query->field('specifications.option.$id')
-               ->equals(new \MongoId($selectedSpecificationId))
-               ->addAnd($exp->field('specifications.values')->in($selectedSpecificationValues));
-             /*
-             $exp = $query->expr();   
-
-             foreach ($selectedSpecifications as $selectedSpecificationId => $selectedSpecificationValues) {
-                  $exp->addOr(
-                      $exp->field('specifications.option.$id')->equals(new \MongoId($selectedSpecificationId))
-                      ->addAnd($exp->field('specifications.values')->in($selectedSpecificationValues))
-                  );
-             }
-             
-             $query->addAnd($exp);*/
+            $exp = $query->expr();
+         	 
+         	foreach ($selectedSpecifications as $selectedSpecificationId => $selectedSpecificationValues) {
+         	    $subExp = $query->expr();
+         	    
+         	    $subExp
+         	    //->field('specifications.option.$id')
+         	    //->equals(new \MongoId($selectedSpecificationId))
+         	      /*->where('function(){
+         	            if(this.specifications == undefined){
+         	                return false;  
+         	            }
+                        Object.keys(this.specifications).forEach(function(key) {
+                            specification = this.specifications[key];
+         	                if(specification.length){
+         	                      return true;
+         	                  }
+         	               
+                        });
+                        return true;
+         	      }')*/
+         	      ->field('specifications')->elemMatch(
+         	          $query->expr()->field('option.$id')->equals(new \MongoId($selectedSpecificationId))
+         	              ->field('values')->elemMatch($query->expr()->in($selectedSpecificationValues))
+         	              //->field('values')->equals(implode('',$selectedSpecificationValues))
+         	              /*->where('function(){
+         	                    
+         	                    if(this.values != undefined){
+         	                        this.values.forEach(function(v){ 
+                                        return true;
+         	                        });
+         	                    }
+         	                    return false; 
+         	               }')*/
+         	      )
+         	      //->field('specifications.values')->in($selectedSpecificationValues);
+                ; 
+         	    $exp->addOr($subExp);
+             } 
+              
+             $query->addAnd($exp);
          } 
          
          return $query;
@@ -380,7 +402,7 @@ class ProductFilterManager
      /**
       * getSelectedSpecifications
       * 
-      * @return Collection
+      * @return array
       */
      public function getSelectedSpecifications($categoryId)
      {

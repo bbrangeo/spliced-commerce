@@ -18,6 +18,32 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * ShippingManager
  *
+ * This class handles the registration and fetching of all shipping providers
+ * and shipping methods.
+ * 
+ * During bundle compilation, services which implement the class:
+ * 
+ * Spliced\Component\Commerce\Shipping\Model\ShippingProviderInterface
+ * 
+ * and are tagged with commerce.shipping_provider will be automatically 
+ * registered.
+ * 
+ * By default, the following providers are already registered: 
+ * 
+ *                   USPS, UPS, FedEx, DHL, and Other
+ * 
+ * Shipping methods relate to shipping providers. For example, you have a
+ * shipping provider USPS, you may wan't to add shipping methods such as
+ * First Class Mail, Priority Mail, etc that are specific for that provider.
+ * 
+ * To register a shipping method, you must register a service in the container 
+ * which implements:
+ * 
+ * Spliced\Component\Commerce\Shipping\Model\ShippingMethodInterface
+ * 
+ * It must also be tagged with commerce.shipping_method
+ * 
+ * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 class ShippingManager

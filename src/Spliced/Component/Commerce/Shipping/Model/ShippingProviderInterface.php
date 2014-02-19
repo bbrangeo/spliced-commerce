@@ -12,11 +12,22 @@ namespace Spliced\Component\Commerce\Shipping\Model;
 /**
  * ShippingProviderInterface
  *
+ * All shipping providers must implement this interface and must 
+ * also be registered in the shipping manager to be known by the 
+ * application.
+ * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 interface ShippingProviderInterface
 {
-
+    
+    /** General Provider Constants */
+    const PROVIDER_UPS      = 'ups';
+    const PROVIDER_USPS     = 'usps';
+    const PROVIDER_FEDEX    = 'fedex';
+    const PROVIDER_DHL      = 'dhl';
+    const PROVIDER_OTHER    = 'other';
+    
     /**
      * getName
      * 

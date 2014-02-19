@@ -39,7 +39,8 @@ class ProductSpecification extends BaseProductSpecification
     protected $optionType;
     
     /**
-     * @MongoDB\Hash
+     * @MongoDB\Collection
+     * @MongoDB\Index
      */
     protected $values = array();
 }
