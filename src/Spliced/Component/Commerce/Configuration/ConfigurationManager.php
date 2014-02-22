@@ -221,7 +221,7 @@ class ConfigurationManager
           ->findOneByKey($key);
 
         if (!$config) {
-            $config = $this->createDocumentClass(static::OBJECT_CLASS_TAG_CONFIG_DATA);
+            $config = $this->createDocument(static::OBJECT_CLASS_TAG_CONFIG_DATA);
             $config->setKey($key);
             $config->setType($fieldParams['type']); //type before value
             $config->setValue(is_array($fieldParams['value']) ? serialize($fieldParams['value']) : $fieldParams['value']);

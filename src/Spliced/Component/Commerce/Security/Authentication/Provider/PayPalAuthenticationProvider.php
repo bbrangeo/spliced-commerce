@@ -22,11 +22,13 @@ use Spliced\Component\Commerce\Security\Authentication\Client\PayPalOAuth2Client
 use Spliced\Component\Commerce\Event as Events;
 
 /**
- * PayPalUserProvider
+ * PayPalAuthenticationProvider
  *
+ * Handles authentication of a customer by PayPal API
+ * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class PayPalUserProvider implements AuthenticationProviderInterface
+class PayPalAuthenticationProvider implements AuthenticationProviderInterface
 {
 
     protected $paypal;

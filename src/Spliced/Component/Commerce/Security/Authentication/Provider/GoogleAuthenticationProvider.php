@@ -1,5 +1,12 @@
 <?php
-
+/*
+ * This file is part of the SplicedCommerceBundle package.
+*
+* (c) Spliced Media <http://www.splicedmedia.com/>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 namespace Spliced\Component\Commerce\Security\Authentication\Provider;
 
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
@@ -14,7 +21,14 @@ use Spliced\Component\Commerce\Security\Authentication\Token\GoogleUserToken;
 use Spliced\Component\Commerce\Security\Authentication\Client\GoogleOAuth2Client as OAuth2Client;
 use Spliced\Component\Commerce\Event as Events;
 
-class GoogleUserProvider implements AuthenticationProviderInterface
+/**
+ * GoogleAuthenticationProvider
+ *
+ * Handles authentication of a customer by Google API login
+ * 
+ * @author Gassan Idriss <ghassani@splicedmedia.com>
+ */
+class GoogleAuthenticationProvider implements AuthenticationProviderInterface
 {
 
     protected $google;

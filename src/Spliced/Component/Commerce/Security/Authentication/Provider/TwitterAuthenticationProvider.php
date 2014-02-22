@@ -1,5 +1,12 @@
 <?php
-
+/*
+ * This file is part of the SplicedCommerceBundle package.
+*
+* (c) Spliced Media <http://www.splicedmedia.com/>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 namespace Spliced\Component\Commerce\Security\Authentication\Provider;
 
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
@@ -14,7 +21,14 @@ use Spliced\Component\Commerce\Security\Authentication\Token\TwitterUserToken;
 use Spliced\Component\Commerce\Security\Authentication\Client\TwitterApiClient;
 use Spliced\Component\Commerce\Event as Events;
 
-class TwitterUserProvider implements AuthenticationProviderInterface
+/**
+ * TwitterAuthenticationProvider
+ *
+ * Handles authentication of a customer by Twitter API
+ * 
+ * @author Gassan Idriss <ghassani@splicedmedia.com>
+ */
+class TwitterAuthenticationProvider implements AuthenticationProviderInterface
 {
     protected $twitter;
     protected $providerKey;

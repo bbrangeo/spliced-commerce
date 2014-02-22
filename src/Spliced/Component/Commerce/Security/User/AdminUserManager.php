@@ -7,7 +7,6 @@
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
-
 namespace Spliced\Component\Commerce\Security\User;
 
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -21,11 +20,13 @@ use Spliced\Component\Commerce\Event as Events;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * SplicedCommerceExtension
+ * AdminUserManager
  *
+ * Handles the creation, updating, and deletion of administrators.
+ * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class UserManager implements UserProviderInterface
+class AdminUserManager implements UserProviderInterface
 {
     /**
     * Constructor.

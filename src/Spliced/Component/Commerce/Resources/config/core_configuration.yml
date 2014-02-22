@@ -1,0 +1,613 @@
+#
+# This file is part of the SplicedCommerceBundle package.
+#
+# (c) Spliced Media <http://www.splicedmedia.com/>
+#
+# For the full copyright and license information, please view the LICENSE
+# file that was distributed with this source code.
+#
+# core_configuration.yml
+#
+# This file holds the default configuration used by the system
+# that are not defined in any other configurable services.
+#
+# To inject your own configuration values, see:
+# 
+# Spliced\Component\Commerce\Configuration\ConfigurableInterface
+#
+# @author Gassan Idriss <ghassani@splicedmedia.com>
+
+commerce.category.filter.default_display_mode:
+    type: string
+    key: commerce.category.filter.default_display_mode
+    value: list
+    configGroup: Catalog/Categories
+    configPosition: 0
+    configLabel: 'Default Display Mode'
+    isRequired: false
+commerce.category.filter.default_order_by:
+    type: string
+    key: commerce.category.filter.default_order_by
+    value: price_asc
+    configGroup: Catalog/Categories
+    configPosition: 0
+    configLabel: 'Default Order'
+    isRequired: false
+commerce.category.filter.default_per_page:
+    type: integer
+    key: commerce.category.filter.default_per_page
+    value: '10'
+    configGroup: Catalog/Categories
+    configPosition: 0
+    configLabel: 'Default Products Per Page'
+    isRequired: false
+commerce.category.filter.max_per_page:
+    type: integer
+    key: commerce.category.filter.max_per_page
+    value: '50'
+    configGroup: Catalog/Categories
+    configPosition: 0
+    configLabel: 'Max Products Per Page'
+    isRequired: false
+commerce.cms.404_layout:
+    type: string
+    key: commerce.cms.404_layout
+    value: 'SplicedCommerceBundle:Layouts:default.html.twig'
+    configGroup: Content
+    configPosition: 0
+    configLabel: '404 Layout'
+    isRequired: false
+commerce.cms.default_layout:
+    type: string
+    key: commerce.cms.default_layout
+    value: 'SplicedCommerceBundle:Layouts:default.html.twig'
+    configGroup: Content
+    configPosition: 0
+    configLabel: 'Default Layout'
+    isRequired: false
+commerce.order.order_number_date_format:
+    type: string
+    key: commerce.order.order_number_date_format
+    value: mdy
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Order Number Date Format'
+    isRequired: false
+commerce.order.order_number_format:
+    type: string
+    key: commerce.order.order_number_format
+    value: '{prefix}{date}{id}'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Order Number Format'
+    configHelp: "Available replacements:<br />\r\n{prefix}<br />\r\n{date}<br />\r\n{id}<br />\r\n{customerId}"
+    isRequired: true
+commerce.order.order_number_prefix:
+    type: string
+    key: commerce.order.order_number_prefix
+    value: SGW
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Default Order Number Prefix'
+    isRequired: false
+commerce.path.web:
+    type: string
+    key: commerce.path.web
+    value: /var/www/vhosts/someguyswireless.com/Symfony/web
+    configGroup: Paths
+    configPosition: 0
+    configLabel: 'Product Image Storage Path'
+    isRequired: false
+commerce.product.feed.per_page:
+    type: string
+    key: commerce.product.feed.per_page
+    value: '25'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'Feed Items Per Page'
+    isRequired: false
+commerce.product.image_block_height:
+    type: integer
+    key: commerce.product.image_block_height
+    value: '80'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'Block Image Height'
+    isRequired: false
+commerce.product.image_block_width:
+    type: integer
+    key: commerce.product.image_block_width
+    value: '160'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'Block Image Width'
+    isRequired: false
+commerce.product.image_cart_height:
+    type: integer
+    key: commerce.product.image_cart_height
+    value: '60'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'Cart Image Height'
+    isRequired: false
+commerce.product.image_cart_width:
+    type: integer
+    key: commerce.product.image_cart_width
+    value: '140'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'Cart Image Width'
+    isRequired: false
+commerce.product.image_category_view_grid_height:
+    type: integer
+    key: commerce.product.image_category_view_grid_height
+    value: '120'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'Category View Grid Image Height'
+    isRequired: false
+commerce.product.image_category_view_grid_width:
+    type: integer
+    key: commerce.product.image_category_view_grid_width
+    value: '280'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'Category View Grid Image Width'
+    isRequired: false
+commerce.product.image_category_view_list_height:
+    type: integer
+    key: commerce.product.image_category_view_list_height
+    value: '140'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'Category View List Image Height'
+    isRequired: false
+commerce.product.image_category_view_list_width:
+    type: integer
+    key: commerce.product.image_category_view_list_width
+    value: '300'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'Category View List Image Width'
+    isRequired: false
+commerce.product.image_feed_height:
+    type: integer
+    key: commerce.product.image_feed_height
+    value: '60'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'Feed Image Height'
+    isRequired: false
+commerce.product.image_feed_width:
+    type: integer
+    key: commerce.product.image_feed_width
+    value: '140'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'Feed Image Width'
+    isRequired: false
+commerce.product.image_view_height:
+    type: integer
+    key: commerce.product.image_view_height
+    value: '350'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'View Image Height'
+    isRequired: false
+commerce.product.image_view_thumbnail_height:
+    type: integer
+    key: commerce.product.image_view_thumbnail_height
+    value: '50'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'View Image Thumbnail Height'
+    isRequired: false
+commerce.product.image_view_thumbnail_width:
+    type: integer
+    key: commerce.product.image_view_thumbnail_width
+    value: '100'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'View Image Thumbnail Width'
+    isRequired: false
+commerce.product.image_view_width:
+    type: integer
+    key: commerce.product.image_view_width
+    value: '700'
+    configGroup: Catalog/Products
+    configPosition: 0
+    configLabel: 'View Image Width'
+    isRequired: false
+commerce.sales.calculation_precision:
+    type: integer
+    key: commerce.sales.calculation_precision
+    value: '2'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Calculation Precision'
+    isRequired: false
+commerce.sales.checkout.allow_guest_checkout:
+    type: boolean
+    key: commerce.sales.checkout.allow_guest_checkout
+    value: '1'
+    configGroup: Sales/Checkout
+    configPosition: 0
+    configLabel: 'Allow Guest Checkout'
+    isRequired: false
+commerce.sales.email.bounced:
+    type: email
+    key: commerce.sales.email.bounced
+    value: ghassani@gmail.com
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Bounced Email Noifications To'
+    isRequired: false
+commerce.sales.email.cancellation.notify:
+    type: boolean
+    key: commerce.sales.email.cancellation.notify
+    value: '1'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Notify Customer On Cancellation'
+    isRequired: false
+commerce.sales.email.cancellation.subject:
+    type: string
+    key: commerce.sales.email.cancellation.subject
+    value: 'Someguys Wireless Order {orderNumber} Cancelled'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Cancellation Email Subject'
+    isRequired: false
+commerce.sales.email.confirmation.subject:
+    type: string
+    key: commerce.sales.email.confirmation.subject
+    value: 'Someguys Wireless Order Confirmation # {orderNumber} '
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Order Confirmation Email Subject'
+    isRequired: false
+commerce.sales.email.confirmation_admin.subject:
+    type: string
+    key: commerce.sales.email.confirmation_admin.subject
+    value: 'Someguys Wireless New Order # {orderNumber} - {paymentStatus}'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Order Confirmation Admin Email Subject'
+    isRequired: false
+commerce.sales.email.from:
+    type: email
+    key: commerce.sales.email.from
+    value: ghassani@gmail.com
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Sales Emails From'
+    isRequired: false
+commerce.sales.email.incomplete_order_followup.subject:
+    type: string
+    key: commerce.sales.email.incomplete_order_followup.subject
+    value: 'Regarding Your Attempted Order On Someguys Wireless'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Incomplete Order Followup Subject'
+    isRequired: false
+commerce.sales.email.new_account.subject:
+    type: string
+    key: commerce.sales.email.new_account.subject
+    value: 'Your Account Has Been Created'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'New Account Email Subject'
+    isRequired: false
+commerce.sales.email.payment.notify:
+    type: boolean
+    key: commerce.sales.email.payment.notify
+    value: '1'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Notify Customer On Payment Update'
+    isRequired: false
+commerce.sales.email.payment.subject:
+    type: string
+    key: commerce.sales.email.payment.subject
+    value: 'Someguys Wireless Order {orderNumber} Payment Received'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Payment Update Email Subject'
+    isRequired: false
+commerce.sales.email.return.notify:
+    type: boolean
+    key: commerce.sales.email.return.notify
+    value: '1'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Notify Customer On Item Returned/Refunded'
+    isRequired: false
+commerce.sales.email.return.subject:
+    type: string
+    key: commerce.sales.email.return.subject
+    value: 'Someguys Wireless Order {orderNumber} Returned'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Order Returned Email Subject'
+    isRequired: false
+commerce.sales.email.shipment.notify:
+    type: boolean
+    key: commerce.sales.email.shipment.notify
+    value: '1'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Notify Customer On Shipment Updates'
+    isRequired: false
+commerce.sales.email.shipment.subject:
+    type: string
+    key: commerce.sales.email.shipment.subject
+    value: 'Someguys Wireless Order {orderNumber} Shipment Confirmation '
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Shipment Update Email Subject'
+    isRequired: false
+commerce.sales.email.to_admin:
+    type: email
+    key: commerce.sales.email.to_admin
+    value: ghassani@gmail.com
+    configGroup: Sales
+    configPosition: 0
+    isRequired: false
+commerce.sales.tax_rate:
+    type: float
+    key: commerce.sales.tax_rate
+    value: '0.085'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'Default Tax Rate'
+    isRequired: false
+commerce.sales.tax_rate_states:
+    type: array
+    key: commerce.sales.tax_rate_states
+    value: 's:6:"a:0:{}";'
+    configGroup: Sales
+    configPosition: 0
+    configLabel: 'State Tax Rates'
+    isRequired: false
+commerce.security.encryption.iv:
+    type: string
+    key: commerce.security.encryption.iv
+    value: 1a345i6y912r45b78bc234x6as912e45
+    configGroup: Security
+    configPosition: 0
+    configLabel: 'Encryption IV'
+    isRequired: false
+commerce.store.default_locale:
+    type: locale
+    key: commerce.store.default_locale
+    value: en
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Default Store Locale/Language'
+    isRequired: true
+commerce.store.email.bounced:
+    type: email
+    key: commerce.store.email.bounced
+    value: ghassani@gmail.com
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Bounced Email Notifications To'
+    isRequired: false
+commerce.store.email.contact:
+    type: email
+    key: commerce.store.email.contact
+    value: ghassani@gmail.com
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Contact Email Notifications To'
+    isRequired: false
+commerce.store.email.contact_bounced:
+    type: email
+    key: commerce.store.email.contact_bounced
+    value: ghassani@gmail.com
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Bounced Contact Email Notifications To'
+    isRequired: false
+commerce.store.email.force_password_reset.subject:
+    type: string
+    key: commerce.store.email.force_password_reset.subject
+    value: 'User Password Reset'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Force Password Reset Email Subject'
+    isRequired: false
+commerce.store.email.from:
+    type: string
+    key: commerce.store.email.from
+    value: ghassani@gmail.com
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Email From'
+    isRequired: false
+commerce.store.email.noreply:
+    type: email
+    key: commerce.store.email.noreply
+    value: noreply@someguyswireless.com
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'NoReply Email'
+    isRequired: false
+commerce.store.email.password_reset.subject:
+    type: string
+    key: commerce.store.email.password_reset.subject
+    value: 'User Password Reset Request'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Password Reset Email Subject'
+    isRequired: false
+commerce.store.email.returns:
+    type: email
+    key: commerce.store.email.returns
+    value: ghassani@gmail.com
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Store Returns Email Address'
+    isRequired: false
+commerce.store.email.sales:
+    type: email
+    key: commerce.store.email.sales
+    value: ghassani@gmail.com
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Sales Email Address'
+    isRequired: false
+commerce.store.email.support:
+    type: email
+    key: commerce.store.email.support
+    value: ghassani@gmail.com
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Support Email Address'
+    isRequired: false
+commerce.store.email.webmaster:
+    type: email
+    key: commerce.store.email.webmaster
+    value: ghassani@gmail.com
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Webmaster Email Address'
+    isRequired: false
+commerce.store.email_on_404:
+    type: boolean
+    key: commerce.store.email_on_404
+    value: ''
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Email Webmaster On 404 Error'
+    isRequired: false
+commerce.store.email_on_exception:
+    type: boolean
+    key: commerce.store.email_on_exception
+    value: '1'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Email Webmaster On Website Exception'
+    isRequired: false
+commerce.store.name:
+    type: string
+    key: commerce.store.name
+    value: 'Someguys Wireless'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Store Name'
+    isRequired: false
+commerce.store.phone.service:
+    type: string
+    key: commerce.store.phone.service
+    value: 760-566-6769
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Service Phone Number'
+    isRequired: false
+commerce.store.phone.service_hours:
+    type: string
+    key: commerce.store.phone.service_hours
+    value: 'Monday through Saturday 9am-6pm PST. Sunday 10am-6pm.'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Service Phone Hours'
+    isRequired: false
+commerce.store.url:
+    type: string
+    key: commerce.store.url
+    value: 'http://www.someguyswireless.com'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Store URL'
+    isRequired: false
+commerce.store.url_secure:
+    type: string
+    key: commerce.store.url_secure
+    value: 'https://www.someguyswireless.com'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Store Secure URL'
+    isRequired: false
+commerce.template.email.confirmation:
+    type: string
+    key: commerce.template.email.confirmation
+    value: 'SplicedCommerceBundle:Email:order_confirmation_customer.html.twig'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Order Confirmation Email Template'
+    isRequired: false
+commerce.template.email.confirmation_admin:
+    type: string
+    key: commerce.template.email.confirmation_admin
+    value: 'SplicedCommerceBundle:Email:order_confirmation_admin.html.twig'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Order Confirmation Admin Email Template'
+    isRequired: false
+commerce.template.email.contact_notification:
+    type: string
+    key: commerce.template.email.contact_notification
+    value: 'SplicedCommerceBundle:Email:contact_notification.html.twig'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Contact Notification Email Template'
+    isRequired: false
+commerce.template.email.force_password_reset:
+    type: string
+    key: commerce.template.email.force_password_reset
+    value: 'SplicedCommerceBundle:Email:force_password_reset.html.twig'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Force Password Reset Email Template'
+    isRequired: false
+commerce.template.email.new_account:
+    type: string
+    key: commerce.template.email.new_account
+    value: 'SplicedCommerceBundle:Email:new_account.html.twig'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'New Account Email Template'
+    isRequired: false
+commerce.template.email.new_account_plain:
+    type: string
+    key: commerce.template.email.new_account_plain
+    value: 'SplicedCommerceBundle:Email:new_account.txt.twig'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'New Account Plain Text Email Template'
+    isRequired: false
+commerce.template.email.password_reset:
+    type: string
+    key: commerce.template.email.password_reset
+    value: 'SplicedCommerceBundle:Email:password_reset.html.twig'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Password Reset Email Template'
+    isRequired: false
+commerce.template.email.shipment:
+    type: string
+    key: commerce.template.email.shipment
+    value: 'SplicedCommerceBundle:Email:order_shipment.html.twig'
+    configGroup: Store
+    configPosition: 0
+    configLabel: 'Order Shipment Email Template'
+    isRequired: false
+commerce.visitor.log_bot_requests:
+    type: boolean
+    key: commerce.visitor.log_bot_requests
+    value: '1'
+    configGroup: Visitor/Logging
+    configPosition: 1
+    configLabel: 'Log Bot Requests'
+    configHelp: ''
+    isRequired: false
+commerce.visitor.log_visitor_requests:
+    type: boolean
+    key: commerce.visitor.log_visitor_requests
+    value: '1'
+    configGroup: Visitor/Logging
+    configPosition: 1
+    configLabel: 'Log Visitor Requests'
+    configHelp: ''
+    isRequired: false

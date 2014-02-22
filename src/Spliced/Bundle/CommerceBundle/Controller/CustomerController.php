@@ -32,7 +32,6 @@ class CustomerController extends Controller
 {
     /**
      * @Template("SplicedCommerceBundle:Customer:dashboard.html.twig")
-     * @Route("/account", name="account") // TODO: Remove
      * @Route("/account", name="commerce_account")
      * @Secure(roles="ROLE_USER")
      *

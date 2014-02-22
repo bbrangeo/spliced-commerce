@@ -19,23 +19,20 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\ORM\NoResultException as UsernameNotFoundException;
 use Spliced\Component\Commerce\Event as Events;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
- * UserProvider
+ * CustomerAuthenticationProvider
+ * 
+ * Handles authentication of a customer by form login
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class UserProvider implements AuthenticationProviderInterface
+class CustomerAuthenticationProvider implements AuthenticationProviderInterface
 {
-
-    protected $providerKey;
-    protected $userProvider;
-    protected $userChecker;
-    protected $dispatcher;
 
     /**
      * @param string                        $providerKey
@@ -45,20 +42,60 @@ class UserProvider implements AuthenticationProviderInterface
      */
     public function __construct(
             $providerKey, 
-            UserProviderInterface $userProvider, 
+            UserProviderInterface $customerManager, 
             UserCheckerInterface $userChecker, 
             EncoderFactoryInterface $encoderFactory, 
-            EventDispatcher $dispatcher)
+            EventDispatcherInterface $dispatcher)
     {
-        if (!$userProvider instanceof UserProviderInterface) {
-            throw new \InvalidArgumentException('The $userProvider must implement UserManagerInterface if $createIfNotExists is true.');
+        if (!$customerManager instanceof UserProviderInterface) {
+            throw new \InvalidArgumentException('$customerManager must implement UserManagerInterface');
         }
         
         $this->providerKey = $providerKey;
-        $this->userProvider = $userProvider;
+        $this->customerManager = $customerManager;
         $this->userChecker = $userChecker;
         $this->encoderFactory = $encoderFactory;
         $this->dispatcher = $dispatcher;
+    }
+    
+    /**
+     * getCustomerManager
+     * 
+     * @return UserProviderInterface
+     */
+    protected function getCustomerManager()
+    {
+        return $this->customerManager;
+    }
+    
+    /**
+     * getUserChecker
+     * 
+     * @return UserCheckerInterface
+     */
+    protected function getUserChecker()
+    {
+        return $this->userChecker;
+    }
+    
+    /**
+     * getEncoderFactory
+     * 
+     * @return EncoderFactoryInterface
+     */
+    protected function getEncoderFactory()
+    {
+        return $this->encoderFactory;
+    }
+    
+    /**
+     * getEventDispatcher
+     * 
+     * @return EventDispatcherInterface
+     */
+    protected function getEventDispatcher()
+    {
+        return $this->dispatcher;
     }
 
     /**
@@ -71,30 +108,49 @@ class UserProvider implements AuthenticationProviderInterface
         }
 
         $username = $token->getUsername();
+        
         if (empty($username)) {
-            $username = 'NONE_PROVIDED';
+            throw new BadCredentialsException('Your email and/or password could not be found or are invalid.');
         }
         
         try {
-            $user = $this->userProvider->loadUserByUsername($username);
+            $customer = $this->customerManager->loadUserByUsername($username);
+            
+            if (!$customer) {
+               throw new UsernameNotFoundException('User not found'); 
+            }
         } catch (UsernameNotFoundException $notFound) {
-            throw new BadCredentialsException('Your username and/or password could not be found or are invalid.', 0, $notFound);
+            throw new BadCredentialsException('Your email and/or password could not be found or are invalid.', 0, $notFound);
         }
         
-        if (!$user instanceof UserInterface) {
-            throw new AuthenticationServiceException('retrieveUser() must return a UserInterface.');
+        if (!$customer instanceof UserInterface) {
+            throw new AuthenticationServiceException('Customer must implement UserInterface.');
         }
         
         try {
-            $this->userChecker->checkPreAuth($user);
-            $this->checkAuthentication($user, $token);
-            $this->userChecker->checkPostAuth($user);
+            
+            $this->userChecker->checkPreAuth($customer);
+            
+            $this->checkAuthentication($customer, $token);
+            
+            $this->userChecker->checkPostAuth($customer);
+            
         } catch (BadCredentialsException $e) {
+            
+            if ($customer->getForcePasswordReset()) {
+                $this->dispatcher->dispatch(
+                    Events\Event::EVENT_SECURITY_LOGIN_FORCE_PASSWORD_RESET_REQUEST, 
+                    new Events\ForcePasswordResetRequestEvent($customer)
+                );
+                
+                throw new BadCredentialsException(sprintf('Your password must be reset. An email has been sent to %s with further instructions', $customer->getEmail()), 0, $e);
+            }
+            
             throw new BadCredentialsException('Bad credentials', 0, $e);
         }
         
         $authenticatedToken = new UsernamePasswordToken(
-            $user, 
+            $customer, 
             $token->getCredentials(), 
             $this->providerKey, 
             $user->getRoles()
@@ -116,9 +172,9 @@ class UserProvider implements AuthenticationProviderInterface
     /**
      * {@inheritDoc}
      */
-    public function checkAuthentication(UserInterface $user, UsernamePasswordToken $token)
+    public function checkAuthentication(UserInterface $customer, UsernamePasswordToken $token)
     {
-        if (!$this->encoderFactory->getEncoder($user)->isPasswordValid($user->getPassword(), $token->getCredentials(), $user->getSalt())) {
+        if (!$this->encoderFactory->getEncoder($customer)->isPasswordValid($customer->getPassword(), $token->getCredentials(), $customer->getSalt())) {
             throw new BadCredentialsException('The presented password is invalid.');
         }
     }

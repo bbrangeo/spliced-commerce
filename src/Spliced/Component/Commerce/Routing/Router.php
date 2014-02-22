@@ -29,9 +29,11 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * Router
  * 
- * Adds dynamic routes by looking up available routes in the database
+ * Adds dynamic routes by looking up available routes in the database.
+ * 
  * Symfony default router is first checked to match a route, and if none 
- * is found than the database is checked.
+ * is found then the database is checked for a matching route. If none is
+ * found, 404 error will be encountered. 
  * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
@@ -178,41 +180,6 @@ class Router implements RouterInterface
     {
 
         parse_str($_SERVER['QUERY_STRING'], $queryStringParams);
-        
-        
-        
-        // match an affiliate if it is part of the request       
-        /*if (!$this->getAffiliateManager()->getCurrentAffiliateId()) {
-             
-            if (isset($queryStringParams['affid'])) {
-                $affiliate = $this->getAffiliateManager()->findAffiliateById((int) $queryStringParams['affid']);
-            } else {
-                
-                preg_match('/^\/([A-Za-z0-9]{2,}|\d{1,})\//', $url, $matches, PREG_OFFSET_CAPTURE);
-                
-                if (isset($matches[0][0])) {
-                    $affiliate = $this->getAffiliateManager()->findAffiliateByUrlPrefix(str_replace('/','',$matches[0][0]));
-                }
-            }
-            
-            if (isset($affiliate) && $affiliate instanceof AffiliateInterface) {
-                  $this->getAffiliateManager()->setCurrentAffiliateId($affiliate->getId());
-                
-                if (isset($matches[0][0])) {
-                    $url = preg_replace(sprintf('/^%s/',str_replace('/','\/',$matches[0][0])),'/',$url);
-                }
-                
-            } 
-             
-        } else {
-            $affiliate = $this->getAffiliateManager()->findAffiliateById($this->getAffiliateManager()->getCurrentAffiliateId());
-
-            if (!$affiliate instanceof AffiliateInterface) {
-                $this->getAffiliateManager()->setCurrentAffiliateId(null);
-            } else {
-                $url = preg_replace(sprintf('/^\/%s\//',$affiliate->getUrlPrefix()),'/',$url);
-            }
-        }*/
 
         // parent router is our first choice to save a db query if it is not needed
         try{
@@ -289,7 +256,6 @@ class Router implements RouterInterface
     public function getMatcher(RouteCollection $collection)
     {
         return $this->getParentRouter()->getMatcher($collection);
-        //return new UrlMatcher($collection, $this->getContext());
     }
 
     /**

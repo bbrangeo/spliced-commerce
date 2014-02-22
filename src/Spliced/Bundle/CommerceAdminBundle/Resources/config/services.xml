@@ -34,6 +34,11 @@
 	    	<argument type="service" id="event_dispatcher" />
         </service>
         
+        <service id="commerce.category_manager" class="Spliced\Component\Commerce\Category\CategoryManager">
+	    	<argument type="service" id="commerce.admin.configuration" />
+	    	<argument type="service" id="event_dispatcher" />
+        </service>
+        
         <service id="commerce.product_attribute_option_manager" class="Spliced\Component\Commerce\Product\ProductAttributeOptionManager">
 	    	<argument type="service" id="commerce.admin.configuration" />
 	    	<argument type="service" id="commerce.product_manager" />

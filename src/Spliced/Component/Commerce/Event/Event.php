@@ -13,16 +13,25 @@ use Symfony\Component\EventDispatcher\Event as BaseEvent;
 
 /**
  * Event
+ * 
+ * This class wraps all event tags as constant members
+ * for easy access through out the application.
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 abstract class Event extends BaseEvent
 {
 
+    /**
+     * Cart Event Constants
+     */
     const EVENT_CART_ITEM_ADD      = 'commerce.cart.add_item';
     const EVENT_CART_ITEM_REMOVE = 'commerce.cart.remove_item';
     const EVENT_CART_UPDATE      = 'commerce.cart.update';
-
+    
+    /**
+     * Checkout Event Constants
+     */
     const EVENT_CHECKOUT_START         = 'commerce.checkout.start';
     const EVENT_REMOTELY_PROCESSED_CHECKOUT_START         = 'commerce.remotely_processed.checkout.start';
     const EVENT_CHECKOUT_COMPLETE     = 'commerce.checkout.complete';
@@ -36,32 +45,41 @@ abstract class Event extends BaseEvent
     
     const EVENT_CONFIGURATION_UPDATE = 'commerce.configuration.update';
     
+    /**
+     * Product Event Constants
+     */
     const EVENT_PRODUCT_VIEW     = 'commerce.product.view';
     const EVENT_PRODUCT_SAVE     = 'commerce.product.save';
     const EVENT_PRODUCT_UPDATE   = 'commerce.product.update';
     const EVENT_PRODUCT_DELETE   = 'commerce.product.delete';
-    
     const EVENT_PRODUCT_CATEGORY_ADD      = 'commerce.product.category.add';
     const EVENT_PRODUCT_CATEGORY_DELETE   = 'commerce.product.category.delete';
-    
     const EVENT_PRODUCT_IMAGE_ADD      = 'commerce.product.image.add';
     const EVENT_PRODUCT_IMAGE_DELETE   = 'commerce.product.image.delete';
         
+    /**
+     * Product Attribute Option Event Constants
+     */
     const EVENT_PRODUCT_ATTRIBUTE_OPTION_SAVE     = 'commerce.product.attribute_option.save';
     const EVENT_PRODUCT_ATTRIBUTE_OPTION_UPDATE   = 'commerce.product.attribute_option.update';
     const EVENT_PRODUCT_ATTRIBUTE_OPTION_DELETE   = 'commerce.product.attribute_option.delete';
     const EVENT_PRODUCT_ATTRIBUTE_OPTION_VALUE_DELETE   = 'commerce.product.attribute_option.value.delete';
     
+    /**
+     * Product Specification Option Event Constants
+     */
     const EVENT_PRODUCT_SPECIFICATION_OPTION_SAVE     = 'commerce.product.specification_option.save';
     const EVENT_PRODUCT_SPECIFICATION_OPTION_UPDATE   = 'commerce.product.specification_option.update';
     const EVENT_PRODUCT_SPECIFICATION_OPTION_DELETE   = 'commerce.product.specification_option.delete';
     const EVENT_PRODUCT_SPECIFICATION_OPTION_VALUE_DELETE   = 'commerce.product.specification_option.value.delete';
     
-    const EVENT_SECURITY_REGISTRATION_COMPLETE      = 'commerce.security.registration_complete';
-    const EVENT_SECURITY_REGISTRATION_START         = 'commerce.security.registration_start';
-    const EVENT_SECURITY_NEW_ACCOUNT_CREATED        = 'commerce.security.new_account_created';
+    /**
+     * Product Specification Option Event Constants
+     */
+    const EVENT_CUSTOMER_REGISTRATION_START      = 'commerce.security.registration_start';
+    const EVENT_CUSTOMER_REGISTRATION_COMPLETE   = 'commerce.security.registration_complete';
     
-    const EVENT_SECURITY_LOGIN_FAILURE                         = 'commerce.security.login_failure';
+    const EVENT_SECURITY_LOGIN_FAILURE                      = 'commerce.security.login_failure';
     const EVENT_SECURITY_LOGIN_FORCE_PASSWORD_RESET_REQUEST = 'commerce.security.login.force_password_reset_request';
     const EVENT_SECURITY_LOGIN_FORCE_PASSWORD_RESET         = 'commerce.security.login.force_password_reset';
     const EVENT_SECURITY_LOGIN_PASSWORD_RESET_REQUEST       = 'commerce.security.login.password_reset_request';

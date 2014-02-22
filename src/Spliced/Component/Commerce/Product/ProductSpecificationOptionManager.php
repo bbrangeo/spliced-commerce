@@ -85,14 +85,16 @@ class ProductSpecificationOptionManager
      * this method will just forward to updateProductSpecificationOption method.
      * 
      * @param ProductSpecificationOptionInterface $productSpecificationOption
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Document will always be persisted.
      */
-    public function save(ProductSpecificationOptionInterface $productSpecificationOption)
+    public function save(ProductSpecificationOptionInterface $productSpecificationOption, $flush = true)
     {
         if ($productSpecificationOption->getId()) { // forward to update, it is not new
             return $this->update($productSpecificationOption);
         }
-        
-        $productSpecificationOption->setKey(strtolower(preg_replace('/\s/', '_', $productSpecificationOption->getKey())));
+
+        $productSpecificationOption->setKey(strtolower(preg_replace(array('/[^A-Z0-9\s_\-]/i','/\s/'), array('','_'), $productSpecificationOption->getKey())));
         
         // notify the event dispatcher to handle any user hooks
         $this->eventDispatcher->dispatch(
@@ -101,7 +103,10 @@ class ProductSpecificationOptionManager
         );
         
         $this->configurationManager->getDocumentManager()->persist($productSpecificationOption);
-        $this->configurationManager->getDocumentManager()->flush();
+            
+        if (true === $flush) {
+            $this->configurationManager->getDocumentManager()->flush();
+        }
     }
     
 
@@ -112,8 +117,10 @@ class ProductSpecificationOptionManager
      * this method will just forward to saveProductSpecificationOption method.
      * 
      * @param ProductSpecificationOptionInterface $productSpecificationOption
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Document will always be persisted.
      */
-    public function update(ProductSpecificationOptionInterface $productSpecificationOption)
+    public function update(ProductSpecificationOptionInterface $productSpecificationOption, $flush = true)
     {
         if (!$productSpecificationOption->getId()) { // forward to create, it is new
             return $this->save($productSpecificationOption);
@@ -128,15 +135,20 @@ class ProductSpecificationOptionManager
         $this->updateEmbedMany($productSpecificationOption);
             
         $this->configurationManager->getDocumentManager()->persist($productSpecificationOption);
-        $this->configurationManager->getDocumentManager()->flush();
+        
+        if (true === $flush) {
+            $this->configurationManager->getDocumentManager()->flush();
+        }
     }
 
     /**
      * delete
      *
      * @param ProductSpecificationOptionInterface $productSpecificationOption
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Document will always be persisted.
      */
-    public function delete(ProductSpecificationOptionInterface $productSpecificationOption)
+    public function delete(ProductSpecificationOptionInterface $productSpecificationOption, $flush = true)
     {
         if (!$productSpecificationOption->getId()) {//has never been saved
             return;
@@ -165,23 +177,26 @@ class ProductSpecificationOptionManager
                     $product->removeSpecification($specification);
                 }
                     
-                // notify the event dispatcher to handle any user hooks
-                $this->productManager->update($product);
+                // lets update the product
+                $this->productManager->update($product, $flush);
             }
         }
         
         $this->configurationManager->getDocumentManager()->remove($productSpecificationOption);
-        $this->configurationManager->getDocumentManager()->flush();
+        
+        if (true === $flush) {
+            $this->configurationManager->getDocumentManager()->flush();
+        }
     }
     
     /**
-     *     updateEmbedMany
+     *  updateEmbedMany
      * 
-     *  as of 1/30/2014 with Doctrine, embeded documents duplicate items
+     *  as of 1/30/2014 with Doctrine, embedded documents duplicate items
      *  like the issue here: 
      *  http://stackoverflow.com/questions/16267336/doctrine-mongo-odm-duplicating-embedded-documents-in-symfony
      *  cloning the collection objects seems to work // would like to find a better solution of 
-     *  find what is causing it  so we just irriterate over every EmbedMany and clone the collection
+     *  find what is causing it  so we just iterate over every EmbedMany and clone the collection
      */
     protected function updateEmbedMany($object)
     {

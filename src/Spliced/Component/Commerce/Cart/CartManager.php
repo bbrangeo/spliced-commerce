@@ -538,11 +538,13 @@ class CartManager {
         return false;
     }
 
-    /*
+    /**
      * getQuantity
      * 
      * @param ProductInterface $product
      * @param int $default
+     * 
+     * @return int
      */
     public function getQuantity(ProductInterface $product, $default = 0) {
         if(!$this->getCart()){
@@ -593,8 +595,9 @@ class CartManager {
      * Remove an item from the shopping cart by product
      * 
      * @param ProductInterface $product
-     * 
      * @param bool $flush - Flushes the ObjectManager after deletion
+     * 
+     * @return self
      */
     public function remove(CartItemInterface $item, $flush = true) {
         $this->getEntityManager()->remove($item);
@@ -680,6 +683,8 @@ class CartManager {
      * setShippingMethod
      * 
      * @param string $method
+     * 
+     * @return self
      */
     public function setShippingMethod($method = null) {
         $this->session->set(self::SESSION_TAG_SHIPPING_METHOD, $method);
@@ -700,6 +705,8 @@ class CartManager {
      * setShippingProvider
      * 
      * @param string $provider
+     * 
+     * @return self
      */
     public function setShippingProvider($provider = null) {
         $this->session->set(self::SESSION_TAG_SHIPPING_PROVIDER, $provider);
@@ -720,6 +727,8 @@ class CartManager {
      * setShippingDestination
      * 
      * @param string $shippingDestination
+     * 
+     * @return self
      */
     public function setShippingDestination($shippingDestination = null) {
         $this->session->set(self::SESSION_TAG_SHIPPING_DESTINATION, $shippingDestination);
@@ -728,7 +737,9 @@ class CartManager {
     }
 
     /**
-     *
+     * getShippingDestination
+     * 
+     * @return string
      */
     public function getShippingDestination() {
         return $this->session->get(self::SESSION_TAG_SHIPPING_DESTINATION, null);
@@ -738,6 +749,8 @@ class CartManager {
      * setShippingDestinationZipcode
      *
      * @param string $shippingDestinationZipcode
+     * 
+     * @return self
      */
     public function setShippingDestinationZipcode($shippingDestinationZipcode = null) {
         $this->session->set(self::SESSION_TAG_SHIPPING_DESTINATION_ZIPCODE, $shippingDestinationZipcode);
@@ -768,14 +781,21 @@ class CartManager {
     }
 
     /**
-     *
+     * getShippingDestinationArray
+     * 
+     * @return array
      */
     public function getShippingDestinationArray() {
         return array('country' => $this->getShippingDestination(), 'zipcode' => $this->getShippingDestinationZipcode(), );
     }
 
     /**
+     * processBundledItems
      * 
+     * @param ProductInterface $product
+     * @param CartItemInterface $cartItem
+     * 
+     * @return bool
      */
     private function processBundledItems(ProductInterface $product, CartItemInterface $cartItem)
     {

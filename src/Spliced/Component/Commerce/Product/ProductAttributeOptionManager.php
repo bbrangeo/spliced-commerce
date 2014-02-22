@@ -101,8 +101,10 @@ class ProductAttributeOptionManager
      * this method will just forward to updateProductAttributeOption method.
      * 
      * @param ProductAttributeOptionInterface $productAttributeOption
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Document will always be persisted.
      */
-    public function save(ProductAttributeOptionInterface $productAttributeOption)
+    public function save(ProductAttributeOptionInterface $productAttributeOption, $flush = true)
     {
         if ($productAttributeOption->getId()) { // forward to update, it is not new
             return $this->update($productAttributeOption);
@@ -117,7 +119,10 @@ class ProductAttributeOptionManager
         );
         
         $this->configurationManager->getDocumentManager()->persist($productAttributeOption);
-        $this->configurationManager->getDocumentManager()->flush();
+                
+        if (true === $flush) {
+            $this->configurationManager->getDocumentManager()->flush();
+        }
     }
     
 
@@ -128,8 +133,10 @@ class ProductAttributeOptionManager
      * this method will just forward to saveProductAttributeOption method.
      * 
      * @param ProductAttributeOptionInterface $productAttributeOption
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Document will always be persisted.
      */
-    public function update(ProductAttributeOptionInterface $productAttributeOption)
+    public function update(ProductAttributeOptionInterface $productAttributeOption, $flush = true)
     {
         if (!$productAttributeOption->getId()) { // forward to create, it is new
             return $this->save($productAttributeOption);
@@ -147,15 +154,20 @@ class ProductAttributeOptionManager
         }
         
         $this->configurationManager->getDocumentManager()->persist($productAttributeOption);
-        $this->configurationManager->getDocumentManager()->flush();
+                
+        if (true === $flush) {
+            $this->configurationManager->getDocumentManager()->flush();
+        }
     }
 
     /**
      * deleteProductAttributeOption
      *
      * @param ProductAttributeOptionInterface $productAttributeOption
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Document will always be persisted.
      */
-    public function delete(ProductAttributeOptionInterface $productAttributeOption)
+    public function delete(ProductAttributeOptionInterface $productAttributeOption, $flush = true)
     {
         if (!$productAttributeOption->getId()) {//has never been saved
             return;
@@ -184,22 +196,25 @@ class ProductAttributeOptionManager
                 }
             
                 // notify the event dispatcher to handle any user hooks
-                $this->productManager->update($product);
+                $this->productManager->update($product, $flush);
             }
         }
         
         $this->configurationManager->getDocumentManager()->remove($productAttributeOption);
-        $this->configurationManager->getDocumentManager()->flush();
+                
+        if (true === $flush) {
+            $this->configurationManager->getDocumentManager()->flush();
+        }
     }
     
     /**
-     *     updateEmbedMany
+     *  updateEmbedMany
      * 
-     *  as of 1/30/2014 with Doctrine, embeded documents duplicate items
+     *  as of 1/30/2014 with Doctrine, embedded documents duplicate items
      *  like the issue here: 
      *  http://stackoverflow.com/questions/16267336/doctrine-mongo-odm-duplicating-embedded-documents-in-symfony
      *  cloning the collection objects seems to work // would like to find a better solution of 
-     *  find what is causing it  so we just irriterate over every EmbedMany and clone the collection
+     *  find what is causing it  so we just iterate over every EmbedMany and clone the collection
      */
     protected function updateEmbedMany($object)
     {

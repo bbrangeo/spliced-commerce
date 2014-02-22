@@ -16,7 +16,7 @@
             <argument type="service" id="commerce.customer.manager" />
         </service>
 
-        <service id="commerce.security.authentication.provider.facebook" class="Spliced\Component\Commerce\Security\Authentication\Provider\FacebookUserProvider" public="false">
+        <service id="commerce.security.authentication.provider.facebook" class="Spliced\Component\Commerce\Security\Authentication\Provider\FacebookAuthenticationProvider" public="false">
             <argument /> <!-- Provider-shared Key -->
             <argument type="service" id="commerce.facebook.api_client" />
             <argument type="service" id="commerce.customer.manager" />
@@ -33,7 +33,7 @@
         </service>
 
         <service id="commerce.security.authentication.listener.facebook"
-                 class="Spliced\Component\Commerce\Security\Firewall\FacebookListener"
+                 class="Spliced\Component\Commerce\Security\Firewall\FacebookAuthenticationListener"
                  parent="security.authentication.listener.abstract"
                  abstract="true">
         </service>

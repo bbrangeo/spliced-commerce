@@ -1,11 +1,25 @@
 <?php
-
+/*
+ * This file is part of the SplicedCommerceBundle package.
+*
+* (c) Spliced Media <http://www.splicedmedia.com/>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 namespace Spliced\Component\Commerce\Security\User;
 
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Spliced\Component\Commerce\Security\Authentication\Client\TwitterApiClient;
 
+/**
+ * TwitterUserManager
+ *
+ * Handles the creation, updating, and deletion of customers from Twitter API
+ *
+ * @author Gassan Idriss <ghassani@splicedmedia.com>
+ */
 class TwitterUserManager implements UserProviderInterface
 {
 

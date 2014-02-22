@@ -15,7 +15,7 @@
             <argument type="service" id="commerce.customer.manager" />
         </service>
 
-        <service id="commerce.security.authentication.provider.google" class="Spliced\Component\Commerce\Security\Authentication\Provider\GoogleUserProvider" public="false">
+        <service id="commerce.security.authentication.provider.google" class="Spliced\Component\Commerce\Security\Authentication\Provider\GoogleAuthenticationProvider" public="false">
             <argument /> <!-- Provider-shared Key -->
             <argument type="service" id="commerce.google.oauth_client" />
             <argument type="service" id="commerce.customer.manager" />
@@ -32,7 +32,7 @@
         </service>
 
         <service id="commerce.security.authentication.listener.google"
-                 class="Spliced\Component\Commerce\Security\Firewall\GoogleListener"
+                 class="Spliced\Component\Commerce\Security\Firewall\GoogleAuthenticationListener"
                  parent="security.authentication.listener.abstract"
                  abstract="true">
         </service>

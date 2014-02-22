@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Spliced\Bundle\CommerceBundle\Entity\Customer as User;
 use Doctrine\ORM\EntityManager;
+use Spliced\Component\Commerce\Model\CustomerInterface;
 use Spliced\Component\Commerce\Model\CustomerProfileInterface;
 use Spliced\Component\Commerce\Configuration\ConfigurationManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -24,6 +25,8 @@ use Spliced\Component\Commerce\Event as Events;
 /**
  * CustomerUserManager
  *
+ * Handles the creation, updating, and deletion of customers.
+ * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 class CustomerUserManager implements UserProviderInterface
@@ -31,80 +34,211 @@ class CustomerUserManager implements UserProviderInterface
     /**
     * Constructor.
     *
+    * @param ConfigurationManager $configurationManager
     * @param EncoderFactoryInterface $encoderFactory
+    * @param EventDispatcher $eventDispatcher
     */
-    public function __construct(ConfigurationManager $configurationManager, EncoderFactoryInterface $encoderFactory, EntityManager $em, EventDispatcher $eventDispatcher)
+    public function __construct(ConfigurationManager $configurationManager, EncoderFactoryInterface $encoderFactory, EventDispatcher $eventDispatcher)
     {
         $this->configurationManager = $configurationManager;
         $this->encoderFactory = $encoderFactory;
-        $this->repository = $em->getRepository('SplicedCommerceBundle:Customer');
-        $this->em = $em;
         $this->eventDispatcher = $eventDispatcher;
-    }
-
-    public function create($user)
-    {
-        if (! $user instanceof SecurityUserInterface) {
-            $user = new $this->getClass();
-        }
-
-        $this->updatePassword($user);
-
-        $this->em->persist($user);
-
-        $this->em->flush();
-
-        $this->eventDispatcher->dispatch(
-            Events\Event::EVENT_SECURITY_NEW_ACCOUNT_CREATED,
-            new Events\NewAccountEvent($user)
-        );
         
-        return $user;
+        $this->repository = $configurationManager->getEntityManager()
+          ->getRepository($this->getClass());
     }
 
-    public function update(SecurityUserInterface $user/*, CustomerProfileInterface $profile = null*/)
-    {
-        /*if (!is_null($profile)) {
-            $this->em->persist($profile);
-        }      */
-        $this->em->persist($user);
-
-        $this->em->flush();
-
-        return $user;
-    }
-    /*
-     *
+    /**
+     * getConfigurationManager
+     * 
+     * @return ConfigurationManager
      */
-    public function updatePassword(SecurityUserInterface $user)
+    protected function getConfigurationManager()
     {
-        if (0 !== strlen($password = $user->getPlainPassword())) {
-            $encoder = $this->getEncoder($user);
-            $user->setPassword($encoder->encodePassword($password, $user->getSalt()));
-            $user->eraseCredentials();
-        }
-    }
-    
-    /*
-     *
-    */
-    public function updateSalt(SecurityUserInterface $user)
-    {
-        if(!$user->getSalt()){
-            $user->setSalt(md5($user->getEmail()));
-        }
-    }
-
-    /*
-     *
-    */
-    public function updateConfirmationToken(SecurityUserInterface $user)
-    {
-        $user->setConfirmationToken(md5(rand(1000,100000)));
+        return $this->configurationManager;
     }
     
     /**
+     * getEncoderFactory
+     * 
+     * @return EncoderFactoryInterface
+     */
+    protected function getEncoderFactory()
+    {
+        return $this->configurationManager->getEntityManager();
+    }
+    
+    /**
+     * getEncoder
+     * 
+     * @param SecurityUserInterface $customer
+     */
+    protected function getEncoder(SecurityUserInterface $customer)
+    {
+        return $this->encoderFactory->getEncoder($customer);
+    }
+    
+    /**
+     * getEntityManager
+     * 
+     * @return ObjectManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->configurationManager->getEntityManager();
+    }
+
+    /**
+     * getRepository
      *
+     * @return EntityRepository
+     */
+    public function getRepository()
+    {
+        return $this->repository;
+    }
+    
+    /**
+     * create
+     * 
+     * Creates a new customer, returns the saved customer
+     * if flushed, returns the persisted customer if not
+     * 
+     * @param SecurityUserInterface|null $customer
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Entity will always be persisted.
+     */
+    public function create($customer, $flush = true)
+    {
+        if (! $customer instanceof SecurityUserInterface) {
+            $customer = new $this->getClass();
+        }
+
+        $this->updatePassword($customer);
+        
+        $customer->addRole(CustomerInterface::ROLE_DEFAULT)
+        ->setEnabled(true);
+        
+        /*if($customer->requiresConfirmation()){
+            // TODO this is currently not fully implemented
+            $customer->setLocked(true)
+            ->setConfirmationToken(md5(rand(100,2000000)));
+        }*/
+        
+        $this->getEntityManager()->persist($customer);
+        
+        if (true === $flush) {
+            $this->getEntityManager()->flush();
+        }
+        
+        $this->eventDispatcher->dispatch(
+            Events\Event::EVENT_CUSTOMER_REGISTRATION_COMPLETE,
+            new Events\RegistrationCompleteEvent($customer)
+        );
+        
+        return $customer;
+    }
+
+    /**
+     * update
+     * 
+     * Updates an existing customer
+     * 
+     * @param SecurityUserInterface $customer
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Entity will always be persisted.
+     */
+    public function update(SecurityUserInterface $customer, $flush = true)
+    {
+        $this->getEntityManager()->persist($customer);
+        
+        if (true === $flush) {
+            $this->getEntityManager()->flush();
+        }
+        
+        return $customer;
+    }
+    
+    /**
+     * updatePassword
+     * 
+     * Updates a customers password
+     * 
+     * @param SecurityUserInterface $customer
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Entity will not be persisted otherwise, you 
+     *                      will need to persist and flush the entity if
+     *                      you set set or keep the default value of false.
+     */
+    public function updatePassword(SecurityUserInterface $customer, $flush = false)
+    {
+        if (0 !== strlen($password = $customer->getPlainPassword())) {
+            $encoder = $this->getEncoder($customer);
+            $customer->setPassword($encoder->encodePassword($password, $customer->getSalt()));
+            $customer->eraseCredentials();
+        }
+        
+        if (true === $flush) {
+            $this->getEntityManager()->persist($customer);
+            $this->getEntityManager()->flush();
+        }
+        
+        return $customer;
+    }
+    
+    /**
+     * updateSalt
+     * 
+     * Updates a customers password salt
+     * 
+     * @param SecurityUserInterface $customer
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Entity will not be persisted otherwise, you 
+     *                      will need to persist and flush the entity if
+     *                      you set set or keep the default value of false.
+     */
+    public function updateSalt(SecurityUserInterface $customer, $flush = false)
+    {
+        if(!$customer->getSalt()){
+            $customer->setSalt(md5($customer->getEmail()));
+        }
+        
+        if (true === $flush) {
+            $this->getEntityManager()->persist($customer);
+            $this->getEntityManager()->flush();
+        }
+        
+        return $customer;
+    }
+
+    /**
+     * updateConfirmationToken
+     * 
+     * Updates a customers confirmation token
+     * 
+     * @param SecurityUserInterface $customer
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Entity will not be persisted otherwise, you 
+     *                      will need to persist and flush the entity if
+     *                      you set set or keep the default value of false.
+     */
+    public function updateConfirmationToken(SecurityUserInterface $customer)
+    {
+        $customer->setConfirmationToken(md5(rand(1000,100000)));
+        
+
+        if (true === $flush) {
+            $this->getEntityManager()->persist($customer);
+            $this->getEntityManager()->flush();
+        }
+        
+        return $customer;
+    }
+    
+    /**
+     * loadUserByUsername
+     * 
+     * @param string $username 
      */
     public function loadUserByUsername($username)
     {
@@ -112,15 +246,19 @@ class CustomerUserManager implements UserProviderInterface
     }
 
     /**
-     *
+     * loadUserByEmail
+     * 
+     * @param string $email 
      */
-    public function loadUserByEmail($username)
+    public function loadUserByEmail($email)
     {
-        return $this->repository->findOneByEmail($username);
+        return $this->repository->findOneByEmail($email);
     }
 
     /**
-     *
+     * loadUserBy
+     * 
+     * @param array $criteria
      */
     public function loadUserBy(array $criteria)
     {
@@ -128,7 +266,11 @@ class CustomerUserManager implements UserProviderInterface
     }
 
     /**
-     *
+     * loadUserByConfirmationToken
+     * 
+     * @param string $token
+     * 
+     * @return 
      */
     public function loadUserByConfirmationToken($token)
     {
@@ -138,35 +280,28 @@ class CustomerUserManager implements UserProviderInterface
     /**
      * refreshUser
      *
-     * @param  SecurityUserInterface $user
+     * @param  SecurityUserInterface $customer
+     * 
      * @return SecurityUserInterface
      */
-    public function refreshUser(SecurityUserInterface $user)
+    public function refreshUser(SecurityUserInterface $customer)
     {
         $class = $this->getClass();
-        if (!$user instanceof $class) {
+        if (!$customer instanceof $class) {
             throw new UnsupportedUserException('Account is not supported.');
         }
 
-        if (!$user instanceof SecurityUserInterface) {
-            throw new UnsupportedUserException(sprintf('Expected an instance of use Symfony\Component\Security\Core\User\UserInterface, but got "%s".', get_class($user)));
+        if (!$customer instanceof SecurityUserInterface) {
+            throw new UnsupportedUserException(sprintf('Expected an instance of use Symfony\Component\Security\Core\User\UserInterface, but got "%s".', get_class($customer)));
         }
 
-        $refreshedUser = $this->repository->findOneById($user->getId());
+        $refreshedUser = $this->repository->findOneById($customer->getId());
 
         if (null === $refreshedUser) {
-            throw new UsernameNotFoundException(sprintf('User with ID "%d" could not be reloaded.', $user->getId()));
+            throw new UsernameNotFoundException(sprintf('User with ID "%d" could not be reloaded.', $customer->getId()));
         }
 
         return $refreshedUser;
-    }
-
-    /**
-     * getEncoder
-     */
-    protected function getEncoder(SecurityUserInterface $user)
-    {
-        return $this->encoderFactory->getEncoder($user);
     }
 
     /**
@@ -182,29 +317,8 @@ class CustomerUserManager implements UserProviderInterface
      */
     public function getClass()
     {
-        return $this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_CUSTOMER);
+        return $this->getConfigurationManager()
+          ->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_CUSTOMER);
     }
 
-    /**
-     * getRepository
-     */
-    public function getRepository()
-    {
-        return $this->repository;
-    }
-    /**
-     * getConfigurationManager
-     */
-    public function getConfigurationManager()
-    {
-        return $this->configurationManager;
-    }
-
-    /**
-     * getEntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->em;
-    }
 }

@@ -12,7 +12,7 @@ namespace Spliced\Bundle\CommerceBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Spliced\Component\Commerce\HttpFoundation\AjaxResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Spliced\Bundle\CommerceBundle\Form\Type\RegistrationFormType;
 use Spliced\Bundle\CommerceBundle\Form\Type\LoginFormType;
 use Spliced\Bundle\CommerceBundle\Form\Type\PasswordResetFormType;
@@ -30,20 +30,21 @@ class SecurityController extends Controller
 {
     /**
      * @Template("SplicedCommerceBundle:Security:login_register.html.twig")
-     * @Route("/account/login", name="account_login")
-     * @Route("/account/register", name="account_register")
+     * @Route("/account/login", name="commerce_login")
+     * @Route("/account/register", name="commerce_register")
      */
     public function loginAction()
     {
         if ($this->get('security.context')->isGranted('ROLE_USER')) {
+            // already logged in
             return $this->redirect($this->generateUrl('account'));
         }
 
         $session     = $this->get('session');
-        $userManager = $this->get('commerce.customer.manager');
+        $customerManager = $this->get('commerce.customer.manager');
         $dispatcher  = $this->get('event_dispatcher');
         $request     = $this->get('request');
-        $referer     = $request->headers->get('referer');
+        $referer     = $request->headers->get('referrer');
         
         $loginForm = $this->createForm(new LoginFormType());
         $registrationFormType = new RegistrationFormType();
@@ -52,27 +53,32 @@ class SecurityController extends Controller
         if ($request->isMethod('POST') && $request->request->has($registrationFormType->getName())) {
             // handle registration form submission
             if ($registrationForm->bind($request) && $registrationForm->isValid()) {
+                
                 $newCustomer = $registrationForm->getData();
 
                 try {
-                    $existingCustomer = $userManager->loadUserByEmail($newCustomer->getEmail());
+                    $existingCustomer = $customerManager->loadUserByEmail($newCustomer->getEmail());
                     
                     $session->getFlashBag()->add('error','It appears that you already have an account with us. Login below or request a password change.');
 
-                    return $this->redirect($this->generateUrl('login'));
+                    return $this->redirect($this->generateUrl('commerce_login'));
+                    
                 } catch (NoResultException $e) {
                     
-                    $dispatcher->dispatch(
-                        Events\SecurityEvent::EVENT_SECURITY_REGISTRATION_COMPLETE, 
-                        new Events\RegistrationCompleteEvent($newCustomer)
-                    );
+                    // doesnt exist, lets save customer using the customer
+                    // manager to fire related events in the dispatcher
+                    $customerManager->create($newCustomer);                    
                   
-                    return $this->redirect(!empty($referer) ? $referer : $this->generateUrl('account'));
+                    // lets login the user now
+                    $this->get('commerce.security.login_manager')
+                      ->loginUser('main', $newCustomer, null);
+                    
+                    return $this->redirect(!empty($referer) ? $referer : $this->generateUrl('commerce_account'));
                 }
             }
         } else {
             $dispatcher->dispatch(
-                Events\SecurityEvent::EVENT_SECURITY_REGISTRATION_START, 
+                Events\Event::EVENT_CUSTOMER_REGISTRATION_START, 
                 new Events\RegistrationStartEvent()
             );
         }
@@ -89,11 +95,11 @@ class SecurityController extends Controller
             $error = $error->getMessage();
         }
                 
-        if ($this->container->get('request')->isXmlHttpRequest()) {
-            return new AjaxResponse(array(
+        if ($this->get('request')->isXmlHttpRequest()) {
+            return new JsonResponse(array(
                 'success' => true,
                 'message' => 'Login',
-                'modal' => $this->container->get('templating')->renderResponse('SplicedCommerceBundle:Common:modal.html.twig',array(
+                'modal' => $this->get('templating')->renderResponse('SplicedCommerceBundle:Common:modal.html.twig',array(
                     'title' => 'Login',
                     'body' => $this->get('templating')->renderResponse('SplicedCommerceBundle:Security:login_register_ajax.html.twig', array(
                         'error'  => isset($error) ? $error : null,

@@ -55,7 +55,7 @@ class ProductManager
      * create
      * 
      * Creates a new Product for manipulation. You will need to 
-     * save the changes made after creation. You can use the saveProduct 
+     * save the changes made after creation. You can use the save 
      * method to do this.
      * 
      * @return ProductInterface
@@ -69,11 +69,13 @@ class ProductManager
      * save
      * 
      * Saves and persists a new product. If an existing product is passed, 
-     * this method will just forward to updateProduct method.
+     * this method will just forward to update method.
      * 
      * @param ProductInterface $product
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Document will always be persisted.
      */
-    public function save(ProductInterface $product)
+    public function save(ProductInterface $product, $flush = true)
     {
         if ($product->getId()) { // forward to update, it is not new
             return $this->update($product);
@@ -86,7 +88,10 @@ class ProductManager
         );
         
         $this->configurationManager->getDocumentManager()->persist($product);
-        $this->configurationManager->getDocumentManager()->flush();
+        
+        if (true === $flush) {
+            $this->configurationManager->getDocumentManager()->flush();
+        }
     }
     
 
@@ -94,11 +99,13 @@ class ProductManager
      * update
      * 
      * Updates an existing product. If a new product is passed, 
-     * this method will just forward to saveProduct method.
+     * this method will just forward to save method.
      * 
      * @param ProductInterface $product
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Document will always be persisted.
      */
-    public function update(ProductInterface $product)
+    public function update(ProductInterface $product, $flush = true)
     {
         if (!$product->getId()) { // forward to create, it is new
             return $this->save($product);
@@ -113,15 +120,20 @@ class ProductManager
         $this->updateEmbedMany($product);
             
         $this->configurationManager->getDocumentManager()->persist($product);
-        $this->configurationManager->getDocumentManager()->flush();
+            
+        if (true === $flush) {
+            $this->configurationManager->getDocumentManager()->flush();
+        }
     }
 
     /**
      * delete
      *
      * @param ProductInterface $product
+     * @param bool $flush - Flushes and updates the database as well. 
+     *                      Document will always be persisted.
      */
-    public function delete(ProductInterface $product)
+    public function delete(ProductInterface $product, $flush = true)
     {
         if (!$product->getId()) {//has never been saved
             return;
@@ -134,17 +146,20 @@ class ProductManager
         );
     
         $this->configurationManager->getDocumentManager()->remove($product);
-        $this->configurationManager->getDocumentManager()->flush();
+            
+        if (true === $flush) {
+            $this->configurationManager->getDocumentManager()->flush();
+        }
     }
     
     /**
      *     updateEmbedMany
      * 
-     *  as of 1/30/2014 with Doctrine, embeded documents duplicate items
+     *  as of 1/30/2014 with Doctrine, embedded documents duplicate items
      *  like the issue here: 
      *  http://stackoverflow.com/questions/16267336/doctrine-mongo-odm-duplicating-embedded-documents-in-symfony
      *  cloning the collection objects seems to work // would like to find a better solution of 
-     *  find what is causing it  so we just irriterate over every EmbedMany and clone the collection
+     *  find what is causing it  so we just iterate over every EmbedMany and clone the collection
      */
     protected function updateEmbedMany($object)
     {

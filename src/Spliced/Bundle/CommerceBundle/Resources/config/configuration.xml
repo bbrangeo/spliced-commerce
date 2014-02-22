@@ -5,6 +5,7 @@
 
     <parameters>
         <parameter key="commerce.configuration.class">Spliced\Component\Commerce\Configuration\ConfigurationManager</parameter>
+        <parameter key="commerce.core_configuration.class">Spliced\Component\Commerce\Configuration\CoreConfiguration</parameter>
         
 		<!-- Define our Document Classes -->
         <parameter key="commerce.document.affiliate.class">Spliced\Bundle\CommerceBundle\Document\Affiliate</parameter>
@@ -97,12 +98,18 @@
     </parameters> 
 
     <services>
+    	
         <service id="commerce.configuration" class="%commerce.configuration.class%">
         	<argument>%commerce.entity_classes%</argument>
         	<argument>%commerce.document_classes%</argument>
         	<argument type="service" id="commerce.entity_manager" />
         	<argument type="service" id="commerce.document_manager" />
         	<argument type="service" id="kernel" />
+        </service>
+        
+        <service id="commerce.core_configuration" class="%commerce.core_configuration.class%">
+        	<argument type="service" id="commerce.configuration" />
+        	<tag name="commerce.configurable" />
         </service>
     </services>
 </container>

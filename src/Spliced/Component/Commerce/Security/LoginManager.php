@@ -52,12 +52,12 @@ class LoginManager
     /**
      * {@inheritDoc}
      */
-    final public function loginUser($firewallName, CustomerInterface $user, Response $response = null)
+    final public function loginUser($firewallName, CustomerInterface $customer, Response $response = null)
     {
 
-        $this->userChecker->checkPostAuth($user);
+        $this->userChecker->checkPostAuth($customer);
 
-        $token = $this->createToken($firewallName, $user);
+        $token = $this->createToken($firewallName, $customer);
 
         if ($this->container->isScopeActive('request')) {
             $this->sessionStrategy->onAuthentication($this->container->get('request'), $token);
@@ -77,8 +77,8 @@ class LoginManager
     /**
      * {@inheritDoc}
      */
-    protected function createToken($firewall, CustomerInterface $user)
+    protected function createToken($firewall, CustomerInterface $customer)
     {
-        return new UsernamePasswordToken($user, null, $firewall, $user->getRoles());
+        return new UsernamePasswordToken($customer, null, $firewall, $customer->getRoles());
     }
 }

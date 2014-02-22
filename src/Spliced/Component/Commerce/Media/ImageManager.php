@@ -18,6 +18,9 @@ use Imagine\Gd\Image;
 
 /**
  * ImageManager
+ * 
+ * Handles caching and resizing of product images
+ * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 class ImageManager

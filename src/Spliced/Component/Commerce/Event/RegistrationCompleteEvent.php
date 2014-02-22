@@ -22,10 +22,9 @@ class RegistrationCompleteEvent extends Event
     /**
      * @param CustomerInterface $customer
      */
-    public function __construct(CustomerInterface $customer, $requireConfirmation = false)
+    public function __construct(CustomerInterface $customer)
     {
         $this->customer = $customer;
-        $this->requireConfirmation = $requireConfirmation === true ? true : false;
     }
 
     /**
@@ -34,14 +33,6 @@ class RegistrationCompleteEvent extends Event
     public function getCustomer()
     {
         return $this->customer;
-    }
-    
-    /**
-     * @return bool
-     */
-    public function requiresConfirmation()
-    {
-        return $this->requireConfirmation;
     }
     
 }

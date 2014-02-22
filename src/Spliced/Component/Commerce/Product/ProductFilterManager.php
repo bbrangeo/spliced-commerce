@@ -16,7 +16,8 @@ use Spliced\Component\Commerce\Configuration\ConfigurationManager;
 /**
  * ProductFilterManager
  * 
- * Handles the filtering of products when viewing a collection of products
+ * Handles the filtering of products when viewing a collection of products.
+ * Can be contextual to a specific category, or all products in general
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
@@ -232,52 +233,27 @@ class ProductFilterManager
             $query->field('manufacturer.id')->in($this->getSelectedManufacturers($this->getCategory()->getId()));
          }
          
+         $selectedSpecifications = $this->getSelectedSpecifications($this->getCategory() ? $this->getCategory()->getId() : 0);
          
          // apply specification filters
-         if ($this->getCategory() && $this->getSelectedSpecifications($this->getCategory()->getId())) {
-             
-            $selectedSpecifications = $this->getSelectedSpecifications($this->getCategory()->getId());
-             
+         if ($selectedSpecifications) {
             $exp = $query->expr();
-         	 
-         	foreach ($selectedSpecifications as $selectedSpecificationId => $selectedSpecificationValues) {
-         	    $subExp = $query->expr();
-         	    
-         	    $subExp
-         	    //->field('specifications.option.$id')
-         	    //->equals(new \MongoId($selectedSpecificationId))
-         	      /*->where('function(){
-         	            if(this.specifications == undefined){
-         	                return false;  
-         	            }
-                        Object.keys(this.specifications).forEach(function(key) {
-                            specification = this.specifications[key];
-         	                if(specification.length){
-         	                      return true;
-         	                  }
-         	               
-                        });
-                        return true;
-         	      }')*/
-         	      ->field('specifications')->elemMatch(
-         	          $query->expr()->field('option.$id')->equals(new \MongoId($selectedSpecificationId))
-         	              ->field('values')->elemMatch($query->expr()->in($selectedSpecificationValues))
-         	              //->field('values')->equals(implode('',$selectedSpecificationValues))
-         	              /*->where('function(){
-         	                    
-         	                    if(this.values != undefined){
-         	                        this.values.forEach(function(v){ 
-                                        return true;
-         	                        });
-         	                    }
-         	                    return false; 
-         	               }')*/
+         	foreach ($selectedSpecifications as $selectedSpecificationId => $selectedSpecificationValues) {         	    
+         	    $exp->addOr($query->expr()->field('specifications')->elemMatch(
+         	          $query->expr()
+         	            ->field('option.$id')->equals(new \MongoId($selectedSpecificationId))
+         	            //->field('values')->in($query->expr()->in($selectedSpecificationValues))
+         	            ->field('values')->in($selectedSpecificationValues)
+         	            /*->where('function(){
+         	                    if(this.values == undefined){
+         	                        return true;
+         	                    }   
+         	                    print("sweetnesss");      	                     
+         	                    return false;
+         	            }')*/
          	      )
-         	      //->field('specifications.values')->in($selectedSpecificationValues);
-                ; 
-         	    $exp->addOr($subExp);
+                ); 
              } 
-              
              $query->addAnd($exp);
          } 
          
@@ -287,7 +263,7 @@ class ProductFilterManager
      /**
       * prepareView
       * 
-      * Pre load specifications and manufactuers before 
+      * Pre-load specifications and manufacturers before 
       * rendering the view
       */
      public function prepareView()

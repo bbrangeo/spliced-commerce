@@ -19,17 +19,19 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Doctrine\ORM\NoResultException as UsernameNotFoundException;
 use Spliced\Component\Commerce\Event as Events;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
- * CustomerUserProvider
+ * AdminAuthenticationProvider
+ * 
+ * Handles authentication of an admin by form login
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class CustomerUserProvider implements AuthenticationProviderInterface
+class AdminAuthenticationProvider implements AuthenticationProviderInterface
 {
 
     protected $providerKey;
@@ -48,7 +50,7 @@ class CustomerUserProvider implements AuthenticationProviderInterface
             UserProviderInterface $userProvider, 
             UserCheckerInterface $userChecker, 
             EncoderFactoryInterface $encoderFactory, 
-            EventDispatcherInterface $dispatcher)
+            EventDispatcher $dispatcher)
     {
         if (!$userProvider instanceof UserProviderInterface) {
             throw new \InvalidArgumentException('The $userProvider must implement UserManagerInterface if $createIfNotExists is true.');
@@ -66,9 +68,6 @@ class CustomerUserProvider implements AuthenticationProviderInterface
      */
     public function authenticate(TokenInterface $token)
     {
-        #die('authenticatea '.$token->getUsername().' - '.$token->getCredentials().' '.get_class($this->userProvider));
-        
-        
         if (!$this->supports($token)) {
             return null;
         }
@@ -93,13 +92,6 @@ class CustomerUserProvider implements AuthenticationProviderInterface
             $this->checkAuthentication($user, $token);
             $this->userChecker->checkPostAuth($user);
         } catch (BadCredentialsException $e) {
-            if($user->getForcePasswordReset()){
-                $this->dispatcher->dispatch(
-                    Events\Event::EVENT_SECURITY_LOGIN_FORCE_PASSWORD_RESET_REQUEST, 
-                    new Events\ForcePasswordResetRequestEvent($user)
-                );
-                throw new BadCredentialsException(sprintf('Your password must be reset. An email has been sent to %s with further instructions', $user->getEmail()), 0, $e);
-            }
             throw new BadCredentialsException('Bad credentials', 0, $e);
         }
         

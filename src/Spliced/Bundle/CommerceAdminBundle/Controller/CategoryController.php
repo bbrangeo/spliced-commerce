@@ -99,10 +99,7 @@ class CategoryController extends BaseFilterableController
 
             $category = $form->getData();
             
-            $this->get('event_dispatcher')->dispatch(
-                Events\Event::EVENT_CATEGORY_SAVE,    
-                new Events\CategorySaveEvent($category)
-            );
+            $this->get('commerce.category_manager')->save($category);
                 
             $this->get('session')->getFlashBag()->add('success', 'Category Successfully Added');
             
@@ -182,10 +179,7 @@ class CategoryController extends BaseFilterableController
 
             $category = $form->getData();
             
-            $this->get('event_dispatcher')->dispatch(
-                Events\Event::EVENT_CATEGORY_UPDATE,    
-                new Events\CategoryUpdateEvent($category)
-            );
+            $this->get('commerce.category_manager')->update($category);
                 
             $this->get('session')->getFlashBag()->add('success', 'Category Successfully Updated');
             
@@ -220,8 +214,7 @@ class CategoryController extends BaseFilterableController
                 throw $this->createNotFoundException('Unable to find Category entity.');
             }
 
-            $em->remove($entity);
-            $em->flush();
+            $this->get('commerce.category_manager')->delete($category);
         }
 
         return $this->redirect($this->generateUrl('category'));
@@ -298,8 +291,8 @@ class CategoryController extends BaseFilterableController
         
         $count = count($entities);
         
-        foreach($entities as $entity) {
-            $em->remove($entity);
+        foreach($entities as $entity) {;
+            $this->get('commerce.category_manager')->delete($category, false);
         }
         
         try{

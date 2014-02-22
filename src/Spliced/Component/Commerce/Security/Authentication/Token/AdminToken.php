@@ -12,11 +12,11 @@ namespace Spliced\Component\Commerce\Security\Authentication\Token;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
- * UserToken
+ * AdminToken
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class UserToken extends UsernamePasswordToken
+class AdminToken extends UsernamePasswordToken
 {
     
 }

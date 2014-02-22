@@ -13,8 +13,11 @@ use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Spliced\Component\Commerce\Security\Authentication\Client\PayPalOAuth2Client as OAuth2Client;
 
+
 /**
  * PayPalUserManager
+ *
+ * Handles the creation, updating, and deletion of customers from PayPal API
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */

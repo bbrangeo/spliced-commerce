@@ -9,26 +9,27 @@
 */
 namespace Spliced\Component\Commerce\Security\Firewall;
 
-use Spliced\Component\Commerce\Security\Authentication\Token\CustomerUserToken;
+use Spliced\Component\Commerce\Security\Authentication\Token\TwitterUserToken;
 use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener;
 
 /**
- * CustomerListener
+ * TwitterAuthenticationListener
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class CustomerListener extends UsernamePasswordFormAuthenticationListener
+class TwitterAuthenticationListener extends AbstractAuthenticationListener
 {
     /**
      * {@inheritDoc}
      */
     protected function attemptAuthentication(Request $request)
     {
-        //todo unused?
-        $accessToken = $request->get('access_token');
-
-        return $this->authenticationManager->authenticate(new CustomerUserToken($this->providerKey, '', array(), $accessToken));
+        return $this->authenticationManager->authenticate(
+            new TwitterUserToken(
+                $request->query->get('oauth_token'), 
+                $request->query->get('oauth_verifier')
+            )
+        );
     }
 }

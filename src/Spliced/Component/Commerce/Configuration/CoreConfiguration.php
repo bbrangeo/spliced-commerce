@@ -9,6 +9,8 @@
 */
 namespace Spliced\Component\Commerce\Configuration;
 
+use Symfony\Component\Yaml\Yaml;
+
 /**
  * CoreConfiguration
  *
@@ -24,6 +26,14 @@ class CoreConfiguration implements ConfigurableInterface
     public function __construct(ConfigurationManager $configurationManager)
     {
         $this->configurationManager = $configurationManager;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getConfigurationManager()
+    {
+        return $this->configurationManager;
     }
     
     /**
@@ -55,7 +65,24 @@ class CoreConfiguration implements ConfigurableInterface
      */
     public function getRequiredConfigurationFields()
     {
+        $coreConfiguration = Yaml::parse(file_get_contents(dirname(__FILE__).'/../Resources/config/core_configuration.yml'));
         
+        $config = array();
+        $i = 0;
+        foreach($coreConfiguration as $c){
+            $key = preg_replace('/^commerce\./', '', $c['key']);
+            $config[$key] = array(
+                'type' => isset($c['type']) ? $c['type'] : 'string',
+                'value' => isset($c['value']) ? $c['value'] : null,
+                'label' => isset($c['configLabel']) ? $c['configLabel'] : null,
+                'help' => isset($c['configHelp']) ? $c['configHelp'] : null,
+                'group' => isset($c['configGroup']) ? $c['configGroup'] : null,
+                'position' => isset($c['configPosition']) ? $c['configPosition'] : null,
+                'required' => isset($c['isRequired']) ? $c['isRequired'] : false,    
+            );
+        }
+
+        return $config;
     }   
 }
     

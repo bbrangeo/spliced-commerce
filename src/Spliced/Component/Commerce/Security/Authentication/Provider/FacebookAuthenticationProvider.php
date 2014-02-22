@@ -21,11 +21,13 @@ use Doctrine\ORM\NoResultException as UsernameNotFoundException;
 use Spliced\Component\Commerce\Event as Events;
 
 /**
- * FacebookUserProvider
+ * FacebookAuthenticationProvider
  *
+ * Handles authentication of a customer by Facebook API login
+ * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class FacebookUserProvider implements AuthenticationProviderInterface
+class FacebookAuthenticationProvider implements AuthenticationProviderInterface
 {
     /**
      * @var \BaseFacebook
@@ -43,15 +45,15 @@ class FacebookUserProvider implements AuthenticationProviderInterface
      * @param UserCheckerInterface          $userChecker
      * @param ContainerAwareEventDispatcher $dispatcher
      */
-    public function __construct($providerKey, \BaseFacebook $facebook, UserProviderInterface $userProvider, UserCheckerInterface $userChecker, EventDispatcher $dispatcher)
+    public function __construct($providerKey, \BaseFacebook $facebook, UserProviderInterface $customerManager, UserCheckerInterface $userChecker, EventDispatcher $dispatcher)
     {
-        if (!$userProvider instanceof UserProviderInterface) {
-            throw new \InvalidArgumentException('The $userProvider must implement UserManagerInterface if $createIfNotExists is true.');
+        if (!$customerManager instanceof UserProviderInterface) {
+            throw new \InvalidArgumentException('$customerManager must implement UserManagerInterface if $createIfNotExists is true.');
         }
 
         $this->providerKey = $providerKey;
         $this->facebook = $facebook;
-        $this->userProvider = $userProvider;
+        $this->customerManager = $customerManager;
         $this->userChecker = $userChecker;
         $this->dispatcher = $dispatcher;
     }
@@ -66,11 +68,11 @@ class FacebookUserProvider implements AuthenticationProviderInterface
             return null;
         }
 
-        $user = $token->getUser();
+        $customer = $token->getUser();
 
-        if ($user instanceof UserInterface) {
-            $this->userChecker->checkPostAuth($user);
-            $newToken = new FacebookUserToken($this->providerKey, $user, $user->getRoles(), $token->getAccessToken());
+        if ($customer instanceof UserInterface) {
+            $this->userChecker->checkPostAuth($customer);
+            $newToken = new FacebookUserToken($this->providerKey, $customer, $customer->getRoles(), $token->getAccessToken());
             $newToken->setAttributes($token->getAttributes());
 
             return $newToken;
@@ -103,35 +105,36 @@ class FacebookUserProvider implements AuthenticationProviderInterface
      */
     protected function createAuthenticatedToken($uid, $accessToken = null)
     {
-        if (null === $this->userProvider) {
+        if (null === $this->customerManager) {
             return new FacebookUserToken($this->providerKey, $uid, array(), $accessToken);
         }
 
         try {
-            $userProfile = $this->facebook->api('/me');
+            $facebookUserProfile = $this->facebook->api('/me');
 
-            $user = $this->userProvider->getRepository()->findOneByFacebookIdOrEmail($uid, $userProfile['email']);
+            $customer = $this->customerManager->getRepository()
+              ->findOneByFacebookIdOrEmail($uid, $facebookUserProfile['email']);
 
-            $this->userChecker->checkPostAuth($user);
+            $this->userChecker->checkPostAuth($customer);
 
             $this->dispatcher->dispatch(
                 Events\Event::EVENT_SECURITY_FACEBOOK_LOGIN, 
-                new Events\FacebookLoginEvent($user, $userProfile)
+                new Events\FacebookLoginEvent($customer, $facebookUserProfile)
             );
 
-            $this->userProvider->update($user);
+            $this->customerManager->update($customer);
 
         } catch (UsernameNotFoundException $e) {
-            $user = $this->createUser($userProfile);
+            $customer = $this->createUser($facebookUserProfile);
         } catch (\FacebookApiException $e) {
             throw new AuthenticationException('Could Not Get User Facebook Details. Was permission granted?');
         }
 
-        if (!$user instanceof UserInterface) {
+        if (!$customer instanceof UserInterface) {
             throw new AuthenticationException('User provider did not return an implementation of user interface.');
         }
 
-        return new FacebookUserToken($this->providerKey, $user, $user->getRoles(), $accessToken);
+        return new FacebookUserToken($this->providerKey, $customer, $customer->getRoles(), $accessToken);
     }
 
     /**
@@ -139,22 +142,22 @@ class FacebookUserProvider implements AuthenticationProviderInterface
      *
      * @param array $userProfile
      */
-    public function createUser(array $userProfile)
+    public function createUser(array $facebookUserProfile)
     {
-        $className = $this->userProvider->getClass();
-        $user = new $className;
+        $className = $this->customerManager->getClass();
+        $customer = new $className;
 
-        $user->setEmail($userProfile['email'])
+        $customer->setEmail($facebookUserProfile['email'])
           ->setPlainPassword(md5(uniqid(mt_rand(), true)))
           ->setEnabled(true)
           ->addRoles(array('ROLE_FACEBOOK','ROLE_USER'));
 
         $this->dispatcher->dispatch(
             Events\Event::EVENT_SECURITY_FACEBOOK_LOGIN_CREATE_USER, 
-            new Events\FacebookLoginEvent($user, $userProfile)
+            new Events\FacebookLoginEvent($customer, $facebookUserProfile)
         );
 
-        return $this->userProvider->create($user);
+        return $this->customerManager->create($customer);
     }
 
 }

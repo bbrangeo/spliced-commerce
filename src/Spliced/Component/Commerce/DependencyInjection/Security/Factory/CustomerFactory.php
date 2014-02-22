@@ -14,6 +14,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\FormLoginFactory;
+
 /**
  * CustomerFactory
  *
@@ -21,16 +22,18 @@ use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\FormLogin
  */
 class CustomerFactory extends FormLoginFactory
 {
-     protected function getListenerId()
+    
+    /**
+     * {@inheritDoc}
+     */
+    protected function getListenerId()
     {
         return 'commerce.security.authentication.listener.customer';
     }
     
-    /*public function getKey()
-    {
-        return 'form_login';
-    }
-    */
+    /**
+     * {@inheritDoc}
+     */
     protected function createAuthProvider(ContainerBuilder $container, $id, $config, $userProviderId)
     {
         $provider = 'commerce.security.authentication.provider.customer.'.$id;
@@ -42,35 +45,10 @@ class CustomerFactory extends FormLoginFactory
         ;
         return $provider;
     }
-    
-/*
-    protected function createListener($container, $id, $config, $userProvider)
-    {
-        $listenerId = $this->getListenerId();
-        
-        $listener = new DefinitionDecorator($listenerId);
-        $listener->replaceArgument(4, $id);
-        $listener->replaceArgument(5, new Reference($this->createAuthenticationSuccessHandler($container, $id, $config)));
-        $listener->replaceArgument(6, new Reference($this->createAuthenticationFailureHandler($container, $id, $config)));
-        $listener->replaceArgument(7, array_intersect_key($config, $this->options));
 
-        $listenerId .= '.'.$id;
-        $container->setDefinition($listenerId, $listener);
-
-        return $listenerId;
-        
-        $listenerId = parent::createListener($container, $id, $config, $userProvider);
-        //die($listenerId);
-        if (isset($config['csrf_provider'])) {
-            $container
-            ->getDefinition($listenerId)
-            ->addArgument(new Reference($config['csrf_provider']))
-            ;
-        }
-    
-        return $listenerId;
-    }*/
-    
+    /**
+     * {@inheritDoc}
+     */
     protected function createEntryPoint($container, $id, $config, $defaultEntryPoint)
     {
         $entryPointId = 'commerce.security.authentication.entry_point.customer.'.$id;

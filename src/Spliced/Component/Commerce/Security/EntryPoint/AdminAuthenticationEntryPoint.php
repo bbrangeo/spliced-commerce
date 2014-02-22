@@ -17,11 +17,11 @@ use Symfony\Component\Security\Http\EntryPoint\FormAuthenticationEntryPoint;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
- * UserAuthenticationEntryPoint
+ * AdminAuthenticationEntryPoint
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class UserAuthenticationEntryPoint extends FormAuthenticationEntryPoint
+class AdminAuthenticationEntryPoint extends FormAuthenticationEntryPoint
 {
    
 }
