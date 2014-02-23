@@ -36,8 +36,8 @@ class YahooOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfac
     {
         $this->configurationManager = $configurationManager;
         parent::__construct(
-            $configurationManager->get('commerce.yahoo.consumer_key'),
-            $configurationManager->get('commerce.yahoo.consumer_secret')
+            $this->getOption('consumer_key'),
+            $this->getOption('consumer_secret')
         );
         $this->kernel = $kernel;
     }

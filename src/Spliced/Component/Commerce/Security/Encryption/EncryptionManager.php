@@ -19,7 +19,7 @@ use Spliced\Component\Commerce\Configuration\ConfigurationManager;
  */
 class EncryptionManager implements EncryptorInterface, ConfigurableInterface
 {
-    /** array */
+    /** @var array $options */
     protected $options = array(
         'max_length' => 90,
         'cipher' => MCRYPT_RIJNDAEL_256,
@@ -29,6 +29,9 @@ class EncryptionManager implements EncryptorInterface, ConfigurableInterface
     );
 
     /**
+     * Constructor
+     * 
+     * @param ConfigurationManager $configurationManager
      * @param array $options
      */
     public function __construct(ConfigurationManager $configurationManager, array $options = array())
@@ -42,7 +45,7 @@ class EncryptionManager implements EncryptorInterface, ConfigurableInterface
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function encrypt($protectCode, $value)
     {
@@ -57,8 +60,7 @@ class EncryptionManager implements EncryptorInterface, ConfigurableInterface
     }
 
     /**
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function decrypt($protectCode, $encryptedValue)
     {
@@ -78,7 +80,7 @@ class EncryptionManager implements EncryptorInterface, ConfigurableInterface
     }
 
     /**
-     * generateIv
+     * {@inheritDoc}
      */
     public function generateIv()
     {

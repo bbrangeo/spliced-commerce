@@ -20,16 +20,16 @@ use Spliced\Component\Commerce\Configuration\ConfigurableInterface;
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterface
-{/*
+{
     const AUTH_ENDPOINT_URL     = 'https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize';
     const LOGOUT_ENDPOINT_URL     = 'https://www.paypal.com/webapps/auth/logout';
     const TOKEN_ENDPOINT_URL     = 'https://api.paypal.com/v1/identity/openidconnect/tokenservice';
     const USER_ENDPOINT_URL     = 'https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/userinfo';
-       */ 
-    const AUTH_ENDPOINT_URL     = 'https://www.sandbox.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize';
-    const LOGOUT_ENDPOINT_URL     = 'https://www.sandbox.paypal.com/webapps/auth/logout';
-    const TOKEN_ENDPOINT_URL     = 'https://api.sandbox.paypal.com/v1/identity/openidconnect/tokenservice';
-    const USER_ENDPOINT_URL     = 'https://www.sandbox.paypal.com/webapps/auth/protocol/openidconnect/v1/userinfo';
+ 
+    const SANDBOX_AUTH_ENDPOINT_URL     = 'https://www.sandbox.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize';
+    const SANDBOX_LOGOUT_ENDPOINT_URL     = 'https://www.sandbox.paypal.com/webapps/auth/logout';
+    const SANDBOX_TOKEN_ENDPOINT_URL     = 'https://api.sandbox.paypal.com/v1/identity/openidconnect/tokenservice';
+    const SANDBOX_USER_ENDPOINT_URL     = 'https://www.sandbox.paypal.com/webapps/auth/protocol/openidconnect/v1/userinfo';
     
     /**
      * @parameter ConfigurationManager $configurationManager
@@ -40,8 +40,8 @@ class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
         $this->kernel = $kernel;
 
         parent::__construct(
-            $configurationManager->get('commerce.paypal_login.app_id'),
-            $configurationManager->get('commerce.paypal_login.app_secret')
+            $this->getOption('app_id'),
+            $this->getOption('app_secret')
         );
     }
 
@@ -71,7 +71,7 @@ class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
     public function getLoginUrl()
     {
         return $this->getAuthenticationUrl(
-            self::AUTH_ENDPOINT_URL, 
+            $this->getOption('sandbox', true) ? static::SANDBOX_AUTH_ENDPOINT_URL : static::AUTH_ENDPOINT_URL,
             $this->getLoginCheckUrl(), 
             array(
                 'scope' => 'profile email address'
@@ -87,7 +87,7 @@ class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
     public function exchangeAuthTokenForAccessToken($authCode)
     {
         $accessToken = $this->getAccessToken(
-            self::TOKEN_ENDPOINT_URL, 
+            $this->getOption('sandbox', true) ? static::SANDBOX_TOKEN_ENDPOINT_URL : static::TOKEN_ENDPOINT_URL,
             self::GRANT_TYPE_AUTH_CODE, 
             array(
                 'code' => $authCode,
@@ -126,7 +126,7 @@ class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
     public function getUserProfile()
     {
         return $this->fetch(
-            self::USER_ENDPOINT_URL, 
+            $this->getOption('sandbox', true) ? static::SANDBOX_USER_ENDPOINT_URL : static::USER_ENDPOINT_URL, 
             array('schema' => 'openid'), 
             self::HTTP_METHOD_GET
         );
@@ -179,6 +179,15 @@ class PayPalOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
                 'help' => '',
                 'group' => 'Networks/PayPal',
                 'position' => 1,
+                'required' => false,
+            ),
+            'sandbox' => array(
+                'type' => 'boolean',
+                'value' => true,
+                'label' => 'Sandbox Mode',
+                'help' => '',
+                'group' => 'Networks/PayPal',
+                'position' => 2,
                 'required' => false,
             ),
         );

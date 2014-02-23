@@ -26,7 +26,10 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
     const USER_ENDPOINT_URL = 'https://www.googleapis.com/oauth2/v1/userinfo';
 
     /**
-     *
+     * Constructor
+     * 
+     * @param ConfigurationManager $configurationManger
+     * @param HttpKernelInterface $kernel
      */
     public function __construct(ConfigurationManager $configurationManager, HttpKernelInterface $kernel)
     {
@@ -34,8 +37,8 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
         $this->kernel = $kernel;
         
         parent::__construct(
-            $configurationManager->get('commerce.google.oauth_client_id'),
-            $configurationManager->get('commerce.google.oauth_client_secret')
+            $this->getOption('oauth_client_id'),
+            $this->getOption('oauth_client_secret')
         );
     }
 
@@ -60,7 +63,9 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
     }
     
     /**
-     *
+     * getLoginUrl
+     * 
+     * @return string
      */
     public function getLoginUrl()
     {
@@ -80,6 +85,8 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
      * exchangeAuthTokenForAccessToken
      *
      * @param string $authCode
+     * 
+     * @return string $accessToken
      */
     public function exchangeAuthTokenForAccessToken($authCode)
     {
@@ -88,14 +95,11 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
             $this->getConfigurationManager()->get('commerce.store.url_secure'),
             $this->getKernel()->getEnvironment() == 'dev' ? $_SERVER['SCRIPT_NAME'].'/' : '/'
         );
-        
-        //echo $loginCheckUrl; exit();
+
         $accessToken = $this->getAccessToken(self::TOKEN_ENDPOINT_URL, self::GRANT_TYPE_AUTH_CODE, array(
             'code' => $authCode,
             'redirect_uri' => $loginCheckUrl
         ));
-    
-        //var_dump ($accessToken);exit ();
         
         if (isset($accessToken['result']['error'])) {
             throw new GoogleOAuth2Exception("Auth Token Exchange Error: ".$accessToken['result']['error']);
@@ -107,7 +111,9 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
     }
 
     /**
-     *
+     * getUserProfile
+     * 
+     * @return array
      */
     public function getUserProfile()
     {

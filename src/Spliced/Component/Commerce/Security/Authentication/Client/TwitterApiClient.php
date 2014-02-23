@@ -32,12 +32,13 @@ class TwitterApiClient implements ConfigurableInterface
 
     public function __construct(ConfigurationManager $configurationManager, Session $session, HttpKernelInterface $kernel)
     {
-        $consumerKey = $configurationManager->get('commerce.twitter.consumer_key');
-        $consumerSecret = $configurationManager->get('commerce.twitter.consumer_secret');
-        $oAuthToken = $configurationManager->get('commerce.twitter.oauth_token');
-        $oAuthTokenSecret = $configurationManager->get('commerce.twitter.oauth_token_secret');
-
-        $this->twitter = new TwitterOAuth($consumerKey, $consumerSecret, $oAuthToken, $oAuthTokenSecret);
+        $this->twitter = new TwitterOAuth(
+            $this->getOption('consumer_key'),
+            $this->getOption('consumer_secret'),
+            $this->getOption('oauth_token'),
+            $this->getOption('oauth_token_secret')        
+        );
+        
         $this->kernel = $kernel;
         $this->session = $session;
         $this->configurationManager = $configurationManager;
