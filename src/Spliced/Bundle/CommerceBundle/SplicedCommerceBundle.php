@@ -24,6 +24,7 @@ use Spliced\Component\Commerce\DependencyInjection\Compiler\CheckoutNotifierComp
 use Spliced\Component\Commerce\DependencyInjection\Compiler\RoutingCompilerPass;
 use Spliced\Component\Commerce\DependencyInjection\Compiler\ProductTypeCompilerPass;
 use Spliced\Component\Commerce\DependencyInjection\Compiler\CheckoutStepCompilerPass;
+use Doctrine\ODM\MongoDB\Types\Type;
 
 /**
  * SplicedCommerceBundle
@@ -32,10 +33,16 @@ use Spliced\Component\Commerce\DependencyInjection\Compiler\CheckoutStepCompiler
  */
 class SplicedCommerceBundle extends Bundle
 {
-    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        Type::registerType('configuration_value', 'Spliced\Component\Commerce\Doctrine\ODM\MongoDB\Types\ConfigurationValueType');
+    }
     
     /**
-     * @param ContainerBuilder $container
+     * {@inheritDoc}
      */
     public function build(ContainerBuilder $container)
     {
@@ -57,7 +64,6 @@ class SplicedCommerceBundle extends Bundle
         $container->addCompilerPass(new RoutingCompilerPass());
         $container->addCompilerPass(new ProductTypeCompilerPass());
         $container->addCompilerPass(new CheckoutStepCompilerPass());
-
     }
 
 }

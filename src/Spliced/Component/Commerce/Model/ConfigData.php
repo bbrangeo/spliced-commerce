@@ -10,6 +10,7 @@
 namespace Spliced\Component\Commerce\Model;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Spliced\Component\Commerce\Doctrine\ODM\MongoDB\Mapping\Annotations as Commerce;
 
 /**
  * ConfigData
@@ -38,34 +39,41 @@ abstract class ConfigData implements ConfigDataInterface
     protected $key;
 
     /**
-     * @MongoDB\String
+     * @Commerce\ConfigurationValue
      */
     protected $value;
     
     /**
      * @MongoDB\String
+     * @MongoDB\Index
      */
-    protected $configGroup;
+    protected $group;
+    
+    /**
+     * @MongoDB\String
+     * @MongoDB\Index
+     */
+    protected $childGroup;
     
     /**
      * @MongoDB\Int
      */
-    protected $configPosition;
+    protected $position;
     
     /**
      * @MongoDB\String
      */
-    protected $configLabel;
+    protected $label;
     
     /**
      * @MongoDB\String
      */
-    protected $configHelp;
+    protected $help;
     
     /**
      * @MongoDB\Boolean
      */
-    protected $isRequired;
+    protected $required;
 
     /**
      * @MongoDB\Date
@@ -122,30 +130,16 @@ abstract class ConfigData implements ConfigDataInterface
         return $this->key;
     }
     
+    public function getFormSafeKey()
+    {
+        return str_replace('.', '_', $this->key);
+    }
+    
     /**
      * {@inheritDoc}
      */
     public function setValue($value)
     {
-    
-        switch ($this->getType()) {
-            default:
-                break;
-            case 'boolean':
-                $value = $value ? true : false;
-                break;
-            case 'integer':
-                $value = (int) $value;
-                break;
-            case 'float':
-                $value = (float) $value;
-                break;
-            case 'serialized':
-            case 'array':
-                $value = serialize($value);
-                break;
-        }
-    
         $this->value = $value;
         return $this;
     }
@@ -155,9 +149,6 @@ abstract class ConfigData implements ConfigDataInterface
      */
     public function getValue()
     {
-        if(in_array($this->getType(),array('array','countries'))){
-            return unserialize($this->value);
-        }
         return $this->value;
     }
     
@@ -183,36 +174,54 @@ abstract class ConfigData implements ConfigDataInterface
     /**
      * {@inheritDoc}
      */
-    public function setConfigGroup($configGroup)
+    public function setGroup($group)
     {
-        $this->configGroup = $configGroup;
+        $this->group = $group;
         return $this;
     }
     
     /**
      * {@inheritDoc}
      */
-    public function getConfigGroup()
+    public function getGroup()
     {
-        return $this->configGroup;
+        return $this->group;
     }
     
-    
+
     /**
      * {@inheritDoc}
      */
-    public function setConfigPosition($configPosition)
+    public function setChildGroup($childGroup)
     {
-        $this->configPosition = $configPosition;
+        $this->childGroup = $childGroup;
         return $this;
     }
     
     /**
      * {@inheritDoc}
      */
-    public function getConfigPosition()
+    public function getChildGroup()
     {
-        return $this->configPosition;
+        return $this->childGroup;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+        return $this;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getPosition()
+    {
+        return $this->position;
     }
     
 
@@ -255,9 +264,9 @@ abstract class ConfigData implements ConfigDataInterface
     /**
      * {@inheritDoc}
      */
-    public function setConfigLabel($configLabel)
+    public function setLabel($label)
     {
-        $this->configLabel = $configLabel;
+        $this->label = $label;
         return $this;
     }
     
@@ -265,18 +274,18 @@ abstract class ConfigData implements ConfigDataInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigLabel()
+    public function getLabel()
     {
-        return $this->configLabel;
+        return $this->label;
     }
     
     
     /**
      * {@inheritDoc}
      */
-    public function setIsRequired($isRequired)
+    public function setRequired($isRequired)
     {
-        $this->isRequired = $isRequired;
+        $this->required = $isRequired;
         return $this;
     }
     
@@ -284,18 +293,30 @@ abstract class ConfigData implements ConfigDataInterface
     /**
      * {@inheritDoc}
      */
-    public function getIsRequired()
+    public function getRequired()
     {
-        return $this->isRequired;
+        return $this->required;
+    }
+    
+    /**
+     * isRequired
+     * 
+     * Proxy method for getRequired
+     * 
+     * @return bool
+     */
+    public function isRequired()
+    {
+        return $this->getRequired();
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public function setConfigHelp($configHelp)
+    public function setHelp($help)
     {
-        $this->configHelp = $configHelp;
+        $this->help = $help;
         return $this;
     }
     
@@ -303,9 +324,9 @@ abstract class ConfigData implements ConfigDataInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigHelp()
+    public function getHelp()
     {
-        return $this->configHelp;
+        return $this->help;
     }
     
 }

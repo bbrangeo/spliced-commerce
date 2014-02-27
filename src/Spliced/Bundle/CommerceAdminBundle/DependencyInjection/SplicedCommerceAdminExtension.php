@@ -22,7 +22,7 @@ class SplicedCommerceAdminExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-        $existingBundles = 
+        //$existingBundles = 
         
         $isCombinedEnviornment = false;
         
@@ -50,8 +50,10 @@ class SplicedCommerceAdminExtension extends Extension
             $frontLoader->load('payment.xml');
             $frontLoader->load('shipping.xml');
             $frontLoader->load('product_types.xml');
+            $frontLoader->load('configuration_field_types.xml');
+            
             $container->setParameter('commerce.checkout_notifiers', array());
-        }
+        } 
         
         $container->setAlias('commerce.admin.entity_manager', $config['entity_manager']);
         $container->setAlias('commerce.admin.document_manager', $config['document_manager']);

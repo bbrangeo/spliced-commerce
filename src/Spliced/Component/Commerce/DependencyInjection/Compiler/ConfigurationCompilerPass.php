@@ -25,17 +25,25 @@ class ConfigurationCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('commerce.configuration')) {
+        if (!$container->hasDefinition('commerce.configuration') && !$container->hasDefinition('commerce.admin.configuration')) {
             return;
         }
         
-        $configurationInitializer = $container->getDefinition('commerce.configuration');
-
-        $services = $container->findTaggedServiceIds('commerce.configurable');
+        if ($container->hasDefinition('commerce.configuration')) {
+            $configurationInitializer = $container->getDefinition('commerce.configuration');
+        } else {
+            $configurationInitializer = $container->getDefinition('commerce.admin.configuration');
+        }
         
-        foreach ($services as $id => $attributes) {
+        
+        // add all our services which have configuration definitions
+        foreach ($container->findTaggedServiceIds('commerce.configurable') as $id => $attributes) {
             $configurationInitializer->addMethodCall('addConfigurableServiceId', array($id));
         }
- 
+
+        // add all our configuration field types
+        foreach ($container->findTaggedServiceIds('commerce.configuration_type') as $id => $attributes) {
+            $configurationInitializer->addMethodCall('addFieldType', array(new Reference($id))); 
+        }
     }
 }

@@ -41,7 +41,7 @@ class CoreConfiguration implements ConfigurableInterface
      */
     public function getConfigPrefix()
     {
-        return 'commerce.';
+        return 'commerce';
     }
     
     /**
@@ -74,11 +74,12 @@ class CoreConfiguration implements ConfigurableInterface
             $config[$key] = array(
                 'type' => isset($c['type']) ? $c['type'] : 'string',
                 'value' => isset($c['value']) ? $c['value'] : null,
-                'label' => isset($c['configLabel']) ? $c['configLabel'] : null,
-                'help' => isset($c['configHelp']) ? $c['configHelp'] : null,
-                'group' => isset($c['configGroup']) ? $c['configGroup'] : null,
-                'position' => isset($c['configPosition']) ? $c['configPosition'] : null,
-                'required' => isset($c['isRequired']) ? $c['isRequired'] : false,    
+                'label' => isset($c['label']) ? $c['label'] : null,
+                'help' => isset($c['help']) ? $c['help'] : null,
+                'group' => isset($c['group']) ? $c['group'] : null,
+                'child_group' => isset($c['child_group']) ? $c['child_group'] : null,
+                'position' => isset($c['position']) ? $c['position'] : null,
+                'required' => isset($c['required']) ? $c['required'] : false,    
             );
         }
 

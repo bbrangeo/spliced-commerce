@@ -84,9 +84,11 @@ class EncryptionManager implements EncryptorInterface, ConfigurableInterface
      */
     public function generateIv()
     {
-        $size = mcrypt_get_iv_size($this->options['cipher'], $this->options['cipher_mode']);
-
-        return mcrypt_create_iv($size, MCRYPT_DEV_RANDOM);
+        // return it base64 encoded to prevent
+        return base64_encode(mcrypt_create_iv(
+            mcrypt_get_iv_size($this->options['cipher'], $this->options['cipher_mode']),
+            MCRYPT_DEV_RANDOM
+        ));
     }
 
     /**
@@ -111,12 +113,20 @@ class EncryptionManager implements EncryptorInterface, ConfigurableInterface
     public function getRequiredConfigurationFields()
     {
         return array(
+            // ConfigurableInterfaces which also implement
+            // EncryptorInterface and include a configuration 
+            // option of iv exists, the configuration manager
+            // will generate the IV on insertion to prevent
+            // an IV being generated each time this method
+            // is called to save resources as generating an IV
+            // can be resource hungry and lengthy
             'iv' => array(
                 'type' => 'string',
-                'value' => $this->generateIv(),
+                'value' => null,
                 'label' => 'Encryption IV',
                 'help' => '',
-                'group' => 'Security/Encryption',
+                'group' => 'Security',
+                'child_group' => 'Encryption',
                 'position' => 1,
                 'required' => true,
             ),

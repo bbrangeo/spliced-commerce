@@ -31,18 +31,17 @@ class TwitterApiClient implements ConfigurableInterface
     private $callbackURL;
 
     public function __construct(ConfigurationManager $configurationManager, Session $session, HttpKernelInterface $kernel)
-    {
-        $this->twitter = new TwitterOAuth(
-            $this->getOption('consumer_key'),
-            $this->getOption('consumer_secret'),
-            $this->getOption('oauth_token'),
-            $this->getOption('oauth_token_secret')        
-        );
-        
+    {        
         $this->kernel = $kernel;
         $this->session = $session;
         $this->configurationManager = $configurationManager;
         
+        $this->twitter = new TwitterOAuth(
+            $this->getOption('consumer_key'),
+            $this->getOption('consumer_secret'),
+            $this->getOption('oauth_token'),
+            $this->getOption('oauth_token_secret')
+        );
     }
 
     /**
@@ -202,7 +201,8 @@ class TwitterApiClient implements ConfigurableInterface
                 'value' => null,
                 'label' => 'Consumer Key',
                 'help' => '',
-                'group' => 'Networks/Twitter',
+                'group' => 'Networks',
+                'child_group' => 'Twitter',
                 'position' => 0,
                 'required' => false,
             ),
@@ -211,7 +211,8 @@ class TwitterApiClient implements ConfigurableInterface
                 'value' => null,
                 'label' => 'Consumer Secret',
                 'help' => '',
-                'group' => 'Networks/Twitter',
+                'group' => 'Networks',
+                'child_group' => 'Twitter',
                 'position' => 1,
                 'required' => false,
             ),
@@ -220,7 +221,8 @@ class TwitterApiClient implements ConfigurableInterface
                 'value' => null,
                 'label' => 'OAuth Token',
                 'help' => '',
-                'group' => 'Networks/Twitter',
+                'group' => 'Networks',
+                'child_group' => 'Twitter',
                 'position' => 0,
                 'required' => false,
             ),
@@ -229,7 +231,8 @@ class TwitterApiClient implements ConfigurableInterface
                 'value' => null,
                 'label' => 'OAuth Token Secret',
                 'help' => '',
-                'group' => 'Networks/Twitter',
+                'group' => 'Networks',
+                'child_group' => 'Twitter',
                 'position' => 1,
                 'required' => false,
             ),

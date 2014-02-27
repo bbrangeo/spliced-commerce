@@ -34,7 +34,6 @@ use PayPal\PayPalAPI\DoExpressCheckoutPaymentReq;
 use PayPal\PayPalAPI\DoExpressCheckoutPaymentRequestType;
 use PayPal\EBLBaseComponents\DoExpressCheckoutPaymentRequestDetailsType;
 
-
 /**
  * PayPalExpressCheckoutPayment
  *
@@ -217,8 +216,6 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
         $getExpressCheckoutRequest->GetExpressCheckoutDetailsRequest = $getExpressCheckoutRequestType;
         $getExpressCheckoutResponse = $paypal->GetExpressCheckoutDetails($getExpressCheckoutRequest);
 
-        
-        
         // now lookup the payment info to complete the transaction
         $doExpressCheckoutPaymentDetailRequestType = new DoExpressCheckoutPaymentRequestDetailsType();
         $doExpressCheckoutPaymentDetailRequestType->PayerID = $getExpressCheckoutResponse->GetExpressCheckoutDetailsResponseDetails->PayerInfo->PayerID;
@@ -229,20 +226,16 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
         $paymentDetails->OrderTotal = number_format($this->getOrderHelper()->getOrderTotal($order),2,'.','');
         
         $doExpressCheckoutPaymentDetailRequestType->PaymentDetails[0] = $paymentDetails;
-        
-        
+       
         $doExpressCheckoutPaymentRequestType = new DoExpressCheckoutPaymentRequestType();
         $doExpressCheckoutPaymentRequestType->DoExpressCheckoutPaymentRequestDetails = $doExpressCheckoutPaymentDetailRequestType;
-        
-        
+
         $doExpressCheckoutPaymentRequest = new DoExpressCheckoutPaymentReq();
         $doExpressCheckoutPaymentRequest->DoExpressCheckoutPaymentRequest = $doExpressCheckoutPaymentRequestType;
         
         $doExpressCheckoutResponse = $paypal->DoExpressCheckoutPayment($doExpressCheckoutPaymentRequest);
         
-        #echo '<pre>';print_r((array)$doExpressCheckoutResponse);die();
-        
-        // add a payment memo for the payment being recieved, for each payment record
+        // add a payment memo for the payment being received, for each payment record
         foreach($doExpressCheckoutResponse->DoExpressCheckoutPaymentResponseDetails->PaymentInfo as $paymentInfo){
             
             $newStatus = $this->getOption('checkout_complete_status');
@@ -254,7 +247,7 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
             $paymentMemo = $this->getConfigurationManager()->createEntity(
                     ConfigurationManager::OBJECT_CLASS_TAG_ORDER_PAYMENT_MEMO
             )->setCreatedBy('paypal')
-            ->setMemo('PayPal Payment Recieved '.$paymentInfo->PaymentStatus)
+            ->setMemo('PayPal Payment Received '.$paymentInfo->PaymentStatus)
             ->setMerchantTransactionId($paymentInfo->TransactionID)
             ->setAmountPaid($paymentInfo->GrossAmount->value)
             ->setMemoData(json_decode(json_encode($paymentInfo),true) /* to an array */)
@@ -299,7 +292,8 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
                 'value' => isset($this->defaultConfigurationValues['username']) ? $this->defaultConfigurationValues['username'] : null,
                 'label' => 'API Username',
                 'help' => '',
-                'group' => sprintf('Payment/%s', $this->getName()),
+                'group' => 'Payment',
+                'child_group' => 'PayPal Express',
                 'position' => ++$i,
                 'required' => false,
             ),
@@ -308,7 +302,8 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
                 'value' => isset($this->defaultConfigurationValues['password']) ? $this->defaultConfigurationValues['password'] : null,
                 'label' => 'API Password',
                 'help' => '',
-                'group' => sprintf('Payment/%s', $this->getName()),
+                'group' => 'Payment',
+                'child_group' => 'PayPal Express',
                 'position' => ++$i,
                 'required' => false,
              ),   
@@ -317,7 +312,8 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
                  'value' => isset($this->defaultConfigurationValues['signature']) ? $this->defaultConfigurationValues['signature'] : null,
                  'label' => 'API Signature',
                  'help' => '',
-                 'group' => sprintf('Payment/%s', $this->getName()),
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
                  'position' => ++$i,
                  'required' => false,
              ),
@@ -326,7 +322,8 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
                  'value' => isset($this->defaultConfigurationValues['test_username']) ? $this->defaultConfigurationValues['test_username'] : null,
                  'label' => 'API Test Username',
                  'help' => '',
-                 'group' => sprintf('Payment/%s', $this->getName()),
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
                  'position' => ++$i,
                  'required' => false,
              ),
@@ -335,7 +332,8 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
                  'value' => isset($this->defaultConfigurationValues['test_password']) ? $this->defaultConfigurationValues['test_password'] : null,
                  'label' => 'API Test Password',
                  'help' => '',
-                 'group' => sprintf('Payment/%s', $this->getName()),
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
                  'position' => ++$i,
                  'required' => false,
              ),
@@ -344,7 +342,8 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
                  'value' => isset($this->defaultConfigurationValues['test_signature']) ? $this->defaultConfigurationValues['test_signature'] : null,
                  'label' => 'API Test Signature',
                  'help' => '',
-                 'group' => sprintf('Payment/%s', $this->getName()),
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
                  'position' => ++$i,
                  'required' => false,
              ),
@@ -353,7 +352,89 @@ class PayPalExpressCheckoutPayment extends RemotelyProcessedPaymentProvider
                  'value' => isset($this->defaultConfigurationValues['test_mode']) ? $this->defaultConfigurationValues['test_mode'] : null,
                  'label' => 'Test Mode',
                  'help' => '',
-                 'group' => sprintf('Payment/%s', $this->getName()),
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
+                 'position' => ++$i,
+                 'required' => false,
+             ),
+             // standard remotely processed payment fields
+             'enabled' => array(
+                 'type' => 'boolean',
+                 'value' => isset($this->defaultConfigurationValues['enabled']) ? $this->defaultConfigurationValues['enabled'] : null,
+                 'label' => 'Enabled',
+                 'help' => '',
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
+                 'position' => ++$i,
+                 'required' => false,
+             ),
+             'position' => array(
+                 'type' => 'integer',
+                 'value' => isset($this->defaultConfigurationValues['position']) ? $this->defaultConfigurationValues['position'] : null,
+                 'label' => 'Position',
+                 'help' => '',
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
+                 'position' => ++$i,
+                 'required' => false,
+             ),
+             'checkout_complete_status' => array(
+                 'type' => 'status',
+                 'value' => isset($this->defaultConfigurationValues['checkout_complete_status']) ? $this->defaultConfigurationValues['checkout_complete_status'] : OrderInterface::STATUS_PROCESSING,
+                 'label' => 'Order Status After Checkout Complete',
+                 'help' => '',
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
+                 'position' => ++$i,
+                 'required' => false,
+             ),
+             'label' => array(
+                 'type' => 'string',
+                 'value' => isset($this->defaultConfigurationValues['label']) ? $this->defaultConfigurationValues['label'] : null,
+                 'label' => 'Label',
+                 'help' => '',
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
+                 'position' => ++$i,
+                 'required' => false,
+             ),
+             'label2' => array(
+                 'type' => 'string',
+                 'value' => isset($this->defaultConfigurationValues['label2']) ? $this->defaultConfigurationValues['label2'] : null,
+                 'label' => 'Label 2',
+                 'help' => '',
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
+                 'position' => ++$i,
+                 'required' => false,
+             ),
+             'description' => array(
+                 'type' => 'html',
+                 'value' => isset($this->defaultConfigurationValues['description']) ? $this->defaultConfigurationValues['description'] : null,
+                 'label' => 'Description',
+                 'help' => '',
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
+                 'position' => ++$i,
+                 'required' => false,
+             ),
+             'continue_to_button_image' => array(
+                 'type' => 'url',
+                 'value' => isset($this->defaultConfigurationValues['continue_to_button_image']) ? $this->defaultConfigurationValues['continue_to_button_image'] : null,
+                 'label' => 'Continue To Image',
+                 'help' => '',
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
+                 'position' => ++$i,
+                 'required' => false,
+             ),
+             'continue_to_button_text' => array(
+                 'type' => 'string',
+                 'value' => isset($this->defaultConfigurationValues['continue_to_button_text']) ? $this->defaultConfigurationValues['continue_to_button_text'] : null,
+                 'label' => 'Continue To Image',
+                 'help' => '',
+                 'group' => 'Payment',
+                 'child_group' => 'PayPal Express',
                  'position' => ++$i,
                  'required' => false,
              ),

@@ -33,6 +33,7 @@ class SplicedCommerceExtension extends Extension
         $xmlLoader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $xmlLoader->load('configuration.xml');
+        $xmlLoader->load('configuration_field_types.xml');
         $xmlLoader->load('services.xml');
         $xmlLoader->load('routing.xml');
         $xmlLoader->load('twig.xml');

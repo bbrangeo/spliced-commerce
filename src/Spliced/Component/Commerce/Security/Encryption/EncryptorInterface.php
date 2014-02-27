@@ -20,7 +20,7 @@ interface EncryptorInterface
     /**
      * encrypt
      * 
-     * Enctypt some variable
+     * Encrypt some variable
      * 
      * @param string $protectCode
      * @param mixed $toEncrypt

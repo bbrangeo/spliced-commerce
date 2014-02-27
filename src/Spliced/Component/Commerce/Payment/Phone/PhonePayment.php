@@ -35,7 +35,69 @@ class PhonePayment extends PaymentProvider
      */
     public function getRequiredConfigurationFields()
     {
+        $i = 0;
         return array_merge(parent::getRequiredConfigurationFields(),array(
+                // standard payment provider fields
+                'enabled' => array(
+                    'type' => 'boolean',
+                    'value' => isset($this->defaultConfigurationValues['enabled']) ? $this->defaultConfigurationValues['enabled'] : null,
+                    'label' => 'Enabled',
+                    'help' => '',
+                    'group' => 'Payment',
+                    'child_group' => 'Pay By Phone',
+                    'position' => ++$i,
+                    'required' => false,
+                ),
+                'position' => array(
+                    'type' => 'integer',
+                    'value' => isset($this->defaultConfigurationValues['position']) ? $this->defaultConfigurationValues['position'] : 0,
+                    'label' => 'Position',
+                    'help' => '',
+                    'group' => 'Payment',
+                    'child_group' => 'Pay By Phone',
+                    'position' => ++$i,
+                    'required' => false,
+                ),
+                'checkout_complete_status' => array(
+                    'type' => 'status',
+                    'value' => isset($this->defaultConfigurationValues['checkout_complete_status']) ? $this->defaultConfigurationValues['checkout_complete_status'] : Order::STATUS_PROCESSING,
+                    'label' => 'Order Status After Checkout Complete',
+                    'help' => '',
+                    'group' => 'Payment',
+                    'child_group' => 'Pay By Phone',
+                    'position' => ++$i,
+                    'required' => false,
+                ),
+                'label' => array(
+                    'type' => 'string',
+                    'value' => isset($this->defaultConfigurationValues['label']) ? $this->defaultConfigurationValues['label'] : null,
+                    'label' => 'Label',
+                    'help' => '',
+                    'group' => 'Payment',
+                    'child_group' => 'Pay By Phone',
+                    'position' => ++$i,
+                    'required' => false,
+                ),
+                'label2' => array(
+                    'type' => 'string',
+                    'value' => isset($this->defaultConfigurationValues['label2']) ? $this->defaultConfigurationValues['label2'] : null,
+                    'label' => 'Label 2',
+                    'help' => '',
+                    'group' => 'Payment',
+                    'child_group' => 'Pay By Phone',
+                    'position' => ++$i,
+                    'required' => false,
+                ),
+                'description' => array(
+                    'type' => 'html',
+                    'value' => isset($this->defaultConfigurationValues['description']) ? $this->defaultConfigurationValues['description'] : null,
+                    'label' => 'Description',
+                    'help' => '',
+                    'group' => 'Payment',
+                    'child_group' => 'Pay By Phone',
+                    'position' => ++$i,
+                    'required' => false,
+                ),
         ));
     }
 }

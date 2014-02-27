@@ -355,7 +355,8 @@ class CheckoutManager
             'validation_groups' => array('checkout_step_'.$this->getCurrentStep())
         ), $formOptions));
         
-        // build form for each handler
+        // pass the current form builder to each step handler and let the handler
+        // build on top of the form
         foreach($this->getStepHandlersByStep($this->getCurrentStep()) as $stepHandler) {
             $stepHandler->buildForm($order, $checkoutForm);
         }

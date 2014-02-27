@@ -95,6 +95,18 @@
 	        <parameter key="visitor">%commerce.entity.visitor.class%</parameter>
 	        <parameter key="visitor_request">%commerce.entity.visitor_request.class%</parameter>
 	    </parameter>
+	    
+	    <!-- Configuration Field Types -->
+	    <parameter key="commerce.configuration.field.array.class">Spliced\Component\Commerce\Configuration\Type\ArrayType</parameter>
+	    <parameter key="commerce.configuration.field.boolean.class">Spliced\Component\Commerce\Configuration\Type\BooleanType</parameter>
+	    <parameter key="commerce.configuration.field.countries.class">Spliced\Component\Commerce\Configuration\Type\CountriesType</parameter>
+	    <parameter key="commerce.configuration.field.email.class">Spliced\Component\Commerce\Configuration\Type\EmailType</parameter>
+	    <parameter key="commerce.configuration.field.encrypted.class">Spliced\Component\Commerce\Configuration\Type\EncryptedType</parameter>
+	    <parameter key="commerce.configuration.field.float.class">Spliced\Component\Commerce\Configuration\Type\FloatType</parameter>
+	    <parameter key="commerce.configuration.field.html.class">Spliced\Component\Commerce\Configuration\Type\HtmlType</parameter>
+	    <parameter key="commerce.configuration.field.integer.class">Spliced\Component\Commerce\Configuration\Type\IntegerType</parameter>
+	    <parameter key="commerce.configuration.field.status.class">Spliced\Component\Commerce\Configuration\Type\StatusType</parameter>
+	    <parameter key="commerce.configuration.field.text.class">Spliced\Component\Commerce\Configuration\Type\TextType</parameter>
     </parameters> 
 
     <services>
@@ -111,5 +123,38 @@
         	<argument type="service" id="commerce.configuration" />
         	<tag name="commerce.configurable" />
         </service>
+        
+        <!-- Configuration Field Type Definitions -->
+        <service id="commerce.configuration.field.array" class="%commerce.configuration.field.array.class%">
+        	<tag name="commerce.configuration_type" />
+        </service>
+        <service id="commerce.configuration.field.boolean" class="%commerce.configuration.field.boolean.class%">
+        	<tag name="commerce.configuration_type" />
+        </service>
+        <service id="commerce.configuration.field.countries" class="%commerce.configuration.field.countries.class%">
+        	<tag name="commerce.configuration_type" />
+        </service>
+        <service id="commerce.configuration.field.email" class="%commerce.configuration.field.email.class%">
+        	<tag name="commerce.configuration_type" />
+        </service>
+        <service id="commerce.configuration.field.encrypted" class="%commerce.configuration.field.encrypted.class%">
+        	<tag name="commerce.configuration_type" />
+        </service>
+        <service id="commerce.configuration.field.float" class="%commerce.configuration.field.float.class%">
+        	<tag name="commerce.configuration_type" />
+        </service>
+        <service id="commerce.configuration.field.html" class="%commerce.configuration.field.html.class%">
+        	<tag name="commerce.configuration_type" />
+        </service>
+        <service id="commerce.configuration.field.integer" class="%commerce.configuration.field.integer.class%">
+        	<tag name="commerce.configuration_type" />
+        </service>
+        <service id="commerce.configuration.field.status" class="%commerce.configuration.field.status.class%">
+        	<tag name="commerce.configuration_type" />
+        </service>
+        <service id="commerce.configuration.field.text" class="%commerce.configuration.field.text.class%">
+        	<tag name="commerce.configuration_type" />
+        </service>
+        
     </services>
 </container>

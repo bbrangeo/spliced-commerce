@@ -15,16 +15,23 @@
         </tr>
     </tfoot>
     <tbody>
-        {# The Default, Controller Route #}
+        {# The Default, Controller Routes #}
+        <tr>
+            <td>
+            {{ multiple_app_kernel_generate_route('frontend', 'commerce_product_view', { 'id' : form.vars.data.id }, true) }}
+            </td> 
+            <td>System</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
         <tr>
             <td>
             {{ multiple_app_kernel_generate_route('frontend', 'commerce_product_view_by_slug', { 'slug' : form.vars.data.urlSlug }, true) }}
             </td> 
             <td>System</td>
-            <td></td>
-            <td></td>
+            <td>-</td>
+            <td>-</td>
         </tr>
-        
         {% if product.routes is defined and product.routes|length %}
 	        
 	    {% endif %}

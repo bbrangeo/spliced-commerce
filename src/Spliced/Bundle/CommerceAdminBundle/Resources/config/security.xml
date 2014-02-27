@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="commerce.user.manager" class="Spliced\Component\Commerce\Security\User\UserManager">
+        <service id="commerce.user.manager" class="Spliced\Component\Commerce\Security\User\AdminUserManager">
 	    	<argument type="service" id="commerce.admin.configuration" />
 	    	<argument type="service" id="security.encoder_factory" /> 
 	        <argument type="service" id="commerce.admin.entity_manager" /> 
@@ -12,13 +12,13 @@
         </service> 
 
         <service id="commerce.security.authentication.entry_point.user" 
-        	class="Spliced\Component\Commerce\Security\EntryPoint\UserAuthenticationEntryPoint" 
+        	class="Spliced\Component\Commerce\Security\EntryPoint\AdminAuthenticationEntryPoint" 
         	public="true" abstract="true">
             <argument type="service" id="http_kernel" />
         </service>
         
-        <service id="commerce.security.authentication.provider.user" 
-        	class="Spliced\Component\Commerce\Security\Authentication\Provider\UserProvider" 
+        <service id="commerce.security.authentication.provider.admin" 
+        	class="Spliced\Component\Commerce\Security\Authentication\Provider\AdminAuthenticationProvider" 
         	public="false">
             <argument /> <!-- Provider-shared Key -->
             <argument type="service" id="commerce.user.manager" />
@@ -28,7 +28,7 @@
         </service>
                 
         <service id="commerce.security.authentication.listener.user"
-                 class="Spliced\Component\Commerce\Security\Firewall\UserListener"
+                 class="Spliced\Component\Commerce\Security\Firewall\AdminAUthenticationListener"
                  parent="security.authentication.listener.abstract"
                  abstract="true">
         </service>

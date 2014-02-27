@@ -58,53 +58,57 @@ interface ConfigDataInterface
     public function getType();
     
     /**
-     * setConfigLabel
+     * setLabel
      *
-     * @param string $configLabel
+     * @param string $label
      */
-    public function setConfigLabel($configLabel);
+    public function setLabel($label);
     
     /**
-     * getConfigLabel
+     * getLabel
+     * 
+     * @return string
     */
-    public function getConfigLabel();
+    public function getLabel();
     
     /**
-     * setConfigHelp
+     * setHelp
      *
-     * @param string $configHelp
+     * @param string $help
      */
-    public function setConfigHelp($configHelp);
+    public function setHelp($help);
     
     /**
-     * getConfigHelp
+     * getHelp
+     * 
+     * @return string
     */
-    public function getConfigHelp();
+    public function getHelp();
     
     /**
-     * setConfigGroup
+     * setGroup
      *
-     * @param string $configGroup
+     * @param string $group
      */
-    public function setConfigGroup($configGroup);
+    public function setGroup($group);
     
     /**
-     * getConfigGroup
+     * getGroup
     */
-    public function getConfigGroup();
+    public function getGroup();
     
 
     /**
-     * setConfigPosition
+     * setPosition
      *
      * @param string $configPosition
      */
-    public function setConfigPosition($configPosition);
+    public function setPosition($position);
     
     /**
-     * getConfigPosition
+     * getPosition
     */
-    public function getConfigPosition();
+    public function getPosition();
     
     /**
      * setCreatedAt
@@ -129,14 +133,14 @@ interface ConfigDataInterface
     public function getUpdatedAt();
     
     /**
-     * setIsRequired
+     * setRequired
      *
-     * @param bool $isRequired
+     * @param bool $required
      */
-    public function setIsRequired($isRequired);
+    public function setRequired($required);
     
     /**
-     * getIsRequired
+     * getRequired
     */
-    public function getIsRequired();
+    public function getRequired();
 }

@@ -90,7 +90,6 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
      */
     public function exchangeAuthTokenForAccessToken($authCode)
     {
-
         $loginCheckUrl = sprintf('%s%sgoogle_login_check',
             $this->getConfigurationManager()->get('commerce.store.url_secure'),
             $this->getKernel()->getEnvironment() == 'dev' ? $_SERVER['SCRIPT_NAME'].'/' : '/'
@@ -158,7 +157,8 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
                 'value' => null,
                 'label' => 'OAuth Client ID',
                 'help' => '',
-                'group' => 'Networks/Google',
+                'group' => 'Networks',
+                'child_group' => 'Google',
                 'position' => 0,
                 'required' => false,
             ),
@@ -167,7 +167,8 @@ class GoogleOAuth2Client extends BaseOAuth2Client implements ConfigurableInterfa
                 'value' => null,
                 'label' => 'OAuth Client Secret',
                 'help' => '',
-                'group' => 'Networks/Google',
+                'group' => 'Networks',
+                'child_group' => 'Google',
                 'position' => 1,
                 'required' => false,
             ),
