@@ -10,20 +10,22 @@
 namespace Spliced\Bundle\CommerceAdminBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Spliced\Component\Commerce\Model\ConfigData as BaseConfigData;
+use Spliced\Component\Commerce\Model\ContentPage as BaseContentPage;
 
 /**
  * @MongoDB\Document(
- *     collection="config_data", 
- *     repositoryClass="Spliced\Bundle\CommerceAdminBundle\Repository\ConfigDataDocumentRepository"
+ *     collection="content_page", 
+ *  repositoryClass="Spliced\Bundle\CommerceAdminBundle\Repository\ContentPageDocumentRepository"
  * )
  * @MongoDB\MappedSuperclass()
  */
-class ConfigData extends BaseConfigData
+class ContentPage extends BaseContentPage
 {
 
-    
 
+    /**
+     * @MongoDB\Id
+     */
+    protected $id;
 
-    
 }

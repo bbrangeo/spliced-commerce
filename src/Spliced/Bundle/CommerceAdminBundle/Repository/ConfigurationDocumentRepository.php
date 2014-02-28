@@ -9,14 +9,14 @@
 */
 namespace Spliced\Bundle\CommerceAdminBundle\Repository;
 
-use Spliced\Component\Commerce\Repository\ConfigDataDocumentRepository as BaseConfigDataDocumentRepository;
+use Spliced\Component\Commerce\Repository\ConfigurationDocumentRepository as BaseConfigurationDocumentRepository;
 
 /**
- * ConfigDataDocumentRepository
+ * ConfigurationDocumentRepository
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class ConfigDataDocumentRepository extends BaseConfigDataDocumentRepository
+class ConfigurationDocumentRepository extends BaseConfigurationDocumentRepository
 {
     
 }

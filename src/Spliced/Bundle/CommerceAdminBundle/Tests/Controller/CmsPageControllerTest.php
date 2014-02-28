@@ -4,7 +4,7 @@ namespace Spliced\Bundle\CommerceAdminBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class CmsPageControllerTest extends WebTestCase
+class ContentPageControllerTest extends WebTestCase
 {
     /*
     public function testCompleteScenario()
@@ -13,8 +13,8 @@ class CmsPageControllerTest extends WebTestCase
         $client = static::createClient();
 
         // Create a new entry in the database
-        $crawler = $client->request('GET', '/cms_page_admin/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /cms_page_admin/");
+        $crawler = $client->request('GET', '/content_page_admin/');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /content_page_admin/");
         $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
 
         // Fill in the form and submit it

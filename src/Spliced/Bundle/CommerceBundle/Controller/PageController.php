@@ -22,14 +22,14 @@ use Doctrine\ORM\NoResultException;
 class PageController extends Controller
 {
     /**
-     * @Route("/content/view/{id}", name="commerce_cms_page_view")
+     * @Route("/content/view/{id}", name="commerce_content_page_view")
      * @Template("SplicedCommerceBundle:Page:view.html.twig")
      */
     public function viewAction($id)
     {
 
         $page = $this->get('commerce.document_manager')
-          ->getRepository('SplicedCommerceBundle:CmsPage')
+          ->getRepository('SplicedCommerceBundle:ContentPage')
           ->findOneById($id);
         
         if(!$page) {
@@ -52,14 +52,14 @@ class PageController extends Controller
     }
     
     /**
-     * @Route("/content/{slug}", name="commerce_cms_page_view_by_slug")
+     * @Route("/content/{slug}", name="commerce_content_page_view_by_slug")
      * @Template("SplicedCommerceBundle:Page:view.html.twig")
      */
     public function viewBySlugAction($slug)
     {
     
         $page = $this->get('commerce.document_manager')
-          ->getRepository('SplicedCommerceBundle:CmsPage')
+          ->getRepository('SplicedCommerceBundle:ContentPage')
           ->findOneByUrlSlug($slug);
     
         if(!$page) {

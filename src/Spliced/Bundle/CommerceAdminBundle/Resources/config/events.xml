@@ -98,12 +98,12 @@
 		<!--
 			Cms Page Admin Listener
 		-->
-		<service id="commerce.admin.listener.exception" class="Spliced\Component\Commerce\EventListener\CmsPageAdminEventListener">
+		<service id="commerce.admin.listener.exception" class="Spliced\Component\Commerce\EventListener\ContentPageAdminEventListener">
 		    <argument type="service" id="commerce.admin.configuration" />
 		    
-		    <tag name="kernel.event_listener" event="commerce.cms_page.save" method="onCmsPageSave" />
-		    <tag name="kernel.event_listener" event="commerce.cms_page.update" method="onCmsPageUpdate" />
-		    <tag name="kernel.event_listener" event="commerce.cms_page.delete" method="onCmsPageDelete" />
+		    <tag name="kernel.event_listener" event="commerce.cms_page.save" method="onContentPageSave" />
+		    <tag name="kernel.event_listener" event="commerce.cms_page.update" method="onContentPageUpdate" />
+		    <tag name="kernel.event_listener" event="commerce.cms_page.delete" method="onContentPageDelete" />
 		</service>
 		
     </services>

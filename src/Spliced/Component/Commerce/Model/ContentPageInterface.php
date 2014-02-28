@@ -9,14 +9,12 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Spliced\Bundle\CmsBundle\Model\CmsPageInterface as BaseCmsPageInterface;
-
 /**
- * CmsPageInterface
+ * ContentPageInterface
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-interface CmsPageInterface extends BaseCmsPageInterface
+interface ContentPageInterface
 {
 
 }

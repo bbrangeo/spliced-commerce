@@ -9,7 +9,7 @@
 */
 namespace Spliced\Component\Commerce\Configuration\Type;
 
-use Spliced\Component\Commerce\Model\ConfigDataInterface;
+use Spliced\Component\Commerce\Model\ConfigurationInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -30,23 +30,23 @@ class CountriesType implements TypeInterface
     /**
      * {@inheritDoc}
      */
-    public function getApplicationValue(ConfigDataInterface $configData)
+    public function getApplicationValue($value)
     {
-        return $configData->getValue();
+        return $value;
     }
     
     /**
      * {@inheritDoc}
      */
-    public function getDatabaseValue(ConfigDataInterface $configData)
+    public function getDatabaseValue($value)
     {
-        return $configData->getValue();
+        return $value;
     }
     
     /**
      * {@inheritDoc}
      */
-    public function buildForm(ConfigDataInterface $configData, FormBuilderInterface $form)
+    public function buildForm(ConfigurationInterface $configData, FormBuilderInterface $form)
     {
         $form->add($configData->getFormSafeKey(), 'country', array(
             'label' => $configData->getLabel() ? $configData->getLabel() : null,

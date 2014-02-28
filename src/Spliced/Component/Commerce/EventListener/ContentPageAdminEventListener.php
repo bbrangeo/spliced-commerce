@@ -14,11 +14,11 @@ use Spliced\Component\Commerce\Event as Events;
 use Spliced\Component\Commerce\Configuration\ConfigurationManager;
 
 /**
- * CmsPageAdminEventListener
+ * ContentPageAdminEventListener
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class CmsPageAdminEventListener
+class ContentPageAdminEventListener
 {
     
     /**
@@ -52,13 +52,13 @@ class CmsPageAdminEventListener
     }
     
     /**
-     * onCmsPageSave
+     * onContentPageSave
      * 
-     * @param CmsPageEvent $event
+     * @param ContentPageEvent $event
      */
-    public function onCmsPageSave(Events\CmsPageEvent $event)
+    public function onContentPageSave(Events\ContentPageEvent $event)
     {
-        $page = $event->getCmsPage();
+        $page = $event->getContentPage();
         
         $route = $this->getConfigurationManager()
           ->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE)
@@ -76,21 +76,21 @@ class CmsPageAdminEventListener
 
     }
     /**
-     * onCmsPageUpdate
+     * onContentPageUpdate
      *
-     * @param CmsPageEvent $event
+     * @param ContentPageEvent $event
      */
-    public function onCmsPageUpdate(Events\CmsPageEvent $event)
+    public function onContentPageUpdate(Events\ContentPageEvent $event)
     {
     
     }
     
     /**
-     * onCmsPageDelete
+     * onContentPageDelete
      *
-     * @param CmsPageEvent $event
+     * @param ContentPageEvent $event
      */
-    public function onCmsPageDelete(Events\CmsPageEvent $event)
+    public function onContentPageDelete(Events\ContentPageEvent $event)
     {
     
     }

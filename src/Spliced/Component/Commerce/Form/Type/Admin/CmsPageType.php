@@ -15,11 +15,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Spliced\Component\Commerce\Configuration\ConfigurationManager;
 
 /**
- * CmsPageType
+ * ContentPageType
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class CmsPageType extends AbstractType
+class ContentPageType extends AbstractType
 {
     /**
      * Constructor
@@ -62,7 +62,7 @@ class CmsPageType extends AbstractType
      */
     public function getName()
     {
-        return 'commerce_cms_page';
+        return 'commerce_content_page';
     }
     
     /**
@@ -71,7 +71,7 @@ class CmsPageType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_CMS_PAGE),
+            'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_CONTENT_PAGE),
         ));
     }
 }

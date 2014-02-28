@@ -5,7 +5,7 @@ namespace Spliced\Bundle\CommerceAdminBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Spliced\Bundle\CommerceAdminBundle\Form\Type\ConfigDataType;
+use Spliced\Bundle\CommerceAdminBundle\Form\Type\ConfigurationType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -27,7 +27,7 @@ class ConfigurationController extends Controller
         $currentGroup = $this->getRequest()->query->get('group', static::DEFAULT_GROUP);
         
         // load main level group names
-        $groups = $dm->getRepository('SplicedCommerceAdminBundle:ConfigData')
+        $groups = $dm->getRepository('SplicedCommerceAdminBundle:Configuration')
         ->createQueryBuilder()
         ->distinct('group')
         ->sort('group', 'ASC')        
@@ -35,7 +35,7 @@ class ConfigurationController extends Controller
         ->getQuery()
         ->execute(); 
   
-        $currentGroupData = $dm->getRepository('SplicedCommerceAdminBundle:ConfigData')
+        $currentGroupData = $dm->getRepository('SplicedCommerceAdminBundle:Configuration')
           ->findByGroup($currentGroup);
 
         

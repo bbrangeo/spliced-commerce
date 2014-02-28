@@ -28,7 +28,7 @@ namespace Spliced\Component\Commerce\Configuration;
  * For more information on the methods and parameters required/available to
  * a configuration entry, please see:
  * 
- * Spliced\Component\Commerce\Model\ConfigData
+ * Spliced\Component\Commerce\Model\Configuration
  * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */

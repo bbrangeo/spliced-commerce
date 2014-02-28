@@ -9,15 +9,15 @@
 */
 namespace Spliced\Bundle\CommerceAdminBundle\Repository;
 
-use Spliced\Component\Commerce\Repository\CmsPageDocumentRepository as BaseCmsPageDocumentRepository;
+use Spliced\Component\Commerce\Repository\ContentPageDocumentRepository as BaseContentPageDocumentRepository;
 use Spliced\Bundle\CommerceAdminBundle\Model\ListFilter;
 
 /**
- * CmsPageDocumentRepository
+ * ContentPageDocumentRepository
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class CmsPageDocumentRepository extends BaseCmsPageDocumentRepository
+class ContentPageDocumentRepository extends BaseContentPageDocumentRepository
 {
 
     /**

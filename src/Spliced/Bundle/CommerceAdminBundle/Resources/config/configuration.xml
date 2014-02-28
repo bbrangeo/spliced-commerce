@@ -9,8 +9,8 @@
 		<!-- Define our Document Classes -->
         <parameter key="commerce.admin.document.affiliate.class">Spliced\Bundle\CommerceAdminBundle\Document\Affiliate</parameter>
         <parameter key="commerce.admin.document.category.class">Spliced\Bundle\CommerceAdminBundle\Document\Category</parameter>
-        <parameter key="commerce.admin.document.config_data.class">Spliced\Bundle\CommerceAdminBundle\Document\ConfigData</parameter>
-        <parameter key="commerce.admin.document.cms_page.class">Spliced\Bundle\CommerceAdminBundle\Document\CmsPage</parameter>
+        <parameter key="commerce.admin.document.configuration.class">Spliced\Bundle\CommerceAdminBundle\Document\Configuration</parameter>
+        <parameter key="commerce.admin.document.content_page.class">Spliced\Bundle\CommerceAdminBundle\Document\ContentPage</parameter>
         <parameter key="commerce.admin.document.checkout_custom_field.class">Spliced\Bundle\CommerceAdminBundle\Document\CheckoutCustomField</parameter>
         <parameter key="commerce.admin.document.product.class">Spliced\Bundle\CommerceAdminBundle\Document\Product</parameter>
         <parameter key="commerce.admin.document.product_attribute.class">Spliced\Bundle\CommerceAdminBundle\Document\ProductAttribute</parameter>
@@ -52,8 +52,8 @@
 	    <parameter key="commerce.admin.document_classes" type="collection">
 	        <parameter key="affiliate">%commerce.admin.document.affiliate.class%</parameter>
 	        <parameter key="category">%commerce.admin.document.category.class%</parameter>
-	        <parameter key="config_data">%commerce.admin.document.config_data.class%</parameter>
-	        <parameter key="cms_page">%commerce.admin.document.cms_page.class%</parameter>
+	        <parameter key="configuration">%commerce.admin.document.configuration.class%</parameter>
+	        <parameter key="content_page">%commerce.admin.document.content_page.class%</parameter>
 	        <parameter key="checkout_custom_field">%commerce.admin.document.checkout_custom_field.class%</parameter>
 	        <parameter key="product">%commerce.admin.document.product.class%</parameter>
 	        <parameter key="product_attribute">%commerce.admin.document.product_attribute.class%</parameter>

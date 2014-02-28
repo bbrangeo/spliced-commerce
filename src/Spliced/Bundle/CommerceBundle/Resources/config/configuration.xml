@@ -10,8 +10,8 @@
 		<!-- Define our Document Classes -->
         <parameter key="commerce.document.affiliate.class">Spliced\Bundle\CommerceBundle\Document\Affiliate</parameter>
         <parameter key="commerce.document.category.class">Spliced\Bundle\CommerceBundle\Document\Category</parameter>
-        <parameter key="commerce.document.config_data.class">Spliced\Bundle\CommerceBundle\Document\ConfigData</parameter>
-        <parameter key="commerce.document.cms_page.class">Spliced\Bundle\CommerceBundle\Document\CmsPage</parameter>
+        <parameter key="commerce.document.configuration.class">Spliced\Bundle\CommerceBundle\Document\Configuration</parameter>
+        <parameter key="commerce.document.content_page.class">Spliced\Bundle\CommerceBundle\Document\ContentPage</parameter>
         <parameter key="commerce.document.checkout_custom_field.class">Spliced\Bundle\CommerceBundle\Document\CheckoutCustomField</parameter>
         <parameter key="commerce.document.product.class">Spliced\Bundle\CommerceBundle\Document\Product</parameter>
         <parameter key="commerce.document.product_attribute.class">Spliced\Bundle\CommerceBundle\Document\ProductAttribute</parameter>
@@ -53,8 +53,8 @@
 	    <parameter key="commerce.document_classes" type="collection">
 	        <parameter key="affiliate">%commerce.document.affiliate.class%</parameter>
 	        <parameter key="category">%commerce.document.category.class%</parameter>
-	        <parameter key="config_data">%commerce.document.config_data.class%</parameter>
-	        <parameter key="cms_page">%commerce.document.cms_page.class%</parameter>
+	        <parameter key="configuration">%commerce.document.configuration.class%</parameter>
+	        <parameter key="content_page">%commerce.document.content_page.class%</parameter>
 	        <parameter key="checkout_custom_field">%commerce.document.checkout_custom_field.class%</parameter>
 	        <parameter key="product">%commerce.document.product.class%</parameter>
 	        <parameter key="product_attribute">%commerce.document.product_attribute.class%</parameter>

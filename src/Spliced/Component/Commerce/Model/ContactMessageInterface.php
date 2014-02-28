@@ -10,7 +10,7 @@
 namespace Spliced\Component\Commerce\Model;
 
 /**
- * CmsPageInterface
+ * ContentPageInterface
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */

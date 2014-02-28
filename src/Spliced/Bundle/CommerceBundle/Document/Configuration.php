@@ -10,22 +10,20 @@
 namespace Spliced\Bundle\CommerceBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Spliced\Component\Commerce\Model\CmsPage as BaseCmsPage;
+use Spliced\Component\Commerce\Model\Configuration as BaseConfiguration;
 
 /**
  * @MongoDB\Document(
- *     collection="cms_page", 
- *  repositoryClass="Spliced\Bundle\CommerceBundle\Repository\CmsPageDocumentRepository"
+ *     collection="configuration", 
+ *     repositoryClass="Spliced\Bundle\CommerceBundle\Repository\ConfigurationDocumentRepository"
  * )
  * @MongoDB\MappedSuperclass()
  */
-class CmsPage extends BaseCmsPage
+class Configuration extends BaseConfiguration
 {
 
+    
 
-    /**
-     * @MongoDB\Id
-     */
-    protected $id;
 
+    
 }

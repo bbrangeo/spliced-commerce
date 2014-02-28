@@ -9,27 +9,27 @@
 */
 namespace Spliced\Component\Commerce\Event;
 
-use Spliced\Component\Commerce\Model\CmsPageInterface;
+use Spliced\Component\Commerce\Model\ContentPageInterface;
 
 /**
- * CmsPageEvent
+ * ContentPageEvent
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class CmsPageEvent extends Event
+class ContentPageEvent extends Event
 {
 
-    public function __construct(CmsPageInterface $cmsPage)
+    public function __construct(ContentPageInterface $cmsPage)
     {
         $this->cmsPage = $cmsPage;
     }
     
     /**
-     * getCmsPage
+     * getContentPage
      * 
-     * @return CmsPageInterface
+     * @return ContentPageInterface
      */
-    public function getCmsPage()
+    public function getContentPage()
     {
         return $this->cmsPage;
     }

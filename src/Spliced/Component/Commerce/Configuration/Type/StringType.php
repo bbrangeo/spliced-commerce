@@ -9,7 +9,7 @@
 */
 namespace Spliced\Component\Commerce\Configuration\Type;
 
-use Spliced\Component\Commerce\Model\ConfigDataInterface;
+use Spliced\Component\Commerce\Model\ConfigurationInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**

@@ -16,7 +16,9 @@ use Spliced\Component\Commerce\Event as Events;
 
 /**
  * ProductManager
- *
+ * 
+ * Handles the creation, saving, updating, and deletion of products
+ * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
 class ProductManager

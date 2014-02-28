@@ -12,31 +12,31 @@ namespace Spliced\Component\Commerce\Form\Type\Admin;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Spliced\Component\Commerce\Model\ConfigDataInterface;
+use Spliced\Component\Commerce\Model\ConfigurationInterface;
 
 /**
- * ConfigDataType
+ * ConfigurationType
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-class ConfigDataType extends AbstractType
+class ConfigurationType extends AbstractType
 {
     protected $configData;
     
     /**
      * Constructor
      */
-    public function __construct(ConfigDataInterface $configData)
+    public function __construct(ConfigurationInterface $configData)
     {
         $this->configData = $configData;
     }
     
     /**
-     * getConfigData
+     * getConfiguration
      * 
-     * @return ConfigDataInterface
+     * @return ConfigurationInterface
      */
-    protected function getConfigData()
+    protected function getConfiguration()
     {
         return $this->configData;    
     }
@@ -47,11 +47,11 @@ class ConfigDataType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $fieldParams = array(
-            'required' => $this->getConfigData()->getIsRequired(),
-             'label' => $this->getConfigData()->getConfigLabel() ? $this->getConfigData()->getConfigLabel() : $this->getConfigData()->getKey(),       
+            'required' => $this->getConfiguration()->getIsRequired(),
+             'label' => $this->getConfiguration()->getConfigLabel() ? $this->getConfiguration()->getConfigLabel() : $this->getConfiguration()->getKey(),       
         );
         
-        switch($this->getConfigData()->getType()){
+        switch($this->getConfiguration()->getType()){
             case 'html':
                 $fieldType = 'textarea';
                 break;
@@ -140,6 +140,6 @@ class ConfigDataType extends AbstractType
      */
     public function getName()
     {
-        return 'commerce_config_data';
+        return 'commerce_configuration';
     }
 }

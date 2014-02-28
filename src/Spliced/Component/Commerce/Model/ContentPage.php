@@ -12,13 +12,13 @@ namespace Spliced\Component\Commerce\Model;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
- * CmsPage
+ * ContentPage
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  * 
- * @MongoDB\Document(collection="cms_page")
+ * @MongoDB\Document(collection="content_page")
  */
-abstract class CmsPage implements CmsPageInterface
+abstract class ContentPage implements ContentPageInterface
 {
     /**
      * @MongoDB\Id

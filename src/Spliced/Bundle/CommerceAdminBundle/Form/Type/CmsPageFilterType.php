@@ -14,11 +14,11 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * CmsPageFilterType
+ * ContentPageFilterType
  *
  * @author Gassan Idriss <ghassani@gmail.com>
  */
-class CmsPageFilterType extends AbstractType
+class ContentPageFilterType extends AbstractType
 {
    /**
     * {@inheritDoc}
@@ -37,6 +37,6 @@ class CmsPageFilterType extends AbstractType
      */
     public function getName()
     {
-        return 'commerce_cms_page_filter';
+        return 'commerce_content_page_filter';
     }
 }

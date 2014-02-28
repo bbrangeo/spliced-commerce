@@ -14,7 +14,7 @@
 	<h1>Content Page <small>{{ page.title }}</small></h1>
 </div>
 
-<form role="form" action="{{ path('commerce_admin_cms_page_update', { 'id': page.id }) }}" class="form cms_page_admin-form" method="post" {{ form_enctype(form) }}>
+<form role="form" action="{{ path('commerce_admin_content_page_update', { 'id': page.id }) }}" class="form content_page_admin-form" method="post" {{ form_enctype(form) }}>
 	{{ include('SplicedCommerceAdminBundle:CmsPage:form.html.twig') }}
 	
 	<ul class="record-actions list-inline">
@@ -28,12 +28,12 @@
 
 <ul class="record-actions list-inline">
     <li>
-        <a href="{{ path('commerce_admin_cms_page') }}" class="btn btn-warning">
+        <a href="{{ path('commerce_admin_content_page') }}" class="btn btn-warning">
             <i class="icon-circle-arrow-left icon-white"></i> Back to the list
         </a>
     </li>
     <li>
-        <form action="{{ path('commerce_admin_cms_page_delete', { 'id': page.id }) }}" method="post">
+        <form action="{{ path('commerce_admin_content_page_delete', { 'id': page.id }) }}" method="post">
             <input type="hidden" name="_method" value="DELETE" />
             {{ form_widget(delete_form) }}
             <button class="btn btn-danger" type="submit"><i class="icon-trash icon-white"></i> Delete</button>

@@ -10,11 +10,11 @@
 namespace Spliced\Component\Commerce\Repository;
 
 /**
- * ConfigDataRepositoryInterface
+ * ConfigurationRepositoryInterface
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-interface ConfigDataRepositoryInterface
+interface ConfigurationRepositoryInterface
 {
 
     /**

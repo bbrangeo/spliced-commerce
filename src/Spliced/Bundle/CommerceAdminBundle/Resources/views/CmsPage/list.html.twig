@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block left -%}
-<form role="form" action="{{ path('commerce_admin_cms_page_filter') }}" class="form form-horizontal cms-page-filter-form" method="post" {{ form_enctype(filterForm) }}>
+<form role="form" action="{{ path('commerce_admin_content_page_filter') }}" class="form form-horizontal cms-page-filter-form" method="post" {{ form_enctype(filterForm) }}>
     <div class="panel panel-primary panel-filter-form">
         <div class="panel-heading"><h3>Filter</h3></div>
     	<div class="panel-body">
@@ -46,7 +46,7 @@
 	        {% for page in pages %}
 	            <tr>
 					<td><input type="checkbox" value="{{ page.id }}" name="ids[]" /></td>	
-	                <td><a href="{{ path('commerce_admin_cms_page_edit', { 'id': page.id }) }}">{{ page.id }}</a></td>	
+	                <td><a href="{{ path('commerce_admin_content_page_edit', { 'id': page.id }) }}">{{ page.id }}</a></td>	
 	                <td>{{ page.title }}</td>	
 	                <td>{{ page.pageTitle }}</td>		
 	                <td>{{ page.urlSlug }}</td>		
@@ -56,7 +56,7 @@
 	                <td>
                         <ul class="list-inline">
                             <li>
-                                <a href="{{ path('commerce_admin_cms_page_edit', { 'id': page.id }) }}">
+                                <a href="{{ path('commerce_admin_content_page_edit', { 'id': page.id }) }}">
                                     <i class="icon-edit"></i>
                                 </a>
                             </li>
@@ -83,7 +83,7 @@
 	    <div class="form-actions">
 		    <ul class="list-inline">
 		        <li>
-		            <a href="{{ path('commerce_admin_cms_page_new') }}" class="btn btn-primary">
+		            <a href="{{ path('commerce_admin_content_page_new') }}" class="btn btn-primary">
 		                <i class=" icon-plus-sign icon-white"></i> Create New
 		            </a>
 		            <a href="{{ path('commerce_admin_dashboard') }}" class="btn btn-warning">

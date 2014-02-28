@@ -10,36 +10,39 @@
 namespace Spliced\Component\Commerce\Model;
 
 /**
- * ConfigDataInterface
+ * ConfigurationInterface
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-interface ConfigDataInterface
+interface ConfigurationInterface
 {
-    
-    
     /**
-     * Set key
+     * setKey
      *
      * @param string $key
+     * 
+     * @return self
      */
     public function setKey($key);
+    
     /**
-     * Get key
+     * getKey
      *
      * @return string
      */
     public function getKey();
     
     /**
-     * Set value
+     * setValue
      *
-     * @param text $value
+     * @param mixed $value
+     * 
+     * @return self
      */
     public function setValue($value);
     
     /**
-     * Get value
+     * getValue
      *
      * @return text
      */
@@ -49,11 +52,15 @@ interface ConfigDataInterface
      * setType
      * 
      * @param string $type
+     * 
+     * @return self
      */
     public function setType($type);
     
     /**
      * getType
+     * 
+     * @return string
      */
     public function getType();
     
@@ -61,6 +68,8 @@ interface ConfigDataInterface
      * setLabel
      *
      * @param string $label
+     * 
+     * @return self
      */
     public function setLabel($label);
     
@@ -75,6 +84,8 @@ interface ConfigDataInterface
      * setHelp
      *
      * @param string $help
+     * 
+     * @return self
      */
     public function setHelp($help);
     
@@ -89,24 +100,31 @@ interface ConfigDataInterface
      * setGroup
      *
      * @param string $group
+     * 
+     * @return self
      */
     public function setGroup($group);
     
     /**
      * getGroup
+     * 
+     * @return string
     */
     public function getGroup();
-    
 
     /**
      * setPosition
      *
-     * @param string $configPosition
+     * @param int $position
+     * 
+     * @return self
      */
     public function setPosition($position);
     
     /**
      * getPosition
+     * 
+     * @return int
     */
     public function getPosition();
     
@@ -114,21 +132,31 @@ interface ConfigDataInterface
      * setCreatedAt
      * 
      * @param DateTime $createdAt
+     * 
+     * @return self
      */
     public function setCreatedAt(\DateTime $createdAt);
     
     /**
      * getCreatedAt
+     * 
+     * @return DateTime
      */
     public function getCreatedAt();
     
     /**
      * setUpdatedAt
+     * 
+     * @param DateTime $updatedAt
+     * 
+     * @return self
      */
     public function setUpdatedAt(\DateTime $updatedAt);
     
     /**
      * getUpdatedAt
+     * 
+     * @return DateTime
      */
     public function getUpdatedAt();
     
@@ -136,11 +164,15 @@ interface ConfigDataInterface
      * setRequired
      *
      * @param bool $required
+     * 
+     * @return self
      */
     public function setRequired($required);
     
     /**
      * getRequired
+     * 
+     * @return bool
     */
     public function getRequired();
 }

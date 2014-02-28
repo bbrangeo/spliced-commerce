@@ -25,7 +25,7 @@
 			{% endfor %}
 		</ul> 
 		
-		{{ include("SplicedCommerceAdminBundle:Configuration:config_data_set.html.twig", { 
+		{{ include("SplicedCommerceAdminBundle:Configuration:configuration_set.html.twig", { 
     		"forms" : groupValue, 
     		"previousGroup" : (previousGroup is defined ? previousGroup~'-' : '')~groupName 
     	}) }}
@@ -33,7 +33,7 @@
     	<div class="tab-content">
     	{% for childGroupName, childGroupValue in groupValue %}
 	    	<div class="content-pane" id="{{ previousGroup is defined ? previousGroup|replace({" " : "-", "/" : "-"}) ~ '-' : '' }}{{ groupName|replace({" " : "-"}) }}-{{ childGroupName|replace({" " : "-"}) }}" data-toggle="tab">
-	    	{{ include("SplicedCommerceAdminBundle:Configuration:config_data_form.html.twig", { 
+	    	{{ include("SplicedCommerceAdminBundle:Configuration:configuration_form.html.twig", { 
 	        	"form" : childGroupValue 
 	        }) }}
         </div>

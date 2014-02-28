@@ -7,23 +7,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Spliced\Bundle\CommerceAdminBundle\Document\CmsPage;
+use Spliced\Bundle\CommerceAdminBundle\Document\ContentPage;
 use Spliced\Bundle\CommerceAdminBundle\Model\ListFilter;
-use Spliced\Bundle\CommerceAdminBundle\Form\Type\CmsPageFilterType;
+use Spliced\Bundle\CommerceAdminBundle\Form\Type\ContentPageFilterType;
 use Spliced\Component\Commerce\Event as Events;
 
 /**
- * CmsPageController
+ * ContentPageController
  *
  * @Route("/cms/page")
  */
-class CmsPageController extends BaseFilterableController
+class ContentPageController extends BaseFilterableController
 {
-    const FILTER_TAG = 'commerce.cms_page';
-    const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Form\TypeCmsPageFilterType';
+    const FILTER_TAG = 'commerce.content_page';
+    const FILTER_FORM = 'Spliced\Bundle\CommerceAdminBundle\Form\TypeContentPageFilterType';
     
     /**
-     * @Route("/", name="commerce_admin_cms_page")
+     * @Route("/", name="commerce_admin_content_page")
      * @Method("GET")
      * @Template()
      */
@@ -32,13 +32,13 @@ class CmsPageController extends BaseFilterableController
         // load products
         $pages = $this->get('knp_paginator')->paginate(
             $this->get('commerce.admin.document_manager')
-              ->getRepository('SplicedCommerceAdminBundle:CmsPage')
+              ->getRepository('SplicedCommerceAdminBundle:ContentPage')
               ->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page',1),
             $this->getRequest()->query->get('limit',25)
         );
          
-        $filterForm = $this->createForm(new CmsPageFilterType());
+        $filterForm = $this->createForm(new ContentPageFilterType());
 
         return array(
             'pages' => $pages,
@@ -47,14 +47,14 @@ class CmsPageController extends BaseFilterableController
     }
 
     /**
-     * @Route("/new", name="commerce_admin_cms_page_new")
+     * @Route("/new", name="commerce_admin_content_page_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
 
-        $form = $this->get('commerce.admin.form_factory')->createCmsPageForm();
+        $form = $this->get('commerce.admin.form_factory')->createContentPageForm();
 
         return array(
             'form'   => $form->createView(),
@@ -62,23 +62,23 @@ class CmsPageController extends BaseFilterableController
     }
 
     /**
-     * @Route("/save", name="commerce_admin_cms_page_save")
+     * @Route("/save", name="commerce_admin_content_page_save")
      * @Method("POST")
-     * @Template("SplicedCmsBundle:CmsPage:new.html.twig")
+     * @Template("SplicedCmsBundle:ContentPage:new.html.twig")
      */
     public function saveAction(Request $request)
     {
-        $form = $this->get('commerce.admin.form_factory')->createCmsPageForm();
+        $form = $this->get('commerce.admin.form_factory')->createContentPageForm();
 
         if ($form->bind($request) && $form->isValid()) {
             
             $this->get('event_dispatcher')->dispatch(
-                Events\Event::EVENT_CMS_PAGE_SAVE,
-                new Events\CmsPageEvent($form->getData())
+                Events\Event::EVENT_CONTENT_PAGE_SAVE,
+                new Events\ContentPageEvent($form->getData())
             );
     
             $this->get('session')->getFlashBag()->add('success', 'CMS Page Successfully Added');
-            return $this->redirect($this->generateUrl('commerce_admin_cms_page'));
+            return $this->redirect($this->generateUrl('commerce_admin_content_page'));
         }
     
         $this->get('session')->getFlashBag()->add('error', 'There was an error validating your data.');
@@ -89,22 +89,22 @@ class CmsPageController extends BaseFilterableController
     }
     
     /**
-     * @Route("/edit/{id}", name="commerce_admin_cms_page_edit")
+     * @Route("/edit/{id}", name="commerce_admin_content_page_edit")
      * @Method("GET")
      * @Template()
      */
     public function editAction($id)
     {
         $page = $this->get('commerce.admin.document_manager')
-          ->getRepository('SplicedCommerceAdminBundle:CmsPage')
+          ->getRepository('SplicedCommerceAdminBundle:ContentPage')
           ->findOneById($id);
         
         if(!$page) {
-            throw $this->createNotFoundException('Unable to find CmsPage.');
+            throw $this->createNotFoundException('Unable to find ContentPage.');
         }
 
         $form = $this->get('commerce.admin.form_factory')
-          ->createCmsPageForm($page);
+          ->createContentPageForm($page);
         
         $deleteForm = $this->createDeleteForm($id);
         
@@ -116,29 +116,29 @@ class CmsPageController extends BaseFilterableController
     }
 
     /**
-     * @Route("/update/{id}", name="commerce_admin_cms_page_update")
+     * @Route("/update/{id}", name="commerce_admin_content_page_update")
      * @Method({"POST","PUT"})
      * @Template()
      */
     public function updateAction(Request $request, $id)
     {
         $page = $this->get('commerce.admin.document_manager')
-          ->getRepository('SplicedCommerceAdminBundle:CmsPage')
+          ->getRepository('SplicedCommerceAdminBundle:ContentPage')
           ->findOneById($id);
         
         if(!$page) {
-            throw $this->createNotFoundException('Unable to find CmsPage.');
+            throw $this->createNotFoundException('Unable to find ContentPage.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $form = $this->get('commerce.admin.form_factory')->createCmsPageForm($page);
+        $form = $this->get('commerce.admin.form_factory')->createContentPageForm($page);
         
 
         if ($form->bind($request) && $form->isValid()) {
             $this->get('commerce.admin.document_manager')->persist($page);
             $this->get('commerce.admin.document_manager')->flush();
 
-            return $this->redirect($this->generateUrl('commerce_admin_cms_page_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('commerce_admin_content_page_edit', array('id' => $id)));
         }
 
         return array(
@@ -149,7 +149,7 @@ class CmsPageController extends BaseFilterableController
     }
 
     /**
-     * @Route("/{id}", name="commerce_admin_cms_page_delete")
+     * @Route("/{id}", name="commerce_admin_content_page_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -159,22 +159,22 @@ class CmsPageController extends BaseFilterableController
 
         if ($form->isValid()) {
             $page = $this->get('commerce.admin.document_manager')
-            ->getRepository('SplicedCommerceAdminBundle:CmsPage')
+            ->getRepository('SplicedCommerceAdminBundle:ContentPage')
             ->findOneById($id);
 
             if (!$page) {
-                throw $this->createNotFoundException('Unable to find CmsPage.');
+                throw $this->createNotFoundException('Unable to find ContentPage.');
             }
 
             $this->get('commerce.admin.document_manager')->remove($page);
             $this->get('commerce.admin.document_manager')->flush();
         }
 
-        return $this->redirect($this->generateUrl('commerce_admin_cms_page'));
+        return $this->redirect($this->generateUrl('commerce_admin_content_page'));
     }
 
     /**
-     * Creates a form to delete a CmsPage entity by id.
+     * Creates a form to delete a ContentPage entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -189,47 +189,47 @@ class CmsPageController extends BaseFilterableController
     }
 
     /**
-     * Filters the list of entities for CmsPage entity.
+     * Filters the list of entities for ContentPage entity.
      *
-     * @Route("/filter", name="commerce_admin_cms_page_filter")
+     * @Route("/filter", name="commerce_admin_content_page_filter")
      * @Method("POST")
      * @Template() 
      */
     public function filterAction()
     {
         $session = $this->get('session');
-        $form   = $this->createForm(new CmsPageFilterType());
+        $form   = $this->createForm(new ContentPageFilterType());
         $filters = array();
         
         if($form->bindRequest($this->getRequest()) && $form->isValid()) {
             $filters = $form->getData();
             
-            $session->set('filter.cms_page_admin', serialize($filters));
+            $session->set('filter.content_page_admin', serialize($filters));
         }
         
 
-        $this->get('session')->getFlashBag()->add('notice', 'CmsPage Filters Updated');
-        return $this->redirect($this->generateUrl('commerce_admin_cms_page'));
+        $this->get('session')->getFlashBag()->add('notice', 'ContentPage Filters Updated');
+        return $this->redirect($this->generateUrl('commerce_admin_content_page'));
     }
 
 
     /**
      * Clears the currently applied filters
-     * @Route("/filter/reset", name="cms_page_admin_filter_reset")
+     * @Route("/filter/reset", name="content_page_admin_filter_reset")
      * @return array
      */
     public function clearFiltersActions()
     {
         $filters = new ListFilter();
         $this->get('session')->setFilters($filters);
-        $this->get('session')->getFlashBag()->add('notice', 'CmsPage Filters Cleared');
-        return $this->redirect($this->generateUrl('cms_page_admin'));
+        $this->get('session')->getFlashBag()->add('notice', 'ContentPage Filters Cleared');
+        return $this->redirect($this->generateUrl('content_page_admin'));
     }
     
     /**
-     * Deletes a CmsPage entity.
+     * Deletes a ContentPage entity.
      *
-     * @Route("/batch", name="cms_page_admin_batch")
+     * @Route("/batch", name="content_page_admin_batch")
      * @Method("POST")
      */
     public function batchAction()
@@ -253,7 +253,7 @@ class CmsPageController extends BaseFilterableController
     */
     protected function batchDelete(array $ids)
     {
-        $entities = $em->getRepository('SplicedCmsBundle:CmsPage')->findById($id);
+        $entities = $em->getRepository('SplicedCmsBundle:ContentPage')->findById($id);
         
         $count = count($entities);
         
@@ -268,7 +268,7 @@ class CmsPageController extends BaseFilterableController
             $this->get('session')->getFlashBag()->add('error', sprintf('Error deleting Records. Error: %s', $e->getMessage()));
         }
         
-        return $this->redirect($this->generateUrl('cms_page_admin'));
+        return $this->redirect($this->generateUrl('content_page_admin'));
     }
 
 }

@@ -116,7 +116,7 @@ abstract class Event extends BaseEvent
     const EVENT_CATEGORY_SAVE = 'commerce.category.save';
     const EVENT_CATEGORY_UPDATE = 'commerce.category.update';
     
-    const EVENT_CMS_PAGE_SAVE     = 'commerce.cms_page.save';
-    const EVENT_CMS_PAGE_UPDATE   = 'commerce.cms_page.update';
-    const EVENT_CMS_PAGE_DELETE   = 'commerce.cms_page.delete';
+    const EVENT_CONTENT_PAGE_SAVE     = 'commerce.content_page.save';
+    const EVENT_CONTENT_PAGE_UPDATE   = 'commerce.content_page.update';
+    const EVENT_CONTENT_PAGE_DELETE   = 'commerce.content_page.delete';
 }

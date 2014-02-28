@@ -36,7 +36,7 @@ abstract class Route implements RouteInterface
     protected $product;
     
     /**
-     * @MongoDB\ReferenceOne(targetDocument="CmsPage")
+     * @MongoDB\ReferenceOne(targetDocument="ContentPage")
      */
     protected $page;
     
@@ -134,7 +134,7 @@ abstract class Route implements RouteInterface
      *
      * @param bigint $page
      */
-    public function setPage(CmsPageInterface $page)
+    public function setPage(ContentPageInterface $page)
     {
         $this->page = $page;
 
@@ -144,7 +144,7 @@ abstract class Route implements RouteInterface
     /**
      * getPage
      *
-     * @return CmsPageInterface
+     * @return ContentPageInterface
      */
     public function getPage()
     {

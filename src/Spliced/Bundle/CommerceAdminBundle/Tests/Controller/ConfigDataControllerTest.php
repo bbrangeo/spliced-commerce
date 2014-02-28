@@ -4,7 +4,7 @@ namespace Spliced\Bundle\CommerceAdminBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class ConfigDataControllerTest extends WebTestCase
+class ConfigurationControllerTest extends WebTestCase
 {
     /*
     public function testCompleteScenario()

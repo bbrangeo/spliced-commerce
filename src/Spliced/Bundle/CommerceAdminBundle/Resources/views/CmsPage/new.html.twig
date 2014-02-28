@@ -7,7 +7,7 @@
     	<h1>CmsPage <small>Creating</small></h1>
 	</div>
 	<fieldset>
-    <form action="{{ path('commerce_admin_cms_page_save') }}" class="form" method="post" {{ form_enctype(form) }}>
+    <form action="{{ path('commerce_admin_content_page_save') }}" class="form" method="post" {{ form_enctype(form) }}>
     	{{ include('SplicedCommerceAdminBundle:CmsPage:form.html.twig') }}
     	
     	<ul class="record-actions list-inline">
@@ -20,7 +20,7 @@
 	</fieldset>
         <ul class="record-actions inline">
     <li>
-        <a href="{{ path('commerce_admin_cms_page') }}" class="btn btn-warning">
+        <a href="{{ path('commerce_admin_content_page') }}" class="btn btn-warning">
             <i class="icon-circle-arrow-left icon-white"></i> Back to the list
         </a>
     </li>

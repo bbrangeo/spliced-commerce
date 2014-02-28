@@ -42,7 +42,7 @@ class ConfigurationManager
     /** These are the default commerce implementations entity class tags for 
      * use with creating entities with this service. 
      */
-    const OBJECT_CLASS_TAG_AFFILIATE                         = 'affiliate';
+    const OBJECT_CLASS_TAG_AFFILIATE                        = 'affiliate';
     const OBJECT_CLASS_TAG_CUSTOMER                         = 'customer';
     const OBJECT_CLASS_TAG_CUSTOMER_ADDRESS                 = 'customer_address';
     const OBJECT_CLASS_TAG_CUSTOMER_PROFILE                 = 'customer_profile';
@@ -73,7 +73,7 @@ class ConfigurationManager
     const OBJECT_CLASS_TAG_ORDER_SHIPMENT                   = 'order_shipment';
     const OBJECT_CLASS_TAG_ORDER_SHIPMENT_MEMO              = 'order_shipment_memo';
     const OBJECT_CLASS_TAG_ORDER_CUSTOM_FIELD_VALUE         = 'order_custom_field_value';
-    const OBJECT_CLASS_TAG_CONFIG_DATA                      = 'config_data';
+    const OBJECT_CLASS_TAG_CONFIGURATION                      = 'configuration';
     const OBJECT_CLASS_TAG_VISITOR                          = 'visitor';
     const OBJECT_CLASS_TAG_VISITOR_REQUEST                  = 'visitor_request';
     const OBJECT_CLASS_TAG_SEARCH_TERM                      = 'search_term';
@@ -82,7 +82,7 @@ class ConfigurationManager
     const OBJECT_CLASS_TAG_USER                             = 'user';
     const OBJECT_CLASS_TAG_ROUTE                            = 'route';
     const OBJECT_CLASS_TAG_TAG                              = 'tag';
-    const OBJECT_CLASS_TAG_CMS_PAGE                         = 'cms_page';
+    const OBJECT_CLASS_TAG_CONTENT_PAGE                         = 'content_page';
     const OBJECT_CLASS_TAG_CMS_BLOCK                        = 'cms_block';
     
     
@@ -90,7 +90,7 @@ class ConfigurationManager
     protected $fieldTypes = array();
     
     protected $data = false;
-    
+
     /**
      * Constructor
      *
@@ -145,20 +145,31 @@ class ConfigurationManager
      * 
      * Returns the full path to the web directory
      * 
+     * This can also be set in with the configuration
+     * key commerce.path.web
+     * 
+     * 
      * @return string
      */
     public function getWebDir()
     {
+        if ($this->has('commerce.path.web') && $this->get('commerce.path.web')) {
+            return $this->get('commerce.path.web');
+        }
         return $this->getKernel()->getRootDir().'/../web';    
     }
     
     /**
      * init
+     * 
+     * Initializes the configuration parameters
+     * 
+     * @return self
      */
     public function init()
     {
         $data = $this->getDocumentManager()
-          ->getRepository($this->getDocumentClass(static::OBJECT_CLASS_TAG_CONFIG_DATA))
+          ->getRepository($this->getDocumentClass(static::OBJECT_CLASS_TAG_CONFIGURATION))
           ->getConfiguration($this->getKernel()->getEnvironment() == 'prod');
         
         if($data instanceof Cursor){
@@ -167,9 +178,10 @@ class ConfigurationManager
 
         $this->data = array();
         foreach ($data as $d) {
-            $this->data[$d['key']] =  isset($d['value']) ? $d['value'] : null;  
+            $this->data[$d['key']] =  $this->getFieldType($d['type'])
+              ->getApplicationValue(isset($d['value']) ? $d['value'] : null);  
         }
-
+        return $this;
     }
     
     /**
@@ -214,7 +226,7 @@ class ConfigurationManager
      *
      * @return ConfigurationManager
      */
-    public function add($key, array $fieldParams)
+    public function add($key, array $fieldParams, $flush = true)
     {
         if(!$this->data){
             $this->init();
@@ -225,14 +237,17 @@ class ConfigurationManager
         }
 
         $config = $this->getDocumentManager()
-          ->getRepository($this->getDocumentClass(static::OBJECT_CLASS_TAG_CONFIG_DATA))
+          ->getRepository($this->getDocumentClass(static::OBJECT_CLASS_TAG_CONFIGURATION))
           ->findOneByKey($key);
 
         if (!$config) {
-            $config = $this->createDocument(static::OBJECT_CLASS_TAG_CONFIG_DATA);
+            
+            $fieldType = $this->getFieldType($config['type']);
+            
+            $config = $this->createDocument(static::OBJECT_CLASS_TAG_CONFIGURATION);
             $config->setKey($key);
-            $config->setType($fieldParams['type']); //type before value
-            $config->setValue($fieldParams['value']);
+            $config->setType($fieldType->getName()); //type before value
+            $config->setValue($fieldType->getDatabaseValue($fieldParams['value']));
             $config->setGroup($fieldParams['group']);
             $config->setChildGroup(isset($fieldParams['child_group']) ? $fieldParams['child_group'] : null);
             $config->setLabel($fieldParams['label']);
@@ -241,7 +256,10 @@ class ConfigurationManager
             $config->setRequired($fieldParams['required']);
 
             $this->getDocumentManager()->persist($config);
-            $this->getDocumentManager()->flush();
+            
+            if (true == $flush) {
+                $this->getDocumentManager()->flush();
+            }
 
             $this->data[$key] = $config->getValue();
         }

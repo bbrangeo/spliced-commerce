@@ -12,11 +12,11 @@ namespace Spliced\Component\Commerce\Repository;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
- * CmsPageDocumentRepository
+ * ContentPageDocumentRepository
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-abstract class CmsPageDocumentRepository extends DocumentRepository
+abstract class ContentPageDocumentRepository extends DocumentRepository
 {
 
 }

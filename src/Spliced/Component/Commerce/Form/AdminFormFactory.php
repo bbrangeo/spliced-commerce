@@ -16,7 +16,7 @@ use Spliced\Component\Commerce\Model\CategoryInterface;
 use Spliced\Component\Commerce\Model\ProductInterface;
 use Spliced\Component\Commerce\Model\ProductAttributeOptionInterface;
 use Spliced\Component\Commerce\Model\ProductSpecificationOptionInterface;
-use Spliced\Component\Commerce\Model\CmsPageInterface;
+use Spliced\Component\Commerce\Model\ContentPageInterface;
 use Spliced\Component\Commerce\Model\AffiliateInterface;
 use Spliced\Component\Commerce\Model\ManufacturerInterface;
 
@@ -144,20 +144,20 @@ class AdminFormFactory
     }
     
     /**
-     * createCmsPageForm
+     * createContentPageForm
      *
      * @return FormInterface
      */
-    public function createCmsPageForm(CmsPageInterface $page = null, array $options = array())
+    public function createContentPageForm(ContentPageInterface $page = null, array $options = array())
     {
         if(is_null($page)){
             $page = $this->container->get('commerce.configuration')
-            ->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_CMS_PAGE);
+            ->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_CONTENT_PAGE);
         }
     
     
     
-        $formType = new Type\Admin\CmsPageType(
+        $formType = new Type\Admin\ContentPageType(
             $this->container->get('commerce.configuration')
         );
     

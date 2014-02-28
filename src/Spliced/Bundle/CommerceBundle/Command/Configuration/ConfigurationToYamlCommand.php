@@ -50,7 +50,7 @@ class ConfigurationToYamlCommand extends BaseCommand
     {
         $dm = $this->getContainer()->get('commerce.document_manager');
         
-        $config = $dm->getRepository('SplicedCommerceBundle:ConfigData')
+        $config = $dm->getRepository('SplicedCommerceBundle:Configuration')
           ->createQueryBuilder()
           ->hydrate(false)
           ->sort('key', 'asc')

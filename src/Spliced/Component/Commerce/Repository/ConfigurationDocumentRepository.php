@@ -12,11 +12,11 @@ namespace Spliced\Component\Commerce\Repository;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
- * ConfigDataDocumentRepository
+ * ConfigurationDocumentRepository
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  */
-abstract class ConfigDataDocumentRepository extends DocumentRepository implements ConfigDataRepositoryInterface
+abstract class ConfigurationDocumentRepository extends DocumentRepository implements ConfigurationRepositoryInterface
 {
     /**
     * {@inheritDoc}

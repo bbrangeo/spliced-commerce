@@ -13,13 +13,13 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Spliced\Component\Commerce\Doctrine\ODM\MongoDB\Mapping\Annotations as Commerce;
 
 /**
- * ConfigData
+ * Configuration
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  * 
- * @MongoDB\Document(collection="config_data")
+ * @MongoDB\Document(collection="configuration")
  */
-abstract class ConfigData implements ConfigDataInterface
+abstract class Configuration implements ConfigurationInterface
 {
 
     /**
@@ -130,6 +130,11 @@ abstract class ConfigData implements ConfigDataInterface
         return $this->key;
     }
     
+    /**
+     * getFormSafeKey
+     * 
+     * @return string
+     */
     public function getFormSafeKey()
     {
         return str_replace('.', '_', $this->key);

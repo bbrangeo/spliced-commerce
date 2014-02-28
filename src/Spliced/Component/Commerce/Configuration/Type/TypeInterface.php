@@ -9,7 +9,7 @@
 */
 namespace Spliced\Component\Commerce\Configuration\Type;
 
-use Spliced\Component\Commerce\Model\ConfigDataInterface;
+use Spliced\Component\Commerce\Model\ConfigurationInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -33,28 +33,30 @@ interface TypeInterface
      *
      * Process a configuration field and return a value for the application
      *
-     * @return string
+     * @param mixed $value
+     * 
+     * @return mixed
      */
-    public function getApplicationValue(ConfigDataInterface $configData);
+    public function getApplicationValue($value);
     
     /**
      * getDatabaseValue
      *
      * Process a configuration field and return a value for the database
      *
-     * @return string
+     * @param mixed $value
+     * 
+     * @return mixed
      */
-    public function getDatabaseValue(ConfigDataInterface $configData);
+    public function getDatabaseValue($value);
     
     /**
      * buildForm
      *
      * Process a configuration field and build upon a FormBuilderInterface
      *
-     * @param ConfigDataInterface $configData
+     * @param ConfigurationInterface $configData
      * @param FormBuilderInterface $form
-     * 
-     * @return string
      */
-    public function buildForm(ConfigDataInterface $configData, FormBuilderInterface $form);
+    public function buildForm(ConfigurationInterface $configData, FormBuilderInterface $form);
 }
