@@ -63,6 +63,10 @@ class EncryptedType implements TypeInterface
      */
     public function buildForm(ConfigurationInterface $configData, FormBuilderInterface $form)
     {
-    
+        $form->add($configData->getFormSafeKey(), 'text', array(
+            'label' => $configData->getLabel() ? $configData->getLabel() : null,
+            'data' => $this->getApplicationValue($configData->getValue()),
+            'required' => $configData->isRequired(),
+        ));
     }
 }

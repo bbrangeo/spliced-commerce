@@ -54,6 +54,8 @@ interface TypeInterface
      * buildForm
      *
      * Process a configuration field and build upon a FormBuilderInterface
+     * 
+     * You should also add any validation rules to your form field(s) in this method
      *
      * @param ConfigurationInterface $configData
      * @param FormBuilderInterface $form

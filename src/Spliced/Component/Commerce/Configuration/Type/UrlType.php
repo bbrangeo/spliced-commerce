@@ -50,7 +50,8 @@ class UrlType implements TypeInterface
     {
         $form->add($configData->getFormSafeKey(), 'url', array(
             'label' => $configData->getLabel() ? $configData->getLabel() : null,
-            'data' => $this->getApplicationValue($configData),
+            'data' => $this->getApplicationValue($configData->getValue()),
+            'required' => $configData->isRequired(),
         ));
     }
 }

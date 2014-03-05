@@ -242,7 +242,8 @@ class ConfigurationManager
 
         if (!$config) {
             
-            $fieldType = $this->getFieldType($config['type']);
+
+            $fieldType = $this->getFieldType($fieldParams['type']);
             
             $config = $this->createDocument(static::OBJECT_CLASS_TAG_CONFIGURATION);
             $config->setKey($key);

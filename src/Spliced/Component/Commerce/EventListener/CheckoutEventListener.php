@@ -211,6 +211,8 @@ class CheckoutEventListener
 
     /**
      * onCheckoutStart
+     * 
+     * This event is fired when the checkout process is first started
      *
      * @param CheckoutEvent
      */
@@ -232,6 +234,8 @@ class CheckoutEventListener
     
     /**
      * onCheckoutProcessStep
+     * 
+     * This event should be fired to process the current step
      *
      * @param CheckoutProcessStepEvent
      */
@@ -276,6 +280,9 @@ class CheckoutEventListener
     
     /**
      * onCheckoutMoveStep
+     * 
+     * This event is fired after onCheckoutProcessStep has been processed and is 
+     * determined to be complete
      */
     public function onCheckoutMoveStep(Events\CheckoutMoveStepEvent $event)
     {
@@ -458,7 +465,6 @@ class CheckoutEventListener
             ->setSubject($this->replaceEmailSubject($this->getConfigurationManager()->get('commerce.sales.email.confirmation_admin.subject'),$event->getOrder()))
             ->setFrom($this->getConfigurationManager()->get('commerce.sales.email.from'))
             ->setTo($this->getConfigurationManager()->get('commerce.sales.email.to_admin'))
-            //->setTo('ghassani@gmail.com')
             ->setBody($this->getTemplating()->render($this->getConfigurationManager()->get('commerce.template.email.confirmation_admin', 'SplicedCommerceBundle:Email:order_confirmation_admin.html.twig'), array(
                 'order' => $order,
             )), 'text/html')
@@ -500,7 +506,6 @@ class CheckoutEventListener
      */
     public function onPaymentError(Events\CheckoutPaymentErrorEvent $event)
     {
-        
         // persist the order to save any memos, etc
         $this->getOrderManager()->updateOrder($event->getOrder());
     }
@@ -515,9 +520,9 @@ class CheckoutEventListener
         $cartManager     = $this->getCartManager();
         $checkoutManager = $this->getCheckoutManager();
         $securityContext = $this->getSecurityContext();
-        $em                 = $this->getEntityManager();
+        $em              = $this->getEntityManager();
 
-        $order         = $event->getOrder();
+        $order       = $event->getOrder();
         $payment     = $order->getPayment();
 
         $paymentMethod = $checkoutManager->getPaymentProvider($payment->getPaymentMethod());

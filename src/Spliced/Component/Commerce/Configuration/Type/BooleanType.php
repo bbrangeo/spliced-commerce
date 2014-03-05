@@ -50,9 +50,10 @@ class BooleanType implements TypeInterface
     {
         $form->add($configData->getFormSafeKey(), 'choice', array(
             'label' => $configData->getLabel() ? $configData->getLabel() : null,
-            'data' => $this->getApplicationValue($configData),
-            'expanded' => true,
-            'choices' => array(1 => 'True', 0 => 'False')
+            'data' => $this->getApplicationValue($configData->getValue()),
+            'expanded' => false,
+            'choices' => array(1 => 'Yes', 0 => 'No'),
+            'required' => $configData->isRequired(),
         ));
     }
 }

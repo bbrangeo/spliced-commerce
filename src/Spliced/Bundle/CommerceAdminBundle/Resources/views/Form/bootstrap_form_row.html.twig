@@ -68,7 +68,7 @@
     {% endif %}
     <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}
     	{% if help_bubble_text is defined %}
-    	<a href="javascript:void(0);" data-toggle="popover" title="{{ help_bubble_text }}">?</a>
+    	<a href="javascript:void(0);" data-toggle="popover" title="{{ help_bubble_text|raw }}">?</a>
     	{% endif %}
     </label>
 {% endblock form_label %}

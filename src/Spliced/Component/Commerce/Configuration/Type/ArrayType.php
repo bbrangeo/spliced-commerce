@@ -43,7 +43,7 @@ class ArrayType implements TypeInterface
     */
     public function getDatabaseValue($value)
     {
-        return $configData->getValue();
+        return $value;
     }
     
     /**
@@ -53,8 +53,9 @@ class ArrayType implements TypeInterface
     {
         $form->add($configData->getFormSafeKey(), 'collection', array(
             'label' => $configData->getLabel() ? $configData->getLabel() : null,
-            'data' => $this->getApplicationValue($configData),
+            'data' => $this->getApplicationValue($configData->getValue()),
             'type' => 'text',
+            'required' => $configData->isRequired(),
         )); 
     }
 }

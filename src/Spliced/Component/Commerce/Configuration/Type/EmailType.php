@@ -50,7 +50,8 @@ class EmailType implements TypeInterface
     {
         $form->add($configData->getFormSafeKey(), 'email', array(
             'label' => $configData->getLabel() ? $configData->getLabel() : null,
-            'data' => $this->getApplicationValue($configData),
+            'data' => $this->getApplicationValue($configData->getValue()),
+            'required' => $configData->isRequired(),
         ));
     }
 }

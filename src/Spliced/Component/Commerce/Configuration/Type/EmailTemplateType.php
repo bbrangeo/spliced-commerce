@@ -21,6 +21,7 @@ use Symfony\Component\Finder\Finder;
  */
 class EmailTemplateType extends TemplateType
 {
+    const DS = DIRECTORY_SEPARATOR;
     
     /**
      * {@inheritDoc}
@@ -53,9 +54,11 @@ class EmailTemplateType extends TemplateType
     {
         $form->add($configData->getFormSafeKey(), 'choice', array(
             'label' => $configData->getLabel() ? $configData->getLabel() : null,
-            'data' => $this->getApplicationValue($configData),
+            'data' => $this->getApplicationValue($configData->getValue()),
             'multiple' => false,
             'choices' => $this->getTemplates(),
+            'required' => $configData->isRequired(),
+            'empty_value' => $configData->isRequired() ? ' ' : null,
         ));
     }
     
@@ -88,7 +91,7 @@ class EmailTemplateType extends TemplateType
                 $backendBundle = $bundle->getPath();
             }
             
-            $path = $bundle->getPath().DIRECTORY_SEPARATOR.'Resources'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'Email'.DIRECTORY_SEPARATOR;
+            $path = $bundle->getPath().static::DS.'Resources'.static::DS.'views'.static::DS.'Email'.static::DS;
             
             if (!file_exists($path) || ! is_dir($path)) {
                 continue;

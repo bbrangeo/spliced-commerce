@@ -62,9 +62,11 @@ class TemplateType implements TypeInterface
     {
         $form->add($configData->getFormSafeKey(), 'choice', array(
             'label' => $configData->getLabel() ? $configData->getLabel() : null,
-            'data' => $this->getApplicationValue($configData),
+            'data' => $this->getApplicationValue($configData->getValue()),
             'multiple' => false,
             'choices' => $this->getTemplates(),
+            'required' => $configData->isRequired(),
+            'empty_value' => $configData->isRequired() ? ' ' : null,
         ));
     }
     

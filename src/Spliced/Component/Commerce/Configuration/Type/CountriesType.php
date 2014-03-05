@@ -50,8 +50,10 @@ class CountriesType implements TypeInterface
     {
         $form->add($configData->getFormSafeKey(), 'country', array(
             'label' => $configData->getLabel() ? $configData->getLabel() : null,
-            'data' => $this->getApplicationValue($configData),
+            'data' => $this->getApplicationValue($configData->getValue()),
             'multiple' => true,
+            'required' => $configData->isRequired(),
+            'empty_value' => $configData->isRequired() ? ' ' : null,
         ));
     }
 }

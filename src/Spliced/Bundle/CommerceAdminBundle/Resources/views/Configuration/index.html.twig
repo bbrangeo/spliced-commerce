@@ -28,12 +28,17 @@
                 <h2>{{ childGroup }}</h2>
                 
                 {% for field in form %}
-                    {{ form_row(field) }}
+                    
+                    {% if field.vars.attr.help is defined and field.vars.attr.help|length %}
+                        {{ form_row(field, { 'help_bubble_text' : field.vars.attr.help}) }}
+                    {% else %}
+                        {{ form_row(field) }}
+                    {% endif %}
                 {% endfor %}
                 
                 {{ form_rest(form) }}
             </div>
-        {% endfor %}
+        {% endfor %} 
     {% endif %}
     
 </form>

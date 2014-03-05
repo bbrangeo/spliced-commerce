@@ -50,7 +50,9 @@ class FloatType implements TypeInterface
     {
         $form->add($configData->getFormSafeKey(), 'number', array(
             'label' => $configData->getLabel() ? $configData->getLabel() : null,
-            'data' => $this->getApplicationValue($configData),
+            'data' => $this->getApplicationValue($configData->getValue()),
+            'required' => $configData->isRequired(),
+            'precision' => 4,
         ));
     }
 }

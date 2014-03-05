@@ -50,7 +50,11 @@ class TextType implements TypeInterface
     {
         $form->add($configData->getFormSafeKey(), 'text', array(
             'label' => $configData->getLabel() ? $configData->getLabel() : null,
-            'data' => $this->getApplicationValue($configData),
+            'data' => $this->getApplicationValue($configData->getValue()),
+            'required' => $configData->isRequired(),
+            'attr' => array(
+                'help' => $configData->getHelp(),
+            )
         ));
     }
 }
