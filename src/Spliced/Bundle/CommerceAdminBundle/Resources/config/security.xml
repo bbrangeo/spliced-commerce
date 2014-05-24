@@ -28,7 +28,7 @@
         </service>
                 
         <service id="commerce.security.authentication.listener.user"
-                 class="Spliced\Component\Commerce\Security\Firewall\AdminAUthenticationListener"
+                 class="Spliced\Component\Commerce\Security\Firewall\AdminAuthenticationListener"
                  parent="security.authentication.listener.abstract"
                  abstract="true">
         </service>

@@ -36,7 +36,9 @@ class ProductServiceController extends ServiceController
     public function getFrontProductsAction()
     {
         return array(
-            'products' => $this->productRepository->getProductsByAttribute('on_front', true),
+            'products' => array()/*$this->configurationManager->getDocumentManager()
+        		->getRepository($this->configurationManager->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT))
+        		->getProductsByAttribute('on_front', true),*/
         );
     }
 

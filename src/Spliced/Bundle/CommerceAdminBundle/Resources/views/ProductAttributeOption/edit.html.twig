@@ -13,6 +13,16 @@
   	<li class=""><a href="#Values" data-toggle="tab">Values</a></li>
   {% endif %}
 </ul>
+
+<div class="alert alert-info alert-edit-info">
+  <ul class="list-unstyled">
+  	<li><strong>Created On:</strong> {{ form.vars.data.createdAt|date('m/d/Y h:i a') }}</li>
+  	<li><strong>Last Updated:</strong> {{ form.vars.data.updatedAt|date('m/d/Y h:i a') }}</li>
+  	<li><strong>Type:</strong></li>
+  	<li><strong>Key:</strong> {{ form.vars.data.key }}</li>
+  	<li><strong>ID:</strong> {{ form.vars.data.id }}</li>
+  </ul>
+</div>
 {% endblock %}
 
 {% block content -%}

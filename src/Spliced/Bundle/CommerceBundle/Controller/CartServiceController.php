@@ -34,7 +34,7 @@ class CartServiceController extends ServiceController
     public function sideBlockAction()
     {
         return  array(
-           'items' => $this->cartManager->getCartProducts(),
+           'items' => array(),//$this->cartManager->getCartProducts(),
         );
     }
 

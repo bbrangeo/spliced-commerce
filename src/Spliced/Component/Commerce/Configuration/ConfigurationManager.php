@@ -73,7 +73,7 @@ class ConfigurationManager
     const OBJECT_CLASS_TAG_ORDER_SHIPMENT                   = 'order_shipment';
     const OBJECT_CLASS_TAG_ORDER_SHIPMENT_MEMO              = 'order_shipment_memo';
     const OBJECT_CLASS_TAG_ORDER_CUSTOM_FIELD_VALUE         = 'order_custom_field_value';
-    const OBJECT_CLASS_TAG_CONFIGURATION                      = 'configuration';
+    const OBJECT_CLASS_TAG_CONFIGURATION                    = 'configuration';
     const OBJECT_CLASS_TAG_VISITOR                          = 'visitor';
     const OBJECT_CLASS_TAG_VISITOR_REQUEST                  = 'visitor_request';
     const OBJECT_CLASS_TAG_SEARCH_TERM                      = 'search_term';
@@ -82,7 +82,7 @@ class ConfigurationManager
     const OBJECT_CLASS_TAG_USER                             = 'user';
     const OBJECT_CLASS_TAG_ROUTE                            = 'route';
     const OBJECT_CLASS_TAG_TAG                              = 'tag';
-    const OBJECT_CLASS_TAG_CONTENT_PAGE                         = 'content_page';
+    const OBJECT_CLASS_TAG_CONTENT_PAGE                     = 'content_page';
     const OBJECT_CLASS_TAG_CMS_BLOCK                        = 'cms_block';
     
     

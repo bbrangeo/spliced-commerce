@@ -37,6 +37,17 @@ a i{
 	text-decoration: none;
 }
 
+.uppercase{ text-transform: uppercase; }
+.lowercase{ text-transform: lowercase; }
+.nocase{ text-transform:none; }
+
+
+.alert-edit-info{
+    font-size: 12px; 
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 header{
 	background: -moz-linear-gradient(center top , #303030 0%, #101010 100%) repeat scroll 0 0 transparent;
 	border-bottom-color: #000000;

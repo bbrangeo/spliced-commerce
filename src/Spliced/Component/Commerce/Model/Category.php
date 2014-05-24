@@ -215,7 +215,9 @@ abstract class Category implements CategoryInterface
      */
     public function addChild(CategoryInterface $child)
     {
-        $this->children->add($child);
+    	if(!$this->hasChild($child)){
+        	$this->children->add($child);
+    	}
         return $this;
     }
     
@@ -226,7 +228,7 @@ abstract class Category implements CategoryInterface
      */
     public function hasChild(CategoryInterface $child)
     {
-        return $this->children->has($child);
+        return $this->children->contains($child);
     }
     
     /**
@@ -430,6 +432,7 @@ abstract class Category implements CategoryInterface
     public function setPosition($position)
     {
         $this->position = $position;
+        return $this;
     }
 
     /**
@@ -537,7 +540,7 @@ abstract class Category implements CategoryInterface
      */
     public function getLevel()
     {
-        return $this->setLevel;
+        return $this->level;
     }
     
     /**
@@ -558,7 +561,7 @@ abstract class Category implements CategoryInterface
      */
     public function getLeft()
     {
-        return $this->setLeft;
+        return $this->left;
     }
     
     /**
@@ -580,7 +583,7 @@ abstract class Category implements CategoryInterface
      */
     public function getRight()
     {
-        return $this->setRight;
+        return $this->right;
     }
     
     /**

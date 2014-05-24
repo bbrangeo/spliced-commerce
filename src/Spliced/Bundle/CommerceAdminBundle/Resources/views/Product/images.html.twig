@@ -14,7 +14,7 @@
 {% endmacro %}
 
 {% macro product_image(image, product) %}
-	{% form_theme prototype "SplicedCommerceAdminBundle:Form:bootstrap_form_row_labeless.html.twig" %}
+	{% form_theme image "SplicedCommerceAdminBundle:Form:bootstrap_form_row_labeless.html.twig" %}
     {% spaceless %}
 		<tr class="main-body product-image-{{ image.vars.data.id }}">
 			<td>

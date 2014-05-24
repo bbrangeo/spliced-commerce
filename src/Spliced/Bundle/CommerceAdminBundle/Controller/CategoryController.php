@@ -32,8 +32,8 @@ class CategoryController extends BaseFilterableController
     {
         $categories = $this->get('commerce.admin.document_manager')
           ->getRepository('SplicedCommerceAdminBundle:Category')
-          ->getRootNodes();
-
+          ->getRootNodes('position', 'asc');
+      
         return array(
             'categories' => $categories,
         );
@@ -207,17 +207,18 @@ class CategoryController extends BaseFilterableController
         $form->bind($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('SplicedCommerceAdminBundle:Category')->find($id);
 
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Category entity.');
+            $category = $this->get('commerce.admin.document_manager')
+              ->getRepository('SplicedCommerceAdminBundle:Category')->find($id);
+
+            if (!$category) {
+                throw $this->createNotFoundException('Unable to find Category');
             }
 
             $this->get('commerce.category_manager')->delete($category);
         }
 
-        return $this->redirect($this->generateUrl('category'));
+        return $this->redirect($this->generateUrl('commerce_admin_category'));
     }
 
     /**

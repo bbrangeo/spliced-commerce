@@ -1002,6 +1002,27 @@ abstract class Product implements ProductInterface
         }
         return $this;
     }
+    
+
+    /**
+     * hasImage
+     *
+     * @return bool
+     */
+    public function hasImage($image)
+    {
+    	if($image instanceof ProductImage){
+    		$image = $image->getFilePath().$image->getFileName();
+    	}
+    	
+    	foreach($this->images as $_image){    		
+    		if($image == $_image->getFilePath().$_image->getFileName()){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
     /**
      * getMainImage
      *

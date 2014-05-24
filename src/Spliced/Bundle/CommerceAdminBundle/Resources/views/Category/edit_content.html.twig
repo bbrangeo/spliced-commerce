@@ -10,3 +10,15 @@
         <a href="{{ path('commerce_admin_category') }}" class="btn btn-warning"><i class=" icon-remove"></i> Cancel</a>
     </div>
 </form> 
+
+<div class="form-actions">
+    <ul class="record-sub-actions list-inline">
+     	<li>
+      	    <form action="{{ path('commerce_admin_category_delete', { 'id': category.id }) }}" method="post">
+      	        <input type="hidden" name="_method" value="DELETE" />
+      	        {{ form_widget(delete_form) }}
+       	        <button class="btn btn-danger" type="submit"><i class="icon-trash icon-white"></i> Delete</button>
+       	    </form>
+        </li>
+   </ul>
+</div>
