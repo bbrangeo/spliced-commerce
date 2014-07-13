@@ -15,6 +15,7 @@ use Spliced\Component\Commerce\Model\OrderInterface;
 use Spliced\Component\Commerce\Checkout\CheckoutManager;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Spliced\Component\Commerce\Shipping\ShippingMethodCollection;
+use Spliced\Component\Commerce\Shipping\ShippingAddress;
 
 /**
  * CheckoutShipmentFormType
@@ -67,13 +68,15 @@ class CheckoutShipmentFormType extends AbstractType
                 $this->getOrder()->getShipment()->getShipmentMethod()
             ));
         }
-        
+
         if(!$selectedMethod && $shippingMethods->count()){
             $selectedMethod = $shippingMethods->first()->getFullName();
         }
         
         $builder->add('userSelection', 'choice', array(
-            'choices' => $shippingMethods->toArray(),
+            'choices' => array_map(function($value){
+            	return array($value->getFullName() => $value->getName());
+            },$shippingMethods->toArray()),
             'required' => true,
             'data' => $selectedMethod,
             'expanded' => true,
@@ -100,18 +103,24 @@ class CheckoutShipmentFormType extends AbstractType
     {
         return 'checkout_shipment';
     }
-
     
     /**
      * getShippingChoices
      */
      public function getShippingChoices()
      {
-         $return = new ShippingMethodCollection();
-        if($this->getOrder()->getDestinationCountry()){
-            foreach($this->getCheckoutManager()->getShippingManager()->getAvailableMethodsForDesination($this->getOrder()->getDestinationCountry()) as $method) {
-                $return->set($method->getFullName(), $method);
-            }
+        $return = new ShippingMethodCollection();
+        $address = new ShippingAddress(array(
+        	'address' => $this->getOrder()->getShippingAddress(),
+        	'address2' => $this->getOrder()->getShippingAddress2(),
+        	'city' => $this->getOrder()->getShippingCity(),
+        	'state' => $this->getOrder()->getShippingState(),
+        	'zipcode' => $this->getOrder()->getShippingZipcode(),
+        	'country' => $this->getOrder()->getShippingCountry(),
+        ));
+
+        foreach($this->getCheckoutManager()->getShippingManager()->getAvailableMethodsForDesination($address) as $method) {
+        	$return->set($method->getFullName(), $method);
         }
         return $return;
      }

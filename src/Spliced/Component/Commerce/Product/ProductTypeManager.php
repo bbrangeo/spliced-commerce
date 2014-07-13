@@ -10,7 +10,7 @@
 namespace Spliced\Component\Commerce\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Spliced\Component\Commerce\Product\TypeHandler\TypeHandlerInterface;
+use Spliced\Component\Commerce\Product\Type\TypeInterface;
 
 /**
  * ProductTypeManager
@@ -20,118 +20,123 @@ use Spliced\Component\Commerce\Product\TypeHandler\TypeHandlerInterface;
 class ProductTypeManager
 {
     /** @var ArrayCollection */
-    protected $handlers;
+	protected $types;
     
     /**
      * Constructor
-     */
+	*/
     public function __construct()
     {
-        $this->handlers = new ArrayCollection();
+        $this->types = new ArrayCollection();
     }
     
-    /**
-     * getHandlers
-     * 
-     * Returns a collection of registers type handlers
-     * 
-     * @return ArrayCollection
-     */
-    public function getHandlers()
+	/**
+	 * getHandlers
+	 * 
+	 * Returns a collection of registers type types
+	 * 
+	 * @return ArrayCollection
+	*/
+	public function getHandlers()
     {
-        return $this->handlers;
+        return $this->types;
     }
     
     /**
-     * addHandler
+     * addType
      * 
-     * @param TypeHandlerInterface $handler
+     * Registers a type
+     * 
+     * @param TypeInterface $type
      */
-     public function addHandler(TypeHandlerInterface $handler)
-     {
-         $existingHandler = $this->getHandlerByTypeCode($handler->getTypeCode());
+	public function addType(TypeInterface $type)
+	{
+		$existingType = $this->getTypeByCode($type->getTypeCode());
          
-         if($existingHandler !== false){
-             throw new \InvalidArgumentException(sprintf('Product Type With Type Code %s Already Defined Under %s',
-                $handler->getTypeCode(),
-                $existingHandler->getName()
-            ));
-         }
+		if($existingType !== false){
+			throw new \InvalidArgumentException(sprintf('Product Type With Type Code %s Already Defined Under %s',
+				$type->getTypeCode(),
+                $existingType->getName()
+			));
+		}
         
-         $existingHandler = $this->getHandlerByName($handler->getName());
+		$existingType = $this->getTypeByName($type->getName());
          
-         if($existingHandler !== false){
-             throw new \InvalidArgumentException(sprintf('Product Type With Type Name %s Already Defined Under %s',
-                $handler->getName(),
+		if($existingType !== false){
+			throw new \InvalidArgumentException(sprintf('Product Type With Type Name %s Already Defined Under %s',
+				$type->getName(),
                 get_class($existingHandler)
-            ));
-         }
+			));
+		}
         
-         $this->handlers->set($handler->getName(), $handler);
+		$this->types->set($type->getName(), $type);
         
         return $this;
      }
      
-     /**
-      * hasHandlerByName
-      * 
-      * @param string $name
-      */
-      public function hasHandlerByName($name)
-      {
-        foreach($this->handlers as $handler){
-            if($handler->getName() === $name){
+	/**
+	 * hasName
+	 * 
+	 * @param string $name
+	*/
+	public function hasName($name)
+	{
+		foreach($this->types as $types){
+			if($type->getName() === $name){
                 return true;
             }
-        }
+		}
         return false;
-      }
+	}
+
+	/**
+	 * hasCode
+	 *
+	 * @param int $typeCode
+	 */
+	public function hasCode($typeCode)
+	{
       
-     /**
-      * getHandlerByName
-      * 
-      * @param string $name
-      */
-      public function getHandlerByName($name)
-      {
-        foreach($this->handlers as $handler){
-            if($handler->getName() === $name){
-                return $handler;
+		$typeCode = (int) $typeCode;
+      
+      	foreach($this->types as $type){
+      		if($type->getTypeCode() === $typeCode){
+      			return true;
+      		}
+      	}
+      
+		return false;
+	}
+      
+	/**
+	 * getTypeByName
+	 * 
+	 * @param string $name
+	*/
+	public function getTypeByName($name)
+	{
+		foreach($this->types as $type){
+			if($type->getName() === $name){
+                return $type;
+            }
+		}
+        return false;
+	}
+
+      
+	/**
+	 * getHandlerByTypeCode
+	 * 
+	 * @param int $typeCode
+	*/
+	public function getTypeByCode($typeCode)
+	{
+		foreach($this->types as $type){
+			if($type->getTypeCode() === $typeCode){
+                return $type;
             }
         }
-        return false;
-      }
-      
-     /**
-      * hasHandlerByTypeCode
-      * 
-      * @param int $typeCode
-      */
-      public function hasHandlerByTypeCode($typeCode)
-      {
-          
-          $typeCode = (int) $typeCode;
         
-        foreach($this->handlers as $handler){
-            if($handler->getTypeCode() === $typeCode){
-                return true;
-            }
-        }
         return false;
-      }
-      
-      /**
-       * getHandlerByTypeCode
-       * 
-       * @param int $typeCode
-       */
-       public function getHandlerByTypeCode($typeCode)
-       {
-        foreach($this->handlers as $handler){
-            if($handler->getTypeCode() === $typeCode){
-                return $handler;
-            }
-        }
-        return false;
-       }
+	}
 }

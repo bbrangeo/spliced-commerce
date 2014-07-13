@@ -39,45 +39,52 @@ abstract class Order implements OrderInterface
     /**
      * @var string $email
      *
-     * @ORM\Column(name="email", type="string", length=150, nullable=true)
+     * @ORM\Column(name="email", type="string", length=75, nullable=true)
      */
     protected $email;
 
     /**
      * @var string $billingPhoneNumber
      *
-     * @ORM\Column(name="billing_phone_number", type="string", length=50, nullable=true)
+     * @ORM\Column(name="billing_phone_number", type="string", length=20, nullable=true)
      */
     protected $billingPhoneNumber;
     
     /**
      * @var string $shippingPhoneNumber
      *
-     * @ORM\Column(name="shipping_phone_number", type="string", length=50, nullable=true)
+     * @ORM\Column(name="shipping_phone_number", type="string", length=20, nullable=true)
      */
     protected $shippingPhoneNumber;
     
     /**
      * @var string $orderNumber
      *
-     * @ORM\Column(name="order_number", type="string", length=100, nullable=true)
+     * @ORM\Column(name="order_number", type="string", length=50, nullable=true)
      */
     protected $orderNumber;
 
       /**
      * @var string $billingFirstName
      *
-     * @ORM\Column(name="billing_first_name", type="string", length=150, nullable=true)
+     * @ORM\Column(name="billing_first_name", type="string", length=50, nullable=true)
      */
     protected $billingFirstName;
 
     /**
      * @var string $billingLastName
      *
-     * @ORM\Column(name="billing_last_name", type="string", length=150, nullable=true)
+     * @ORM\Column(name="billing_last_name", type="string", length=50, nullable=true)
      */
     protected $billingLastName;
 
+    /**
+     * @var string $billingLastName
+     *
+     * @ORM\Column(name="billing_company", type="string", length=50, nullable=true)
+     */
+    protected $billingCompany;
+    
     /**
      * @var string $billingAddress
      *
@@ -117,23 +124,30 @@ abstract class Order implements OrderInterface
     /**
      * @var string $billingCountry
      *
-     * @ORM\Column(name="billing_country", type="string", length=50, nullable=true)
+     * @ORM\Column(name="billing_country", type="string", length=4, nullable=true)
      */
     protected $billingCountry;
 
     /**
      * @var string $shippingName
      *
-     * @ORM\Column(name="shipping_name", type="string", length=150, nullable=true)
+     * @ORM\Column(name="shipping_first_name", type="string", length=50, nullable=true)
      */
-    protected $shippingName;
+    protected $shippingFirstName;
 
     /**
      * @var string $shippingAttn
      *
-     * @ORM\Column(name="shipping_attn", type="string", length=150, nullable=true)
+     * @ORM\Column(name="shipping_last_name", type="string", length=50, nullable=true)
      */
-    protected $shippingAttn;
+    protected $shippingLastName;
+    
+    /**
+     * @var string $billingLastName
+     *
+     * @ORM\Column(name="shipping_company", type="string", length=50, nullable=true)
+     */
+    protected $shippingCompany;
 
     /**
      * @var string $shippingAddress
@@ -173,7 +187,7 @@ abstract class Order implements OrderInterface
     /**
      * @var string $shippingCountry
      *
-     * @ORM\Column(name="shipping_country", type="string", length=50, nullable=true)
+     * @ORM\Column(name="shipping_country", type="string", length=4, nullable=true)
      */
     protected $shippingCountry;
 
@@ -333,7 +347,6 @@ abstract class Order implements OrderInterface
     {
         $hash = md5(rand(100,1000));
         $this->setProtectCode(substr($hash,strlen($hash)-10));
-
         return $this;
     }
 
@@ -413,6 +426,30 @@ abstract class Order implements OrderInterface
         $this->billingLastName = $billingLastName;
         return $this;
     }
+    
+    /**
+     * getBillingCompany
+     *
+     * @return string
+    */
+    public function getBillingCompany()
+    {
+    	return $this->billingCompany;
+    }
+
+    /**
+     * setBillingCompany
+     *
+     * @param string billingCompany
+     *
+     * @return self
+    */
+    public function setBillingCompany($billingCompany)
+    {
+	    $this->billingCompany = $billingCompany;
+	    return $this;
+    }
+    
 
     /**
      * Set billingAddress
@@ -541,46 +578,70 @@ abstract class Order implements OrderInterface
     }
 
     /**
-     * Set shippingName
+     * setShippingFirstName
      *
      * @param string $shippingName
      */
-    public function setShippingName($shippingName)
+    public function setShippingFirstName($shippingFirstName)
     {
-        $this->shippingName = $shippingName;
+        $this->shippingFirstName = $shippingFirstName;
         return $this;
     }
 
     /**
-     * Get shippingName
+     * getShippingFirstName
      *
      * @return string
      */
-    public function getShippingName()
+    public function getShippingFirstName()
     {
-        return $this->shippingName;
+        return $this->shippingFirstName;
     }
 
     /**
-     * Set shippingAttn
+     * setShippingLastName
      *
      * @param string $shippingAttn
      */
-    public function setShippingAttn($shippingAttn)
+    public function setShippingLastName($shippingLastName)
     {
-        $this->shippingAttn = $shippingAttn;
+        $this->shippingLastName = $shippingLastName;
         return $this;
     }
 
     /**
-     * Get shippingAttn
+     * getShippingLastName
      *
      * @return string
      */
-    public function getShippingAttn()
+    public function getShippingLastName()
     {
-        return $this->shippingAttn;
+        return $this->shippingLastName;
     }
+    
+    /**
+     * getShippingCompany
+     *
+     * @return string
+    */
+    public function getShippingCompany()
+    {
+    	return $this->shippingCompany;
+    }
+
+    /**
+     * setShippingCompany
+     *
+     * @param string shippingCompany
+     *
+     * @return self
+    */
+    public function setShippingCompany($shippingCompany)
+    {
+	    $this->shippingCompany = $shippingCompany;
+	    return $this;
+    }
+    
 
     /**
      * Set shippingAddress
@@ -1135,10 +1196,10 @@ abstract class Order implements OrderInterface
      * getDestinationCountry
      */
     public function getDestinationCountry()
-    {
-        if ($this->getShippingCountry()) {
+    {        
+        if (strlen($this->getShippingCountry()) > 0) {
             return $this->getShippingCountry();
-        }
+        }        
 
         return $this->getBillingCountry();
     }

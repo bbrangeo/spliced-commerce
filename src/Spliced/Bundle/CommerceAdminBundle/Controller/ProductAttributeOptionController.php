@@ -43,7 +43,7 @@ class ProductAttributeOptionController extends BaseFilterableController
 
         // load orders
         $attributeOptions = $this->get('knp_paginator')->paginate(
-            $this->get('commerce.admin.document_manager')
+            $this->get('commerce.admin.entity_manager')
               ->getRepository('SplicedCommerceAdminBundle:ProductAttributeOption')
               ->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page', 1),
@@ -110,7 +110,7 @@ class ProductAttributeOptionController extends BaseFilterableController
      */
     public function editAction($id)
     {
-        $attributeOption = $this->get('commerce.admin.document_manager')
+        $attributeOption = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:ProductAttributeOption')
           ->findOneById($id);
 
@@ -137,7 +137,7 @@ class ProductAttributeOptionController extends BaseFilterableController
      */
     public function updateAction($id)
     {
-        $attributeOption = $this->get('commerce.admin.document_manager')
+        $attributeOption = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:ProductAttributeOption')
           ->findOneById($id);
 
@@ -175,7 +175,7 @@ class ProductAttributeOptionController extends BaseFilterableController
      */
     public function deleteAction($id)
     {
-        $attributeOption = $this->get('commerce.admin.document_manager')
+        $attributeOption = $this->get('commerce.admin.entity_manager')
         ->getRepository('SplicedCommerceAdminBundle:ProductAttributeOption')
         ->findOneById($id);
         
@@ -195,7 +195,7 @@ class ProductAttributeOptionController extends BaseFilterableController
      */
     public function deleteValueAction($id, $valueId)
     {
-        $attributeOption = $this->get('commerce.admin.document_manager')
+        $attributeOption = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:ProductAttributeOption')
           ->findOneById($id);
 
@@ -280,7 +280,7 @@ class ProductAttributeOptionController extends BaseFilterableController
         }
         
         try{
-            $attributeOption = $this->get('commerce.admin.document_manager')
+            $attributeOption = $this->get('commerce.admin.entity_manager')
             ->getRepository('SplicedCommerceAdminBundle:ProductAttributeOption')
             ->findOneByName($this->getRequest()->request->get('name'));
                 
@@ -303,7 +303,7 @@ class ProductAttributeOptionController extends BaseFilterableController
      */
     public function getOptionAction($id)
     {
-        $option = $this->get('commerce.admin.document_manager')
+        $option = $this->get('commerce.admin.entity_manager')
          ->getRepository('SplicedCommerceAdminBundle:ProductAttributeOption')
          ->createQueryBuilder()
          ->field('id')->equals($id)

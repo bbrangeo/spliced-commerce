@@ -30,7 +30,7 @@ class ManufacturerController extends BaseFilterableController
 
         // load products
         $manufacturers = $this->get('knp_paginator')->paginate(
-            $this->get('commerce.admin.document_manager')
+            $this->get('commerce.admin.entity_manager')
               ->getRepository('SplicedCommerceAdminBundle:Manufacturer')
               ->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page',1),
@@ -72,8 +72,8 @@ class ManufacturerController extends BaseFilterableController
         
         if ($form->bind($this->getRequest()) && $form->isValid()) {
                 
-            $this->get('commerce.admin.document_manager')->persist($form->getData());
-            $this->get('commerce.admin.document_manager')->flush();
+            $this->get('commerce.admin.entity_manager')->persist($form->getData());
+            $this->get('commerce.admin.entity_manager')->flush();
         
             $this->get('session')->getFlashBag()->add('success', 'Manufacturer Successfully Added');
             return $this->redirect($this->generateUrl('commerce_admin_manufacturer'));
@@ -93,7 +93,7 @@ class ManufacturerController extends BaseFilterableController
      */
     public function editAction($id)
     {
-        $maufacturer = $this->get('commerce.admin.document_manager')
+        $maufacturer = $this->get('commerce.admin.entity_manager')
         ->getRepository('SplicedCommerceAdminBundle:Manufacturer')
         ->findOneById($id);
         
@@ -121,7 +121,7 @@ class ManufacturerController extends BaseFilterableController
      */
     public function updateAction($id)
     {
-        $maufacturer = $this->get('commerce.admin.document_manager')
+        $maufacturer = $this->get('commerce.admin.entity_manager')
         ->getRepository('SplicedCommerceAdminBundle:Manufacturer')
         ->findOneById($id);
         
@@ -134,8 +134,8 @@ class ManufacturerController extends BaseFilterableController
         
         
         if ($form->bind($this->getRequest()) && $form->isValid()) {
-            $this->get('commerce.admin.document_manager')->persist($maufacturer);
-            $this->get('commerce.admin.document_manager')->flush();
+            $this->get('commerce.admin.entity_manager')->persist($maufacturer);
+            $this->get('commerce.admin.entity_manager')->flush();
         
             return $this->redirect($this->generateUrl('commerce_admin_manufacturer_edit', array('id' => $id)));
         }
@@ -157,7 +157,7 @@ class ManufacturerController extends BaseFilterableController
         $form = $this->createDeleteForm($id);
 
         if ($form->bind($this->getRequest()) && $form->isValid()) {
-            $manufacturer = $this->get('commerce.admin.document_manager')
+            $manufacturer = $this->get('commerce.admin.entity_manager')
             ->getRepository('SplicedCommerceAdminBundle:Manufacturer')
             ->findOneById($id);
         
@@ -165,8 +165,8 @@ class ManufacturerController extends BaseFilterableController
                 throw $this->createNotFoundException('Unable to find Manufacturer.');
             }
         
-            $this->get('commerce.admin.document_manager')->remove($manufacturer);
-            $this->get('commerce.admin.document_manager')->flush();
+            $this->get('commerce.admin.entity_manager')->remove($manufacturer);
+            $this->get('commerce.admin.entity_manager')->flush();
         }
         
         return $this->redirect($this->generateUrl('commerce_admin_manufacturer'));

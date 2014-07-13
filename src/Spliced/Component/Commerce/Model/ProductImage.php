@@ -9,49 +9,72 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ProductImage
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
+ * 
+ * @ORM\Table(name="product_image")
+ * @ORM\Entity()
  */
 class ProductImage
 {
     
-    /**
-     * @MongoDB\Id
+     /**
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
     
     /**
-     * @MongoDB\Boolean
+     * @ORM\Column(name="label", type="string", nullable=false)
+     */
+    protected $label;
+    
+    /**
+     * @ORM\Column(name="is_main", type="boolean", nullable=true)
      */
     protected $isMain;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="file_name", type="string", nullable=false)
      */
     protected $fileName;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="file_path", type="string", nullable=false)
      */
     protected $filePath;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="file_md5", type="string", nullable=true)
      */
     protected $fileMd5;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="file_type", type="string", nullable=true)
      */
     protected $fileType;
     
     /** @var File $uploadedImage */
     protected $uploadedImage;
-
+    
+    /**
+     * @var Product
+     *
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="images")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * })
+     */
+    protected $product;
+    
+    
     /**
      * getId
      */
@@ -59,6 +82,30 @@ class ProductImage
     {
         return $this->id;
     }
+    
+    /**
+     * getLabel
+     *
+     * @return string
+    */
+    public function getLabel()
+    {
+    	return $this->label;
+    }
+
+    /**
+     * setLabel
+     *
+     * @param string label
+     *
+     * @return self
+    */
+    public function setLabel($label)
+    {
+	    $this->label = $label;
+	    return $this;
+    }
+    
     
     /**
      * setIsMain
@@ -188,4 +235,28 @@ class ProductImage
         $this->uploadedImage = $uploadedImage;
         return $this;
     }
+    
+    /**
+     * getProduct
+     *
+     * @return ProductInterface
+    */
+    public function getProduct()
+    {
+    	return $this->product;
+    }
+
+    /**
+     * setProduct
+     *
+     * @param ProductInterface product
+     *
+     * @return self
+    */
+    public function setProduct(ProductInterface $product)
+    {
+	    $this->product = $product;
+	    return $this;
+    }
+    
 }

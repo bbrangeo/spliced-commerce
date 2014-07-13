@@ -42,6 +42,7 @@ class BreadcrumbManager
      * @param string $title
      * @param string $href
      * @param int    $position
+     * @param bool $add - Add the crumb or return the crumb, defaults to return the crumb (false)
      *
      * @return Breadcrumb
      */

@@ -32,7 +32,7 @@ class CountriesType implements TypeInterface
      */
     public function getApplicationValue($value)
     {
-        return $value;
+        return unserialize($value);
     }
     
     /**
@@ -40,7 +40,7 @@ class CountriesType implements TypeInterface
      */
     public function getDatabaseValue($value)
     {
-        return $value;
+        return serialize($value);
     }
     
     /**

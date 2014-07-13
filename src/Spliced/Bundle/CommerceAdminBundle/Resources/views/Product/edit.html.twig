@@ -2,6 +2,26 @@
 
 {% block title %}{{ product.name }} | Products | {{ parent() }}{% endblock %}
 
+{% block javascripts -%}
+    {{ parent() }}
+	{% javascripts
+	    '@SplicedCommerceAdminBundle/Resources/public/js/product.js'
+	    '@SplicedCommerceAdminBundle/Resources/public/js/product_attribute.js'
+	    '@SplicedCommerceAdminBundle/Resources/public/js/product_specification.js'
+	    '@SplicedCommerceAdminBundle/Resources/public/js/product_tier_price.js'
+	    '@SplicedCommerceAdminBundle/Resources/public/js/product_upsale.js'
+	    '@SplicedCommerceAdminBundle/Resources/public/js/product_related_products.js'
+	    '@SplicedCommerceAdminBundle/Resources/public/js/product_bundled_item.js'
+	    '@SplicedCommerceAdminBundle/Resources/public/js/product_content.js'
+	    '@SplicedCommerceAdminBundle/Resources/public/js/product_image.js'
+	    '@SplicedCommerceAdminBundle/Resources/public/js/product_category.js'
+	    filter='?yui_js'
+	    output='/js/commerce_admin_product.js'
+	%} 
+	<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}
+
 {% block content_section_header -%}
     {{ include('SplicedCommerceAdminBundle:Product:content_section_header.html.twig') }}
 {% endblock %}
@@ -17,7 +37,8 @@
   <li class=""><a href="#Specifications">Specifications</a></li>
   <li class=""><a href="#Attributes">Attributes</a></li>
   <li class=""><a href="#BundledItems">Bundled Items</a></li>
-  <li class=""><a href="#Upsales">Upsales</a></li>
+  <li class=""><a href="#RelatedProducts">Related Products</a></li>  
+  <!--<li class=""><a href="#Upsales">Upsales</a></li>-->
   <li class=""><a href="#Routes">Routes</a></li>
   <li class=""><a href="#Sales">Sales</a></li>
 </ul>
@@ -29,11 +50,11 @@
     	<h1>Product <small>{{ product.sku }} - {{ product.name }}</small></h1>
     </div>
     
-    <form action="{{ path('commerce_admin_product_update', { 'id': product.id }) }}" class="form product-form" method="post" {{ form_enctype(form) }}>
+    <form action="{{ path('commerce_admin_product_update', { 'id': product.id }) }}" class="form form-product" method="post" {{ form_enctype(form) }}>
    		{#
    		Product Details   		
    		#}
-   		<div id="Details">
+   		<div id="Details" class="content-pane">
     	    <div class="page-header">
     	        <h2><small>Details</small></h2>
     	    </div>
@@ -42,7 +63,7 @@
    		{#
    		Product Pricing   		
    		#}
-    	<div id="Pricing">
+    	<div id="Pricing" class="content-pane">
     	    <div class="page-header">
     	        <h2><small>Pricing</small></h2>
     	    </div>
@@ -64,7 +85,7 @@
    		{#
    		Product Media   		
    		#}
-    	<div id="Media">
+    	<div id="Media" class="content-pane">
     	    <div class="page-header">
     	        <h2><small>Images</small></h2>
     	    </div>
@@ -73,7 +94,7 @@
    		{#
    		Product Content   		
    		#}
-    	<div id="Content">
+    	<div id="Content" class="content-pane">
     	    <div class="page-header">
     	        <h2><small>Content</small></h2>
     	    </div>
@@ -81,18 +102,19 @@
     	</div>
    		{#
    		Product Categories   		
-   		#}
-    	<div id="Categories">
+   		
+    	<div id="Categories" class="content-pane">
     	
     		<div class="page-header">
                 <h2><small>Categories</small></h2>
             </div>
             {{ include("SplicedCommerceAdminBundle:Product:categories.html.twig", {  }) }}
     	</div>
+    	#}
    		{#
    		Product Inventory   		
    		#}
-    	<div id="Inventory">
+    	<div id="Inventory" class="content-pane">
     	    <div class="page-header">
     	        <h2><small>Inventory</small></h2>
     	    </div>
@@ -101,19 +123,21 @@
    		{#
    		Product Specifications   		
    		#}
-    	<div id="Specifications">
+    	<div id="Specifications" class="content-pane">
     	    <div class="page-header">
     	        <h2><small>Specifications</small></h2>
     	    </div>
 	    	<div class="well well-small well-sm">
-	    	 	Use Specifications to let the user know about various features a product may have to offer.
+	    	 	Use Specifications to let the user know about various features a product may have to offer, as well as
+	    	 	provide faceted filters when viewing products in a category or when a customer searches the store.
 	    	</div>
     	    {{ include("SplicedCommerceAdminBundle:Product:specifications.html.twig", {  }) }}
     	</div>
+    	
    		{#
    		Product Attributes   		
-   		#}
-    	<div id="Attributes">
+   		
+    	<div id="Attributes" class="content-pane">
     	    <div class="page-header">
     	        <h2><small>Attributes</small></h2>
     	    </div>
@@ -122,10 +146,11 @@
 	    	</div>
     	    {{ include("SplicedCommerceAdminBundle:Product:attributes.html.twig", {  }) }}
     	</div>
+    	#}
    		{#
    		Product Bundled Items   		
-   		#}
-    	<div id="BundledItems">
+   		
+    	<div id="BundledItems" class="content-pane">
     	    <div class="page-header">
     	        <h2><small>Bundled Items</small></h2>
     	    </div>
@@ -134,10 +159,11 @@
 	    	</div>
     	    {{ include("SplicedCommerceAdminBundle:Product:bundled_items.html.twig", {  }) }}
     	</div>
+    	#}
    		{#
    		Product Upsales   		
-   		#}
-    	<div id="Upsales">
+   		
+    	<div id="Upsales" class="content-pane">
     	    <div class="page-header">
     	        <h2><small>Upsales</small></h2>
     	    </div>
@@ -145,6 +171,19 @@
 	    	 	Upsales are offered to customers viewing a product, or when an item has been added to the shopping cart.
 	    	</div>
     	    {{ include("SplicedCommerceAdminBundle:Product:upsales.html.twig", {  }) }}
+    	</div>
+    	#}
+   		{#
+   		Product Related Products   		
+   		#}
+    	<div id="RelatedProducts" class="content-pane">
+    	    <div class="page-header">
+    	        <h2><small>Related Products</small></h2>
+    	    </div>
+	    	<div class="well well-small well-sm">
+	    	 	Related products show up as additional offers on the product display page.
+	    	</div>
+    	    {{ include("SplicedCommerceAdminBundle:Product:related_products.html.twig", {  }) }}
     	</div>
     	
    		{#
@@ -163,7 +202,7 @@
    		{#
    		Product Sales History   		
    		#}
-    	<div id="Sales">
+    	<div id="Sales" class="content-pane">
     	    <div class="page-header">
     	        <h2><small>Sales</small></h2>
     	    </div>

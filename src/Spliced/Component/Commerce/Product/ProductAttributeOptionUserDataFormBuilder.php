@@ -83,7 +83,7 @@ class ProductAttributeOptionUserDataFormBuilder {
     public function buildForm(CartItemInterface $item, array $formOptions = array()) {
         
         $builder = $this->getFormFactory()->createNamedBuilder(
-              sprintf('item_%s_product_%s_user_data', $item->getId(), $item->getProductId()), 
+              sprintf('item_%s_product_%s_user_data', $item->getId(), $item->getProduct()->getId()), 
               'form', 
               null,  
               $formOptions

@@ -33,7 +33,8 @@ class ProductController extends Controller
      */
     public function viewAction($id)
     {
-        $productRepository = $this->get('commerce.document_manager')->getRepository('SplicedCommerceBundle:Product');
+        $productRepository = $this->get('commerce.entity_manager')
+          ->getRepository('SplicedCommerceBundle:Product');
 
         // load product
         $product = $productRepository->findOneById($id);
@@ -42,7 +43,7 @@ class ProductController extends Controller
             throw $this->createNotFoundException('Product Not Found');
         }
     
-        return $this->renderProductView($product);
+        return $this->renderProduct($product);
     }
     
     /**
@@ -55,7 +56,8 @@ class ProductController extends Controller
      */
     public function viewBySlugAction($slug)
     {
-        $productRepository = $this->get('commerce.document_manager')->getRepository('SplicedCommerceBundle:Product');
+        $productRepository = $this->get('commerce.entity_manager')
+          ->getRepository('SplicedCommerceBundle:Product');
     
         // load product
         $product = $productRepository->findOneByUrlSlug($slug);
@@ -65,13 +67,13 @@ class ProductController extends Controller
         }
     
     
-        return $this->renderProductView($product);
+        return $this->renderProduct($product);
     }
     
     /**
      * 
      */
-    protected function renderProductView(ProductInterface $product)
+    protected function renderProduct(ProductInterface $product)
     {
         // set crumbs
         $this->get('commerce.breadcrumb')
@@ -80,8 +82,8 @@ class ProductController extends Controller
         
         // dispatch a product viewed event
         $this->get('event_dispatcher')->dispatch(
-                Events\Event::EVENT_PRODUCT_VIEW,
-                new Events\ProductViewEvent($product)
+        	Events\Event::EVENT_PRODUCT_VIEW,
+            new Events\ProductViewEvent($product)
         );
         
         return array(

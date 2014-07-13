@@ -1,11 +1,11 @@
-<h3>Shipping Options</h3>
+<h4>Shipping Estimator</h4>
 {% if shippingQuoteForm is defined %}
 <div class="alert alert-block alert-info">
-    <ul class="inline shipping-quote-form">
-	    <li><strong>Where is your order going?</strong></li>
+    <ul class="list-inline shipping-quote-form">
+	    <li><strong>Destination Country:</strong></li>
 		<li>{{ form_widget(shippingQuoteForm.country, { 'attr' : { 'class' : 'selectpicker', } }) }}</li>
-		<li>{{ form_widget(shippingQuoteForm.zipcode, { 'attr' : { 'class' : 'span2', 'placeholder' : 'Zipcode' } }) }}</li>
-		<li><button type="submit" class="btn btn-info">{{ shippingOptions|length ? 'Update Quote' : 'Get Quote' }}</button></li>
+		<li>{{ form_widget(shippingQuoteForm.zipcode, { 'attr' : { 'class' : '', 'placeholder' : 'Zipcode' } }) }}</li>
+		<li><button type="submit" class="btn btn-info"><i class="fa fa-truck pull-left"></i> {{ shippingOptions|length ? 'Update Quote' : 'Get Quote' }}</button></li>
 	</ul>
 </div>
 {% endif %}

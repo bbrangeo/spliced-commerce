@@ -52,7 +52,7 @@ class CategoryServiceController extends ServiceController
     {
         $categories = $this->orm
           ->getRepository('SplicedCommerceBundle:Category')
-          ->getAllTopLevel();
+          ->findByParent(null);
 
         return array(
             'categories' => $categories

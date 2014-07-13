@@ -12,7 +12,7 @@
         <service id="commerce.router" class="%spliced.commerce.router.class%">
             <argument type="service" id="commerce.router.parent" />
             <argument type="service" id="commerce.configuration" />
-            <argument type="service" id="commerce.document_manager" />
+            <argument type="service" id="commerce.entity_manager" />
             <argument type="service" id="session" />
             <argument type="service" id="commerce.affiliate_manager" />
             <argument type="service" id="kernel" />

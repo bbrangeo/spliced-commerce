@@ -1,9 +1,10 @@
+{% form_theme form "SplicedCommerceBundle:Form:bootstrap_form_row_labeless.html.twig" %}
+
 <form method="post" action="{{ path('commerce_newsletter_subscribe') }}">
     <div class="input-append">
-    {{ form_widget(form.email,{
-         'attr':{ 
+    {{ form_row(form.email,{
+         'attr':{
             'placeholder' : 'Enter Your Email Address', 
-            'class' : 'span3'
         }
     }) }}
         <button class="btn btn-info" type="submit">Sign Up</button>

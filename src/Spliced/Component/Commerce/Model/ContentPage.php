@@ -9,77 +9,96 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ContentPage
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  * 
- * @MongoDB\Document(collection="content_page")
+ * @ORM\Table(name="content_page")
+ * @ORM\Entity()
  */
 abstract class ContentPage implements ContentPageInterface
 {
-    /**
-     * @MongoDB\Id
-     */
+	/**
+	 * @var bigint $id
+	 *
+	 * @ORM\Column(name="id", type="bigint", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="IDENTITY")
+	 */
     protected $id;
     
     /**
-     * @MongoDB\String
+     * @var string $title
+     *
+     * @ORM\Column(name="title", type="string", length=255, unique=false, nullable=false)
      */
     protected $title;
 
     /**
-     * @MongoDB\String
+     * @var string $pageTitle
+     *
+     * @ORM\Column(name="page_title", type="string", length=255, unique=false, nullable=true)
      */
     protected $pageTitle;
 
     /**
-     * @MongoDB\String
+     * @var string $pageLayout
+     *
+     * @ORM\Column(name="page_layout", type="string", length=255, unique=false, nullable=true)
      */
     protected $pageLayout;
 
     /**
-     * @MongoDB\String
-     * @MongoDB\Index(unique=true)
+     * @var string $urlSlug
+     *
+     * @ORM\Column(name="url_slug", type="string", length=255, unique=true, nullable=false)
      */
     protected $urlSlug;
 
     /**
-     * @MongoDB\String
+     * @var string $metaDescription
+     *
+     * @ORM\Column(name="meta_description", type="text", unique=false, nullable=true)
      */
     protected $metaDescription;
 
     /**
-     * @MongoDB\String
+     * @var string $metaKeywords
+     *
+     * @ORM\Column(name="meta_keywords", type="string", length=255, unique=false, nullable=true)
      */
     protected $metaKeywords;
 
     /**
-     * @MongoDB\String
+     * @var string $content
+     *
+     * @ORM\Column(name="content", type="text", unique=false, nullable=true)
      */
     protected $content;
 
     /**
-     * @MongoDB\Boolean
+     * @var bool $isActive
+     *
+     * @ORM\Column(name="is_active", type="boolean", unique=false, nullable=true)
      */
     protected $isActive;
 
     /**
-     * @MongoDB\Date
+     * @var DateTime $createdAt
+     *
+     * @ORM\Column(name="created_at", type="datetime", unique=false, nullable=false)
      */
     protected $createdAt;
 
     /**
-     * @MongoDB\Date
+     * @var DateTime $createdAt
+     *
+     * @ORM\Column(name="updated_at", type="datetime", unique=false, nullable=false)
      */
     protected $updatedAt;
-
-    /**
-     * @MongoDB\EmbedOne(targetDocument="Route")
-     */
-    protected $route;
 
     /**
      * __construct
@@ -321,16 +340,4 @@ abstract class ContentPage implements ContentPageInterface
         return $this->content;
     }
 
-    public function getRoute()
-    {
-        return $this->route;
-    }
-
-    public function setRoute(Route $route = null)
-    {
-        $this->route = $route->setPage($this);
-        return $this;
-
-        return $this;
-    }
 }

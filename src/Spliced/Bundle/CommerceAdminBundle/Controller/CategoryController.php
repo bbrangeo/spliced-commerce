@@ -30,7 +30,7 @@ class CategoryController extends BaseFilterableController
      */
     public function treeAction()
     {
-        $categories = $this->get('commerce.admin.document_manager')
+        $categories = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:Category')
           ->getRootNodes('position', 'asc');
       
@@ -48,7 +48,7 @@ class CategoryController extends BaseFilterableController
      */
     public function listAction()
     {
-        $om = $this->get('commerce.admin.document_manager');
+        $om = $this->get('commerce.admin.entity_manager');
         
         // load categorys
         $categories = $this->get('knp_paginator')->paginate(
@@ -128,7 +128,7 @@ class CategoryController extends BaseFilterableController
     public function editAction($id)
     {
 
-        $category = $this->get('commerce.admin.document_manager')
+        $category = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:Category')
           ->findOneById($id);
             
@@ -164,7 +164,7 @@ class CategoryController extends BaseFilterableController
      */
     public function updateAction(Request $request, $id)
     {
-        $category = $this->get('commerce.admin.document_manager')
+        $category = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:Category')
           ->findOneById($id);
             
@@ -208,7 +208,7 @@ class CategoryController extends BaseFilterableController
 
         if ($form->isValid()) {
 
-            $category = $this->get('commerce.admin.document_manager')
+            $category = $this->get('commerce.admin.entity_manager')
               ->getRepository('SplicedCommerceAdminBundle:Category')->find($id);
 
             if (!$category) {
@@ -322,7 +322,7 @@ class CategoryController extends BaseFilterableController
     
         $urlSlug = preg_replace('/^\//', '', $this->getRequest()->request->get('slug'));
 
-        $category = $this->get('commerce.admin.document_manager')
+        $category = $this->get('commerce.admin.entity_manager')
         ->getRepository('SplicedCommerceAdminBundle:Category')
         ->findOneByUrlSlug($urlSlug);
             

@@ -167,8 +167,12 @@ class OnePageCheckoutStepHandler extends CheckoutStepHandler
             'constraints' => array(
                 new Constraints\NotBlank()
             )
-        ));
-        
+        ))->add('billingCompany', 'text', array(
+            'label' => 'Company',
+        	'required' => false,
+            'constraints' => array(
+            )
+        ));        
          
         if(!$this->getSecurityContext()->isGranted('ROLE_USER')){
             $builder->add('email', 'email', array(
@@ -223,11 +227,15 @@ class OnePageCheckoutStepHandler extends CheckoutStepHandler
                 new Constraints\NotBlank(),
             )
         ))
-        ->add('shippingName', 'text', array(
-            'label' => 'Ship To',
+        ->add('shippingFirstName', 'text', array(
+            'label' => 'First Name',
         ))
-        ->add('shippingAttn', 'text', array(
-            'label' => 'Attention To',
+        ->add('shippingLastName', 'text', array(
+            'label' => 'Last Name',
+        ))
+        ->add('shippingCompany', 'text', array(
+        	'label' => 'Company',
+        	'required' => false,
         ))
         ->add('shippingAddress', 'text', array(
             'label' => 'Address',
@@ -267,6 +275,21 @@ class OnePageCheckoutStepHandler extends CheckoutStepHandler
     public function process(FormInterface $form, Request $request)
     {
         if($request->getMethod() == 'POST') {
+        	
+        	if($request->request->get('action') == 'update-shipping') {
+        		$form->bind($request);
+				
+        		$order = $form->getData();
+        		
+        		$newForm = $this->getCheckoutManager()->getCheckoutForm($order);
+        		        		        		
+		        return $this->getTemplatingEngine()->renderResponse('SplicedCommerceBundle:Checkout:index.html.twig', array(
+		            'form' => $newForm->createView(),
+		            'step' => $this->getCheckoutManager()->getCurrentStep(),
+		            'step_template' => 'onepage', 
+		        ));
+        	}
+        	
             if($form->bind($request) && $form->isValid()) {
                 $order = $form->getData();
                 $shipment = $order->getShipment();
@@ -292,7 +315,7 @@ class OnePageCheckoutStepHandler extends CheckoutStepHandler
                          
                         $this->getCheckoutManager()->addFlash('error', 'E-Mail is already registered');
                 
-                        if($request->isXmlHttpRequest()) {
+                        /*if($request->isXmlHttpRequest()) {
                             return new JsonResponse(array(
                                 'success' => true,
                                 'replace_many' => array(
@@ -301,8 +324,8 @@ class OnePageCheckoutStepHandler extends CheckoutStepHandler
                                         'step' => $this->getCheckoutManager()->getCurrentStep(),
                                     ))
                            )));
-                        }
-                         
+                        }*/
+                        
                         return $this->getTemplatingEngine()->renderResponse('SplicedCommerceBundle:Checkout:index.html.twig', array(
                             'form' => $form->createView(),
                             'step' => $this->getCheckoutManager()->getCurrentStep(),
@@ -380,17 +403,16 @@ class OnePageCheckoutStepHandler extends CheckoutStepHandler
                         $encryptedCardNumber = $this->getEncryptionManager()->encrypt($order->getProtectCode(), $creditCard->getCardNumber());
                         $creditCard->setCardNumber($encryptedCardNumber);
                     }
-                }
-                
+                }                
                 
                 return new Events\CheckoutMoveStepEvent(
                     $order, 
                     $this->getCheckoutManager()->getCurrentStep()
                 );
-            }
+            }// end valid form
         } 
         
-        if($request->isXmlHttpRequest()) {
+        /*if($request->isXmlHttpRequest()) {
             return new JsonResponse(array(
                 'success' => true,
                 'replace_many' => array(
@@ -402,7 +424,7 @@ class OnePageCheckoutStepHandler extends CheckoutStepHandler
                 )
             ));
         }
-        
+        */
         return $this->getTemplatingEngine()->renderResponse('SplicedCommerceBundle:Checkout:index.html.twig', array(
             'form' => $form->createView(),
             'step' => $this->getCheckoutManager()->getCurrentStep(),

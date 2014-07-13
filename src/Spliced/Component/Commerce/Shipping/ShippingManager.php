@@ -179,15 +179,18 @@ class ShippingManager
      * @param string $country
      * @param string $zipcode
      */
-    public function getAvailableMethodsForDesination($country, $zipcode = null)
+    public function getAvailableMethodsForDesination(ShippingAddress $address)
     {
+    	$country = $address->getCountry();
+    	$zipcode = $address->getZipcode();
+    	
         $methods = new ShippingMethodCollection();
         foreach($this->getProviders() as $provider){
             foreach($provider->getMethods() as $method){
                 $allowedCountries = $method->getAllowedCountries();
                 $excludedCountries = $method->getExcludedCountries();
-                $isAllowed   = in_array($country, $allowedCountries);
-                $isExcluded  = in_array($country, $excludedCountries);
+                $isAllowed   = is_array($allowedCountries) ? in_array($country, $allowedCountries) : true;
+                $isExcluded  = is_array($allowedCountries) ? in_array($country, $excludedCountries) : true;
                 
                 if(!count($allowedCountries) && count($excludedCountries)){
                     if(!$isExcluded){

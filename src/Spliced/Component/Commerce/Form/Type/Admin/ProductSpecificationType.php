@@ -79,7 +79,7 @@ class ProductSpecificationType extends AbstractType
      */
     protected function getObjectManager()
     {
-        return $this->getConfigurationManager()->getDocumentManager();
+        return $this->getConfigurationManager()->getEntityManager();
     }
     
     /**
@@ -87,26 +87,27 @@ class ProductSpecificationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        
+
         if(!$this->getProductSpecification()){
             $existingSpecifications = array();
             foreach($this->getProduct()->getSpecifications() as $specification){
                 if($specification->getOption()){
-                    $existingSpecifications[] = $specification->getOption()->getKey();
+                    $existingSpecifications[] = $specification->getOption()->getId();
                 }
             }
-            
-            $builder->add('option', 'document', array(
+
+            $builder->add('option', 'entity', array(
                 'required' => true,
                 'property' => 'name',
                 'empty_value' => '- Select a Specification -',
-                'class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION),
+                'class' => $this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION),
                 'query_builder' => $this->getObjectManager()
-                  ->getRepository($this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION))
-                  ->createQueryBuilder()            
-                  ->field('key')->notIn(array_unique($existingSpecifications))
-            
-            ))->add('values', 'choice', array(
+                  ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION))
+                  ->createQueryBuilder('specification')
+            	  ->select('specification')
+                  ->where('specification.option NOT IN(:existing)')
+            	  ->setParameter('existing', array_unique($existingSpecifications))
+            ))->add('value', 'choice', array(
                 'required' => false,
                 'choice_list' => new AnyValueChoiceList(),
                 'multiple' => true,
@@ -116,25 +117,24 @@ class ProductSpecificationType extends AbstractType
             
         } else {
             $specificationOption = $this->getProductSpecification()->getOption();
-            
-            $builder->add('optionKey', 'hidden');
-            
+
             if($specificationOption->getOptionType() == 1){
 
-                $builder->add($builder->create('values', 'choice', array(
+                $builder->add($builder->create('value', 'choice', array(
                     'required' => false,
-                    'choices' => $this->getChoices(),
+                    'choices' => array(), //$this->getChoices(),
                     'multiple' => false,
                     'expanded' => false,
                     'empty_value' => '- Select a Value-',
+
                 ))
-                  ->addModelTransformer(new DataTransformer\ArrayToStringModelTransformer()) 
-                ); 
+                  ->addModelTransformer(new DataTransformer\ArrayToStringModelTransformer())
+                );
             } else {
-                $builder->add('values', 'choice', array(
+                $builder->add('value', 'choice', array(
                     'required' => false,
-                    'choices' => $this->getChoices(),
-                    'multiple' => true,
+                    'choices' => array(), //$this->getChoices(),
+                    'multiple' => false,
                     'expanded' => false,
                 ));
             }
@@ -158,7 +158,9 @@ class ProductSpecificationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-           'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION),
+           'data_class' => $this
+             ->getConfigurationManager()
+             ->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION),
         ));
     }
     
@@ -175,11 +177,11 @@ class ProductSpecificationType extends AbstractType
         if(!$this->getProductSpecification()){
             return $return;
         }
-        
+
         foreach($this->getProductSpecification()->getOption()->getValues() as $value){
-            $return[$value->getValue()] = $value->getValue();
+            $return[$value->getId()] = $value->getValue();
         }
-    
+
         return $return;
     }
 }

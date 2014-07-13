@@ -9,48 +9,67 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Affiliate
- * 
- * @MongoDB\Document(collection="affiliate")
+ *
+ * @author Gassan Idriss <ghassani@splicedmedia.com>
+ *
+ * @ORM\Table(name="affiliate")
+ * @ORM\Entity()
  */
 abstract class Affiliate implements AffiliateInterface
 { 
+    
     /**
-     * @MongoDB\Id
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
     
     /**
-     * @MongoDB\String
-     * @MongoDB\UniqueIndex
+     * @var string $name
+     *
+     * @ORM\Column(name="name", type="string", length=255, unique=true, nullable=false)
      */
     protected $name;
     
     /**
-     * @MongoDB\String
+     * @var string $name
+     *
+     * @ORM\Column(name="website", type="string", length=255, nullable=true)
      */
     protected $website;
 
     /**
-     * @MongoDB\String
+     * @var string $name
+     *
+     * @ORM\Column(name="order_prefix", type="string", length=10, nullable=true)
      */
     protected $orderPrefix;
     
     /**
-     * @MongoDB\Collection
+     * @var string $name
+     *
+     * @ORM\Column(name="referer_urls", type="array", nullable=true)
      */
-    protected $referrerUrls;
-    
+    protected $refererUrls;
+
     /**
-     * @MongoDB\Boolean
+     * @var string $name
+     *
+     * @ORM\Column(name="is_comissioned", type="boolean", nullable=true)
      */
     protected $isComissioned;
     
     /**
-     * @MongoDB\Boolean
+     * @var string $name
+     *
+     * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
     protected $isActive;
     
@@ -168,24 +187,24 @@ abstract class Affiliate implements AffiliateInterface
     }
     
     /**
-     * getReferrerUrls
+     * getRefererUrls
      * 
      * @return string
      */
-    public function getReferrerUrls()
+    public function getRefererUrls()
     {
-        return $this->referrerUrls;
+        return $this->refererUrls;
 
     }
     
     /**
-     * setReferrerUrls
+     * setRefererUrls
      * 
-     * @param array $referrerUrls
+     * @param array $refererUrls
      */
-    public function setReferrerUrls(array $referrerUrls)
+    public function setRefererUrls(array $refererUrls)
     {
-        $this->referrerUrls = $referrerUrls;
+        $this->refererUrls = $refererUrls;
         return $this;
     }
     

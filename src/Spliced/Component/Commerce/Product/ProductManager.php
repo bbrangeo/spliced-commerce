@@ -64,7 +64,8 @@ class ProductManager
      */
     public function create()
     {
-        return $this->configurationManager->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT);
+        return $this->configurationManager
+          ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT);
     }
     
     /**
@@ -75,7 +76,7 @@ class ProductManager
      * 
      * @param ProductInterface $product
      * @param bool $flush - Flushes and updates the database as well. 
-     *                      Document will always be persisted.
+     *                      Entity will always be persisted.
      */
     public function save(ProductInterface $product, $flush = true)
     {
@@ -89,10 +90,10 @@ class ProductManager
             new Events\ProductSaveEvent($product)
         );
         
-        $this->configurationManager->getDocumentManager()->persist($product);
+        $this->configurationManager->getEntityManager()->persist($product);
         
         if (true === $flush) {
-            $this->configurationManager->getDocumentManager()->flush();
+            $this->configurationManager->getEntityManager()->flush();
         }
     }
     
@@ -105,7 +106,7 @@ class ProductManager
      * 
      * @param ProductInterface $product
      * @param bool $flush - Flushes and updates the database as well. 
-     *                      Document will always be persisted.
+     *                      Entity will always be persisted.
      */
     public function update(ProductInterface $product, $flush = true)
     {
@@ -119,12 +120,11 @@ class ProductManager
             new Events\ProductUpdateEvent($product)
         );
 
-        $this->updateEmbedMany($product);
             
-        $this->configurationManager->getDocumentManager()->persist($product);
+        $this->configurationManager->getEntityManager()->persist($product);
             
         if (true === $flush) {
-            $this->configurationManager->getDocumentManager()->flush();
+            $this->configurationManager->getEntityManager()->flush();
         }
     }
 
@@ -133,7 +133,7 @@ class ProductManager
      *
      * @param ProductInterface $product
      * @param bool $flush - Flushes and updates the database as well. 
-     *                      Document will always be persisted.
+     *                      Entity will always be persisted.
      */
     public function delete(ProductInterface $product, $flush = true)
     {
@@ -147,29 +147,10 @@ class ProductManager
             new Events\ProductDeleteEvent($product)
         );
     
-        $this->configurationManager->getDocumentManager()->remove($product);
+        $this->configurationManager->getEntityManager()->remove($product);
             
         if (true === $flush) {
-            $this->configurationManager->getDocumentManager()->flush();
-        }
-    }
-    
-    /**
-     *     updateEmbedMany
-     * 
-     *  as of 1/30/2014 with Doctrine, embedded documents duplicate items
-     *  like the issue here: 
-     *  http://stackoverflow.com/questions/16267336/doctrine-mongo-odm-duplicating-embedded-documents-in-symfony
-     *  cloning the collection objects seems to work // would like to find a better solution of 
-     *  find what is causing it  so we just iterate over every EmbedMany and clone the collection
-     */
-    protected function updateEmbedMany($object)
-    {
-        $objectMetaData = $this->configurationManager->getDocumentManager()->getClassMetadata(get_class($object));
-        foreach($objectMetaData->getFieldNames() as $fieldName) {
-            if($objectMetaData->hasEmbed($fieldName) && !$objectMetaData->isSingleValuedEmbed($fieldName)){
-                $objectMetaData->setFieldValue($object, $fieldName, clone $objectMetaData->getFieldValue($object, $fieldName));
-            }
+            $this->configurationManager->getEntityManager()->flush();
         }
     }
 }

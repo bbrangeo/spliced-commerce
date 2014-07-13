@@ -76,7 +76,7 @@ class ProductAttributeType extends AbstractType
      */
     protected function getObjectManager()
     {
-        return $this->getConfigurationManager()->getDocumentManager();
+        return $this->getConfigurationManager()->getEntityManager();
     }
     
     /**
@@ -99,9 +99,9 @@ class ProductAttributeType extends AbstractType
                 'required' => true,
                 'property' => 'name',
                 'empty_value' => '- Select an Attribute -',
-                'class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION),
+                'class' => $this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION),
                 'query_builder' => $this->getObjectManager()
-                  ->getRepository($this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION))
+                  ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION))
                   ->createQueryBuilder()            
                   ->field('key')->notIn($existingAttributes)
             ))->add('values', 'choice', array(
@@ -129,7 +129,7 @@ class ProductAttributeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-           'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE),
+           'data_class' => $this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE),
         ));
     }
     

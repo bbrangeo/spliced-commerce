@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the CommerceAdminBundle package.
+ * This file is part of the SplicedCommerceAdminBundle package.
 *
 * (c) Spliced Media <http://www.splicedmedia.com/>
 *

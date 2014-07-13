@@ -28,7 +28,7 @@ abstract class CustomerRepository extends EntityRepository
              WHERE customer.email = :email')
             ->setParameters(array('email' => $email))
             ->setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)
-            ->getSingleResult();
+            ->getSingleResult(); 
 
     }
 

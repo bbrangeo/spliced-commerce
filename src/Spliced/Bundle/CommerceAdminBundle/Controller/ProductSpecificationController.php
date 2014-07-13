@@ -25,7 +25,8 @@ class ProductSpecificationController extends BaseFilterableController
      */
     public function deleteAction($productId, $specificationId)
     {
-        $product = $this->get('commerce.admin.document_manager')
+    	 
+        $product = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:Product')
           ->findOneById($productId);
         
@@ -48,7 +49,7 @@ class ProductSpecificationController extends BaseFilterableController
             }
         }
         
-        if(!$specification){
+        if(!$productSpecification){
             if($this->getRequest()->isXmlHttpRequest()){
                 return new JsonResponse(array(
                     'success' => false,
@@ -60,7 +61,8 @@ class ProductSpecificationController extends BaseFilterableController
             throw $this->createNotFoundException('Product Specification Not Found');
         }
 
-        $product->removeSpecification($specification);
+        $this->get('commerce.admin.entity_manager')->remove($productSpecification);
+        $this->get('commerce.admin.entity_manager')->flush();
         
         $this->get('event_dispatcher')->dispatch(
             Events\Event::EVENT_PRODUCT_UPDATE,
@@ -71,7 +73,7 @@ class ProductSpecificationController extends BaseFilterableController
             return new JsonResponse(array(
                 'success' => true,
                 'product_id' => $product->getId(),
-                'specification_option_id' => $specification->getId(),
+                'specification_option_id' => $productSpecification->getId(),
             ));
         }
         

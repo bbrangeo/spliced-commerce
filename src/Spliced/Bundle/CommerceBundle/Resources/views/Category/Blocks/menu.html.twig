@@ -5,8 +5,8 @@
 
 	@var categories
 #}
-<ul id="nav" class="main_sub">
+<ul class="category-menu parent">
 	{% for category in categories %}
-		<li class="level0"><a href="{{  path(category.urlSlug) }}">{{ category.name }}</a></li>
+		<li class="level0"><a href="{{  path('commerce_category_view_by_slug', { 'slug' : category.urlSlug}) }}">{{ category.name }}</a></li>
 	{% endfor %}
 </ul>

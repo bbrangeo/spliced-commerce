@@ -65,7 +65,7 @@ class CategoryManager
      */
     public function create()
     {
-        return $this->configurationManager->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_CATEGORY);
+        return $this->configurationManager->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CATEGORY);
     }
     
     /**
@@ -76,7 +76,7 @@ class CategoryManager
      * 
      * @param CategoryInterface $category
      * @param bool $flush - Flushes and updates the database as well. 
-     *                      Document will always be persisted.
+     *                      Entity will always be persisted.
      */
     public function save(CategoryInterface $category, $flush = true)
     {
@@ -90,10 +90,10 @@ class CategoryManager
             new Events\CategorySaveEvent($category)
         );
         
-        $this->configurationManager->getDocumentManager()->persist($category);
+        $this->configurationManager->getEntityManager()->persist($category);
         
         if (true === $flush) {
-            $this->configurationManager->getDocumentManager()->flush();
+            $this->configurationManager->getEntityManager()->flush();
         }
     }
     
@@ -106,7 +106,7 @@ class CategoryManager
      * 
      * @param CategoryInterface $category
      * @param bool $flush - Flushes and updates the database as well. 
-     *                      Document will always be persisted.
+     *                      Entity will always be persisted.
      */
     public function update(CategoryInterface $category, $flush = true)
     {
@@ -120,10 +120,10 @@ class CategoryManager
             new Events\CategoryUpdateEvent($category)
         );
             
-        $this->configurationManager->getDocumentManager()->persist($category);
+        $this->configurationManager->getEntityManager()->persist($category);
             
         if (true === $flush) {
-            $this->configurationManager->getDocumentManager()->flush();
+            $this->configurationManager->getEntityManager()->flush();
         }
     }
 
@@ -132,7 +132,7 @@ class CategoryManager
      *
      * @param CategoryInterface $category
      * @param bool $flush - Flushes and updates the database as well. 
-     *                      Document will always be persisted.
+     *                      Entity will always be persisted.
      */
     public function delete(CategoryInterface $category, $flush = true)
     {
@@ -146,10 +146,10 @@ class CategoryManager
             new Events\CategoryDeleteEvent($category)
         );
     
-        $this->configurationManager->getDocumentManager()->remove($category);
+        $this->configurationManager->getEntityManager()->remove($category);
             
         if (true === $flush) {
-            $this->configurationManager->getDocumentManager()->flush();
+            $this->configurationManager->getEntityManager()->flush();
         }
     }
     

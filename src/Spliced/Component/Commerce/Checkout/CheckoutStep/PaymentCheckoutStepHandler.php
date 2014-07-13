@@ -163,6 +163,10 @@ class PaymentCheckoutStepHandler extends CheckoutStepHandler
                     }
                 }
                 
+                $paymentMethod = $this->getCheckoutManager()->getPaymentProvider($payment->getPaymentMethod());
+
+                $payment->setMethodName($paymentMethod->getLabel().' '.$paymentMethod->getLabel2());
+                
                 return new CheckoutMoveStepEvent(
                     $order,
                     $this->getCheckoutManager()->getCurrentStep()

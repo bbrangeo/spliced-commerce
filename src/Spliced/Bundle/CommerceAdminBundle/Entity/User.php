@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ExecutionContext;
 
 /**
- * @ORM\Entity(repositoryClass="Spliced\Bundle\CommerceAdminBundle\Repository\UserRepository")
+ * @ORM\Entity()
  * @ORM\Table(name="user")
  */ 
 class User extends BaseUser 

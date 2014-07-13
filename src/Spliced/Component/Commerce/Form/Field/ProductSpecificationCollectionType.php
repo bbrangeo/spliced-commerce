@@ -65,6 +65,7 @@ class ProductSpecificationCollectionType extends AbstractType
     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         if ($options['allow_add'] && $options['prototype']) {
             $prototypeFormType = new ProductSpecificationType($this->getConfigurationManager(), $this->getProduct());
             $prototype = $builder->create($options['prototype_name'], $prototypeFormType, array_replace(array(

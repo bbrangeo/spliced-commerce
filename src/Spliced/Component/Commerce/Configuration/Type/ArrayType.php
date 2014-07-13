@@ -32,10 +32,7 @@ class ArrayType implements TypeInterface
     */
     public function getApplicationValue($value)
     {
-        if (is_array($value)) {
-            return $value;
-        }
-        return array($value);
+        return unserialize($value);
     }
     
     /**
@@ -43,7 +40,7 @@ class ArrayType implements TypeInterface
     */
     public function getDatabaseValue($value)
     {
-        return $value;
+        return serialize($value);
     }
     
     /**

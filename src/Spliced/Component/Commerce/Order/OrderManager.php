@@ -262,17 +262,10 @@ class OrderManager
         if ($this->getSecurityContext()->isGranted('ROLE_USER')) {
             $order->setCustomer($this->getSecurityContext()->getToken()->getUser());
         }
-        
-        if (!$order->getShippingCountry()) {
-            $order->setShippingCountry(
-                strtoupper($this->getConfigurationManager()->get('commerce.store.default_country', 'US'))
-            );
-        }
 
         $this->getEntityManager()->persist($order);
         $this->getEntityManager()->flush();
 
-        
         $this->setCurrentOrderId($order->getId());
         
         return $order;

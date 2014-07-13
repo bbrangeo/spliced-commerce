@@ -52,7 +52,7 @@ class ProductBundledItemType extends AbstractType
      */
     protected function getObjectManager()
     {
-        return $this->getConfigurationManager()->getDocumentManager();
+        return $this->getConfigurationManager()->getEntityManager();
     }
     
     /**
@@ -64,7 +64,7 @@ class ProductBundledItemType extends AbstractType
      {
          return $this->getObjectManager()
            ->getRepository(
-               $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT)
+               $this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT)
            );
      }
     
@@ -113,7 +113,7 @@ class ProductBundledItemType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_BUNDLED_ITEM),
+            'data_class' => $this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_BUNDLED_ITEM),
         ));
     }
 }

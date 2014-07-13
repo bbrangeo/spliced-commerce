@@ -37,7 +37,6 @@
 	            	<th{% if specificationOptions.isSorted('specificationOption.onList') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(specificationOptions, 'On Front', 'specificationOption.onList') }}</th>	            	
 	            	<th{% if specificationOptions.isSorted('specificationOption.filterable') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(specificationOptions, 'Filterable', 'specificationOption.filterable') }}</th>	            	
 	            	<th{% if specificationOptions.isSorted('specificationOption.optionType') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(specificationOptions, 'Option Type', 'specificationOption.optionType') }}</th>
-	            	<th{% if specificationOptions.isSorted('specificationOption.createdAt') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(specificationOptions, 'Created On', 'specificationOption.createdAt') }}</th>	
 	                <th>Actions</th>
 	            </tr>
 	        </thead>
@@ -58,7 +57,6 @@
     	                        Single Value
     	                    {% endif %}
     	                </td>
-    	                <td>{{ specificationOption.createdAt|date('m/d/Y h:i a') }}</td>
     	                <td>
     	                	<a class="confirm-action" href="{{ path('commerce_admin_product_specification_option_delete', { 'id': specificationOption.id }) }}"><i class="icon-trash icon-red"></i></a>
     	                	<a href="{{ path('commerce_admin_product_specification_option_edit', { 'id': specificationOption.id }) }}"><i class="icon-edit"></i></a>
@@ -74,7 +72,7 @@
     	            {% endif %}
     	        {% endfor %}
     	    {% else %}
-    	        <tr><td colspan="9" class="text-center"><strong>No Records Found</strong></td></tr>
+    	        <tr><td colspan="8" class="text-center"><strong>No Records Found</strong></td></tr>
     	    {% endif %}
 	        </tbody>
 	    </table>

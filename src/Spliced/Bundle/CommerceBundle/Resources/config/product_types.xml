@@ -5,8 +5,8 @@
 
     <parameters>
         <parameter key="spliced.commerce.product_type_manager.class">Spliced\Component\Commerce\Product\ProductTypeManager</parameter>
-        <parameter key="spliced.commerce.product_type_handler.physical.class">Spliced\Component\Commerce\Product\TypeHandler\PhysicalTypeHandler</parameter>
-        <parameter key="spliced.commerce.product_type_handler.digital.class">Spliced\Component\Commerce\Product\TypeHandler\DigitalTypeHandler</parameter>
+        <parameter key="spliced.commerce.product_type.physical.class">Spliced\Component\Commerce\Product\Type\PhysicalType</parameter>
+        <parameter key="spliced.commerce.product_type.digital.class">Spliced\Component\Commerce\Product\Type\DigitalType</parameter>
     </parameters> 
 
     <services>
@@ -17,12 +17,12 @@
         <!-- 
          PRODUCT TYPE HANDLERS
        	-->
-        <service id="commerce.product_type_handler.physical" class="%spliced.commerce.product_type_handler.physical.class%">
-	        <tag name="commerce.product_type_handler" />
+        <service id="commerce.product_type.physical" class="%spliced.commerce.product_type.physical.class%">
+	        <tag name="commerce.product_type" />
         </service>
         
-        <service id="commerce.product_type_handler.digitial" class="%spliced.commerce.product_type_handler.digital.class%">
-	        <tag name="commerce.product_type_handler" />
+        <service id="commerce.product_type.digitial" class="%spliced.commerce.product_type.digital.class%">
+	        <tag name="commerce.product_type" />
         </service>
     </services>
 

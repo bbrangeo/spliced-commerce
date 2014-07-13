@@ -2,6 +2,16 @@
 
 {% block title %}{{ form.vars.data.name }} | Product Specification Options | {{ parent() }}{% endblock %}
 
+{% block javascripts -%}
+	{{ parent() }}
+	{% javascripts
+	    '@SplicedCommerceAdminBundle/Resources/public/js/product_specification_option.js'
+	    filter='?yui_js'
+	    output='js/commerce_admin_product.js' 
+	%} 
+	<script src="{{ asset_url }}"></script>
+	{% endjavascripts %}
+{% endblock %}
 {% block content_section_header -%}
     {{ include('SplicedCommerceAdminBundle:ProductSpecificationOption:content_section_header.html.twig') }}
 {% endblock %}
@@ -16,8 +26,6 @@
 
 <div class="alert alert-info alert-edit-info">
   <ul class="list-unstyled">
-  	<li><strong>Created On:</strong> {{ form.vars.data.createdAt|date('m/d/Y h:i a') }}</li>
-  	<li><strong>Last Updated:</strong> {{ form.vars.data.updatedAt|date('m/d/Y h:i a') }}</li>
   	<li><strong>Type:</strong> {{ form.vars.data.optionType == 3 ? 'Custom Value' : form.vars.data.optionType == 2 ?  'Multiple Value' : 'Single Value' }}</li>
   	<li><strong>Key:</strong> {{ form.vars.data.key }}</li>
   	<li><strong>ID:</strong> {{ form.vars.data.id }}</li>

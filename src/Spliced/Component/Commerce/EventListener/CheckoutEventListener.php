@@ -835,6 +835,7 @@ class CheckoutEventListener
             '{email}' => $order->getEmail(),
             '{orderStatus}' => ucwords($order->getOrderStatus()),        
             '{paymentStatus}' => ucwords($order->getPayment()->getPaymentStatus()),  
+        	'{storeName}' => $this->getConfigurationManager()->get('commerce.store.name'),
         );
         return str_replace(
             array_keys($replacements),

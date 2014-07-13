@@ -1,5 +1,7 @@
 {% extends "SplicedCommerceBundle:Layouts:2columns-left.html.twig" %}
 
+{% form_theme form "SplicedCommerceBundle:Form:bootstrap_form_row_labeless.html.twig" %}
+
 {% block title %}Subscribe to Newsletter | {{ commerce_get_config('commerce.store.name') }}{% endblock %}
 
 {% block head %}
@@ -23,7 +25,7 @@
           </div>
             
             <div>
-                {{ form_widget(form.email,{
+                {{ form_row(form.email,{
                     'attr':{ 
                         'placeholder' : 'Enter Your Email Address', 
                         'class' : 'input-block-level'

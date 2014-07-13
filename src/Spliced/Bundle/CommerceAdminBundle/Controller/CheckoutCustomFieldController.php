@@ -31,11 +31,11 @@ class CheckoutCustomFieldController extends BaseFilterableController
     {
         // load checkout_custom_fields
         $checkout_custom_fields = $this->get('knp_paginator')->paginate(
-            $this->get('commerce.admin.document_manager')
+            $this->get('commerce.admin.entity_manager')
                 ->getRepository('SplicedCommerceAdminBundle:CheckoutCustomField')
                 ->getAdminListQuery($this->getFilters()),
-            $this->getRequest()->query->get('page',1),
-            $this->getRequest()->query->get('limit',25)
+            $this->getRequest()->query->get('page', 1),
+            $this->getRequest()->query->get('limit', 25)
         );
         
         $filterForm = $this->createForm(new CheckoutCustomFieldFilterType());
@@ -77,8 +77,8 @@ class CheckoutCustomFieldController extends BaseFilterableController
             
             $checkout_custom_field = $form->getData();
             
-            $this->get('commerce.admin.document_manager')->persist($checkout_custom_field);
-            $this->get('commerce.admin.document_manager')->flush();
+            $this->get('commerce.admin.entity_manager')->persist($checkout_custom_field);
+            $this->get('commerce.admin.entity_manager')->flush();
 
             return $this->redirect($this->generateUrl('commerce_admin_checkout_custom_field_edit', array(
                 'id' => $checkout_custom_field->getId()
@@ -100,7 +100,7 @@ class CheckoutCustomFieldController extends BaseFilterableController
      */
     public function editAction($id)
     {
-        $checkout_custom_field = $this->get('commerce.admin.document_manager')
+        $checkout_custom_field = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:CheckoutCustomField')
           ->findOneById($id);
         
@@ -125,7 +125,7 @@ class CheckoutCustomFieldController extends BaseFilterableController
      */
     public function updateAction($id)
     {
-        $checkout_custom_field = $this->get('commerce.admin.document_manager')
+        $checkout_custom_field = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:CheckoutCustomField')
           ->findOneById($id);
         
@@ -141,8 +141,8 @@ class CheckoutCustomFieldController extends BaseFilterableController
             
             $checkout_custom_field = $form->getData();
             
-            $this->get('commerce.admin.document_manager')->persist($checkout_custom_field);
-            $this->get('commerce.admin.document_manager')->flush();
+            $this->get('commerce.admin.entity_manager')->persist($checkout_custom_field);
+            $this->get('commerce.admin.entity_manager')->flush();
 
             return $this->redirect($this->generateUrl('commerce_admin_checkout_custom_field_edit', array(
                 'id' => $checkout_custom_field->getId()

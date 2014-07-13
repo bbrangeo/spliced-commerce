@@ -9,46 +9,63 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ProductTierPrice
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
+ * 
+ * @ORM\Table(name="product_tier_price")
+ * @ORM\Entity()
  */
 class ProductTierPrice
 {
     
-    /**
-     * @MongoDB\Id
+     /**
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
     
-    /** 
-     * @MongoDB\Int 
+    /**
+     * @ORM\Column(name="min_quantity", type="integer", nullable=false)
      */
     protected $minQuantity;
     
-    /** 
-     * @MongoDB\Int 
+    /**
+     * @ORM\Column(name="max_quantity", type="integer", nullable=false)
      */
     protected $maxQuantity;
     
-    /** 
-     * @MongoDB\Int 
+    /**
+     * @ORM\Column(name="adjustment_type", type="smallint", nullable=false)
      */
     protected $adjustmentType;
     
     /** 
-     * @MongoDB\Int 
+     * @ORM\Column(name="adjustment", type="decimal", scale=12, precision=4, nullable=false)
      */
     protected $adjustment;
     
     /** 
-     * @MongoDB\Hash 
+     * @ORM\Column(name="options", type="array", nullable=true)
      */
     protected $options;
-
+    
+    /**
+     * @var Product
+     *
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="tierPrices")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * })
+     */
+    protected $product;
+    
     /**
      * getId
      */
@@ -159,5 +176,28 @@ class ProductTierPrice
     public function getOptions()
     {
         return $this->options;
+    }
+    
+    /**
+     * getProduct
+     *
+     * @return ProductInterface
+     */
+    public function getProduct()
+    {
+    	return $this->product;
+    }
+    
+    /**
+     * setProduct
+     *
+     * @param ProductInterface product
+     *
+     * @return self
+     */
+    public function setProduct(ProductInterface $product)
+    {
+    	$this->product = $product;
+    	return $this;
     }
 }

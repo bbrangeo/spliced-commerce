@@ -22,7 +22,7 @@ use Doctrine\ORM\NoResultException;
 class PageController extends Controller
 {
     /**
-     * @Route("/content/view/{id}", name="commerce_content_page_view")
+     * @Route("/page/view/{id}", name="commerce_content_page_view")
      * @Template("SplicedCommerceBundle:Page:view.html.twig")
      */
     public function viewAction($id)
@@ -52,7 +52,7 @@ class PageController extends Controller
     }
     
     /**
-     * @Route("/content/{slug}", name="commerce_content_page_view_by_slug")
+     * @Route("/page/{slug}", name="commerce_content_page_view_by_slug")
      * @Template("SplicedCommerceBundle:Page:view.html.twig")
      */
     public function viewBySlugAction($slug)

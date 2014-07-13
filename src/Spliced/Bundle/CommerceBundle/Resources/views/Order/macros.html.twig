@@ -3,9 +3,9 @@
 		<tr id="order-item-{{ item.id }}">
 			<td width="{{ commerce_get_config('commerce.product.image_cart_width') }}">			
 			    {% if item.cartItem.product.images|length %}
-				    <img src="{{  commerce_resize_product_image(item.cartItem.product.images.first, commerce_get_config('commerce.product.image_cart_width'), commerce_get_config('commerce.product.image_cart_height')) }}" alt="{{ item.cartItem.product.name }}" />
+				    <img class="img-rounded" src="{{  commerce_resize_product_image(item.cartItem.product.images.first, commerce_get_config('commerce.product.image_cart_width'), commerce_get_config('commerce.product.image_cart_height')) }}" alt="{{ item.cartItem.product.name }}" />
 				{% else %}
-				    <img src="http://placehold.it/{{ commerce_get_config('commerce.product.image_cart_width') ~ 'x' ~ commerce_get_config('commerce.product.image_cart_height') }}" alt="{{ item.cartItem.product.name }}" />
+				    <img class="img-rounded" src="http://placehold.it/{{ commerce_get_config('commerce.product.image_cart_width') ~ 'x' ~ commerce_get_config('commerce.product.image_cart_height') }}" alt="{{ item.cartItem.product.name }}" />
 				{% endif %}
 			</td>
 			<td>{{ item.cartItem.product.sku }}</td>

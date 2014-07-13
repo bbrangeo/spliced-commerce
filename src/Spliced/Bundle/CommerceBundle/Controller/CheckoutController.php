@@ -13,20 +13,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Spliced\Bundle\CommerceBundle\Form\Type as Forms;
-use Spliced\Component\Commerce\Checkout\CheckoutManager;
-use Spliced\Component\Commerce\Configuration\ConfigurationManager;
-use Spliced\Bundle\CommerceBundle\Entity;
-use Spliced\Component\Commerce\Model;
-use Doctrine\ORM\NoResultException;
-use Spliced\Component\Commerce\Event as Events;
-use Spliced\Component\Commerce\Payment\PaymentErrorException;
-use Spliced\Component\Commerce\Payment\PaymentDeclinedException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormInterface;
-
+use Spliced\Bundle\CommerceBundle\Entity;
+use Spliced\Component\Commerce\Model;
+use Spliced\Component\Commerce\Event as Events;
+use Spliced\Bundle\CommerceBundle\Form\Type as Forms;
+use Spliced\Component\Commerce\Shipping\ShippingAddress;
+use Spliced\Component\Commerce\Shipping\Model\ConfigurableShippingMethod;
+use Spliced\Component\Commerce\Checkout\CheckoutManager;
+use Spliced\Component\Commerce\Configuration\ConfigurationManager;
+use Spliced\Component\Commerce\Payment\PaymentErrorException;
+use Spliced\Component\Commerce\Payment\PaymentDeclinedException;
+use Doctrine\ORM\NoResultException;
 
 /**
  * CheckoutController
@@ -161,8 +162,8 @@ class CheckoutController extends Controller
             
             // we have completed the checkout process?
             // if so we finalize the order by notifying
-            // the event dispatcher to complate the processing
-            // of the order
+            // the event dispatcher to complete the processing
+            // of the order and authorize payment if required
             if($processStepEvent->isLastStep()) {
                 $finalzeCheckoutEvent = $dispatcher->dispatch(
                     Events\Event::EVENT_CHECKOUT_FINALIZE,
@@ -170,7 +171,6 @@ class CheckoutController extends Controller
                 );
                 
                 if($finalzeCheckoutEvent->getResponse() instanceof Response) {
-                    // if instanceof JsonResponse (customzize here)
                     return $finalzeCheckoutEvent->getResponse();
                 }
                     
@@ -387,5 +387,31 @@ class CheckoutController extends Controller
      */
      protected function getLogger(){
          return $this->get('commerce.logger');
+     }
+     
+     /**
+      * @Route("/checkout/get-shipping-methods", name="commerce_checkout_get_shipping_methods")
+      * @Method("POST")
+      */
+     public function getShippingMethodsRequestAction()
+     {
+     	$request = $this->get('request');
+     	
+     	if (!$request->isXmlHttpRequest()) {
+     		throw $this->createNotFoundException();
+     	}
+     	
+     	$address = new ShippingAddress($request->request->get('address', array()));
+     	
+     	$methods = $this->get('commerce.shipping_manager')->getAvailableMethodsForDesination($address);
+     	
+     	
+     	return new JsonResponse(array(
+     		'success' => true,
+     		'methods' => $methods->toArray(),
+     		'content' => $this->render('SplicedCommerceBundle:Checkout/Form:shipping_methods_ajax.html.twig', array(
+     			'methods' => $methods
+     		))->getContent(),
+     	));
      }
 }

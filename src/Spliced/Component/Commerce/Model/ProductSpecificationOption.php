@@ -9,7 +9,7 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -18,89 +18,81 @@ use Doctrine\Common\Collections\Collection;
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  * 
- * @MongoDB\Document(collection="product_specification_option")
  */
 abstract class ProductSpecificationOption implements ProductSpecificationOptionInterface
 {
 
-    /**
-     * @MongoDB\Id
+     /**
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
     
     /**
-     * @MongoDB\String
-     * @MongoDB\UniqueIndex()
+     * @ORM\Column(name="option_key", type="string", unique=true, length=75, nullable=false)
      */
     protected $key;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="name", type="string", unique=false, length=255, nullable=false)
      */
     protected $name;
 
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="public_name", type="string", unique=false, length=255, nullable=true)
      */
     protected $publicName;
 
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
     protected $description;
 
     /**
-     * @MongoDB\Int
-     * @MongoDB\Index()
+     * @ORM\Column(name="position", type="integer", unique=false, nullable=true)
      */
     protected $position;
 
     /**
-     * @MongoDB\Int
-     * @MongoDB\Index()
+     * @ORM\Column(name="option_type", type="smallint", unique=false, nullable=false)
      */
     protected $optionType;
 
     /**
-     * @MongoDB\Boolean
-     * @MongoDB\Index()
+     * @ORM\Column(name="filterable", type="boolean", unique=false, nullable=true)
      */
     protected $filterable;
 
     /**
-     * @MongoDB\Boolean
-     * @MongoDB\Index()
+     * @ORM\Column(name="on_view", type="boolean", unique=false, nullable=true)
      */
     protected $onView;
     
     /**
-     * @MongoDB\Boolean
-     * @MongoDB\Index()
+     * @ORM\Column(name="on_list", type="boolean", unique=false, nullable=true)
      */
     protected $onList;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="ProductSpecificationOptionValue", mappedBy="option", cascade={"persist"})
+     * @ORM\OrderBy({"position" = "ASC"})
+     */
+    protected $values;
+
 
     /**
-     * @MongoDB\Date
+     * @ORM\OneToMany(targetEntity="ProductSpecification", mappedBy="option")
      */
-    protected $createdAt;
-    
-    /**
-     * @MongoDB\Date
-     */
-    protected $updatedAt;
-    
-    /**
-     * @MongoDB\EmbedMany(targetDocument="ProductSpecificationOptionValue")
-     */
-    protected $values = array();
+    protected $productSpecifications;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->setCreatedAt(new \DateTime());
-        $this->setUpdatedAt(new \DateTime());
         $this->setOptionType(static::OPTION_TYPE_SINGLE_VALUE);
         $this->onView = false;
         $this->onList = false;
@@ -161,6 +153,26 @@ abstract class ProductSpecificationOption implements ProductSpecificationOptionI
     public function getKey()
     {
         return $this->key;
+    }
+    
+    /**
+     * setOptionKey
+     *
+     * @param string $key
+     */
+    public function setOptionKey($key)
+    {
+    	return $this->setKey($key);
+    }
+    
+    /**
+     * Get key
+     *
+     * @return string
+     */
+    public function getOptionKey()
+    {
+    	return $this->getKey();
     }
 
     /**
@@ -315,49 +327,6 @@ abstract class ProductSpecificationOption implements ProductSpecificationOptionI
     }
 
     /**
-     * Set createdAt
-     *
-     * @param datetime $createdAt
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param datetime $updatedAt
-     */
-    public function setUpdatedAt(\DateTime $updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return datetime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
      * addValue
      *
      * @param ProductSpecificationOptionValue $value
@@ -365,6 +334,7 @@ abstract class ProductSpecificationOption implements ProductSpecificationOptionI
     public function addValue(ProductSpecificationOptionValue $value)
     {
         if(!$this->values->contains($value)){
+        	$value->setOption($this);
             $this->values->add($value);
         }
         return $this;
@@ -386,16 +356,33 @@ abstract class ProductSpecificationOption implements ProductSpecificationOptionI
      * 
      * Check for a value by string
      * 
-     * @param string $value
+     * @param bool $value
      */
     public function hasValue($value)
     {
         foreach ($this->values as $_value) {
-            if (strtolower($_value->getPublicValue()) == strtolower($value)) {
+            if (strtoupper($_value->getValue()) == strtoupper($value)) {
                return true; 
             }
         }
         return false;
+    }
+    
+    /**
+     * getValue
+     *
+     * Get a value by string
+     *
+     * @param string|bool $value
+     */
+    public function getValue($value)
+    {
+    	foreach ($this->values as $_value) {
+    		if (strtoupper($_value->getValue()) == strtoupper($value)) {
+    			return $_value;
+    		}
+    	}
+    	return false;
     }
     
     /**
@@ -439,6 +426,19 @@ abstract class ProductSpecificationOption implements ProductSpecificationOptionI
     public function getPosition()
     {
         return $this->position;
+    }
+
+    /**
+     *
+     */
+    public function getProductSpecifications()
+    {
+        return $this->productSpecifications;
+    }
+
+    public function setProductSpecifications($productSpecifications)
+    {
+        $this->productSpecifications = $productSpecifications;
     }
     
 }

@@ -45,7 +45,7 @@
         
     	<!-- 
     	Checkout Steps
-    	
+    	-->
         <service id="commerce.checkout_step.login_register" class="%commerce.checkout_step.login_register.class%">
         	<argument type="service" id="commerce.configuration" />
         	<argument type="service" id="commerce.checkout_manager" />
@@ -86,7 +86,8 @@
         	
         	<tag name="commerce.checkout_step" step="5" priority="10" />
         </service>
-        -->
+      <!-- 
+          ONE PAGE
         <service id="commerce.checkout_step.one_page" class="%commerce.checkout_step.one_page.class%">
         	<argument type="service" id="commerce.configuration" />
         	<argument type="service" id="commerce.checkout_manager" />
@@ -96,7 +97,7 @@
         	
         	<tag name="commerce.checkout_step" step="1" priority="10" />
         </service>
-        
+       
         
         <service id="commerce.checkout_step.review" class="%commerce.checkout_step.review.class%">
         	<argument type="service" id="commerce.checkout_manager" />
@@ -104,7 +105,7 @@
         	
         	<tag name="commerce.checkout_step" step="2" priority="10" />
         </service>
-        
+           -->
     	<!-- 
     	Checkout Notifiers
     	-->

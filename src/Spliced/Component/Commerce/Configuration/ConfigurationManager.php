@@ -63,6 +63,7 @@ class ConfigurationManager
     const OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION     = 'product_specification_option';
     const OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION_VALUE     = 'product_specification_option_value';
     const OBJECT_CLASS_TAG_PRODUCT_BUNDLED_ITEM             = 'product_bundled_item';
+    const OBJECT_CLASS_TAG_PRODUCT_RELATED_PRODUCT			= 'product_related_product';
     const OBJECT_CLASS_TAG_PRODUCT_UPSALE                   = 'product_upsale';
     const OBJECT_CLASS_TAG_MANUFACTURER                     = 'manufacturer';
     const OBJECT_CLASS_TAG_ORDER                            = 'order';
@@ -85,7 +86,6 @@ class ConfigurationManager
     const OBJECT_CLASS_TAG_CONTENT_PAGE                     = 'content_page';
     const OBJECT_CLASS_TAG_CMS_BLOCK                        = 'cms_block';
     
-    
     protected $configurableServices = array();
     protected $fieldTypes = array();
     
@@ -98,12 +98,10 @@ class ConfigurationManager
      * @param ObjectManager $om
      * @param AppKernel $kernel
      */
-    public function __construct(array $entityClasses, array $documentClasses, EntityManager $em, DocumentManager $dm, \AppKernel $kernel)
+    public function __construct(array $entityClasses, EntityManager $em, \AppKernel $kernel)
     {
         $this->em = $em;
-        $this->dm = $dm;
         $this->entityClasses = $entityClasses;
-        $this->documentClasses = $documentClasses;
         $this->kernel = $kernel;
         $this->configurableServices = new ArrayCollection();
         $this->fieldTypes = new ArrayCollection();
@@ -118,18 +116,7 @@ class ConfigurationManager
     {
         return $this->em;
     }
-    
-
-    /**
-     * getDocumentManager
-     *
-     * @return DocumentManager
-     */
-    public function getDocumentManager()
-    {
-        return $this->dm;
-    }
-    
+        
     /**
      * getKernel
      *
@@ -168,14 +155,10 @@ class ConfigurationManager
      */
     public function init()
     {
-        $data = $this->getDocumentManager()
-          ->getRepository($this->getDocumentClass(static::OBJECT_CLASS_TAG_CONFIGURATION))
+        $data = $this->getEntityManager()
+          ->getRepository($this->getEntityClass(static::OBJECT_CLASS_TAG_CONFIGURATION))
           ->getConfiguration($this->getKernel()->getEnvironment() == 'prod');
         
-        if($data instanceof Cursor){
-            $data = $data->toArray();
-        }
-
         $this->data = array();
         foreach ($data as $d) {
             $this->data[$d['key']] =  $this->getFieldType($d['type'])
@@ -236,8 +219,8 @@ class ConfigurationManager
             return $this;
         }
 
-        $config = $this->getDocumentManager()
-          ->getRepository($this->getDocumentClass(static::OBJECT_CLASS_TAG_CONFIGURATION))
+        $config = $this->getEntityManager()
+          ->getRepository($this->getEntityClass(static::OBJECT_CLASS_TAG_CONFIGURATION))
           ->findOneByKey($key);
 
         if (!$config) {
@@ -245,7 +228,7 @@ class ConfigurationManager
 
             $fieldType = $this->getFieldType($fieldParams['type']);
             
-            $config = $this->createDocument(static::OBJECT_CLASS_TAG_CONFIGURATION);
+            $config = $this->createEntity(static::OBJECT_CLASS_TAG_CONFIGURATION);
             $config->setKey($key);
             $config->setType($fieldType->getName()); //type before value
             $config->setValue($fieldType->getDatabaseValue($fieldParams['value']));
@@ -256,10 +239,10 @@ class ConfigurationManager
             $config->setPosition($fieldParams['position']);
             $config->setRequired($fieldParams['required']);
 
-            $this->getDocumentManager()->persist($config);
+            $this->getEntityManager()->persist($config);
             
             if (true == $flush) {
-                $this->getDocumentManager()->flush();
+                $this->getEntityManager()->flush();
             }
 
             $this->data[$key] = $config->getValue();
@@ -395,44 +378,7 @@ class ConfigurationManager
         return new $class();
     }
     
-    /**
-     * getDocumentClasses
-     *
-     * @return array
-     */
-    protected function getDocumentClasses()
-    {
-        return $this->documentClasses;
-    }
     
-    /**
-     * getDocumentClass
-     *
-     * @param string $documentTag
-     *
-     * @return string
-     */
-    public function getDocumentClass($documentTag)
-    {
-        return isset($this->documentClasses[$documentTag]) ? $this->documentClasses[$documentTag] : null;
-    }
-    
-    /**
-     * createDocument
-     *
-     * @param string $documentTag
-     *
-     * @return mixed
-     */
-    public function createDocument($documentTag)
-    {
-        $class = $this->getDocumentClass($documentTag);
-        if (!class_exists($class)) {
-            throw new \Exception(sprintf('Class %s Does Not Exist From Tag %s',$class, $documentTag));
-        }
-    
-        return new $class();
-    }
     
     /**
      * addFieldType
@@ -469,7 +415,6 @@ class ConfigurationManager
         throw new \InvalidArgumentException(sprintf('Configuration Field Type `%s` Does Not Exist', $name));
     }
     
-
     /**
      * getFieldTypes
      *

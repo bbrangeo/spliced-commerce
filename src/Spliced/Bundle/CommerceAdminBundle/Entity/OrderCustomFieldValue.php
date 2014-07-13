@@ -13,43 +13,17 @@ use Doctrine\ORM\Mapping as ORM;
 use Spliced\Component\Commerce\Model\OrderCustomFieldValue as BaseOrderCustomFieldValue;
 
 /**
- * Spliced\Bundle\CommerceAdminBundle\Entity\OrderCustomFieldValue
+ * OrderCustomFieldValue
+ *
+ * @author Gassan Idriss <ghassani@splicedmedia.com>
  *
  * @ORM\Table(name="customer_order_custom_field_value")
  * @ORM\Entity()
+ * @ORM\MappedSuperclass()
  */
 class OrderCustomFieldValue extends BaseOrderCustomFieldValue
 {
-    /**
-     * @var bigint $id
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    protected $id;
-    
-    /**
-     * @var string $fieldValue
-     *
-     * @ORM\Column(name="field_value", type="string", nullable=false)
-     */
-    protected $fieldValue;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Order", inversedBy="customFields")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    protected $order;
-    
-    /**
-     * getId
-     * 
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+
     
 }

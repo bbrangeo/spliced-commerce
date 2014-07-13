@@ -78,10 +78,16 @@ $(document).ready(function(){
 	/**
 	 * Ajax Complete/Stop Event Hooks
 	 */
-	$( document ).ajaxComplete(function() {
+
+	$(document).bind("ajaxSend", function(){
+		
+	}).bind("ajaxComplete", function(){
 		$('input, textarea').placeholder();
-		$('select.selectpicker').selectpicker();
+		$('select.selectpicker').selectpicker()
+	}).bind("ajaxStart", function(){
+		$.blockUI({ message: blockUiMessage });
+	}).bind("ajaxStop", function(){
+		$.unblockUI();
 	});
 	
-	$(document).ajaxStop($.unblockUI);
 }); 

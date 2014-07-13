@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Spliced\Component\Commerce\Model\Cart as BaseCart;
 
 /**
- * Spliced\Bundle\CommerceBundle\Entity\Cart
+ * Cart
  *
  * @ORM\Table(name="cart")
  * @ORM\Entity(repositoryClass="Spliced\Bundle\CommerceBundle\Repository\CartRepository")

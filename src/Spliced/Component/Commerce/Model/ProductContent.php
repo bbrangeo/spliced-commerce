@@ -9,68 +9,85 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ProductContent
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  * 
- * @MongoDB\EmbeddedDocument()
+ * @ORM\Table(name="product_content")
+ * @ORM\Entity()
  */
 class ProductContent
 {
-    /**
-     * @MongoDB\Id
+     /**
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
     
     /**
-     * @MongoDB\String
+     * @var string $language
+     *
+     * @ORM\Column(name="language", type="string", length=4, nullable=false)
      */
     protected $language;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     protected $name;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="meta_description", type="text", nullable=true)
      */
     protected $metaDescription;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="meta_keywords", type="string", length=255, nullable=true)
      */
     protected $metaKeywords;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="long_description", type="text", nullable=true)
      */
     protected $longDescription;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="short_description", type="text", nullable=true)
      */
     protected $shortDescription;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="view_layout", type="text", nullable=true)
      */
     protected $viewLayout;
     
     
     /**
-     * @MongoDB\Collection
+     * @ORM\Column(name="view_stylesheets", type="array", nullable=true)
      */
     protected $viewStylesheets = array();
     
     /**
-     * @MongoDB\Collection
+     * @ORM\Column(name="view_javascripts", type="array", nullable=true)
      */
     protected $viewJavascripts = array();
-        
+
+    /**
+     * @var Product
+     *
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="content")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * })
+     */
+    protected $product;
+    
     /**
      * Constructor
      * 
@@ -321,5 +338,29 @@ class ProductContent
              }
          }
          return $this;
+    }
+    
+
+    /**
+     * getProduct
+     *
+     * @return ProductInterface
+     */
+    public function getProduct()
+    {
+    	return $this->product;
+    }
+    
+    /**
+     * setProduct
+     *
+     * @param ProductInterface product
+     *
+     * @return self
+     */
+    public function setProduct(ProductInterface $product)
+    {
+    	$this->product = $product;
+    	return $this;
     }
 }

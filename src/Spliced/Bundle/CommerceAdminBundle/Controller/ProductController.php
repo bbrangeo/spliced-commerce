@@ -36,7 +36,7 @@ class ProductController extends BaseFilterableController
         
         // load products
         $products = $this->get('knp_paginator')->paginate(
-            $this->get('commerce.admin.document_manager')
+            $this->get('commerce.admin.entity_manager')
                 ->getRepository('SplicedCommerceAdminBundle:Product')->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page', 1),
             $this->getRequest()->query->get('limit', 25)
@@ -139,7 +139,7 @@ class ProductController extends BaseFilterableController
     public function editAction($id)
     {
 
-        $product = $this->get('commerce.admin.document_manager')
+        $product = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:Product')
           ->findOneById($id);
         
@@ -148,17 +148,18 @@ class ProductController extends BaseFilterableController
         }
 
         $form = $this->get('commerce.admin.form_factory')->createProductForm($product);
-        
+    
         return array(
             'product'     => $product,
             'form'   => $form->createView(),
             'delete_form' => $this->createDeleteForm($id)->createView(),
-            'orders' => $this->getDoctrine()->getRepository('SplicedCommerceAdminBundle:Order')->findByOrderedSku($product->getSku()),
+            'orders' => $this->getDoctrine()->getRepository('SplicedCommerceAdminBundle:Order')
+        		->findByOrderedSku($product->getSku()),
         );
     }
 
     /**
-     * Edits an existing Product entity.
+     * Updates an existing Product entity.
      *
      * @Route("/{id}/update", name="commerce_admin_product_update")
      * @Method({"PUT","POST"})
@@ -167,7 +168,7 @@ class ProductController extends BaseFilterableController
     public function updateAction(Request $request, $id)
     {
         
-        $product = $this->get('commerce.admin.document_manager')
+        $product = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:Product')
           ->findOneById($id);
 
@@ -213,7 +214,7 @@ class ProductController extends BaseFilterableController
         $form = $this->createDeleteForm($id);
 
         if($form->bind($request) && $form->isValid()) {
-            $product = $this->get('commerce.admin.document_manager')
+            $product = $this->get('commerce.admin.entity_manager')
               ->getRepository('SplicedCommerceAdminBundle:Product')
               ->findOneById($id);
 
@@ -330,7 +331,7 @@ class ProductController extends BaseFilterableController
             throw new \InvalidArgumentException('SKU POST variable required to check sku');
         }
     
-        $product = $this->get('commerce.admin.document_manager')
+        $product = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:Product')
           ->findOneBySku($this->getRequest()->request->get('sku'));
                 
@@ -360,18 +361,26 @@ class ProductController extends BaseFilterableController
         $query = $this->getRequest()->query->get('q', $this->getRequest()->request->get('q'));
     
         
-        $productsQuery = $this->get('commerce.admin.document_manager')->getRepository('SplicedCommerceAdminBundle:Product')
-          ->createQueryBuilder('product');
-        
-        $productsQuery->addOr($productsQuery->expr()->field('name')->equals(array('$regex' => $query)))
-          ->addOr($productsQuery->expr()->field('sku')->equals(array('$regex' => $query)));
+        $productsQuery = $this->get('commerce.admin.entity_manager')
+          ->getRepository('SplicedCommerceAdminBundle:Product')
+          ->createQueryBuilder('product')
+          ->select('product, images')
+          ->where('REGEXP(product.name, :nameExp) = 1 OR REGEXP(product.sku, :skuExp) = 1')
+          ->leftJoin('product.images', 'images')
+          ->setParameter('nameExp', $query)
+          ->setParameter('skuExp', $query);
           
-        $products = $productsQuery->hydrate(false)->getQuery()->execute()->toArray();
+        $products = $productsQuery
+          ->getQuery()
+          ->setMaxResults(30)
+          ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         
         foreach($products as &$product){
-            $product['value'] = sprintf('%s:%s - %s', $product['_id'], $product['name'], $product['sku']);
-            if(isset($product['images'][0])){
-                $product['thumbnail'] = $this->get('commerce.image_manager')->resizeProductImage($product['images'][0], 100, 100);
+            $product['value'] = sprintf('%s:%s - %s', $product['id'], $product['name'], $product['sku']);
+            if(count($product['images'])){
+                try{
+                	$product['thumbnail'] = $this->get('commerce.image_manager')->resizeProductImage($product['images'][0], 100, 100);
+                } catch(\Exception $e){ /* DO NOTHING */ }
             }
         } 
 
@@ -394,7 +403,7 @@ class ProductController extends BaseFilterableController
     
         $urlSlug = preg_replace('/^\//', '', $this->getRequest()->request->get('slug'));
     
-        $product = $this->get('commerce.admin.document_manager')
+        $product = $this->get('commerce.admin.entity_manager')
         ->getRepository('SplicedCommerceAdminBundle:Product')
         ->findOneByUrlSlug($urlSlug);
     

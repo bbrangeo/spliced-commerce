@@ -246,7 +246,12 @@ class OrderController extends Controller
             }
             
         }
-        
+
+
+
+        $this->get('commerce.breadcrumb')->createBreadcrumb('Order Lookup', 'Order Lookup', $this->generateUrl('commerce_guest_order_lookup'), 1, true);
+
+
         return array(
             'form' => $form->createView(),
             'formAlt' => $formAlt->createView(),   

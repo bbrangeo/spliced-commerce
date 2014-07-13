@@ -122,7 +122,7 @@ abstract class Cart implements CartInterface {
      */
     public function setItems($items) {
         $this->items = $items;
-        return $this;
+        return $this; 
     }
     
     /**
@@ -148,7 +148,7 @@ abstract class Cart implements CartInterface {
         
         $searchItems = function($items, $searchChildren) use($product, &$searchItems) {
             foreach($items as $item ) {
-                if ($item->getProductId() == $product->getId()) {
+                if ($item->getProduct()->getId() == $product->getId()) {
                     return true;
                 }
                 if(true === $searchChildren && $item->hasChildren()){

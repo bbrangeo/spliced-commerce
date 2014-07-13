@@ -75,7 +75,7 @@ class ProductSpecificationOptionManager
      */
     public function create()
     {
-        return $this->configurationManager->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION);
+        return $this->configurationManager->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION);
     }
     
     /**
@@ -86,7 +86,7 @@ class ProductSpecificationOptionManager
      * 
      * @param ProductSpecificationOptionInterface $productSpecificationOption
      * @param bool $flush - Flushes and updates the database as well. 
-     *                      Document will always be persisted.
+     *                      Entity will always be persisted.
      */
     public function save(ProductSpecificationOptionInterface $productSpecificationOption, $flush = true)
     {
@@ -102,10 +102,10 @@ class ProductSpecificationOptionManager
             new Events\ProductSpecificationOptionSaveEvent($productSpecificationOption)
         );
         
-        $this->configurationManager->getDocumentManager()->persist($productSpecificationOption);
+        $this->configurationManager->getEntityManager()->persist($productSpecificationOption);
             
         if (true === $flush) {
-            $this->configurationManager->getDocumentManager()->flush();
+            $this->configurationManager->getEntityManager()->flush();
         }
     }
     
@@ -118,7 +118,7 @@ class ProductSpecificationOptionManager
      * 
      * @param ProductSpecificationOptionInterface $productSpecificationOption
      * @param bool $flush - Flushes and updates the database as well. 
-     *                      Document will always be persisted.
+     *                      Entity will always be persisted.
      */
     public function update(ProductSpecificationOptionInterface $productSpecificationOption, $flush = true)
     {
@@ -131,13 +131,11 @@ class ProductSpecificationOptionManager
             Events\Event::EVENT_PRODUCT_SPECIFICATION_OPTION_UPDATE,
             new Events\ProductSpecificationOptionUpdateEvent($productSpecificationOption)
         );
-
-        $this->updateEmbedMany($productSpecificationOption);
             
-        $this->configurationManager->getDocumentManager()->persist($productSpecificationOption);
+        $this->configurationManager->getEntityManager()->persist($productSpecificationOption);
         
         if (true === $flush) {
-            $this->configurationManager->getDocumentManager()->flush();
+            $this->configurationManager->getEntityManager()->flush();
         }
     }
 
@@ -146,7 +144,7 @@ class ProductSpecificationOptionManager
      *
      * @param ProductSpecificationOptionInterface $productSpecificationOption
      * @param bool $flush - Flushes and updates the database as well. 
-     *                      Document will always be persisted.
+     *                      Entity will always be persisted.
      */
     public function delete(ProductSpecificationOptionInterface $productSpecificationOption, $flush = true)
     {
@@ -159,10 +157,10 @@ class ProductSpecificationOptionManager
             Events\Event::EVENT_PRODUCT_SPECIFICATION_OPTION_DELETE,
             new Events\ProductSpecificationOptionDeleteEvent($productSpecificationOption)
         );
-
+ 
         // find products which use this specification
-        $products = $this->configurationManager->getDocumentManager()
-        ->getRepository($this->configurationManager->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT))
+        $products = $this->configurationManager->getEntityManager()
+        ->getRepository($this->configurationManager->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT))
         ->createQueryBuilder()
         ->field('specifications.optionKey')->equals($productSpecificationOption->getKey())
         ->getQuery()
@@ -182,29 +180,11 @@ class ProductSpecificationOptionManager
             }
         }
         
-        $this->configurationManager->getDocumentManager()->remove($productSpecificationOption);
+        $this->configurationManager->getEntityManager()->remove($productSpecificationOption);
         
         if (true === $flush) {
-            $this->configurationManager->getDocumentManager()->flush();
+            $this->configurationManager->getEntityManager()->flush();
         }
     }
     
-    /**
-     *  updateEmbedMany
-     * 
-     *  as of 1/30/2014 with Doctrine, embedded documents duplicate items
-     *  like the issue here: 
-     *  http://stackoverflow.com/questions/16267336/doctrine-mongo-odm-duplicating-embedded-documents-in-symfony
-     *  cloning the collection objects seems to work // would like to find a better solution of 
-     *  find what is causing it  so we just iterate over every EmbedMany and clone the collection
-     */
-    protected function updateEmbedMany($object)
-    {
-        $objectMetaData = $this->configurationManager->getDocumentManager()->getClassMetadata(get_class($object));
-        foreach($objectMetaData->getFieldNames() as $fieldName) {
-            if($objectMetaData->hasEmbed($fieldName) && !$objectMetaData->isSingleValuedEmbed($fieldName)){
-                $objectMetaData->setFieldValue($object, $fieldName, clone $objectMetaData->getFieldValue($object, $fieldName));
-            }
-        }
-    }
 }

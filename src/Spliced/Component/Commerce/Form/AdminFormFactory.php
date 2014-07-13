@@ -59,13 +59,13 @@ class AdminFormFactory
     {
         if(is_null($product)){
             $product = $this->container->get('commerce.configuration')
-              ->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT);
+              ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT);
         }
         
         if(!$product->getContent()->count() && $product->getId()){
             $defaultLocale = $this->container->get('commerce.configuration')->get('commerce.store.default_locale','en');            
             $defaultLocaleContent = $this->container->get('commerce.configuration')
-             ->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_CONTENT)
+             ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_CONTENT)
             ->setLanguage($defaultLocale);
 
             $product->addContent($defaultLocaleContent);
@@ -75,8 +75,8 @@ class AdminFormFactory
             $product,
             $this->container->get('commerce.configuration'),
             $this->container->get('commerce.product_type_manager'),
-            $this->container->get('commerce.admin.document_manager')
-        ); 
+            $this->container->get('commerce.admin.entity_manager')
+        );
     
         return $this->getFormFactory()->create($formType, $product, $options);
     }
@@ -90,7 +90,7 @@ class AdminFormFactory
     {
         if(is_null($attributeOption)){
             $attributeOption = $this->container->get('commerce.configuration')
-             ->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION);
+             ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_ATTRIBUTE_OPTION);
         }
 
         $formType = new Type\Admin\ProductAttributeOptionType(
@@ -110,7 +110,7 @@ class AdminFormFactory
     {
         if(is_null($specificationOption)){
             $specificationOption = $this->container->get('commerce.configuration')
-            ->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION);
+            ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION);
         }
     
         $formType = new Type\Admin\ProductSpecificationOptionType(
@@ -130,7 +130,7 @@ class AdminFormFactory
     {
         if(is_null($category)){
             $category = $this->container->get('commerce.configuration')
-            ->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_CATEGORY);
+            ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CATEGORY);
         }
         
         
@@ -152,7 +152,7 @@ class AdminFormFactory
     {
         if(is_null($page)){
             $page = $this->container->get('commerce.configuration')
-            ->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_CONTENT_PAGE);
+            ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CONTENT_PAGE);
         }
     
     
@@ -173,7 +173,7 @@ class AdminFormFactory
     {
         if(is_null($affiliate)){
             $affiliate = $this->container->get('commerce.configuration')
-            ->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_AFFILIATE);
+            ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_AFFILIATE);
         }
 
         $formType = new Type\Admin\AffiliateType(
@@ -193,7 +193,7 @@ class AdminFormFactory
     {
         if(is_null($manufacturer)){
             $manufacturer = $this->container->get('commerce.configuration')
-            ->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_MANUFACTURER);
+            ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_MANUFACTURER);
         }
     
         $formType = new Type\Admin\ManufacturerType(
@@ -214,7 +214,7 @@ class AdminFormFactory
     {
         if(is_null($route)){
             $route = $this->container->get('commerce.configuration')
-            ->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE);
+            ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE);
         }
     
         $formType = new Type\Admin\RouteType(

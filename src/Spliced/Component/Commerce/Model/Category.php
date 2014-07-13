@@ -9,7 +9,7 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -19,122 +19,130 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  * 
- * @MongoDB\Document(collection="category")
- * @Gedmo\Tree(type="materializedPath", activateLocking=true)
+ * @ORM\Table(name="category")
+ * @Gedmo\Tree(type="materializedPath")
  */
 abstract class Category implements CategoryInterface
 {
 
     /**
-     * @MongoDB\Id
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Gedmo\TreePathSource
      */
     protected $id;
 
     /**
-     * @MongoDB\String
-     * @Gedmo\TreePathSource
+     * @var string $name
+     *
+     * @ORM\Column(name="name", type="string", nullable=false, unique=false)
      */
     protected $name;
 
     /**
-     * @MongoDB\String
+     * @var string $name
+     *
+     * @ORM\Column(name="page_title", type="string", nullable=true, unique=false)
      */
     protected $pageTitle;
 
     /**
-     * @MongoDB\String
+     * @var string $description
+     *
+     * @ORM\Column(name="description", type="text", nullable=true, unique=false)
      */
     protected $description;
 
     /**
-     * @MongoDB\String
+     * @var string $headTitle
+     *
+     * @ORM\Column(name="head_title", type="string", length=255, nullable=true, unique=false)
      */
     protected $headTitle;
 
     /**
-     * @MongoDB\String
+     * @var string $metaDescription
+     *
+     * @ORM\Column(name="meta_description", type="text", nullable=true, unique=false)
      */
     protected $metaDescription;
 
     /**
-     * @MongoDB\String
+     * @var string $metaKeywords
+     *
+     * @ORM\Column(name="meta_keywords", type="string", length=255, nullable=true, unique=false)
      */
     protected $metaKeywords;
 
     /**
-     * @MongoDB\String
-     * @MongoDB\UniqueIndex
+    /**
+     * @var string $urlSlug
+     *
+     * @ORM\Column(name="url_slug", type="string", length=255, nullable=false, unique=true)
      * @Gedmo\Slug(fields={"name"})
      */
     protected $urlSlug;
 
     /**
-     * @MongoDB\Int
+     * @ORM\Column(name="tree_level", type="integer", nullable=true, unique=false)
      * @Gedmo\TreeLevel
      */
     protected $level;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="tree_path", type="string", length=255, nullable=true, unique=false)
      * @Gedmo\TreePath
      */
     protected $path;
 
     /**
-     * @MongoDB\Int
+     * @ORM\Column(name="tree_left", type="integer", nullable=true, unique=false)
      * @Gedmo\TreeLeft
      */
     protected $left;
     
     /**
-     * @MongoDB\Int
+     * @ORM\Column(name="tree_right", type="integer", nullable=true, unique=false)
      * @Gedmo\TreeRight
      */
     protected $right;
     
     /**
-     * @MongoDB\Int
+     * @ORM\Column(name="position", type="integer", nullable=true, unique=false)
      */
     protected $position;
 
     /**
-     * @MongoDB\Boolean
+     * @ORM\Column(name="is_active", type="boolean", nullable=true, unique=false)
      */
     protected $isActive;
     
     /**
-     * @MongoDB\Date
+     * @ORM\Column(name="created_at", type="datetime", nullable=false, unique=false)
      * @Gedmo\Timestampable(on="create")
      */
     protected $createdAt;
 
     /**
-     * @MongoDB\Date
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false, unique=false)
      * @Gedmo\Timestampable(on="update")
      */
     protected $updatedAt;
     
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Category")
-     * @MongoDB\Index
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      * @Gedmo\TreeParent
      */
     protected $parent;
     
     /**
-     * @MongoDB\ReferenceMany(
-     *     targetDocument="Category",
-     *     sort={"position": "asc", "name" : "asc"}
-     * )
-     * @MongoDB\Index
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parent")
      */
     protected $children;
-
-    /**
-     * @Gedmo\TreeLockTime
-     * @MongoDB\Date(nullable=true)
-     */
-    private $lockTime;
     
     /**
      * Constructor
@@ -594,27 +602,6 @@ abstract class Category implements CategoryInterface
     public function setRight($right)
     {
         $this->right = $right;
-        return $this;
-    }
-    
-    /**
-     * getLockTime
-     *
-     * @return DateTime|null
-     */
-    public function getLockTime()
-    {
-        return $this->lockTime;
-    }
-    
-    /**
-     * setLockTime
-     *
-     * @param DateTime|null
-     */
-    public function setLockTime(\DateTime $lockTime = null)
-    {
-        $this->lockTime = $lockTime;
         return $this;
     }
     

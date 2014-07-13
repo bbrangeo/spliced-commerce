@@ -9,62 +9,101 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Route
  * 
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  * 
- * @MongoDB\Document(collection="route")
+ * @ORM\Table(name="route")
+ * @ORM\Entity()
  */
 abstract class Route implements RouteInterface
 {
     /**
-     * @MongoDB\Id
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
-    
+
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Category")
+     * @var bigint $categoryId
+     *
+     * @ORM\Column(name="category_id", type="bigint", nullable=true)
+     */
+    protected $categoryId;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Category")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
-    
+
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Product")
+     * @var bigint $productId
+     *
+     * @ORM\Column(name="product_id", type="bigint", nullable=true)
+     */
+    protected $productId;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Product")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
     protected $product;
-    
+
     /**
-     * @MongoDB\ReferenceOne(targetDocument="ContentPage")
+     * @var bigint $pageId
+     *
+     * @ORM\Column(name="page_id", type="bigint", nullable=true)
+     */
+    protected $pageId;
+
+    /**
+     * @ORM\OneToOne(targetEntity="ContentPage")
+     * @ORM\JoinColumn(name="page_id", referencedColumnName="id")
      */
     protected $page;
-    
+
     /**
-     * @MongoDB\String
+     * @var bigint $otherId
+     *
+     * @ORM\Column(name="other_id", type="bigint", nullable=true)
      */
     protected $otherId;
-    
+
     /**
-     * @MongoDB\String
-     * @MongoDB\Index(unique=true)
+     * @var string $requestPath
+     *
+     * @ORM\Column(name="request_path", type="string", length=255, nullable=false)
      */
     protected $requestPath;
-    
+
     /**
-     * @MongoDB\String
+     * @var string $targetPath
+     *
+     * @ORM\Column(name="target_path", type="string", length=255, nullable=false)
      */
     protected $targetPath;
-    
+
     /**
-     * @MongoDB\Hash
+     * @var array $options
+     *
+     * @ORM\Column(name="options", type="array", length=255, nullable=true)
      */
     protected $options;
-    
+
     /**
-     * @MongoDB\String
+     * @var string $description
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     protected $description;
+
 
     /**
      * 

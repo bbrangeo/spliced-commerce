@@ -9,183 +9,252 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Product
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
- * 
- * @MongoDB\Document(collection="product")
+ *
+ * @ORM\Table(
+ * 	name="product",
+ * 	uniqueConstraints={
+ * 		@ORM\UniqueConstraint(name="sku_idx", columns={"sku"}),
+ * 		@ORM\UniqueConstraint(name="url_slug_idx", columns={"url_slug"})
+ * 	}
+ * )
+ * @ORM\Entity()
  */
 abstract class Product implements ProductInterface
 {
-    /**
-     * @MongoDB\Id
+     /**
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
 
     /**
-     * @MongoDB\String
-     * @MongoDB\UniqueIndex(order="asc")
+     * @var string $sku
+     *
+     * @ORM\Column(name="sku", type="string", unique=true, length=75, nullable=false)
      */
     protected $sku;
 
     /**
-     * @MongoDB\Int
+     * @var string $manufacturerPart
+     *
+     * @ORM\Column(name="manufacturer_part", type="string", length=150, nullable=true)
      */
-    protected $type;
+    protected $manufacturerPart;
     
     /**
-     * @MongoDB\String
+     * @var smallint $type
+     *
+     * @ORM\Column(name="type", type="smallint", nullable=false)
+     */
+    protected $type;
+
+    /**
+     * @var string $name
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     protected $name;
 
+
     /**
-     * @MongoDB\String
-     * @MongoDB\UniqueIndex(order="asc")
+     * @var string $name
+     *
+     * @ORM\Column(name="url_slug", type="string", length=255, unique=true, nullable=false)
+     * @Gedmo\Slug(fields={"name"})
      */
     protected $urlSlug;
 
     /**
-     * @MongoDB\Boolean
-     */
-    protected $manageStock;
-
-    /**
-     * @MongoDB\Float
-     * @MongoDB\Index()
+     * @var decimal $price
+     *
+     * @ORM\Column(name="price", type="decimal", scale=12, precision=4, nullable=false)
      */
     protected $price;
 
     /**
-     * @MongoDB\Float
-     * @MongoDB\Index()
+     * @var decimal $cost
+     *
+     * @ORM\Column(name="cost", type="decimal", scale=12, precision=4, nullable=false)
      */
     protected $cost;
 
     /**
-     * @MongoDB\Float
-     * @MongoDB\Index()
+     * @var decimal $specialPrice
+     *
+     * @ORM\Column(name="special_price", type="decimal", scale=12, precision=4, nullable=false)
      */
     protected $specialPrice;
 
     /**
-     * @MongoDB\Boolean
+     * @var boolean $isTaxable
+     *
+     * @ORM\Column(name="is_taxable", type="boolean", nullable=true)
      */
     protected $isTaxable;
 
     /**
-     * @MongoDB\Boolean
-     * @MongoDB\Index()
+     * @var boolean $isActive
+     *
+     * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
     protected $isActive;
+
+    /**
+     * @var boolean $manageStock
+     *
+     * @ORM\Column(name="manage_stock", type="boolean", nullable=true)
+     */
+    protected $manageStock;
     
     /**
-     * @MongoDB\Int
-     * @MongoDB\Index()
+     * @var smallint $type
+     *
+     * @ORM\Column(name="availability", type="smallint", nullable=false)
      */
     protected $availability;
-    
+
     /**
-     * @MongoDB\Int
+     * @var int $minOrderQuantity
+     *
+     * @ORM\Column(name="min_order_quantity", type="integer", nullable=false)
      */
     protected $minOrderQuantity;
 
     /**
-     * @MongoDB\Hash
+     * @var int $maxOrderQuantity
+     *
+     * @ORM\Column(name="max_order_quantity", type="integer", nullable=false)
+     */
+    protected $maxOrderQuantity;
+
+    /**
+     * @var int $weight
+     *
+     * @ORM\Column(name="weight", type="integer", nullable=true)
      */
     protected $weight;
     
     /**
-     * @MongoDB\Hash
+     * @var string $weight
+     *
+     * @ORM\Column(name="weight_units", type="string", length=4, nullable=true)
+     */
+    protected $weightUnits;
+    
+    /**
+     * @var string $dimensions
+     *
+     * @ORM\Column(name="dimensions", type="string", length=50, unique=false, nullable=true)
      */
     protected $dimensions;
     
     /**
-     * @MongoDB\Int
+     * @var string $dimensionsUnits
+     *
+     * @ORM\Column(name="dimensions_units", type="string", length=4, unique=false, nullable=true)
      */
-    protected $maxOrderQuantity;
-    
+    protected $dimensionsUnits;
     /**
-     * @MongoDB\Date
+     * @var datetime $createdAt
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
     protected $createdAt;
 
     /**
-     * @MongoDB\Date
+     * @var datetime $updatedAt
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=false)
      */
     protected $updatedAt;
     
     /**
-     * @MongoDB\Date(nullable=true)
+     * @var datetime $updatedAt
+     *
+     * @ORM\Column(name="special_from_date", type="datetime", nullable=true)
      */
     protected $specialFromDate;
 
     /**
-     * @MongoDB\Date(nullable=true)
+     * @var datetime $updatedAt
+     *
+     * @ORM\Column(name="special_to_date", type="datetime", nullable=true)
      */
     protected $specialToDate;
     
     /**
-     * Content of the product, by language
-     * 
-     * @MongoDB\EmbedMany(targetDocument="ProductContent")
+     * @ORM\OneToMany(targetEntity="ProductContent", mappedBy="product", cascade={"persist"})
+     * @ORM\JoinColumn(name="id", referencedColumnName="product_id")
      */
     protected $content = array();
     
     /**
-     * @MongoDB\EmbedMany(targetDocument="ProductAttribute")
+     * @ORM\OneToMany(targetEntity="ProductAttribute", mappedBy="product", cascade={"persist"})
+     * @ORM\JoinColumn(name="id", referencedColumnName="product_id")
+     * @ORM\OrderBy({"optionId" = "ASC"})
      */
-    protected $attributes = array();
+    protected $attributes;
 
     /**
-     * @MongoDB\EmbedMany(targetDocument="ProductSpecification")
-     * @MongoDB\Index()
+     * @ORM\OneToMany(targetEntity="ProductSpecification", mappedBy="product", cascade={"persist"})
+     * @ORM\JoinColumn(name="id", referencedColumnName="product_id")
+     * @ORM\OrderBy({"position" = "ASC"})
      */
-    protected $specifications = array();
+    protected $specifications;
     
     /**
-     * @MongoDB\EmbedMany(targetDocument="ProductBundledItem")
+     * EmbedMany(targetDocument="ProductBundledItem")
      */
-    protected $bundledItems = array();
+    protected $bundledItems;
     
     /**
-     * @MongoDB\EmbedMany(targetDocument="ProductImage")
+     * @ORM\OneToMany(targetEntity="ProductImage", mappedBy="product", cascade={"persist"})
+     * @ORM\JoinColumn(name="id", referencedColumnName="product_id")
      */
-    protected $images = array();
+    protected $images;
     
     /**
-     * @MongoDB\EmbedMany(targetDocument="ProductTierPrice")
+     * @ORM\OneToMany(targetEntity="ProductTierPrice", mappedBy="product", cascade={"persist"})
+     * @ORM\JoinColumn(name="id", referencedColumnName="product_id")
+     * @ORM\OrderBy({"minQuantity" = "ASC"})
      */
     protected $tierPrices;
     
     /**
-     * @MongoDB\ReferenceMany(targetDocument="Route")
+     * ReferenceMany(targetDocument="Route")
      */
     protected $routes;
     
     /**
-     * @MongoDB\EmbedMany(targetDocument="ProductUpsale")
+     * @ORM\OneToMany(targetEntity="ProductRelatedProduct", mappedBy="product", cascade={"persist"})
+     * @ORM\JoinColumn(name="id", referencedColumnName="product_id")
      */
-    protected $upsales;
+    protected $relatedProducts;
     
-    /** 
-     * @MongoDB\ReferenceMany(targetDocument="Category")
+    /**
+     * @ORM\OneToMany(targetEntity="ProductCategory", mappedBy="product", cascade={"persist"})
+     * @ORM\JoinColumn(name="id", referencedColumnName="product_id")
      */
     protected $categories;
 
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Manufacturer")
+     * @ORM\OneToOne(targetEntity="Manufacturer", cascade={"persist"})
+     * @ORM\JoinColumn(name="manufacturer_id", referencedColumnName="id")
      */
     protected $manufacturer;
-    
-    /**
-     * @MongoDB\String
-     */
-    protected $manufacturerPart;
+
     
     /**
      * Constructor
@@ -205,7 +274,7 @@ abstract class Product implements ProductInterface
         $this->bundledItems = new ArrayCollection();
         $this->tierPrices = new ArrayCollection();
         $this->images = new ArrayCollection();
-        $this->upsales = new ArrayCollection();
+        $this->relatedProducts = new ArrayCollection();
         $this->categories = new ArrayCollection();
         $this->routes = new ArrayCollection();
     }
@@ -375,6 +444,27 @@ abstract class Product implements ProductInterface
     public function getSpecialPrice()
     {
         return $this->specialPrice;
+    }
+    
+    /**
+     * hasSpecialPrice
+     * 
+     * @return bool
+     */
+    public function hasSpecialPrice()
+    {
+
+    	if($this->getSpecialPrice() && $this->getSpecialPrice() != $this->getPrice()){
+    		$specialFrom = $this->getSpecialFromDate();
+    		$specialTo = $this->getSpecialToDate();
+    		$currentDate = new \DateTime();
+    		
+    		if($specialFrom && $specialTo && $specialFrom->getTimestamp() < $currentDate->getTimestamp() && $specialTo->getTimestamp() > $currentDate->getTimestamp()){
+    			return true;
+    		}
+    	}
+    	
+    	return false;
     }
 
     /**
@@ -804,6 +894,34 @@ abstract class Product implements ProductInterface
         return $this->specifications;
     }
 
+    /**
+     * getSpecification
+     *
+     * @param string $key - The specification key
+     * 
+     * @return bool - false when not found
+     * @return ProductSpecification - When single value and found
+     * @return ArrayCollection - When multi value and found
+     */
+    public function getSpecification($key)
+    {
+    	$return = new ArrayCollection();
+    
+    	foreach ($this->specifications as $specification) {
+    		$specificationOption = $specification->getOption();
+    		if (strtoupper($specificationOption->getKey()) == strtoupper($key)) {
+    			if ( $specificationOption->getOptionType() == ProductSpecificationOptionInterface::OPTION_TYPE_SINGLE_VALUE ) {
+    				return $specification;
+    			} elseif ( $specificationOption->getOptionType() == ProductSpecificationOptionInterface::OPTION_TYPE_MULTIPLE_VALUE ) {
+    				$return->add($specification);
+    			} else {
+    				return $specification;
+    			}
+    		}
+    	} 
+    
+    	return $return->count() ? $return : false;
+    }
     
     /**
      * removeSpecification
@@ -998,6 +1116,7 @@ abstract class Product implements ProductInterface
     public function addImage(ProductImage $image)
     {
         if(!$this->images->contains($image)){
+            $image->setProduct($this);
             $this->images->add($image);
         }
         return $this;
@@ -1071,10 +1190,11 @@ abstract class Product implements ProductInterface
      */
     public function addTierPrice(ProductTierPrice $tierPrice)
     {
+    	
         if(!$this->tierPrices->contains($tierPrice)){
+            $tierPrice->setProduct($this);
             $this->tierPrices->add($tierPrice);
-        }
-                
+        }                
         return $this;
     }
     
@@ -1136,51 +1256,51 @@ abstract class Product implements ProductInterface
     }
     
     /**
-     * setUpsales
+     * setRelatedProducts
      *
-     * @param Collection $upsales
+     * @param Collection $relatedProducts
      */
-    public function setUpsales(Collection $upsales)
+    public function setRelatedProducts(Collection $relatedProducts)
     {
-        $this->upsales = $upsales;
+        $this->relatedProducts = $relatedProducts;
         return $this;
     }
     
     /**
-     * addUpsale
+     * addRelatedProduct
      *
-     * @param ProductInterface $upsale
+     * @param ProductInterface $relatedProduct
      */
-    public function addUpsale(ProductUpsale $upsale)
+    public function addRelatedProduct(ProductRelatedProduct $relatedProduct)
     {
-        if(!$this->upsales->contains($upsale)){
-            $this->upsales->add($upsale);
+        if(!$this->relatedProducts->contains($relatedProduct)){
+        	$relatedProduct->setProduct($this);
+            $this->relatedProducts->add($relatedProduct);
         }
         return $this;
     }
         
     /**
-     * getUpsales
+     * getRelatedProducts
      *
      * @return Collection
      */
-    public function getUpsales()
+    public function getRelatedProducts()
     {
-        return $this->upsales;
+        return $this->relatedProducts;
     }
     
     /**
-     * removeUpsale
+     * removeRelatedProduct
      *
-     * @param ProductInterface $upsale
+     * @param ProductInterface $relatedProduct
      */
-    public function removeUpsale(ProductUpsale $upsale)
+    public function removeRelatedProduct(ProductRelatedProduct $relatedProduct)
     {
-        $this->upsales->removeElement($upsale);
+        $this->relatedProducts->removeElement($relatedProduct);
         return $this;
     }
     
-
     /**
      * Get categories
      *
@@ -1230,7 +1350,7 @@ abstract class Product implements ProductInterface
     public function hasCategory(CategoryInterface $category)
     {
         foreach($this->getCategories() as $_category){
-            if($_category->getId() && $_category->getId() == $category->getId()){
+            if($_category->getCategory()->getId() == $category->getId()){
                 return true;
             }
         }
@@ -1287,6 +1407,8 @@ abstract class Product implements ProductInterface
 
     /**
      * getWeight
+     * 
+     * @return float|int|null
      */
     public function getWeight()
     {
@@ -1296,9 +1418,9 @@ abstract class Product implements ProductInterface
     /**
      * setWeight
      *
-     * @param array $weight
+     * @param float|int|null $weight
      */
-    public function setWeight(array $weight = array())
+    public function setWeight($weight)
     {
         $this->weight = $weight;
         return $this;
@@ -1317,11 +1439,57 @@ abstract class Product implements ProductInterface
      *
      * @param array $dimensions
      */
-    public function setDimensions(array $dimensions = array())
+    public function setDimensions($dimensions)
     {
         $this->dimensions = $dimensions;
         return $this;
     }
+    
+    /**
+     * getDimensionsUnits
+     *
+     * @return string
+    */
+    public function getDimensionsUnits()
+    {
+    	return $this->dimensionsUnits;
+    }
 
+    /**
+     * setDimensionsUnits
+     *
+     * @param string dimensionsUnits
+     *
+     * @return self
+    */
+    public function setDimensionsUnits($dimensionsUnits)
+    {
+	    $this->dimensionsUnits = $dimensionsUnits;
+	    return $this;
+    }
+    
+    /**
+     * getWeightUnits
+     *
+     * @return string
+    */
+    public function getWeightUnits()
+    {
+    	return $this->weightUnits;
+    }
+
+    /**
+     * setWeightUnits
+     *
+     * @param string weightUnits
+     *
+     * @return self
+    */
+    public function setWeightUnits($weightUnits)
+    {
+	    $this->weightUnits = $weightUnits;
+	    return $this;
+    }
+    
        
 }

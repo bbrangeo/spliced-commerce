@@ -18,29 +18,31 @@
 <div class="checkout-shipping-address">
 	<div class="row">
 		<div class="col-sm-6 col-lg-6">
-			{{ form_row(form.shippingName) }}
+			{{ form_row(form.shippingFirstName) }}
 		</div>
 		<div class="col-sm-6 col-lg-6">
-			{{ form_row(form.shippingAttn) }}
+			{{ form_row(form.shippingLastName) }}
 		</div>
 	</div>
+	
+    {{ form_row(form.shippingCompany, { 'attr' : { 'class' : '' }}) }}
     
-    {{ form_row(form.shippingAddress) }}
+    {{ form_row(form.shippingAddress, { 'attr' : { 'class' : 'required-for-shipping-rates' }}) }}
     {{ form_row(form.shippingAddress2) }}
     
-    {{ form_row(form.shippingCountry) }}     
+    {{ form_row(form.shippingCountry, { 'attr' : { 'class' : 'required-for-shipping-rates' }}) }} 
     
 
     
     <div class="row">
     	<div class="col-sm-4 col-lg-4">
-    		{{ form_row(form.shippingCity) }}
+    		{{ form_row(form.shippingCity, { 'attr' : { 'class' : 'required-for-shipping-rates' }}) }}
     	</div>
     	<div class="col-sm-4 col-lg-4">
-    		{{ form_row(form.shippingState) }}
+    		{{ form_row(form.shippingState, { 'attr' : { 'class' : 'required-for-shipping-rates' }}) }}
     	</div>
     	<div class="col-sm-4 col-lg-4">
-    		{{ form_row(form.shippingZipcode) }}
+    		{{ form_row(form.shippingZipcode, { 'attr' : { 'class' : 'required-for-shipping-rates' }}) }}
     	</div>
     </div>
     

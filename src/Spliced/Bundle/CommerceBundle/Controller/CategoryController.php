@@ -11,6 +11,7 @@ namespace Spliced\Bundle\CommerceBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Spliced\Component\Commerce\Model\CategoryInterface;
 
@@ -29,28 +30,12 @@ class CategoryController extends Controller
     public function indexAction()
     {
 
-        $categories = $this->get('commerce.document_manager')
+        $categories = $this->get('commerce.entity_manager')
           ->getRepository('SplicedCommerceBundle:Category')
           ->getRoot();
 
         return array(
             'categories' => $categories,
-        );
-    }
-
-    /**
-     * @Template("SplicedCommerceBundle:Category:Blocks/list.html.twig")
-     *
-     * Loads all Categories with Their related children
-     */
-    public function listAction()
-    {
-        $categories = $this->get('commerce.document_manager')
-          ->getRepository('SplicedCommerceBundle:Category')
-          ->getRoot();
-
-        return array(
-            'categories' => $categories
         );
     }
 
@@ -66,7 +51,7 @@ class CategoryController extends Controller
     public function viewAction($id)
     {
         // load category
-        $category = $this->get('commerce.document_manager')
+        $category = $this->get('commerce.entity_manager')
           ->getRepository('SplicedCommerceBundle:Category')
           ->findOneById($id);
         
@@ -89,7 +74,7 @@ class CategoryController extends Controller
     public function viewBySlugAction($slug)
     {
         // load category
-        $category = $this->get('commerce.document_manager')
+        $category = $this->get('commerce.entity_manager')
         ->getRepository('SplicedCommerceBundle:Category')
         ->findOneByUrlSlug($slug);
     
@@ -188,7 +173,7 @@ class CategoryController extends Controller
         $filterManager = $this->get('commerce.product.filter_manager');
         $request = $this->getRequest();
         
-        $category = $this->get('commerce.document_manager')
+        $category = $this->get('commerce.entity_manager')
           ->getRepository('SplicedCommerceBundle:Category')
           ->findOneById($categoryId);
         
@@ -196,7 +181,7 @@ class CategoryController extends Controller
             throw $this->createNotFoundException('Category Not Found');
         }
         
-        $manufacturer = $this->get('commerce.document_manager')
+        $manufacturer = $this->get('commerce.entity_manager')
         ->getRepository('SplicedCommerceBundle:Manufacturer')
         ->findOneById($manufacturerId);
         
@@ -215,49 +200,104 @@ class CategoryController extends Controller
         
         return $this->redirect(empty($referer) ? $this->generateUrl('homepage') : $referer);
     }
-    
+
     /**
-     * @Route("/category/{categoryId}/filter/specification/{specificationId}/{value}/{action}",
+     * @Route("/category/{categoryId}/filter/specification/{optionId}/{valueId}/{action}",
      *   name="category_update_filter_specification"
      * )
      */
-    public function updateFilterSpecificationAction($categoryId, $specificationId, $value, $action = 'add')
+    public function updateFilterSpecificationAction($categoryId, $optionId, $valueId, $action = 'add')
     {
-        $referer = $this->getRequest()->server->get('HTTP_REFERER');
         $filterManager = $this->get('commerce.product.filter_manager');
         $request = $this->getRequest();
-    
-        $category = $this->get('commerce.document_manager')
+        $referer = $request->server->get('HTTP_REFERER');
+
+        $category = $this->get('commerce.entity_manager')
         ->getRepository('SplicedCommerceBundle:Category')
         ->findOneById($categoryId);
     
         if(!$category){
             throw $this->createNotFoundException('Category Not Found');
         }
-    
-        $specification = $this->get('commerce.document_manager')
+
+        $option = $this->get('commerce.entity_manager')
         ->getRepository('SplicedCommerceBundle:ProductSpecificationOption')
-        ->findOneById($specificationId);
+        ->findOneById($optionId);
     
-        if(!$specification){
-            throw $this->createNotFoundException('Specification Not Found');
+        if(!$option){
+            throw $this->createNotFoundException('Specification Option Not Found');
+        }
+
+        $value = $this->get('commerce.entity_manager')
+            ->getRepository('SplicedCommerceBundle:ProductSpecificationOptionValue')
+            ->findOneById($valueId);
+
+        if(!$value){
+            throw $this->createNotFoundException('Specification Option Value Not Found');
         }
 
         if ($action == 'add') {
-            if ($specification->hasValue($value)) {
-                $filterManager->addSelectedSpecification($specification->getId(), $value, $category->getId());
-            }
+            $filterManager->addSelectedSpecification($option->getId(), $value->getId(), $category->getId());
         } else if ($action == 'delete') {
-            $filterManager->removeSelectedManufacturer($specification->getId(), $value, $category->getId());
+            $filterManager->removeSelectedSpecification($option->getId(), $value->getId(), $category->getId());
         }
     
         $this->get('session')->getFlashBag()->add('success', 'Filter Updated Successfully');
     
-        return $this->redirect(empty($referer) ? $this->generateUrl('homepage') : $referer);
+        return $this->redirect(empty($referer) ? $this->generateUrl('commerce_category_view_by_slug', array('slug' => $category->getUrlSlug())) : $referer);
     }
-    
     /**
-     * @Route("/categories/reset-fiter/{categoryId}",
+     * @Route("/category/{categoryId}/filter/specifications",
+     *   name="category_update_filter_specifications"
+     * )
+     * @Method({"POST"})
+     */
+    public function updateFilterSpecificationsAction($categoryId)
+    {
+        $filterManager = $this->get('commerce.product.filter_manager');
+        $request = $this->getRequest();
+        $referer = $request->server->get('HTTP_REFERER');
+
+        $category = $this->get('commerce.entity_manager')
+            ->getRepository('SplicedCommerceBundle:Category')
+            ->findOneById($categoryId);
+
+        if (!$category) {
+            throw $this->createNotFoundException('Category Not Found');
+        }
+
+        $specifications = $request->request->get('specifications');
+
+        if (is_array($specifications)) {
+            foreach($specifications as $optionId => $valueIds){
+                foreach($valueIds as $valueId){
+                    $option = $this->get('commerce.entity_manager')
+                        ->getRepository('SplicedCommerceBundle:ProductSpecificationOption')
+                        ->findOneById($optionId);
+
+                    if(!$option){
+                        throw $this->createNotFoundException('Specification Option Not Found');
+                    }
+
+                    $value = $this->get('commerce.entity_manager')
+                        ->getRepository('SplicedCommerceBundle:ProductSpecificationOptionValue')
+                        ->findOneById($valueId);
+
+                    if(!$value){
+                        throw $this->createNotFoundException('Specification Option Value Not Found');
+                    }
+
+                    $filterManager->addSelectedSpecification($option->getId(), $value->getId(), $category->getId());
+                }
+            }
+        }
+        $this->get('session')->getFlashBag()->add('success', 'Filter Updated Successfully');
+
+        return $this->redirect(empty($referer) ? $this->generateUrl('commerce_category_view_by_slug', array('slug' => $category->getUrlSlug())) : $referer);
+    }
+
+    /**
+     * @Route("/categories/reset-filter/{categoryId}",
      *   name="category_reset_filter"
      * )
      */
@@ -275,7 +315,7 @@ class CategoryController extends Controller
     
     
     /**
-     * @Route("/categories/update-order-fiter/{orderFilterName}/{orderFilterValue}",
+     * @Route("/categories/update-order-filter/{orderFilterName}/{orderFilterValue}",
      *   name="category_update_order_filter"
      * )
      */
@@ -309,23 +349,41 @@ class CategoryController extends Controller
     {
 
     }
-    
+
+
+    /**
+     * @Template("SplicedCommerceBundle:Category/Rss:product_feed.html.twig")
+     * @Route("/categories/{slug}/rss", name="category_product_rss")
+     */
+    public function rssProductFeedAction($slug)
+    {
+
+    }
+
     protected function renderCategoryView(CategoryInterface $category)
     {
         $this->setCategoryBreadcrumbs($category);
+
         $productFilterManager = $this->get('commerce.product.filter_manager');
 
-        
-         $productFilterManager->setCategory($category)
-          ->prepareView();
-        
+        $productFilterManager->setCategory($category)->prepareView();
+
+        $paginationQuery = $productFilterManager->getPaginationQuery()
+            ->addSelect('images, specifications, specificationOption, specificationValue, tierPrices, content')
+            ->leftJoin('product.images', 'images')
+            ->leftJoin('product.specifications', 'specifications')
+            ->leftJoin('specifications.option', 'specificationOption', 'WITH', 'specificationOption.onList = 1')
+            ->leftJoin('specifications.value', 'specificationValue')
+            ->leftJoin('product.tierPrices', 'tierPrices')
+            ->leftJoin('product.content', 'content', 'WITH', 'content.language = \'en\'');
+
         // load paginated and filtered products
         $products = $this->get('knp_paginator')->paginate(
-            $productFilterManager->getPaginationQuery(),
+            $paginationQuery,
             $this->getRequest()->query->get('page', 1),
             $productFilterManager->getPerPage()
         );
-        
+
         return array(
             'category'  => $category,
             'products'  => $products,

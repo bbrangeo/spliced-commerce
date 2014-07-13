@@ -103,13 +103,20 @@ abstract class Visitor implements VisitorInterface
     protected $requests;
     
     /**
+     * @ORM\OneToMany(targetEntity="Order", mappedBy="visitor")
+     * @ORM\JoinColumn(name="id", referencedColumnName="visitor_id")
+     */
+    protected $orders;
+    
+    /**
      * Constructor
      *
      * @return Visitor
      */
     public function __construct()
     {
-        $this->requests = new ArrayCollection();
+    	$this->requests = new ArrayCollection();
+    	$this->orders = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }
@@ -394,4 +401,28 @@ abstract class Visitor implements VisitorInterface
     {
         return $this->isBot;
     }
+    
+    /**
+     * getOrders
+     *
+     * @return Collection
+    */
+    public function getOrders()
+    {
+    	return $this->orders;
+    }
+
+    /**
+     * setOrders
+     *
+     * @param Collection orders
+     *
+     * @return self
+    */
+    public function setOrders($orders)
+    {
+	    $this->orders = $orders;
+	    return $this;
+    }
+    
 }

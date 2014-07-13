@@ -29,7 +29,6 @@ use Symfony\Component\Form\FormInterface;
  */
 class CartController extends Controller
 {
-
     /**
      * @Template("SplicedCommerceBundle:Cart:index.html.twig")
      * @Route("/cart", name="commerce_cart")
@@ -50,19 +49,21 @@ class CartController extends Controller
         );
 
         $shippingQuoteForm = $this->createForm(new CartShippingQuoteFormType());
-        $shippingQuoteFormData = $cartManager->getShippingDestinationArray();
+        
+        /*$shippingQuoteFormData = $cartManager->getShippingDestinationArray();
         $shippingQuoteForm->setData($shippingQuoteFormData);
 
         if (isset($shippingQuoteFormData['country'])&&!empty($shippingQuoteFormData['country'])) {
-            $shippingOptions = $this->get('commerce.shipping_manager')->getAvailableMethodsForDesination($shippingQuoteFormData['country']);
-        }
+            $shippingOptions = $this->get('commerce.shipping_manager')
+              ->getAvailableMethodsForDesination($shippingQuoteFormData['country']);
+        }*/
 
         if($this->getRequest()->isXmlHttpRequest()){
              return new JsonResponse(array(
                 'success' => true,
                 'message' => 'Shopping Cart',
-                'modal' => $this->render('SplicedCommerceBundle:Cart:index_modal.html.twig',array(
-                    'items' => $products,
+                'content' => $this->render('SplicedCommerceBundle:Cart:index_ajax.html.twig',array(
+                    'items' => $cartContents,
                 ))->getContent(),
             ));
         }
@@ -103,13 +104,13 @@ class CartController extends Controller
           ->buildForms();
 
         foreach ($this->getRequest()->request->get('cart') as $itemId => $_item) {
-            
-            $product = $this->get('commerce.document_manager')
+
+            $product = $this->get('commerce.entity_manager')
               ->getRepository('SplicedCommerceBundle:Product')
               ->findOneById($_item['product']);
             
             $quantity = $_item['quantity'] < 0 ? 1 : (int) $_item['quantity'];
-            
+  
             $item = $cartManager->getCart()->getItemById($itemId);
             
             $itemData = $item->getItemData();
@@ -133,13 +134,13 @@ class CartController extends Controller
                 }
             }
             
-            if($quantity == 0 && !$item->isNonRemovable() && ! $item->isBundled()){
+            if(($quantity == 0 && !$item->isNonRemovable() && !$item->isBundled()) || (isset($_item['remove']) && $_item['remove'] == 1)){
                 $cartManager->remove($item);
                 continue;
             }
             
             $item->setItemData($itemData);
-                
+ 
             $cartManager->update($item, $quantity); 
         }
         
@@ -185,10 +186,10 @@ class CartController extends Controller
     public function addAction()
     {
         $request     = $this->get('request');
-        $cart         = $this->get('commerce.cart');
-        $dispatcher    = $this->get('event_dispatcher');
-        $productId = $request->request->get('id', $request->query->get('id'));
-        $quantity = $request->request->get('quantity', $request->query->get('quantity', 1));
+        $cart        = $this->get('commerce.cart');
+        $dispatcher  = $this->get('event_dispatcher');
+        $productId   = $request->request->get('id', $request->query->get('id'));
+        $quantity    = $request->request->get('quantity', $request->query->get('quantity', 1));
         
         if($quantity < 1){
             $quantity = 1; // set it to 1 in its 0 or less    
@@ -199,7 +200,7 @@ class CartController extends Controller
                 return new JsonResponse(array(
                     'success' => false,
                     'message' => 'Product Not Specified',
-                    'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
+                    'content' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
                         'title' => 'Whoops',
                         'body' => '<p>Product Not Specified.</p>'
                     ))->getContent()
@@ -208,7 +209,7 @@ class CartController extends Controller
             throw $this->createNotFoundException("Product Not Specified");
         }
 
-        $product = $this->get('commerce.document_manager')
+        $product = $this->get('commerce.entity_manager')
           ->getRepository('SplicedCommerceBundle:Product')
           ->findOneById($productId);
 
@@ -222,7 +223,7 @@ class CartController extends Controller
                 return new JsonResponse(array(
                     'success' => false,
                     'message' => 'Product Not Found',
-                    'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
+                    'content' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
                         'title' => 'Whoops',
                         'body' => '<p>Product was not found.</p>'
                     ))->getContent()
@@ -243,7 +244,7 @@ class CartController extends Controller
                 return new JsonResponse(array(
                     'success' => false,
                     'message' => 'Product Not Found',
-                    'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
+                    'content' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
                         'title' => 'Whoops',
                         'body' => '<p>'.$errorMessage.'</p>'
                     ))->getContent()
@@ -263,7 +264,7 @@ class CartController extends Controller
             return new JsonResponse(array(
                 'success' => true,
                 'message' => 'Product Added To Cart',
-                'modal' => $this->render('SplicedCommerceBundle:Cart:product_add_modal.html.twig',array(
+                'content' => $this->render('SplicedCommerceBundle:Cart:add_ajax.html.twig',array(
                     'product' => $product,
                     'added' => $quantity,
                     'total' => $cart->getQuantity($product),
@@ -293,7 +294,7 @@ class CartController extends Controller
                 return new JsonResponse(array(
                     'success' => false,
                     'message' => 'There is nothing in your shopping cart',
-                    'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
+                    'content' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
                             'title' => 'Shopping Cart Empty',
                             'body' => '<p>Your shopping cart is empty.</p>',
                     ))->getContent(),
@@ -310,7 +311,7 @@ class CartController extends Controller
                 return new JsonResponse(array(
                     'success' => true,
                     'message' => 'There is nothing in your shopping cart',
-                    'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
+                    'content' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
                         'title' => 'Item Could Not Found',
                         'body' => '<p>Item does not exist in your shopping cart.</p>',
                     ))->getContent(),
@@ -327,7 +328,7 @@ class CartController extends Controller
                 return new JsonResponse(array(
                     'success' => true,
                     'message' => 'There is nothing in your shopping cart',
-                    'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
+                    'content' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
                         'title' => 'Item Could Not Be Removed',
                         'body' => sprintf('<p>Product is required by %s and is not removable unless it is removed.</p>',
                             $cartItem->getParent()->getProduct()->getName()
@@ -355,7 +356,7 @@ class CartController extends Controller
                 'success' => true,
                 'message' => 'Product Removed From Cart',
                 'redirect' => $this->generateUrl('commerce_cart'),
-                'modal' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
+                'content' => $this->render('SplicedCommerceBundle:Common:modal.html.twig',array(
                     'title' => 'Successfully Removed Item',
                     'body' => '<p>Product has been removed from your shopping cart.</p>',
                 ))->getContent(),

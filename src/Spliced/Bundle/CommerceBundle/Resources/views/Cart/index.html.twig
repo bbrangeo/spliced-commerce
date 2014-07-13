@@ -15,7 +15,7 @@
 	{{ include('SplicedCommerceBundle:Cart/Blocks:flashes.html.twig') }}
 		
 	{% if cartContents is defined and cartContents|length > 0 %}
-		<form method="post" action="{{ path('commerce_cart_update') }}" novalidate>
+		<form method="post" action="{{ path('commerce_cart_update') }}" id="cart-form" novalidate>
 			{{ include('SplicedCommerceBundle:Cart:items_table.html.twig') }}
 		</form>
 	{% else %}

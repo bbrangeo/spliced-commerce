@@ -2,6 +2,8 @@
 
 namespace Spliced\Component\Commerce\Twig\Extension;
 
+use Spliced\Component\Commerce\Model\ProductSpecificationOptionInterface;
+use Spliced\Component\Commerce\Model\ProductAttributeOptionInterface;
 use Spliced\Component\Commerce\Model\ProductImage;
 use Symfony\Component\Filesystem\Filesystem;
 use Spliced\Component\Commerce\Media\ImageManager;
@@ -36,6 +38,25 @@ class ProductExtension extends \Twig_Extension
         );
     }
     
+    /**
+     * {@inheritdoc}
+     */
+    public function getGlobals()
+    {
+
+    	return array(
+    		// specification type constants
+    		'COMMERCE_SPECIFICATION_OPTION_TYPE_SINGLE_VALUE' => ProductSpecificationOptionInterface::OPTION_TYPE_SINGLE_VALUE,
+    		'COMMERCE_SPECIFICATION_OPTION_TYPE_MULTIPLE_VALUE' => ProductSpecificationOptionInterface::OPTION_TYPE_MULTIPLE_VALUE,
+    		'COMMERCE_SPECIFICATION_OPTION_TYPE_CUSTOM_VALUE' => ProductSpecificationOptionInterface::OPTION_TYPE_CUSTOM_VALUES,
+    		
+    		// attribute type constants
+    		'COMMERCE_ATTRIBUTE_OPTION_TYPE_USER_DATA_INPUT' => ProductAttributeOptionInterface::OPTION_TYPE_USER_DATA_INPUT,
+    		'COMMERCE_ATTRIBUTE_OPTION_TYPE_USER_DATA_SELECTION' => ProductAttributeOptionInterface::OPTION_TYPE_USER_DATA_SELECTION,
+    			
+    	);
+    }
+
     /**
      *
      * @param int $productId

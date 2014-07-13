@@ -26,7 +26,7 @@ class ProductImageController extends BaseFilterableController
      */
     public function deleteAction($productId, $imageId)
     {
-        $product = $this->get('commerce.admin.document_manager')
+        $product = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:Product')
           ->findOneById($productId);
         

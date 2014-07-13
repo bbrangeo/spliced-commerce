@@ -116,8 +116,10 @@ class ProductType extends AbstractType
             ->add('specialToDate', 'date', array('widget' => 'single_text','format' => 'MM/dd/yyyy','required' => false,'label' => 'Special To',))
             ->add('minOrderQuantity', 'number', array('required' => false,'label' => 'Min Order Quantity',))
             ->add('maxOrderQuantity', 'number', array('required' => false,'label' => 'Max Order Quantity',))
-            ->add('weight', new WeightType(), array('required' => false,'label' => 'Weight',))
+            ->add('weight', 'text', array('required' => false,'label' => 'Weight',))
+            ->add('weightUnits', 'choice', array('choices' => $this->getWeightUnits(), 'required' => false,'label' => 'Units',))
             ->add('dimensions', new DimensionsType(), array('required' => false,'label' => 'Dimensions',))
+            ->add('dimensionsUnits', 'choice', array('choices' => $this->getDimensionUnits(), 'required' => false,'label' => 'Units',))
             ->add('manageStock', 'choice', array(
                 'required' => false, 
                 'label' => 'Manage Stock',
@@ -154,8 +156,8 @@ class ProductType extends AbstractType
                 'choices' => $this->getTypeChoices(),
                 'multiple' => false,
             ));
-    
-            
+
+
             if($this->getProduct()->getId()){
                 $builder
                 ->add('content', 'collection', array(
@@ -170,12 +172,18 @@ class ProductType extends AbstractType
                     'allow_delete' => false,
                 ))                
                 ->add('tierPrices', 'collection', array(
-                     'type' => new ProductTierPriceType($this->getConfigurationManager(), $this->getProduct()),
+                    'type' => new ProductTierPriceType($this->getConfigurationManager(), $this->getProduct()),
                     'allow_add' => true,
                     'by_reference' => false,
                     'allow_delete' => false,
                 ))
-                ->add('bundledItems', 'collection', array(
+                ->add('relatedProducts', 'collection', array(
+                	'type' => new ProductRelatedProductType($this->getConfigurationManager(), $this->getProduct()),
+                	'allow_add' => true,
+                	'by_reference' => false,
+                	'allow_delete' => false,
+                ))
+                /*->add('bundledItems', 'collection', array(
                     'type' => new ProductBundledItemType($this->getConfigurationManager(), $this->getProduct()),
                     'allow_add' => true,
                     'by_reference' => false,
@@ -191,18 +199,21 @@ class ProductType extends AbstractType
                      'allow_add' => true,
                      'by_reference' => false,
                      'allow_delete' => false,
-                ))                
+                ))
+
+
                 ->add('specifications', new ProductSpecificationCollectionType($this->getConfigurationManager(), $this->getProduct()), array(
                      'allow_add' => true,
                      'by_reference' => false,
                      'allow_delete' => false,
-                ))
+                ))*/
                  ->add('routes', 'collection', array(
                      'type' => new ProductRouteType($this->getConfigurationManager()),
                      'allow_add' => true,
                      'by_reference' => false,
                      'allow_delete' => false,
-                )); ; 
+                ));
+                 ; 
             }
     }
     
@@ -248,6 +259,34 @@ class ProductType extends AbstractType
     }
     
     /**
+     * getWeightUnits
+     * 
+     * @return array
+     */
+    protected function getWeightUnits()
+    {
+    	return array(
+    		'G' => 'Grams',
+    		'OZ' => 'Ounces',
+    		'LB' => 'Pounds',
+    	);
+    }
+
+    /**
+     * getDimensionUnits
+     * 
+     * @return array
+     */
+    protected function getDimensionUnits()
+    {
+    	return array(
+    		'IN' => 'Inches',
+    		'YD' => 'Yards',
+    		'FT' => 'Feet',
+    	);
+    }
+    
+    /**
      * {@inheritDoc}
      */
     public function getName()
@@ -261,7 +300,7 @@ class ProductType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT),
+            'data_class' => $this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT),
         ));
     }
 }

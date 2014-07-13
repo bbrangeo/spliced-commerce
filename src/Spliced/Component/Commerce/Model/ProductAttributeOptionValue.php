@@ -9,57 +9,80 @@
  */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * ProductAttributeOptionValue
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
+ * 
+ * @ORM\Table(name="product_attribute_option_value")
+ * @ORM\Entity()
  */
 class ProductAttributeOptionValue
 {
     
-    /**
-     * @MongoDB\Id
+     /**
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
     
     /**
-     * @MongoDB\String
+     * @var string $value
+     *
+     * @ORM\Column(name="value", type="text", unique=false, nullable=false)
      */
     protected $value;
 
     /**
-     * @MongoDB\String
+     * @var string $publicValue
+     * 
+     * @ORM\Column(name="public_value", type="text", unique=false, nullable=false)
      */
     protected $publicValue;
     
     /**
-     * @MongoDB\Int
+     * @var string $position
+     * 
+     * @ORM\Column(name="position", type="integer", unique=false, nullable=false)
      */
     protected $position;
 
     /**
-     * @MongoDB\Int
+     * @var float $priceAdjustment
+     * 
+     * @ORM\Column(name="price_adjustment", type="decimal", scale=12, precision=4, unique=false, nullable=false)
      */
     protected $priceAdjustment;
 
     /**
-     * @MongoDB\Int
+     * @var int $priceAdjustmentType
+     * 
+     * @ORM\Column(name="price_adjustment_type", type="smallint", unique=false, nullable=false)
      */
     protected $priceAdjustmentType;
 
     /**
-     * @MongoDB\EmbedMany(targetDocument="ProductAttributeOptionValueProduct")
-     */
-    protected $products;
-
-    /**
-     * @MongoDB\Hash
+     * @ORM\Column(name="value_data", type="array", unique=false, nullable=true)
      */
     protected $valueData = array();
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="ProductAttributeOption", inversedBy="values")
+     * @ORM\JoinColumn(name="option_id", referencedColumnName="id")
+     */
+    protected $option;
+
+    /**
+     * MongoDB\EmbedMany(targetDocument="ProductAttributeOptionValueProduct")
+     */
+    protected $products;
     
     /**
      * {@inheritDoc}

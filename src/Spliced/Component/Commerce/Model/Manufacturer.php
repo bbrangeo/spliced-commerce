@@ -9,35 +9,45 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ProductManufacturer
+ * Manufacturer
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  * 
- * @MongoDB\Document(collection="manufacturer")
+ * @ORM\Table(name="manufacturer")
+ * @ORM\Entity()
  */
 abstract class Manufacturer implements ManufacturerInterface
 {
-    /**
-     * @MongoDB\Id
-     */
+	/**
+	 * @var bigint $id
+	 *
+	 * @ORM\Column(name="id", type="bigint", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="IDENTITY")
+	 */
     protected $id;
     
     /**
-     * @MongoDB\String()
-     * @MongoDB\UniqueIndex()
+     * @var string $name
+     *
+     * @ORM\Column(name="name", type="string", length=255, unique=true, nullable=false)
      */
     protected $name;
 
     /**
-     * @MongoDB\Date
+     * @var DateTime $createdAt
+     *
+     * @ORM\Column(name="created_at", type="datetime", unique=false, nullable=false)
      */
     protected $createdAt;
 
     /**
-     * @MongoDB\Date
+     * @var DateTime $createdAt
+     *
+     * @ORM\Column(name="updated_at", type="datetime", unique=false, nullable=false)
      */
     protected $updatedAt;
     

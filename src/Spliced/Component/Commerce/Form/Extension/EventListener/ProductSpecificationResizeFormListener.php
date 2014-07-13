@@ -84,10 +84,12 @@ class ProductSpecificationResizeFormListener extends ResizeFormListener
     
         // Then add all rows again in the correct order
         foreach ($data as $name => $value) {
+
             $form->add($name, new ProductSpecificationType($this->getConfigurationManager(), $this->getProduct(), $value), array_replace(array(
                 'property_path' => '['.$name.']',
             ), $this->options));
         }
+
     }
     
     public function preSubmit(FormEvent $event)

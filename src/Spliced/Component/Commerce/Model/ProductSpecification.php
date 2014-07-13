@@ -9,7 +9,7 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -18,35 +18,56 @@ use Doctrine\Common\Collections\Collection;
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  * 
- * @MongoDB\EmbeddedDocument()
+ * @ORM\Table(name="product_specification")
+ * @ORM\Entity()
  */
 abstract class ProductSpecification
 {    
-    /**
-     * @MongoDB\Id
+     /**
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
     
     /**
-     * @MongoDB\ReferenceOne(targetDocument="ProductSpecificationOption")
+     * @ORM\Column(name="position", type="integer", unique=false, nullable=true)
      */
-    protected $option;
+    protected $position;
     
     /**
-     * @MongoDB\String
+     * @var Product $product
+     *
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="specifications")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * })
      */
-    protected $optionKey;
-         
-    /**
-     * @MongoDB\Int
-     */
-    protected $optionType;
+    protected $product;
     
-    /**
-     * @MongoDB\Hash
-     * @MongoDB\Index
-     */
-    protected $values = array();
+	/**
+	 * @var ProductSpecificationOption $option
+	 *
+	 * @ORM\ManyToOne(targetEntity="ProductSpecificationOption", inversedBy="productSpecifications")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="option_id", referencedColumnName="id")
+	 * })
+	 */
+	protected $option;
+
+    
+	/**
+	 * @var ProductSpecificationOptionValue $value
+	 *
+	 * @ORM\ManyToOne(targetEntity="ProductSpecificationOptionValue")
+	 * @ORM\JoinColumns({
+	 *   @ORM\JoinColumn(name="value_id", referencedColumnName="id")
+	 * })
+	 */
+	protected $value;
+    
 
     /**
      * Constructor
@@ -83,110 +104,69 @@ abstract class ProductSpecification
         return $this->option;
     }
 
-    /**
-     * hasValue
-     * 
-     * @param string $value
-     * 
-     * @return bool
-     */
-    public function hasValue($value)
-    {
-        foreach($this->getValues() as $_value){
-            if($_value === $value){
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    /**
-     * @{inheritDoc}
-     */
-    public function addValue($value)
-    {
-        if(empty($value)){
-            return $this;
-        }
-        
-        if($this->hasValue($value)){
-            return $this;
-        }
-        
-        $this->values[] = $value;
-        return $this;
-    }
-    
-    /**
-     * @{inheritDoc}
-     */
-    public function removeValue($value)
-    {
-        foreach($this->getValues() as $key => $_value){
-            if($_value == $value){
-                unset($this->values[$key]);
-            }
-        }
-        return $this;
-    }
         
     /**
      * @{inheritDoc}
      */
-    public function setValues($values)
+    public function setValue(ProductSpecificationOptionValue $value)
     {
-        $this->values = $values;
+        $this->value = $value;
         return $this;
     }
     
     /**
      * @{inheritDoc}
      */
-    public function getValues()
+    public function getValue()
     {
-        return $this->values;
+        return $this->value;
     }
     
     /**
-     * getOptionKey
-     * 
-     * @return string
-     */
-    public function getOptionKey()
+     * getProduct
+     *
+     * @return Product
+    */
+    public function getProduct()
     {
-        return $this->optionKey;
-    }
-    
-    /**
-     * setOptionKey
-     * 
-     * @param string $optionKey
-     */
-    public function setOptionKey($optionKey)
-    {
-        $this->optionKey = $optionKey;
-        return $this;
+    	return $this->product;
     }
 
     /**
-     * getOptionType
-     * 
-     * @return int
-     */
-    public function getOptionType()
+     * setProduct
+     *
+     * @param Product product
+     *
+     * @return self
+    */
+    public function setProduct(Product $product)
     {
-        return $this->optionKey;
+	    $this->product = $product;
+	    return $this;
+    }
+
+    /**
+     * getPosition
+     *
+     * @return int
+    */
+    public function getPosition()
+    {
+    	return $this->position;
+    }
+
+    /**
+     * setPosition
+     *
+     * @param int position
+     *
+     * @return self
+    */
+    public function setPosition($position)
+    {
+	    $this->position = $position;
+	    return $this;
     }
     
-    /**
-     * setOptionType
-     * 
-     * @param int $optionType
-     */
-    public function setOptionType($optionKey)
-    {
-        $this->optionKey = $optionKey;
-        return $this;
-    }
 
 }

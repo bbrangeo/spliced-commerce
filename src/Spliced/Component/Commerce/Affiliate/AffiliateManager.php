@@ -55,13 +55,13 @@ class AffiliateManager
     }
     
     /**
-     * getObjectManager
+     * getEntityManager
      *
      * @return ObjectManager
      */
-    protected function getObjectManager()
+    protected function getEntityManager()
     {
-        return $this->getConfigurationManager()->getDocumentManager();
+        return $this->getConfigurationManager()->getEntityManager();
     }
 
     /**
@@ -106,9 +106,9 @@ class AffiliateManager
             return $this->affiliates;
         }
         
-        $this->affiliates = $this->getObjectManager()
+        $this->affiliates = $this->getEntityManager()
         ->getRepository($this->getConfigurationManager()
-        ->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_AFFILIATE))
+        ->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_AFFILIATE))
         ->findByIsActive(true);
         
         

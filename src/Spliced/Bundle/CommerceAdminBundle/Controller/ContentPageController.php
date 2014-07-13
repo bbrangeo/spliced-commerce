@@ -31,7 +31,7 @@ class ContentPageController extends BaseFilterableController
     {
         // load products
         $pages = $this->get('knp_paginator')->paginate(
-            $this->get('commerce.admin.document_manager')
+            $this->get('commerce.admin.entity_manager')
               ->getRepository('SplicedCommerceAdminBundle:ContentPage')
               ->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page',1),
@@ -71,11 +71,9 @@ class ContentPageController extends BaseFilterableController
         $form = $this->get('commerce.admin.form_factory')->createContentPageForm();
 
         if ($form->bind($request) && $form->isValid()) {
-            
-            $this->get('event_dispatcher')->dispatch(
-                Events\Event::EVENT_CONTENT_PAGE_SAVE,
-                new Events\ContentPageEvent($form->getData())
-            );
+
+            $this->get('commerce.content_page_manager')->save($form->getData());
+
     
             $this->get('session')->getFlashBag()->add('success', 'CMS Page Successfully Added');
             return $this->redirect($this->generateUrl('commerce_admin_content_page'));
@@ -95,7 +93,7 @@ class ContentPageController extends BaseFilterableController
      */
     public function editAction($id)
     {
-        $page = $this->get('commerce.admin.document_manager')
+        $page = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:ContentPage')
           ->findOneById($id);
         
@@ -122,7 +120,7 @@ class ContentPageController extends BaseFilterableController
      */
     public function updateAction(Request $request, $id)
     {
-        $page = $this->get('commerce.admin.document_manager')
+        $page = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:ContentPage')
           ->findOneById($id);
         
@@ -135,9 +133,7 @@ class ContentPageController extends BaseFilterableController
         
 
         if ($form->bind($request) && $form->isValid()) {
-            $this->get('commerce.admin.document_manager')->persist($page);
-            $this->get('commerce.admin.document_manager')->flush();
-
+            $this->get('commerce.content_page_manager')->update($page);
             return $this->redirect($this->generateUrl('commerce_admin_content_page_edit', array('id' => $id)));
         }
 
@@ -158,7 +154,7 @@ class ContentPageController extends BaseFilterableController
         $form->bind($request);
 
         if ($form->isValid()) {
-            $page = $this->get('commerce.admin.document_manager')
+            $page = $this->get('commerce.admin.entity_manager')
             ->getRepository('SplicedCommerceAdminBundle:ContentPage')
             ->findOneById($id);
 
@@ -166,8 +162,8 @@ class ContentPageController extends BaseFilterableController
                 throw $this->createNotFoundException('Unable to find ContentPage.');
             }
 
-            $this->get('commerce.admin.document_manager')->remove($page);
-            $this->get('commerce.admin.document_manager')->flush();
+            $this->get('commerce.admin.entity_manager')->remove($page);
+            $this->get('commerce.admin.entity_manager')->flush();
         }
 
         return $this->redirect($this->generateUrl('commerce_admin_content_page'));

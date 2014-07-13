@@ -45,10 +45,18 @@ abstract class OrderPayment implements OrderPaymentInterface
     /**
      * @var string
      *
+     * @ORM\Column(name="method_name", type="string", length=100)
+     * @Assert\NotNull(message="Required")
+     */
+    protected $methodName;
+    
+    /**
+     * @var string
+     *
      * @ORM\Column(name="payment_status", type="string")
      */
     protected $paymentStatus;
-
+    
     /**
      * @ORM\OneToOne(targetEntity="Order", inversedBy="payment")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
@@ -246,6 +254,30 @@ abstract class OrderPayment implements OrderPaymentInterface
         $this->updatedAt = $updatedAt;
         return $this;
     }
+    
+    /**
+     * getMethodName
+     *
+     * @return string
+    */
+    public function getMethodName()
+    {
+    	return $this->methodName;
+    }
+
+    /**
+     * setMethodName
+     *
+     * @param string methodName
+     *
+     * @return self
+    */
+    public function setMethodName($methodName)
+    {
+	    $this->methodName = $methodName;
+	    return $this;
+    }
+    
     
     /**
      * 

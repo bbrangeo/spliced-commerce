@@ -7,11 +7,11 @@
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
-namespace Spliced\Component\Commerce\Product;
+namespace Spliced\Component\Commerce\Content;
 
 use Spliced\Component\Commerce\Configuration\ConfigurationManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Spliced\Component\Commerce\Model\ProductInterface;
+use Spliced\Component\Commerce\Model\ContentPageInterface;
 use Spliced\Component\Commerce\Event as Events;
 
 /**
@@ -56,43 +56,43 @@ class ContentPageManager
     /**
      * create
      * 
-     * Creates a new Product for manipulation. You will need to 
+     * Creates a new ContentPage for manipulation. You will need to 
      * save the changes made after creation. You can use the save 
      * method to do this.
      * 
-     * @return ProductInterface
+     * @return ContentPageInterface
      */
     public function create()
     {
-        return $this->configurationManager->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT);
+        return $this->configurationManager->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT);
     }
     
     /**
      * save
      * 
-     * Saves and persists a new product. If an existing product is passed, 
+     * Saves and persists a new content. If an existing content is passed, 
      * this method will just forward to update method.
      * 
-     * @param ProductInterface $product
+     * @param ContentPageInterface $content
      * @param bool $flush - Flushes and updates the database as well. 
-     *                      Document will always be persisted.
+     *                      Entity will always be persisted.
      */
-    public function save(ProductInterface $product, $flush = true)
+    public function save(ContentPageInterface $content, $flush = true)
     {
-        if ($product->getId()) { // forward to update, it is not new
-            return $this->update($product);
+        if ($content->getId()) { // forward to update, it is not new
+            return $this->update($content);
         }
         
         // notify the event dispatcher to handle any user hooks
         $this->eventDispatcher->dispatch(
-            Events\Event::EVENT_PRODUCT_SAVE,
-            new Events\ProductSaveEvent($product)
+            Events\Event::EVENT_CONTENT_PAGE_SAVE,
+            new Events\ContentPageSaveEvent($content)
         );
         
-        $this->configurationManager->getDocumentManager()->persist($product);
+        $this->configurationManager->getEntityManager()->persist($content);
         
         if (true === $flush) {
-            $this->configurationManager->getDocumentManager()->flush();
+            $this->configurationManager->getEntityManager()->flush();
         }
     }
     
@@ -100,59 +100,56 @@ class ContentPageManager
     /**
      * update
      * 
-     * Updates an existing product. If a new product is passed, 
+     * Updates an existing content. If a new content is passed, 
      * this method will just forward to save method.
      * 
-     * @param ProductInterface $product
+     * @param ContentPageInterface $content
      * @param bool $flush - Flushes and updates the database as well. 
-     *                      Document will always be persisted.
+     *                      Entity will always be persisted.
      */
-    public function update(ProductInterface $product, $flush = true)
+    public function update(ContentPageInterface $content, $flush = true)
     {
-        if (!$product->getId()) { // forward to create, it is new
-            return $this->save($product);
+        if (!$content->getId()) { // forward to create, it is new
+            return $this->save($content);
         }
         
         // notify the event dispatcher to handle any user hooks
         $this->eventDispatcher->dispatch(
-            Events\Event::EVENT_PRODUCT_UPDATE,
-            new Events\ProductUpdateEvent($product)
+            Events\Event::EVENT_CONTENT_PAGE_UPDATE,
+            new Events\ContentPageUpdateEvent($content)
         );
 
-        $this->updateEmbedMany($product);
-            
-        $this->configurationManager->getDocumentManager()->persist($product);
+        $this->configurationManager->getEntityManager()->persist($content);
             
         if (true === $flush) {
-            $this->configurationManager->getDocumentManager()->flush();
+            $this->configurationManager->getEntityManager()->flush();
         }
     }
 
     /**
      * delete
      *
-     * @param ProductInterface $product
+     * @param ContentPageInterface $content
      * @param bool $flush - Flushes and updates the database as well. 
-     *                      Document will always be persisted.
+     *                      Entity will always be persisted.
      */
-    public function delete(ProductInterface $product, $flush = true)
+    public function delete(ContentPageInterface $content, $flush = true)
     {
-        if (!$product->getId()) {//has never been saved
+        if (!$content->getId()) {//has never been saved
             return;
         }
         
         // notify the event dispatcher to handle any user hooks
         $this->eventDispatcher->dispatch(
-            Events\Event::EVENT_PRODUCT_DELETE,
-            new Events\ProductDeleteEvent($product)
+            Events\Event::EVENT_CONTENT_PAGE_DELETE,
+            new Events\ContentPageDeleteEvent($content)
         );
     
-        $this->configurationManager->getDocumentManager()->remove($product);
+        $this->configurationManager->getEntityManager()->remove($content);
             
         if (true === $flush) {
-            $this->configurationManager->getDocumentManager()->flush();
+            $this->configurationManager->getEntityManager()->flush();
         }
     }
-    
 
 }

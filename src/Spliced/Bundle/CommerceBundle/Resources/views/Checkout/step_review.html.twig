@@ -50,7 +50,7 @@
     		</div>
     		<div class="panel-body">
     		    	{% if form.vars.data.shippingAddress|length %}
-    		    	<strong>{{ form.vars.data.shippingName }} {{ form.vars.data.shippingAttn }}</strong><br>
+    		    	<strong>{{ form.vars.data.shippingFirstName }} {{ form.vars.data.shippingLastName }}</strong><br>
     				{{ form.vars.data.shippingAddress }}<br>
     				{% if form.vars.data.shippingAddress2|length %}
     			        {{ form.vars.data.shippingAddress2 }}<br>
@@ -129,9 +129,9 @@
 
 	<div class="form-actions">
         <ul class="inline list-inline">
-            <li  class="text-center span31p"><a class="btn btn-info" id="checkout-edit-button" href="{{ path('commerce_checkout', { 'step' : previousStep }) }}" data-step="3"><i class="icon-pencil icon-white"></i> Edit Order Details</a></li>
-            <li  class="text-center span31p"><a class="btn btn-info" id="checkout-edit-button" href="{{ path('cart') }}"><i class="icon-pencil icon-white"></i> Edit Cart</a></li>
-            <li class="text-center span31p"><a class="btn btn-danger" href="#cancelOrderConfirmation" role="button" data-toggle="modal" id="checkout-cancel-button"><i class="icon-remove-sign icon-white"></i> Cancel Order</a></li>
+            <li  class="text-center"><a class="btn btn-info" id="checkout-edit-button" href="{{ path('commerce_checkout', { 'step' : 2 }) }}" data-step="2"><i class="icon-pencil icon-white"></i> Edit Order Details</a></li>
+            <li  class="text-center"><a class="btn btn-info" id="checkout-edit-button" href="{{ path('cart') }}"><i class="icon-pencil icon-white"></i> Edit Cart</a></li>
+            <li class="text-center"><a class="btn btn-danger" href="#cancelOrderConfirmation" role="button" data-toggle="modal" id="checkout-cancel-button"><i class="icon-remove-sign icon-white"></i> Cancel Order</a></li>
             
             {% if paymentMethod.isRemotelyProcessed %}
 		        {# if paymentMethod.getOption('continue_to_button_image')|length %}
@@ -144,7 +144,7 @@
 				    </li>
 				{# endif #}
             {% else %}
-                <li  class="text-center span31p">
+                <li  class="text-center">
                 	<button class="btn btn-success checkout-disable-on-submit" id="checkout-process-button"><i class="icon-ok-sign icon-white"></i> Process Order</button></li>
             {% endif %}
         </ul>

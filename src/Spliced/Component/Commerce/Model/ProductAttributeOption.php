@@ -9,95 +9,81 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * ProductAttributeOption
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  * 
- * @MongoDB\Document(collection="product_attribute_option")
+ * @ORM\Table(name="product_attribute_option")
+ * @ORM\Entity()
  */
 abstract class ProductAttributeOption implements ProductAttributeOptionInterface
 {
 
-    /**
-     * @MongoDB\Id
+     /**
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
     
     /**
-     * @MongoDB\String
-     * @MongoDB\Index(unique=true)
+     * @var string $key
+     *
+     * @ORM\Column(name="key", type="string", length=75, unique=true, nullable=false)
      */
     protected $key;
     
     /**
-     * @MongoDB\String
+     * @var string $name
+     *
+     * @ORM\Column(name="name", type="string", length=255, unique=false, nullable=false)
      */
     protected $name;
 
     /**
-     * @MongoDB\String
+     * @var string $publicName
+     *
+     * @ORM\Column(name="public_name", type="string", length=255, unique=false, nullable=true)
      */
-    protected $publicLabel;
+    protected $publicName;
 
     /**
-     * @MongoDB\String
+     * @var string $description
+     *
+     * @ORM\Column(name="description", type="text", unique=false, nullable=true)
      */
     protected $description;
 
     /**
-     * @MongoDB\Int
-     * @MongoDB\Index()
+     * @ORM\Column(name="position", type="integer", unique=false, nullable=true)
      */
     protected $position;
 
     /**
-     * @MongoDB\Int
-     * @MongoDB\Index()
+     * @ORM\Column(name="option_type", type="smallint", unique=false, nullable=true)
      */
     protected $optionType;
 
     /**
-     * @MongoDB\Boolean
-     * @MongoDB\Index()
-     */
-    protected $filterable;
-
-    /**
-     * @MongoDB\Boolean
-     * @MongoDB\Index()
-     */
-    protected $onView;
-    
-    /**
-     * @MongoDB\Boolean
-     * @MongoDB\Index()
-     */
-    protected $onList;
-
-    /**
-     * @MongoDB\Date
-     */
-    protected $createdAt;
-    
-    /**
-     * @MongoDB\Date
-     */
-    protected $updatedAt;
-
-    /**
-     * @MongoDB\Hash
+     * @ORM\Column(name="option_data", type="array", unique=false, nullable=true)
      */
     protected $optionData;
-    
+   
     /**
-     * @MongoDB\EmbedMany(targetDocument="ProductAttributeOptionValue")
+     * @ORM\OneToMany(targetEntity="ProductAttributeOptionValue", mappedBy="option")
+     * @ORM\OrderBy({"position" = "ASC"})
      */
     protected $values;
+
+    
+    
 
     /**
      * Constructor
@@ -105,12 +91,7 @@ abstract class ProductAttributeOption implements ProductAttributeOptionInterface
     public function __construct()
     {
         $this->values = new ArrayCollection();
-        $this->setCreatedAt(new \DateTime());
-        $this->setUpdatedAt(new \DateTime());
         $this->setOptionType(ProductAttributeOptionInterface::OPTION_TYPE_USER_DATA_INPUT);
-        $this->onView = false;
-        $this->onList = false;
-        $this->filterable = false;
         $this->optionData = array();
     }
 
@@ -170,25 +151,25 @@ abstract class ProductAttributeOption implements ProductAttributeOptionInterface
     }
 
     /**
-     * Set publicLabel
+     * Set publicName
      *
-     * @param string $publicLabel
+     * @param string $publicName
      */
-    public function setPublicLabel($publicLabel)
+    public function setPublicName($publicName)
     {
-        $this->publicLabel = $publicLabel;
+        $this->publicName = $publicName;
 
         return $this;
     }
 
     /**
-     * Get publicLabel
+     * Get publicName
      *
      * @return string
      */
-    public function getPublicLabel()
+    public function getPublicName()
     {
-        return $this->publicLabel;
+        return $this->publicName;
     }
 
     /**
@@ -213,71 +194,6 @@ abstract class ProductAttributeOption implements ProductAttributeOptionInterface
         return $this->description;
     }
 
-    /**
-     * Set onFront
-     *
-     * @param boolean $onFront
-     */
-    public function setFilterable($filterable)
-    {
-        $this->filterable = $filterable;
-
-        return $this;
-    }
-
-    /**
-     * Get filterable
-     *
-     * @return boolean
-     */
-    public function getFilterable()
-    {
-        return $this->filterable;
-    }
-
-    /**
-     * setOnList
-     *
-     * @param boolean $onFront
-     */
-    public function setOnList($onList)
-    {
-        $this->onList = $onList;
-
-        return $this;
-    }
-
-    /**
-     * getOnList
-     *
-     * @return boolean
-     */
-    public function getOnList()
-    {
-        return $this->onList;
-    }
-    
-    /**
-     * setOnView
-     *
-     * @param boolean $onView
-     */
-    public function setOnView($onView)
-    {
-        $this->onView = $onView;
-
-        return $this;
-    }
-
-    /**
-     * getOnView
-     *
-     * @return boolean
-     */
-    public function getOnView()
-    {
-        return $this->onView;
-    }
     /**
      * Set optionType
      *
@@ -326,50 +242,6 @@ abstract class ProductAttributeOption implements ProductAttributeOptionInterface
         }
     }
     
-    /**
-     * Set createdAt
-     *
-     * @param datetime $createdAt
-     */
-    public function setCreatedAt(\DateTime $createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param datetime $updatedAt
-     */
-    public function setUpdatedAt(\DateTime $updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return datetime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
     /**
      * addValue
      *

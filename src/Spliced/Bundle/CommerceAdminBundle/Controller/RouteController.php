@@ -35,7 +35,7 @@ class RouteController extends BaseFilterableController
     {        
         // load routes
         $routes = $this->get('knp_paginator')->paginate(
-            $this->get('commerce.admin.document_manager')
+            $this->get('commerce.admin.entity_manager')
                 ->getRepository('SplicedCommerceAdminBundle:Route')
                 ->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page', 1),
@@ -305,7 +305,7 @@ class RouteController extends BaseFilterableController
             $requestPath = '/'.$requestPath;
         }
         
-        $route = $this->get('commerce.admin.document_manager')
+        $route = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:Route')
           ->findOneByRequestPath($requestPath);
             

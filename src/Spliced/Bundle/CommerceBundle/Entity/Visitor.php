@@ -10,7 +10,7 @@ use Spliced\Component\Commerce\Model\Visitor as BaseVisitor;
  *
  * @ORM\Table(name="visitor")
  * @ORM\Entity(repositoryClass="Spliced\Bundle\CommerceBundle\Repository\VisitorRepository")
- * @ORM\MappedSuperClass()
+ * @ORM\MappedSuperclass()
  */
 class Visitor extends BaseVisitor
 {

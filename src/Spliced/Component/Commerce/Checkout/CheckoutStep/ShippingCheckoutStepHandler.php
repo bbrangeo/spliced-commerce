@@ -136,6 +136,7 @@ class ShippingCheckoutStepHandler extends CheckoutStepHandler
 
                 $shipment->setShipmentCost($shippingMethod->getPrice());
                 $shipment->setShipmentPaid($shippingMethod->getPrice());
+                $shipment->setMethodName($shippingMethod->getLabel().' '.$shippingMethod->getLabel2());
                 
                 return new CheckoutMoveStepEvent(
                     $order,

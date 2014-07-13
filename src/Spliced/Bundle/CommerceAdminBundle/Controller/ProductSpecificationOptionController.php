@@ -39,7 +39,7 @@ class ProductSpecificationOptionController extends BaseFilterableController
 
         // load orders
         $specificationOptions = $this->get('knp_paginator')->paginate(
-            $this->get('commerce.admin.document_manager')
+            $this->get('commerce.admin.entity_manager')
               ->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
               ->getAdminListQuery($this->getFilters()),
             $this->getRequest()->query->get('page', 1),
@@ -106,7 +106,7 @@ class ProductSpecificationOptionController extends BaseFilterableController
      */
     public function editAction($id)
     {
-        $specificationOption = $this->get('commerce.admin.document_manager')
+        $specificationOption = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
           ->findOneById($id);
 
@@ -130,7 +130,7 @@ class ProductSpecificationOptionController extends BaseFilterableController
      */
     public function updateAction($id)
     {
-        $specificationOption = $this->get('commerce.admin.document_manager')
+        $specificationOption = $this->get('commerce.admin.entity_manager')
           ->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
           ->findOneById($id);
 
@@ -169,7 +169,7 @@ class ProductSpecificationOptionController extends BaseFilterableController
      */
     public function deleteAction($id)
     {
-        $specificationOption = $this->get('commerce.admin.document_manager')
+        $specificationOption = $this->get('commerce.admin.entity_manager')
         ->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
         ->findOneById($id);
          
@@ -190,7 +190,7 @@ class ProductSpecificationOptionController extends BaseFilterableController
     public function deleteValueAction($id, $valueId)
     {
         
-        $specification = $this->get('commerce.admin.document_manager')
+        $specification = $this->get('commerce.admin.entity_manager')
         ->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
         ->findOneById($id);
         
@@ -225,7 +225,8 @@ class ProductSpecificationOptionController extends BaseFilterableController
             throw $this->createNotFoundException('Specification Option Value Not Found');
         }
         
-        $specification->removeValue($specificationValue);
+        $this->get('commerce.admin.entity_manager')->remove($specificationValue);
+        $this->get('commerce.admin.entity_manager')->flush();
         
         $this->get('event_dispatcher')->dispatch(
             Events\Event::EVENT_PRODUCT_SPECIFICATION_OPTION_UPDATE,
@@ -296,7 +297,7 @@ class ProductSpecificationOptionController extends BaseFilterableController
         }
         
         try{
-            $specificationOption = $this->get('commerce.admin.document_manager')
+            $specificationOption = $this->get('commerce.admin.entity_manager')
             ->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
             ->findOneByName($this->getRequest()->request->get('name'));
                 
@@ -319,13 +320,18 @@ class ProductSpecificationOptionController extends BaseFilterableController
      */
     public function getOptionAction($id)
     {
-        $option = $this->get('commerce.admin.document_manager')
+    	if(!$this->get('request')->isXmlHttpRequest()){
+    		throw $this->createNotFoundException();
+    	}
+    	
+        $option = $this->get('commerce.admin.entity_manager')
          ->getRepository('SplicedCommerceAdminBundle:ProductSpecificationOption')
-         ->createQueryBuilder()
-         ->field('id')->equals($id)
-         ->hydrate(false)
+         ->createQueryBuilder('specification')
+         ->select('specification')
+         ->where('specification.id = :id')
+         ->setParameter('id', $id)
          ->getQuery()
-         ->getSingleResult();
+         ->getSingleResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
         
         if(!$option){
             return new JsonResponse(array(

@@ -39,10 +39,10 @@ class CartManager {
     const SESSION_TAG_CURRENT_CART_ID = 'commerce.cart.id';
     
     /** Shipping quote related tags */
-    const SESSION_TAG_SHIPPING_DESTINATION = 'commerce.cart.shipping_destination';
-    const SESSION_TAG_SHIPPING_DESTINATION_ZIPCODE = 'commerce.cart.shipping_destination_zipcode';
-    const SESSION_TAG_SHIPPING_PROVIDER = 'commerce.cart.shipping.provider';
-    const SESSION_TAG_SHIPPING_METHOD = 'commerce.cart.shipping.method';
+    const SESSION_TAG_SHIPPING_DESTINATION 			= 'commerce.cart.shipping_destination';
+    const SESSION_TAG_SHIPPING_DESTINATION_ZIPCODE 	= 'commerce.cart.shipping_destination_zipcode';
+    const SESSION_TAG_SHIPPING_PROVIDER 			= 'commerce.cart.shipping.provider';
+    const SESSION_TAG_SHIPPING_METHOD 				= 'commerce.cart.shipping.method';
 
     /* @param CartInterface|null */
     protected $cart;
@@ -57,16 +57,10 @@ class CartManager {
      * Constructor
      *
      * @param ConfigurationManager $configurationManager
-     * @param Session $session
-     * @param SecurityContext $securityContext
-     * @param EntityManager $em
-     * @param DocumentManager $em
+     * @param Session $session, SecurityContext $securityContext
      * @param VisitorManager $visitorManager
      */
-    public function __construct(
-        ConfigurationManager $configurationManager, 
-        Session $session, SecurityContext $securityContext, 
-        VisitorManager $visitorManager
+    public function __construct(ConfigurationManager $configurationManager, Session $session, SecurityContext $securityContext, VisitorManager $visitorManager
     ) {
         $this->session = $session;
         $this->configurationManager = $configurationManager;
@@ -93,15 +87,6 @@ class CartManager {
         return $this->visitorManager;
     }
 
-    /**
-     * getDocumentManager
-     *
-     * @return DocumentManager
-     */
-    protected function getDocumentManager() {
-        return $this->getConfigurationManager()->getDocumentManager();
-    }
-    
     /**
      * getEntityManager
      *
@@ -162,7 +147,8 @@ class CartManager {
         
         // first try to find we have already saved the cart id to the session
         if ($this->getCartId()) {
-            $this->cart = $this->getEntityManager()->getRepository($this->getConfigurationManager()
+            $this->cart = $this->getEntityManager()
+              ->getRepository($this->getConfigurationManager()
               ->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_CART))
               ->findOneByIdWithItems($this->getCartId());
         }
@@ -177,6 +163,20 @@ class CartManager {
         }
         
         if($this->cart instanceof CartInterface) {
+        	// organize the items
+        	if(count($this->cart->getItems())){
+	        	$newItems = new \Doctrine\Common\Collections\ArrayCollection();
+	        	foreach($this->cart->getItems() as $item){
+	        		if(!$item->getParent()) {
+	        			$newItems->add($item);
+	        		}
+	        	}
+	        	
+	        	$this->cart->setItems($newItems);
+        	}
+        	
+        	 
+        	
             /*$visitor = $this->getVisitorManager()->getCurrentVisitor();
             
             // check to make sure that this cart belongs to this visitor or customer
@@ -186,24 +186,26 @@ class CartManager {
                     && $this->getSecurityContext()->isGranted('ROLE_USER')
                     && $this->cart->getCustomer()->getId() !== $this->getSecurityContext()->getToken()->getUser()->getId()){
              
-            }*/
+            }
             
             $productIds = $this->getProductIds();
- 
-            if(!isset($this->products)){
+			
+            if(!isset($this->products) && count($productIds)){
                 // load products associated with the cart items and
-                $this->products = $this->getDocumentManager()
-                  ->getRepository($this->getConfigurationManager()->getDocumentClass(
+                $this->products = $this->getEntityManager()
+                  ->getRepository($this->getConfigurationManager()->getEntityClass(
                       ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT
-                  ))->createQueryBuilder()
-                  ->field('id')->in($productIds)
-                ->getQuery()
-                ->execute();
+                  ))->createQueryBuilder('product')
+                  ->select('product')
+                  ->where('product.id IN (:ids)')
+                  ->setParameter('ids', $productIds)
+                  ->getQuery()
+                  ->getResult();
             
                 $setProducts = function(Collection $items, $products) use(&$setProducts) {
                     foreach($items as $item){
                         foreach($products as $product){
-                            if($product->getId() == $item->getProductId()) {
+                            if($product->getId() == $item->getProduct()->getId()) {
                                 $item->setProduct($product);
                             }
                         }
@@ -215,8 +217,8 @@ class CartManager {
                 
                 $setProducts($this->cart->getItems(), $this->products);
             }
-            
-             
+            */
+        	        
             if($this->getSecurityContext()->isGranted('ROLE_USER')) {
                 $this->cart->setCustomer($this->getSecurityContext()->getToken()->getUser());
             }
@@ -243,8 +245,9 @@ class CartManager {
      */
     public function createCart($flush = false)
     {
-        $this->cart = $this->getConfigurationManager()->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CART)
-        ->setVisitor($this->getVisitorManager()->getCurrentVisitor());
+        $this->cart = $this->getConfigurationManager()
+          ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CART)
+          ->setVisitor($this->getVisitorManager()->getCurrentVisitor());
         
         if(true === $flush){
             $this->getEntityManager()->persist($this->cart);
@@ -314,7 +317,7 @@ class CartManager {
         $quantity = (int) $quantity;
 
         if ($quantity <= 0) { 
-            // if we have a 0 or negative number, lets set it to the default of 1
+            // if we have a 0 or negative number, lets set it to 1
             $quantity = 1;
         }
 
@@ -322,6 +325,7 @@ class CartManager {
             $this->addFlash('info', sprintf('%s requires a minimum of %s. Quantity has been automatically adjusted.',
                 $product->getName(), $product->getMinOrderQuantity()
             ));
+            
             $quantity = $product->getMinOrderQuantity();
         }
 
@@ -354,43 +358,33 @@ class CartManager {
             return $this;
         }
         
-        $cart = $this->getCart(true); // get the current cart instance or create a new one
+        // TODO: Manage Variants
+        
+        // get the current cart instance or create a new one
+        $cart = $this->getCart(true); 
 
-        if($cart->hasProduct($product, false)){
-            $cartItem = $cart->getItemByProduct($product, false);
-        } else {
-            $cartItem = $this->getConfigurationManager()
+        // get the item or create one
+        $item = $cart->getItemByProduct($product, false);
+        if(!$item instanceof CartItemInterface ){
+            $item = $this->getConfigurationManager()
              ->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_CART_ITEM)
-             ->setCart($this->getCart());
+             ->setProduct($product);
+                        
+            $cart->addItem($item);
         }
         
-        $cartItem->setProduct($product)
-          ->setProductId($product->getId());
-        
-        // if a price altering attribute is associated with this product, 
-        // than we need to make it one item per quantity so we can adjust 
-        // each individual price. Bundled items for each product will be 
-        // added seperately as well
-        if($product->hasPriceAlteringAttributes()){
-            $cartItem->setQuantity(1);
-        } else {
-            $cartItem->setQuantity($cartItem->getQuantity() + $quantity);
+
+        if($item->getQuantity() > 0){
+        	$quantity += $item->getQuantity();
         }
-               
-        // check and handle bundled items
+        
+        $item->setQuantity($quantity);
+                       
+        /* check and handle bundled items
         if($product->getBundledItems()){
             $this->processBundledItems($product, $cartItem);
-        }
-                        
-        if($product->hasPriceAlteringAttributes()){
-            for($i=1; $i <= $quantity; $i++){
-                $clonedItem = clone $cartItem;
-                $cart->addItem($clonedItem);
-            }
-        } else {
-            $cart->addItem($cartItem);
-        }
-        
+        }*/
+
         $this->getEntityManager()->persist($cart);
         $this->getEntityManager()->flush();
         
@@ -430,28 +424,32 @@ class CartManager {
             $quantity = $product->getMaxOrderQuantity();
         }
         
+        /*
         if(!$item->isChild()) {
             // let this method handle child item quantities on it
             // when it is called over each item in the shopping cart
             $item->setQuantity($quantity);
-        }
-        
+        }*/
+        $item->setQuantity($quantity);
         $this->getEntityManager()->persist($item);
-            
-        foreach($product->getBundledItems() as $bundledItem) {
-            // bundled items quantity are set on a per parent item basis
-            // quantity can be increased by setting a bundled items quantity
-            // which will be multiplied by the parent item quantity if set
-            $bundledItemQuantity = $item->getQuantity() * ($bundledItem->getQuantity() ? $bundledItem->getQuantity() : 1);
-            
-            if($item->hasChildProduct($bundledItem->getProduct())){
-                   $bundledCartItem = $item->getChildByProduct($bundledItem->getProduct())
-                     ->setQuantity($bundledItemQuantity);
 
-                $this->getEntityManager()->persist($bundledCartItem);
-            }
-        }
-               
+        /*
+        if($product->getBundledItems()){
+	        foreach($product->getBundledItems() as $bundledItem) {
+	            // bundled items quantity are set on a per parent item basis
+	            // quantity can be increased by setting a bundled items quantity
+	            // which will be multiplied by the parent item quantity if set
+	            $bundledItemQuantity = $item->getQuantity() * ($bundledItem->getQuantity() ? $bundledItem->getQuantity() : 1);
+	            
+	            if($item->hasChildProduct($bundledItem->getProduct())){
+	                   $bundledCartItem = $item->getChildByProduct($bundledItem->getProduct())
+	                     ->setQuantity($bundledItemQuantity);
+	
+	                $this->getEntityManager()->persist($bundledCartItem);
+	            }
+	        }
+        }*/
+         
         $this->getEntityManager()->flush();
     }
 
@@ -482,8 +480,7 @@ class CartManager {
         if ($product->getMaxOrderQuantity() && $product->getMaxOrderQuantity() < $quantity) {
             $quantity = $product->getMaxOrderQuantity();
         }
-        
-        
+
         $cartItem = $this->getCart()->getItemByProduct($product);
             
         $cartItem->setQuantity($quantity)->setItemData($itemData);
@@ -654,13 +651,13 @@ class CartManager {
         $searchItems = function(Collection $items) use(&$searchItems) {
             $return = array();
             foreach($items as $item) {
-                $return[] = $item->getProductId();
+                $return[] = $item->getProduct()->getId();
                 if($item->hasChildren()){
                      $return = array_merge($return, $searchItems($item->getChildren()));
-                }
+                } 
             }
             return array_unique($return);
-        }; 
+        };
     
         return $searchItems($this->getItems());
     }

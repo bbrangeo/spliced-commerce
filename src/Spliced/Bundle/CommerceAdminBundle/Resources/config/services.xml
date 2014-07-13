@@ -137,7 +137,7 @@
         <service id="commerce.router" class="%spliced.commerce.router.class%">
             <argument type="service" id="router" />
             <argument type="service" id="commerce.admin.configuration" />
-            <argument type="service" id="commerce.admin.document_manager" />
+            <argument type="service" id="commerce.admin.entity_manager" />
             <argument type="service" id="session" />
             <argument type="service" id="commerce.affiliate_manager" />
             <argument type="service" id="kernel" />
@@ -149,7 +149,11 @@
 		    <argument type="service" id="session" />
 		    <tag name="commerce.configurable" />
 	    </service>
-	    
+
+        <service id="commerce.content_page_manager" class="Spliced\Component\Commerce\Content\ContentPageManager">
+            <argument type="service" id="commerce.admin.configuration" />
+            <argument type="service" id="event_dispatcher" />
+        </service>
 
 	    <service id="commerce.admin.form_factory" class="Spliced\Component\Commerce\Form\AdminFormFactory">
 			<argument type="service" id="service_container" />

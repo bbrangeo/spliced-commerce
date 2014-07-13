@@ -216,9 +216,17 @@ textarea.config-html-source{
 	border-top: 1px solid #cccccc;*/
 }
 
+/**
+ * Product Edit    
+ */
+.product-edit .content-pane{
 
-.product-edit .tab-pane{
-	min-height: 500px;
+}
+.product-edit .content-pane:after{
+    content: "";
+    clear:both;
+    display:block;
+    height:1px;
 }
 
 /**

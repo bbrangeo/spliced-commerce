@@ -129,6 +129,12 @@ class AddressCheckoutStepHandler extends CheckoutStepHandler
                     new Constraints\NotBlank(),
                 )
             ))
+            ->add('billingCompany', 'text', array(
+            	'label' => 'Company',
+            	'constraints' => array(
+            		new Constraints\NotBlank(),
+            	)
+            ))
             ->add('billingAddress', 'text', array(
                 'label' => 'Address',
                 'constraints' => array(
@@ -170,8 +176,9 @@ class AddressCheckoutStepHandler extends CheckoutStepHandler
                     new Constraints\NotBlank(),
                 )
             ))
-            ->add('shippingName')
-            ->add('shippingAttn')
+            ->add('shippingFirstName')
+            ->add('shippingLastName')
+            ->add('shippingCompany')
             ->add('shippingAddress')
             ->add('shippingAddress2', 'textarea')
             ->add('shippingCity')
@@ -202,7 +209,9 @@ class AddressCheckoutStepHandler extends CheckoutStepHandler
                 if (!$order->hasAlternateShippingAddress()) {
                     // set the shipping address as the billing if 
                     // we do not have an alternate address provided
-                    $order->setShippingName($order->getBillingFullName());
+                	$order->setShippingFirstName($order->getBillingFirstName());
+                	$order->setShippingLastName($order->getBillingLastName());
+                	$order->setShippingCompany($order->getBillingCompany());
                     $order->setShippingAddress($order->getBillingAddress());
                     $order->setShippingAddress2($order->getBillingAddress2());
                     $order->setShippingCity($order->getBillingCity());

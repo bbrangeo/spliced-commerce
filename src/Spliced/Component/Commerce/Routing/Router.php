@@ -17,8 +17,6 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\NoResultException;
 use Spliced\Component\Commerce\Model\AffiliateInterface;
@@ -57,15 +55,15 @@ class Router implements RouterInterface
      * Constructor.
      * 
      * @param RouterInterface $parentRouter
-     * @param ObjectManager $om
+     * @param EntityManager $em
      * @param Session $session
      * @param AffiliateManager $affiliateManager
      * @param KernelInterface $kernel
      */
-    public function __construct(RouterInterface $parentRouter, ConfigurationManager $configurationManager, ObjectManager $om, Session $session, AffiliateManager $affiliateManager, KernelInterface $kernel)
+    public function __construct(RouterInterface $parentRouter, ConfigurationManager $configurationManager, EntityManager $em, Session $session, AffiliateManager $affiliateManager, KernelInterface $kernel)
     {
         $this->parentRouter = $parentRouter;
-        $this->om = $om;
+        $this->em = $em;
         $this->configurationManager = $configurationManager;
         $this->session = $session;
         $this->affiliateManager = $affiliateManager;
@@ -113,13 +111,13 @@ class Router implements RouterInterface
     }
     
     /**
-     * getObjectManager
+     * getEntityManager
      * 
      * @return ObjectManager
      */
-    protected function getObjectManager()
+    protected function getEntityManager()
     {
-        return $this->om;
+        return $this->em;
     }
     
     /**
@@ -188,9 +186,9 @@ class Router implements RouterInterface
         }catch(ResourceNotFoundException $e){ /* DO NOTHING */}
 
         
-        if($this->getObjectManager() instanceof DocumentManager){
-            $route = $this->getObjectManager()
-              ->getRepository($this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE))
+        if($this->getEntityManager() instanceof DocumentManager){
+            $route = $this->getEntityManager()
+              ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE))
               ->matchRoute($url);
             
             if(!$route){
@@ -198,7 +196,7 @@ class Router implements RouterInterface
             }
         } else {
             try {
-                $route = $this->getObjectManager()
+                $route = $this->getEntityManager()
                  ->getRepository($this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE))
                 ->matchRoute($url);
 

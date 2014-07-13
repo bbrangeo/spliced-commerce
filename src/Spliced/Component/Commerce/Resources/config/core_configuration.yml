@@ -108,7 +108,7 @@ commerce.order.order_number_prefix:
 commerce.path.web:
     type: text
     key: commerce.path.web
-    value: /var/www/vhosts/someguyswireless.com/Symfony/web
+    value: /update/me
     group: Paths
     child_group: ~
     position: 0
@@ -270,7 +270,7 @@ commerce.sales.checkout.allow_guest_checkout:
 commerce.sales.email.bounced:
     type: email
     key: commerce.sales.email.bounced
-    value: ghassani@gmail.com
+    value: some@email.com
     group: Sales
     child_group: E-Mails
     position: 0
@@ -288,16 +288,16 @@ commerce.sales.email.cancellation.notify:
 commerce.sales.email.cancellation.subject:
     type: text
     key: commerce.sales.email.cancellation.subject
-    value: 'Someguys Wireless Order {orderNumber} Cancelled'
+    value: 'Order {orderNumber} Cancelled'
     group: Sales
     child_group: E-Mails
     position: 0
-    label: 'Cancellation Email Subject'
+    label: '{storeName} - Cancellation Email Subject'
     required: false
 commerce.sales.email.confirmation.subject:
     type: text
     key: commerce.sales.email.confirmation.subject
-    value: 'Someguys Wireless Order Confirmation # {orderNumber} '
+    value: '{storeName} - Order Confirmation # {orderNumber} '
     group: Sales
     child_group: E-Mail Subjects
     position: 0
@@ -306,7 +306,7 @@ commerce.sales.email.confirmation.subject:
 commerce.sales.email.confirmation_admin.subject:
     type: text
     key: commerce.sales.email.confirmation_admin.subject
-    value: 'Someguys Wireless New Order # {orderNumber} - {paymentStatus}'
+    value: '{storeName} -  New Order # {orderNumber} - {paymentStatus}'
     group: Sales
     child_group: E-Mail Subjects
     position: 0
@@ -315,7 +315,7 @@ commerce.sales.email.confirmation_admin.subject:
 commerce.sales.email.from:
     type: email
     key: commerce.sales.email.from
-    value: ghassani@gmail.com
+    value: some@email.com
     group: Sales
     child_group: E-Mails
     position: 0
@@ -324,7 +324,7 @@ commerce.sales.email.from:
 commerce.sales.email.incomplete_order_followup.subject:
     type: text
     key: commerce.sales.email.incomplete_order_followup.subject
-    value: 'Regarding Your Attempted Order On Someguys Wireless'
+    value: 'Regarding Your Attempted Order On {storeName}'
     group: Sales
     child_group: E-Mail Subjects
     position: 0
@@ -351,7 +351,7 @@ commerce.sales.email.payment.notify:
 commerce.sales.email.payment.subject:
     type: text
     key: commerce.sales.email.payment.subject
-    value: 'Someguys Wireless Order {orderNumber} Payment Received'
+    value: '{storeName} -  Order {orderNumber} Payment Received'
     group: Sales
     child_group: E-Mail Subjects
     position: 0
@@ -369,7 +369,7 @@ commerce.sales.email.return.notify:
 commerce.sales.email.return.subject:
     type: text
     key: commerce.sales.email.return.subject
-    value: 'Someguys Wireless Order {orderNumber} Returned'
+    value: '{storeName} -  Order {orderNumber} Returned'
     group: Sales
     child_group: E-Mail Subjects
     position: 0
@@ -387,7 +387,7 @@ commerce.sales.email.shipment.notify:
 commerce.sales.email.shipment.subject:
     type: text
     key: commerce.sales.email.shipment.subject
-    value: 'Someguys Wireless Order {orderNumber} Shipment Confirmation '
+    value: '{storeName} -  Order {orderNumber} Shipment Confirmation '
     group: Sales
     child_group: E-Mail Subjects
     position: 0
@@ -396,7 +396,7 @@ commerce.sales.email.shipment.subject:
 commerce.sales.email.to_admin:
     type: email
     key: commerce.sales.email.to_admin
-    value: ghassani@gmail.com
+    value: some@email.com
     group: Sales
     child_group: E-Mails
     position: 0
@@ -437,10 +437,19 @@ commerce.store.default_locale:
     position: 0
     label: 'Default Store Locale/Language'
     required: true
+commerce.store.default_country:
+    type: country
+    key: commerce.store.default_country
+    value: US
+    group: Store
+    child_group: Locale
+    position: 0
+    label: 'Default Store Locale/Language'
+    required: true
 commerce.store.email.bounced:
     type: email
     key: commerce.store.email.bounced
-    value: ghassani@gmail.com
+    value: some@email.com
     group: Store
     child_group: E-Mails
     position: 0
@@ -449,7 +458,7 @@ commerce.store.email.bounced:
 commerce.store.email.contact:
     type: email
     key: commerce.store.email.contact
-    value: ghassani@gmail.com
+    value: some@email.com
     group: Store
     child_group: E-Mails
     position: 0
@@ -458,7 +467,7 @@ commerce.store.email.contact:
 commerce.store.email.contact_bounced:
     type: email
     key: commerce.store.email.contact_bounced
-    value: ghassani@gmail.com
+    value: some@email.com
     group: Store
     child_group: E-Mails
     position: 0
@@ -476,7 +485,7 @@ commerce.store.email.force_password_reset.subject:
 commerce.store.email.from:
     type: text
     key: commerce.store.email.from
-    value: ghassani@gmail.com
+    value: some@email.com
     group: Store
     child_group: E-Mails
     position: 0
@@ -485,7 +494,7 @@ commerce.store.email.from:
 commerce.store.email.noreply:
     type: email
     key: commerce.store.email.noreply
-    value: noreply@someguyswireless.com
+    value: noreply@somedomain.com
     group: Store
     child_group: E-Mails
     position: 0
@@ -503,7 +512,7 @@ commerce.store.email.password_reset.subject:
 commerce.store.email.returns:
     type: email
     key: commerce.store.email.returns
-    value: ghassani@gmail.com
+    value: some@email.com
     group: Store
     child_group: E-Mails
     position: 0
@@ -512,7 +521,7 @@ commerce.store.email.returns:
 commerce.store.email.sales:
     type: email
     key: commerce.store.email.sales
-    value: ghassani@gmail.com
+    value: some@email.com
     group: Store
     child_group: E-Mails
     position: 0
@@ -521,7 +530,7 @@ commerce.store.email.sales:
 commerce.store.email.support:
     type: email
     key: commerce.store.email.support
-    value: ghassani@gmail.coms
+    value: some@email.coms
     group: Store
     child_group: E-Mails
     position: 0
@@ -530,7 +539,7 @@ commerce.store.email.support:
 commerce.store.email.webmaster:
     type: email
     key: commerce.store.email.webmaster
-    value: ghassani@gmail.com
+    value: some@email.com
     group: Store
     child_group: E-Mails
     position: 0
@@ -557,7 +566,7 @@ commerce.store.email_on_exception:
 commerce.store.name:
     type: text
     key: commerce.store.name
-    value: 'Someguys Wireless'
+    value: 'My Store'
     group: Store
     child_group: General
     position: 0
@@ -566,7 +575,7 @@ commerce.store.name:
 commerce.store.phone.service:
     type: text
     key: commerce.store.phone.service
-    value: 760-566-6769
+    value: 555-555-5555
     group: Store
     child_group: General
     position: 0
@@ -584,7 +593,7 @@ commerce.store.phone.service_hours:
 commerce.store.url:
     type: text
     key: commerce.store.url
-    value: 'http://www.someguyswireless.com'
+    value: 'http://www.mydomain.com'
     group: Store
     child_group: URLs
     position: 0
@@ -593,7 +602,7 @@ commerce.store.url:
 commerce.store.url_secure:
     type: text
     key: commerce.store.url_secure
-    value: 'https://www.someguyswireless.com'
+    value: 'https://www.mydomain.com'
     group: Store
     child_group: URLs
     position: 0
@@ -700,3 +709,4 @@ commerce.visitor.log_visitor_requests:
     label: 'Log Visitor Requests'
     help: ''
     required: false
+    

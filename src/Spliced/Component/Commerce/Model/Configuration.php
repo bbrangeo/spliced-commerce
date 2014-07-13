@@ -9,7 +9,7 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 use Spliced\Component\Commerce\Doctrine\ODM\MongoDB\Mapping\Annotations as Commerce;
 
 /**
@@ -17,73 +17,97 @@ use Spliced\Component\Commerce\Doctrine\ODM\MongoDB\Mapping\Annotations as Comme
  *
  * @author Gassan Idriss <ghassani@splicedmedia.com>
  * 
- * @MongoDB\Document(collection="configuration")
+ * @ORM\Table(name="configuration")
+ * @ORM\Entity()
  */
 abstract class Configuration implements ConfigurationInterface
 {
-
-    /**
-     * @MongoDB\Id
-     */
+	/**
+	 * @var bigint $id
+	 *
+	 * @ORM\Column(name="id", type="bigint", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="IDENTITY")
+	 */
     protected $id;
-
+    
     /**
-     * @MongoDB\String
+     * @var string $type
+     *
+     * @ORM\Column(name="data_type", type="string", length=100, unique=false, nullable=false)
      */
     protected $type;
 
     /**
-     * @MongoDB\String
-     * @MongoDB\Index(unique=true)
+     * @var string $key
+     *
+     * @ORM\Column(name="data_key", type="string", length=255, unique=true, nullable=false)
      */
     protected $key;
 
     /**
-     * @Commerce\ConfigurationValue
+     * @var string $value
+     *
+     * @ORM\Column(name="data_value", type="text", unique=false, nullable=true)
      */
     protected $value;
     
     /**
-     * @MongoDB\String
-     * @MongoDB\Index
-     */
-    protected $group;
-    
-    /**
-     * @MongoDB\String
-     * @MongoDB\Index
-     */
-    protected $childGroup;
-    
-    /**
-     * @MongoDB\Int
-     */
-    protected $position;
-    
-    /**
-     * @MongoDB\String
+     * @var string $label
+     *
+     * @ORM\Column(name="label", type="string", length=255, nullable=true)
      */
     protected $label;
-    
+
     /**
-     * @MongoDB\String
+     * @var string $help
+     *
+     * @ORM\Column(name="help", type="string", length=255, nullable=true)
      */
     protected $help;
     
     /**
-     * @MongoDB\Boolean
+     * @var string $group
+     *
+     * @ORM\Column(name="parent_group", type="text", unique=false, nullable=true)
      */
-    protected $required;
+    protected $group;
+    
+    /**
+     * @var string $childGroup
+     *
+     * @ORM\Column(name="child_group", type="text", unique=false, nullable=true)
+     */
+    protected $childGroup;
+    
+    /**
+     * @var string $position
+     *
+     * @ORM\Column(name="position", type="integer", nullable=true)
+     */
+    protected $position;
+
+    
+    /**
+     *  @var bool $required
+     *  
+     *  @ORM\Column(name="is_required", type="boolean", nullable=true)
+     */
+    protected $required; 
 
     /**
-     * @MongoDB\Date
+     *  @var DateTime $createdAt
+     *  
+     *  @ORM\Column(name="created_at", type="datetime", length=255, nullable=false)
      */
     protected $createdAt;
     
     /**
-     * @MongoDB\Date
+     *  @var DateTime $updatedAt
+     *  
+     *  @ORM\Column(name="updated_at", type="datetime", length=255, nullable=false)
      */
-    protected $updatedAt;
+    protected $updatedAt; 
     
         
     /**

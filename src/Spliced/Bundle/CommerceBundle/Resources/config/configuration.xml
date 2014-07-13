@@ -7,28 +7,27 @@
         <parameter key="commerce.configuration.class">Spliced\Component\Commerce\Configuration\ConfigurationManager</parameter>
         <parameter key="commerce.core_configuration.class">Spliced\Component\Commerce\Configuration\CoreConfiguration</parameter>
         
-		<!-- Define our Document Classes -->
-        <parameter key="commerce.document.affiliate.class">Spliced\Bundle\CommerceBundle\Document\Affiliate</parameter>
-        <parameter key="commerce.document.category.class">Spliced\Bundle\CommerceBundle\Document\Category</parameter>
-        <parameter key="commerce.document.configuration.class">Spliced\Bundle\CommerceBundle\Document\Configuration</parameter>
-        <parameter key="commerce.document.content_page.class">Spliced\Bundle\CommerceBundle\Document\ContentPage</parameter>
-        <parameter key="commerce.document.checkout_custom_field.class">Spliced\Bundle\CommerceBundle\Document\CheckoutCustomField</parameter>
-        <parameter key="commerce.document.product.class">Spliced\Bundle\CommerceBundle\Document\Product</parameter>
-        <parameter key="commerce.document.product_attribute.class">Spliced\Bundle\CommerceBundle\Document\ProductAttribute</parameter>
-        <parameter key="commerce.document.product_attribute_option.class">Spliced\Bundle\CommerceBundle\Document\ProductAttributeOption</parameter>
-        <parameter key="commerce.document.product_attribute_option_value.class">Spliced\Bundle\CommerceBundle\Document\ProductAttributeOptionValue</parameter>
-        <parameter key="commerce.document.product_attribute_option_value_product.class">Spliced\Bundle\CommerceBundle\Document\ProductAttributeOptionValueProduct</parameter>
-		<parameter key="commerce.document.product_specification.class">Spliced\Bundle\CommerceBundle\Document\ProductSpecification</parameter>
-        <parameter key="commerce.document.product_specification_option.class">Spliced\Bundle\CommerceBundle\Document\ProductSpecificationOption</parameter>
-        <parameter key="commerce.document.product_specification_option_value.class">Spliced\Bundle\CommerceBundle\Document\ProductSpecificationOptionValue</parameter>
-        <parameter key="commerce.document.product_upsale.class">Spliced\Bundle\CommerceBundle\Document\ProductUpsale</parameter>
-        <parameter key="commerce.document.product_bundled_item.class">Spliced\Bundle\CommerceBundle\Document\ProductBundledItem</parameter>
-        <parameter key="commerce.document.product_content.class">Spliced\Bundle\CommerceBundle\Document\ProductContent</parameter>
-        <parameter key="commerce.document.product_tier_price.class">Spliced\Bundle\CommerceBundle\Document\ProductTierPrice</parameter>
-        <parameter key="commerce.document.product_image.class">Spliced\Bundle\CommerceBundle\Document\ProductImage</parameter>
-        <parameter key="commerce.document.manufacturer.class">Spliced\Bundle\CommerceBundle\Document\Manufacturer</parameter>
-        <parameter key="commerce.document.route.class">Spliced\Bundle\CommerceBundle\Document\Route</parameter>
 		<!-- Define our Entity Classes -->
+        <parameter key="commerce.entity.affiliate.class">Spliced\Bundle\CommerceBundle\Entity\Affiliate</parameter>
+        <parameter key="commerce.entity.category.class">Spliced\Bundle\CommerceBundle\Entity\Category</parameter>
+        <parameter key="commerce.entity.configuration.class">Spliced\Bundle\CommerceBundle\Entity\Configuration</parameter>
+        <parameter key="commerce.entity.content_page.class">Spliced\Bundle\CommerceBundle\Entity\ContentPage</parameter>
+        <parameter key="commerce.entity.checkout_custom_field.class">Spliced\Bundle\CommerceBundle\Entity\CheckoutCustomField</parameter>
+        <parameter key="commerce.entity.product.class">Spliced\Bundle\CommerceBundle\Entity\Product</parameter>
+        <parameter key="commerce.entity.product_attribute.class">Spliced\Bundle\CommerceBundle\Entity\ProductAttribute</parameter>
+        <parameter key="commerce.entity.product_attribute_option.class">Spliced\Bundle\CommerceBundle\Entity\ProductAttributeOption</parameter>
+        <parameter key="commerce.entity.product_attribute_option_value.class">Spliced\Bundle\CommerceBundle\Entity\ProductAttributeOptionValue</parameter>
+        <parameter key="commerce.entity.product_attribute_option_value_product.class">Spliced\Bundle\CommerceBundle\Entity\ProductAttributeOptionValueProduct</parameter>
+		<parameter key="commerce.entity.product_specification.class">Spliced\Bundle\CommerceBundle\Entity\ProductSpecification</parameter>
+        <parameter key="commerce.entity.product_specification_option.class">Spliced\Bundle\CommerceBundle\Entity\ProductSpecificationOption</parameter>
+        <parameter key="commerce.entity.product_specification_option_value.class">Spliced\Bundle\CommerceBundle\Entity\ProductSpecificationOptionValue</parameter>
+        <parameter key="commerce.entity.product_upsale.class">Spliced\Bundle\CommerceBundle\Entity\ProductUpsale</parameter>
+        <parameter key="commerce.entity.product_bundled_item.class">Spliced\Bundle\CommerceBundle\Entity\ProductBundledItem</parameter>
+        <parameter key="commerce.entity.product_content.class">Spliced\Bundle\CommerceBundle\Entity\ProductContent</parameter>
+        <parameter key="commerce.entity.product_tier_price.class">Spliced\Bundle\CommerceBundle\Entity\ProductTierPrice</parameter>
+        <parameter key="commerce.entity.product_image.class">Spliced\Bundle\CommerceBundle\Entity\ProductImage</parameter>
+        <parameter key="commerce.entity.manufacturer.class">Spliced\Bundle\CommerceBundle\Entity\Manufacturer</parameter>
+        <parameter key="commerce.entity.route.class">Spliced\Bundle\CommerceBundle\Entity\Route</parameter>
         <parameter key="commerce.entity.cart.class">Spliced\Bundle\CommerceBundle\Entity\Cart</parameter>
         <parameter key="commerce.entity.cart_item.class">Spliced\Bundle\CommerceBundle\Entity\CartItem</parameter>
         <parameter key="commerce.entity.contact_message.class">Spliced\Bundle\CommerceBundle\Entity\ContactMessage</parameter>
@@ -50,31 +49,27 @@
         <parameter key="commerce.entity.visitor_request.class">Spliced\Bundle\CommerceBundle\Entity\VisitorRequest</parameter>
 		
 		<!-- Define our Document Classes in an Array -->
-	    <parameter key="commerce.document_classes" type="collection">
-	        <parameter key="affiliate">%commerce.document.affiliate.class%</parameter>
-	        <parameter key="category">%commerce.document.category.class%</parameter>
-	        <parameter key="configuration">%commerce.document.configuration.class%</parameter>
-	        <parameter key="content_page">%commerce.document.content_page.class%</parameter>
-	        <parameter key="checkout_custom_field">%commerce.document.checkout_custom_field.class%</parameter>
-	        <parameter key="product">%commerce.document.product.class%</parameter>
-	        <parameter key="product_attribute">%commerce.document.product_attribute.class%</parameter>
-	        <parameter key="product_attribute_option">%commerce.document.product_attribute_option.class%</parameter>
-	        <parameter key="product_attribute_option_value">%commerce.document.product_attribute_option_value.class%</parameter>
-	        <parameter key="product_attribute_option_value_product">%commerce.document.product_attribute_option_value_product.class%</parameter>
-	        <parameter key="product_specification">%commerce.document.product_specification.class%</parameter>
-	        <parameter key="product_specification_option">%commerce.document.product_specification_option.class%</parameter>
-	        <parameter key="product_specification_option_value">%commerce.document.product_specification_option_value.class%</parameter>
-	        <parameter key="product_bundled_item">%commerce.document.product_bundled_item.class%</parameter>
-	        <parameter key="product_upsale">%commerce.document.product_upsale.class%</parameter>
-	        <parameter key="product_content">%commerce.document.product_content.class%</parameter>
-	        <parameter key="product_image">%commerce.document.product_image.class%</parameter>
-	        <parameter key="product_tier_price">%commerce.document.product_tier_price.class%</parameter>
-	        <parameter key="manufacturer">%commerce.document.manufacturer.class%</parameter>
-	        <parameter key="route">%commerce.document.route.class%</parameter>
-	    </parameter>
-	    
-		<!-- Define our Entity Classes in an Array -->
 	    <parameter key="commerce.entity_classes" type="collection">
+	        <parameter key="affiliate">%commerce.entity.affiliate.class%</parameter>
+	        <parameter key="category">%commerce.entity.category.class%</parameter>
+	        <parameter key="configuration">%commerce.entity.configuration.class%</parameter>
+	        <parameter key="content_page">%commerce.entity.content_page.class%</parameter>
+	        <parameter key="checkout_custom_field">%commerce.entity.checkout_custom_field.class%</parameter>
+	        <parameter key="product">%commerce.entity.product.class%</parameter>
+	        <parameter key="product_attribute">%commerce.entity.product_attribute.class%</parameter>
+	        <parameter key="product_attribute_option">%commerce.entity.product_attribute_option.class%</parameter>
+	        <parameter key="product_attribute_option_value">%commerce.entity.product_attribute_option_value.class%</parameter>
+	        <parameter key="product_attribute_option_value_product">%commerce.entity.product_attribute_option_value_product.class%</parameter>
+	        <parameter key="product_specification">%commerce.entity.product_specification.class%</parameter>
+	        <parameter key="product_specification_option">%commerce.entity.product_specification_option.class%</parameter>
+	        <parameter key="product_specification_option_value">%commerce.entity.product_specification_option_value.class%</parameter>
+	        <parameter key="product_bundled_item">%commerce.entity.product_bundled_item.class%</parameter>
+	        <parameter key="product_upsale">%commerce.entity.product_upsale.class%</parameter>
+	        <parameter key="product_content">%commerce.entity.product_content.class%</parameter>
+	        <parameter key="product_image">%commerce.entity.product_image.class%</parameter>
+	        <parameter key="product_tier_price">%commerce.entity.product_tier_price.class%</parameter>
+	        <parameter key="manufacturer">%commerce.entity.manufacturer.class%</parameter>
+	        <parameter key="route">%commerce.entity.route.class%</parameter>
 	        <parameter key="cart">%commerce.entity.cart.class%</parameter>
 	        <parameter key="cart_item">%commerce.entity.cart_item.class%</parameter>
 	        <parameter key="contact_message">%commerce.entity.contact_message.class%</parameter>
@@ -113,9 +108,7 @@
     	
         <service id="commerce.configuration" class="%commerce.configuration.class%">
         	<argument>%commerce.entity_classes%</argument>
-        	<argument>%commerce.document_classes%</argument>
         	<argument type="service" id="commerce.entity_manager" />
-        	<argument type="service" id="commerce.document_manager" />
         	<argument type="service" id="kernel" />
         </service>
         

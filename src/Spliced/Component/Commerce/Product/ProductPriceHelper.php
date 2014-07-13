@@ -92,8 +92,8 @@ class ProductPriceHelper
      * getBasePrice
      *
      * Calculates the base price of the product. This will
-     * be the value set in the database, and only different
-     * if there is affiliate price
+     * only be different from the database set base price
+     * if there is a valid special price
      *
      * @param ProductInterface $product
      *
@@ -101,8 +101,11 @@ class ProductPriceHelper
      */
     public function getBasePrice(ProductInterface $product)
     {
-        // todo, account for special price dates
-        return $this->calculator->add($product->getSpecialPrice() ? $product->getSpecialPrice() : $product->getPrice(), static::ZERO_VALUE);
+    	if(!$product->hasSpecialPrice()){
+    		return $this->calculator->add($product->getPrice(), static::ZERO_VALUE);
+    	}
+    	
+        return $this->calculator->add($product->getSpecialPrice(), static::ZERO_VALUE);
     }
 
     /**

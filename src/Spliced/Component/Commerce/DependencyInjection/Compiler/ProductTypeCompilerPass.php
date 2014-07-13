@@ -31,8 +31,8 @@ class ProductTypeCompilerPass implements CompilerPassInterface
 
         $productTypeManager = $container->getDefinition('commerce.product_type_manager');
 
-        foreach($container->findTaggedServiceIds('commerce.product_type_handler') as $id => $attributes){
-            $productTypeManager->addMethodCall('addHandler', array(new Reference($id)));
+        foreach($container->findTaggedServiceIds('commerce.product_type') as $id => $attributes){
+            $productTypeManager->addMethodCall('addType', array(new Reference($id)));
         }
 
     }

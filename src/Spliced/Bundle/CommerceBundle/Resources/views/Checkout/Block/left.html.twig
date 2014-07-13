@@ -2,21 +2,25 @@
 
 {% if app.environment == 'dev' %}
 <div class="panel panel-danger">
-    <div class="panel-head">Debug</div>
-    <div class="panel-content">
+    <div class="panel-heading">Debug</div>
+    <div class="panel-body">
         <div>Current Step: {{ commerce_checkout_manager().currentStep }}</div>
         <div>Last Completed Step: {{ commerce_checkout_manager().lastCompletedStep }}</div>
         <div>Last Step: {{ commerce_checkout_manager().lastStep }}</div>
     </div>
+    <div class="panel-footer"></div>
 </div>
 {% endif %}
 
 {% if step > 1 %}
-<div class="block-base">
-    <h3 class="block-head">
-    	{{ is_granted('ROLE_USER') ? "Welcome Back" : "Checking Out As Guest" }}
-	</h3>
-    <div class="block-content">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+    	    {{ is_granted('ROLE_USER') ? "Welcome Back" : "Checking Out As Guest" }}
+	    </h3>
+    </div>
+
+    <div class="panel-body">
     	{% if is_granted('ROLE_USER') %}
     	<p>It's good to see you again {{ app.user.displayName }}</p>
     	{% else %}
@@ -37,9 +41,9 @@
 {% endif %}
 
 {% if step == 2 and not is_granted('ROLE_USER') %}
-	<div class="block-base">
-		<div class="block-head">One Click Register &amp; Login</div>
-		<div class="block-content">
+	<div class="panel panel-default">
+		<div class="panel-heading">One Click Register &amp; Login</div>
+		<div class="panel-body">
 			<p>It's not too late to register. Quickly sign up and login with any of the following networks.</p>
 			{{ include("SplicedCommerceBundle:Security/Block:social_login_block.html.twig") }}
 		</div>
@@ -47,11 +51,13 @@
 {% endif %}
 
 {% if 2 <= commerce_checkout_manager().lastCompletedStep %}
-	<div class="block-base">
-	    <h3 class="block-head">
-	    	Bill To <a href="{{ path('commerce_checkout') }}?step=2" class="checkout-move-step pull-right" data-step="2"><i class="icon-edit icon-white"></i></a>
-		</h3>
-	    <div class="block-content">
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+            <h3 class="panel-title">
+	    	    Bill To <a href="{{ path('commerce_checkout') }}?step=2" class="checkout-move-step pull-right" data-step="2"><i class="icon-edit icon-white"></i></a>
+		    </h3>
+        </div>
+        <div class="panel-body">
 	    	<strong>{{ form.vars.data.billingFirstName }} {{ form.vars.data.billingLastName }}</strong><br>
 			{{ form.vars.data.billingAddress }}<br>
 			{% if form.vars.data.billingAddress2|length %}
@@ -62,12 +68,14 @@
 	</div>
 
 	{% if form.vars.data.shippingAddress|length %}
-		<div class="block-base">
-		    <h3 class="block-head">
-		    	Ship To <a href="{{ path('checkout') }}?step=2" class="checkout-move-step pull-right" data-step="2"><i class="icon-edit icon-white"></i></a>
-			</h3>
-		    <div class="block-content">
-		    	<strong>{{ form.vars.data.shippingName }} {{ form.vars.data.shippingAttn }}</strong><br>
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+                <h3 class="panel-title">
+                    Ship To <a href="{{ path('checkout') }}?step=2" class="checkout-move-step pull-right" data-step="2"><i class="icon-edit icon-white"></i></a>
+                </h3>
+            </div>
+		    <div class="panel-body">
+		    	<strong>{{ form.vars.data.shippingFirstName }} {{ form.vars.data.shippingLastName }}</strong><br>
 				{{ form.vars.data.shippingAddress }}<br>
 				{% if form.vars.data.shippingAddress2|length %}
 			        {{ form.vars.data.shippingAddress2 }}<br>
@@ -76,7 +84,7 @@
 			</div>
 		</div>
 	{% else %}
-		<div class="block-base">
+		<div class="panel panel-default">
 		    <h3 class="block-head">
 		    	Ship To <a href="{{ path('checkout') }}?step=2" class="checkout-move-step pull-right" data-step="2"><i class="icon-edit icon-white"></i></a>
 			</h3>
@@ -90,7 +98,7 @@
 {% endif %}
 
 {# if 3 <= commerce_checkout_manager().lastCompletedStep %}
-	<div class="block-base">
+	<div class="panel panel-default">
 	    <h3 class="block-head">
 	    	Shipping Method <a href="{{ path('checkout') }}?step=3" class="checkout-move-step pull-right" data-step="3"><i class="icon-edit icon-white"></i></a>
 		</h3>
@@ -105,11 +113,13 @@
 {% endif #}
 
 {% if 4 <= commerce_checkout_manager().lastCompletedStep %}
-	<div class="block-base">
-	    <h3 class="block-head">
-	    	Payment Method <a href="{{ path('checkout') }}?step=4" class="checkout-move-step pull-right" data-step="4"><i class="icon-edit icon-white"></i></a>
-		</h3>
-	    <div class="block-content">
+	<div class="panel panel-default">
+	    <div class="panel-heading">
+            <h3 class="panel-title">
+                Payment Method <a href="{{ path('checkout') }}?step=4" class="checkout-move-step pull-right" data-step="4"><i class="icon-edit icon-white"></i></a>
+            </h3>
+	    </div>
+	    <div class="panel-body">
 	        {% if form.vars.data.payment.paymentMethod is defined and form.vars.data.payment.paymentMethod|length %}
     			{% set paymentMethod = commerce_checkout_manager().getPaymentProvider(form.vars.data.payment.paymentMethod) %}
     			{{ paymentMethod.getOption('label') }}

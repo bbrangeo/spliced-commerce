@@ -25,10 +25,10 @@ use Doctrine\Common\Collections\Collection;
  */
 abstract class OrderShipment implements OrderShipmentInterface
 {
-/**
+	/**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
@@ -49,6 +49,14 @@ abstract class OrderShipment implements OrderShipmentInterface
      * @Assert\NotNull(message="Required")
      */
     protected $shipmentMethod;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="method_name", type="string", length=100)
+     * @Assert\NotNull(message="Required")
+     */
+    protected $methodName;
 
     /**
      * @var float
@@ -296,6 +304,29 @@ abstract class OrderShipment implements OrderShipmentInterface
     {
         $this->updatedAt = $updatedAt;
         return $this;
+    }
+
+    /**
+     * getMethodName
+     *
+     * @return string
+     */
+    public function getMethodName()
+    {
+    	return $this->methodName;
+    }
+    
+    /**
+     * setMethodName
+     *
+     * @param string methodName
+     *
+     * @return self
+     */
+    public function setMethodName($methodName)
+    {
+    	$this->methodName = $methodName;
+    	return $this;
     }
     
     /**

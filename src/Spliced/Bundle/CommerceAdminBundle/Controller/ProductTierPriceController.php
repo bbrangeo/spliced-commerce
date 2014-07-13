@@ -26,9 +26,9 @@ class ProductTierPriceController extends BaseFilterableController
      */
     public function deleteAction($productId, $tierPriceId)
     {
-        $dm = $this->get('commerce.admin.document_manager');
+        $em = $this->get('commerce.admin.entity_manager');
         
-        $product = $dm->getRepository('SplicedCommerceAdminBundle:Product')
+        $product = $em->getRepository('SplicedCommerceAdminBundle:Product')
           ->findOneById($productId);
         
         if (!$product){

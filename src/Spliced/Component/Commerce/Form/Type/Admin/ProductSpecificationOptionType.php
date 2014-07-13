@@ -129,7 +129,7 @@ class ProductSpecificationOptionType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->getConfigurationManager()
-                ->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION),
+                ->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION),
         ));
     }
 }

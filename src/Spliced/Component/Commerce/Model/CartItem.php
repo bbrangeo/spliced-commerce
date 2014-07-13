@@ -23,21 +23,14 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class CartItem implements CartItemInterface
 {
     
-/**
+	/**
      * @var bigint $id
      *
      * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    protected $id;
-    
-    /**
-     * @var int $productId
-     *
-     * @ORM\Column(name="product_id", type="string")
-     */
-    protected $productId;
+	protected $id;
     
     /**
      * @var int $quantity
@@ -112,29 +105,35 @@ abstract class CartItem implements CartItemInterface
      * @ORM\OneToMany(targetEntity="CartItem", mappedBy="parent", cascade={"persist"})
      */
     protected $children;
-
+    
     /**
-     * Constructor
+     * @ORM\OneToOne(targetEntity="Product")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
-     public function __construct()
-     {
-         $this->children = new ArrayCollection();
+    protected $product;
+    
+	/**
+     * Constructor
+	*/
+	public function __construct()
+	{
+		$this->children = new ArrayCollection();
         $this->quantity = 0;
-     }
+	}
 
-     /**
-      * getId
-      */
-     public function getId()
-     {
-         return $this->id;
-     }
+	/**
+	 * getId
+	*/
+	public function getId()
+	{
+    	return $this->id;
+	}
      
     /**
      * getCart
      */
-     public function getCart()
-     {
+	public function getCart()
+	{
          return $this->cart;
      }
      
@@ -201,30 +200,10 @@ abstract class CartItem implements CartItemInterface
         */
        public function setProduct(ProductInterface $product = null)
        {
-               $this->product = $product;
+            $this->product = $product;
             return $this;
        }
-       
-       /**
-        * getProductId
-        *
-        * @return int
-        */
-       public function getProductId()
-       {
-            return $this->productId;
-       }
-       
-       /**
-        * setProductId
-        *
-        * @param int $productId
-        */
-       public function setProductId($productId)
-       {
-               $this->productId = $productId;
-               return $this;
-       }
+
        
        /**
         * getQuantity

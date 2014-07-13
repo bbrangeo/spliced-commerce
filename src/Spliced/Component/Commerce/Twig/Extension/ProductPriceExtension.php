@@ -42,7 +42,6 @@ use Spliced\Component\Commerce\Product\ProductPriceHelper;
             'commerce_product_price_total' => new \Twig_Function_Method($this, 'productPriceTotal'),
             'commerce_product_final_price' => new \Twig_Function_Method($this, 'productFinalPrice'),
             'commerce_product_tax' => new \Twig_Function_Method($this, 'productTax'),
-            'commerce_product_affiliate_price' => new \Twig_Function_Method($this, 'productAffiliatePrice'),
             'commerce_product_tier_price_savings' => new \Twig_Function_Method($this, 'productTierPriceSavings'),
         );
     }

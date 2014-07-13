@@ -9,7 +9,7 @@
 */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ProductBundledItem
@@ -19,33 +19,50 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 class ProductBundledItem 
 {
     
-    /**
-     * @MongoDB\Id
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
     
     /**
-     * @MongoDB\ReferenceOne(targetDocument="Product")
+     * @var Product
+     *
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="bundledProducts")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * })
      */
     protected $product;
+    
+    /**
+     * @var Product
+     *
+     * @ORM\OneToOne(targetEntity="Product", cascade={"persist"})
+     * @ORM\JoinColumn(name="bundled_product_id", referencedColumnName="id")
+     */
+    protected $relatedProduct;
 
     /**
-     * @MongoDB\Float
+     * @ORM\Column(name="price_adjustment", type="decimal", scale=12, precision=4, nullable=true)
      */
     protected $priceAdjustment;
     
     /**
-     * @MongoDB\Int
+     * @ORM\Column(name="price_adjustment_type", type="smallint", nullable=true)
      */
     protected $priceAdjustmentType;
         
     /**
-     * @MongoDB\Int
+     * @ORM\Column(name="quantity", type="integer", nullable=true)
      */
     protected $quantity;
     
     /**
-     * @MongoDB\Boolean
+     * @ORM\Column(name="allow_tier_pricing", type="boolean", nullable=true)
      */
     protected $allowTierPricing;
     

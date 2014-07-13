@@ -1,8 +1,45 @@
+
 $(document).ready(function(){
+
+	$("form.add-to-cart-form").ajaxForm({
+		responseType : 'json',
+		success : function(form, response, textStatus, jqXHR){			
+			
+			if(!response.success && !response.content && response.message){
+				alert(response.message);
+				return;
+			}
+			
+			if(response.content){
+				$content = $(unescape(response.content));
+				
+				if($content.find('.modal')){
+					$modal = $content.modal();				
+				
+					$modal.on('hidden.bs.modal', function(){
+						$('.modal-backdrop').remove();
+					});
+				} else if(response.message) {
+					alert(response.message);
+				}
+			}
+		},
+		error : function(form, jqXHR, textStatus, errorThrown){
+			if(typeof logger == 'function'){
+				logger.log('Error Adding To cart',{
+					'details':{ 
+						'textStatus': textStatus, 
+						'errorThrown' : errorThrown,						
+						'responseText' : jqXHR.responseText,
+					}
+				});
+			}
+		}
+	});
 	
 	/**
 	 * Add Item to Cart
-	 */
+	
 	$("form.add-to-cart-form").live('submit', function(e){
 		e.preventDefault();
 		var productId = $(this).find('input.product_id').val();
@@ -40,7 +77,7 @@ $(document).ready(function(){
 			}
 		});
 		
-	});
+	}); */
 	
 	/**
 	 * Remove Item from Cart

@@ -6,10 +6,6 @@
 	@var products
 #}
 
-{% if products is defined %}
-    {{ knp_pagination_render(products) }}
-{% endif %}
-
 <ul class="inline list-inline category-product-grid">
     {% if products|length %}
         {% for product in products %}
@@ -74,4 +70,3 @@
         </li>
 	{% endif %}
 </ul>
-{{ knp_pagination_render(products) }}

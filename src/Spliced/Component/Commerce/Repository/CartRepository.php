@@ -34,12 +34,21 @@ abstract class CartRepository extends EntityRepository implements CartRepository
     {
         try{
             $cart = $this->createQueryBuilder('cart')
-            ->select('cart, items')
+            ->select('
+              cart, items, product, product_images, product_tier_prices, 
+              product_attributes, product_attribute_option, product_attribute_value
+            ')
             ->leftJoin('cart.items', 'items')
-            ->leftJoin('items.children', 'childrenItems')
+            ->leftJoin('items.product', 'product')
+            ->leftJoin('product.images', 'product_images')
+            ->leftJoin('product.tierPrices', 'product_tier_prices')
+              ->leftJoin('product.attributes', 'product_attributes')
+                ->leftJoin('product_attributes.option', 'product_attribute_option')
+                ->leftJoin('product_attributes.value', 'product_attribute_value')
             ->where('cart.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
+       
             ->getSingleResult();
             
         } catch(NoResultException $e){

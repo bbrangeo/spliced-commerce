@@ -9,7 +9,7 @@
  */
 namespace Spliced\Component\Commerce\Model;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -21,26 +21,35 @@ use Doctrine\Common\Collections\Collection;
 abstract class ProductSpecificationOptionValue
 {
     
-    /**
-     * @MongoDB\Id
+     /**
+     * @var bigint $id
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
     
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="value", type="string", unique=false, length=255, nullable=false)
      */
     protected $value;
 
     /**
-     * @MongoDB\String
+     * @ORM\Column(name="public_value", type="string", unique=false, length=255, nullable=true)
      */
     protected $publicValue;
     
     /**
-     * @MongoDB\Int
+     * @ORM\Column(name="position", type="integer", unique=false, nullable=true)
      */
     protected $position;
-
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="ProductSpecificationOption", inversedBy="values")
+     * @ORM\JoinColumn(name="option_id", referencedColumnName="id")
+     */
+    protected $option;
 
     /**
      * getId
@@ -115,5 +124,29 @@ abstract class ProductSpecificationOptionValue
     {
         return $this->position;
     }
+    
 
+    /**
+     * getOption
+     *
+     * @return ProductSpecificationOptionInterface
+    */
+    public function getOption()
+    {
+    	return $this->option;
+    }
+
+    /**
+     * setOption
+     *
+     * @param ProductSpecificationOptionInterface option
+     *
+     * @return self
+    */
+    public function setOption(ProductSpecificationOptionInterface $option)
+    {
+	    $this->option = $option;
+	    return $this;
+    }
+    
 }

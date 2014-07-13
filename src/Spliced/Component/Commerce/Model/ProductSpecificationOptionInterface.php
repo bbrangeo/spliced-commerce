@@ -16,7 +16,7 @@ namespace Spliced\Component\Commerce\Model;
  */
 interface ProductSpecificationOptionInterface
 {
-
+	
     /** 
      * Option type which represents a single option and single value  
      */

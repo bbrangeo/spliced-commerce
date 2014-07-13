@@ -21,23 +21,17 @@ class ConfigurationController extends Controller
      */
     public function indexAction()
     {
-        $dm = $this->get('commerce.admin.document_manager');
+        $em = $this->get('commerce.admin.entity_manager');
         $configurationManager = $this->get('commerce.configuration');
         
         $currentGroup = $this->getRequest()->query->get('group', static::DEFAULT_GROUP);
         
         // load main level group names
-        $groups = $dm->getRepository('SplicedCommerceAdminBundle:Configuration')
-        ->createQueryBuilder()
-        ->distinct('group')
-        ->sort('group', 'ASC')        
-        ->hydrate(false)
-        ->getQuery()
-        ->execute(); 
-  
-        $currentGroupData = $dm->getRepository('SplicedCommerceAdminBundle:Configuration')
-          ->findByGroup($currentGroup);
-
+        $groups = $em->getRepository('SplicedCommerceAdminBundle:Configuration')
+          ->getConfigurationGroups();
+        
+        $currentGroupData = $em->getRepository('SplicedCommerceAdminBundle:Configuration')
+          ->getConfigurationForGroup($currentGroup);
         
         $forms = array();
         foreach ($currentGroupData as $configData) {

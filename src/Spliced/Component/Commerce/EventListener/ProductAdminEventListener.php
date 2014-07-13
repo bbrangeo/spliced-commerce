@@ -59,7 +59,7 @@ class ProductAdminEventListener
      */
     protected function getObjectManager()
     {
-        return $this->getConfigurationManager()->getDocumentManager();
+        return $this->getConfigurationManager()->getEntityManager();
     }
         
     /**
@@ -205,7 +205,7 @@ class ProductAdminEventListener
      */
     private function createRoute(ProductInterface $product)
     {
-        return $this->getConfigurationManager()->createDocument(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE)
+        return $this->getConfigurationManager()->createEntity(ConfigurationManager::OBJECT_CLASS_TAG_ROUTE)
         ->setProduct($product);
     }
     

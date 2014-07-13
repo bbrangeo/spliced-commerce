@@ -36,13 +36,17 @@ class ProductFilterManager
     
     /** CategoryInterface|null */
     protected $category = null;
-    
+
+    /** Collection|null */
+    protected $products = null;
+
     /** Collection|null */
     protected $specifications = null;
     
     /** Collection|null */
     protected $manufacturers = null;
 
+    protected $specificationValueProductCounts = array();
     
     /**
      * Constructor
@@ -83,11 +87,10 @@ class ProductFilterManager
      */
     public function setPerPage($perPage)
     {
-        if ($perPage > $this->configurationManager->get('commerce.category.filter.max_per_page')) {
-            $perPage = $this->configurationManager->get('commerce.category.filter.max_per_page');
+        if ($perPage > $this->configurationManager->get('commerce.category.filter.max_per_page', 50)) {
+            $perPage = $this->configurationManager->get('commerce.category.filter.max_per_page', 50);
         }
         $this->session->set(static::SESSION_TAG_PER_PAGE, (int) $perPage);
-
         return $this;
     }
 
@@ -100,7 +103,7 @@ class ProductFilterManager
     public function getPerPage($defaultReturn = null)
     {
         if (is_null($defaultReturn)) {
-            $defaultReturn = $this->configurationManager->get('commerce.category.filter.default_per_page');
+            $defaultReturn = $this->configurationManager->get('commerce.category.filter.max_per_page', 10);
         }
 
         return $this->session->get(static::SESSION_TAG_PER_PAGE, $defaultReturn);
@@ -114,7 +117,6 @@ class ProductFilterManager
     public function setOrderBy($orderBy)
     {
         $this->session->set(static::SESSION_TAG_ORDER_BY, $orderBy);
-
         return $this;
     }
 
@@ -126,7 +128,7 @@ class ProductFilterManager
     public function getOrderBy($defaultReturn = null)
     {
         if (is_null($defaultReturn)) {
-            $defaultReturn = $this->configurationManager->get('commerce.category.filter.default_order_by');
+            $defaultReturn = $this->configurationManager->get('commerce.category.filter.default_order_by', 'price_asc');
         }
 
         return $this->session->get(static::SESSION_TAG_ORDER_BY, $defaultReturn);
@@ -152,7 +154,7 @@ class ProductFilterManager
     public function getDisplayMode($defaultReturn = null)
     {
         if (is_null($defaultReturn)) {
-            $defaultReturn = $this->configurationManager->get('commerce.category.filter.default_display_mode');
+            $defaultReturn = $this->configurationManager->get('commerce.category.filter.default_display_mode', 'list');
         }
 
         return $this->session->get(static::SESSION_TAG_DISPLAY_MODE, $defaultReturn);
@@ -218,46 +220,40 @@ class ProductFilterManager
       */
      public function getPaginationQuery()
      {
-        $productRepository = $this->configurationManager->getDocumentManager()
-           ->getRepository($this->configurationManager->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT));
-         
+        $productRepository = $this->configurationManager->getEntityManager()
+           ->getRepository($this->configurationManager->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT));
+
+        $query = $productRepository->createQueryBuilder('product')
+          ->select('product');
+
         // get our base query
-         if( $this->getCategory()) {
-             $query = $productRepository->findByCategoryQuery($this->getCategory());
-         } else {
-             $query = $productRepository->createQueryBuilder('product');
-         }
-         
-         // apply manufacturer filters
-         if ($this->getCategory() && $this->getSelectedManufacturers($this->getCategory()->getId())) { 
-            $query->field('manufacturer.id')->in($this->getSelectedManufacturers($this->getCategory()->getId()));
-         }
-         
-         $selectedSpecifications = $this->getSelectedSpecifications($this->getCategory() ? $this->getCategory()->getId() : 0);
-         
-         // apply specification filters
-         if ($selectedSpecifications) {
-            $exp = $query->expr();
-         	foreach ($selectedSpecifications as $selectedSpecificationId => $selectedSpecificationValues) {         	    
-         	    $exp->addOr($query->expr()->field('specifications')->elemMatch(
-         	          $query->expr()
-         	            ->field('option.$id')->equals(new \MongoId($selectedSpecificationId))
-         	            //->field('values')->in($query->expr()->in($selectedSpecificationValues))
-         	            ->field('values')->in($selectedSpecificationValues)
-         	            /*->where('function(){
-         	                    if(this.values == undefined){
-         	                        return true;
-         	                    }   
-         	                    print("sweetnesss");      	                     
-         	                    return false;
-         	            }')*/
-         	      )
-                ); 
-             } 
-             $query->addAnd($exp);
-         } 
-         
-         return $query;
+        if( $this->getCategory()) {
+             $query->innerJoin('product.categories', 'category')
+                 ->where('category.category = :categoryId')
+                 ->setParameter('categoryId', $this->getCategory()->getId());
+        }
+
+        $manufacturers = $this->getSelectedManufacturers($this->getCategory() ? $this->getCategory()->getId() : null);
+        $specifications = $this->getSelectedSpecifications($this->getCategory() ? $this->getCategory()->getId() : null);
+
+        if(count($manufacturers)){
+            $query->andWhere('product.manufacturer IN (:manufacturers)')
+               ->setParameter('manufacturers', $manufacturers);
+        }
+
+        if(count($specifications)){
+            $query->leftJoin('product.specifications', 'specification');
+            foreach($specifications as $optionId => $valueIds){
+                if(empty($valueIds)||!count($valueIds)){
+                    continue;
+                }
+                $query->andWhere('specification.option IN (:optionId) AND specification.value IN (:valueIds)')
+                    ->setParameter('optionId', $optionId)
+                    ->setParameter('valueIds', $valueIds);
+            }
+        }
+
+        return $query;
      }
      
      /**
@@ -270,6 +266,7 @@ class ProductFilterManager
      {
          $this->getAvailableSpecifications();
          $this->getAvailableManufacturers();
+         return $this;
      }
      
      /**
@@ -280,59 +277,75 @@ class ProductFilterManager
       * 
       * @return array
       */
-     public function getAvailableSpecifications()
-     {
-         if(isset($this->specifications) && !is_null($this->specifications)){
-             return $this->specifications;
-         }
-         
-         // lets load, as an array, just all product specifications
-         // matching the current criteria
-         $productSpecifications = $this->getPaginationQuery()
-           ->select('specifications')
-           ->hydrate(false)
-           ->getQuery() 
-           ->execute();
+    public function getAvailableSpecifications()
+    {
+        if(isset($this->specifications) && !is_null($this->specifications)){
+            return $this->specifications;
+        }
+        $productIds = array_map(function($value){
+            return $value['product_id'];
+        },$this->getPaginationQuery()->select('partial product.{id}')->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_SCALAR)
+        );
 
-         // extract the values and option keys into an array
-         $specificationKeys = array();
-         foreach($productSpecifications as $productSpecification){
-              if(!isset($productSpecification['specifications'])){
-                  continue;
-              }
-             foreach($productSpecification['specifications'] as $specification){
-                 if(isset($specificationKeys[$specification['optionKey']])){
-                     $specificationKeys[$specification['optionKey']] = array_unique(array_merge(
-                         $specificationKeys[$specification['optionKey']], 
-                         $specification['values']
-                     ));
-                 } else {
-                     $specificationKeys[$specification['optionKey']] = $specification['values'];
-                 }
-             }             
-         }
-         
-         // use that array to load the options
-         $specificationOptions = $this->configurationManager->getDocumentManager()
-           ->getRepository($this->configurationManager->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION))
-           ->createQueryBuilder()
-           ->field('key')->in(array_keys($specificationKeys))
-           ->field('filterable')->equals(true)
-           ->getQuery()
-           ->execute();
-         
-         // create our return array of ProductFilterSpecification available to display
-         // on the filter html
-         $return = array();
-         foreach($specificationOptions as $k => $specificationOption) {
-             $return[$k] = new ProductFilterSpecification($specificationOption);
-             if(isset($specificationKeys[$specificationOption->getKey()])){
-                 $return[$k]->setValues($specificationKeys[$specificationOption->getKey()]);   
-             }
-         }
-         
-         $this->specifications = $return;
-         unset($return);
+        $productDataQuery = $this->configurationManager->getEntityManager()
+            ->getRepository($this->configurationManager->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT))
+            ->createQueryBuilder('product')
+            ->select('partial product.{id},partial specification.{id}, partial option.{id}, partial value.{id}');
+
+        $productDataQuery->leftJoin('product.specifications', 'specification')
+            ->leftJoin('specification.option', 'option')
+            ->leftJoin('specification.value', 'value')
+            ->andWhere('option.filterable = 1 AND product.id IN (:productIds)')
+            ->setParameter('productIds', $productIds);
+
+        $productData = $productDataQuery->getQuery()
+            ->getResult(\Doctrine\ORM\Query::HYDRATE_SCALAR);
+
+        $filters = array(
+            'products' => array(),
+            'options' => array(),
+            'values' => array()
+        );
+
+        $valueProductCounts = array();
+        foreach($productData as $_productData){
+            if(!in_array($_productData['product_id'], $filters['products'])){
+                array_push($filters['products'],  $_productData['product_id']);
+            }
+            if(!in_array($_productData['option_id'], $filters['options'])){
+                array_push($filters['options'],  $_productData['option_id']);
+            }
+
+            if(!in_array($_productData['value_id'], $filters['values'])){
+                array_push($filters['values'],  $_productData['value_id']);
+            }
+
+            if (!isset($valueProductCounts[$_productData['option_id']][$_productData['value_id']])) {
+                $valueProductCounts[$_productData['option_id']][$_productData['value_id']] = array();
+            }
+            $valueProductCounts[$_productData['option_id']][$_productData['value_id']][] = $_productData['product_id'];
+        }
+
+        $this->specificationValueProductCounts = $valueProductCounts;
+
+        $specificationsQuery = $this->configurationManager->getEntityManager()
+        ->getRepository($this->configurationManager->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_PRODUCT_SPECIFICATION_OPTION))
+        ->createQueryBuilder('option')
+        ->select('option, values')
+        ->leftJoin('option.values', 'values')
+        ->innerJoin('option.productSpecifications', 'productSpecifications')
+        ->where('productSpecifications.product IN (:productIds)')
+        ->andWhere('option.id IN (:optionIds)')
+        ->andWhere('values.id IN (:valueIds)')
+        ->setParameters(array(
+            'productIds' => $filters['products'],
+            'optionIds' => $filters['options'],
+            'valueIds' => $filters['values'],
+        ));
+
+
+         $this->specifications = $specificationsQuery->getQuery()->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
          return $this->specifications;
      }
      
@@ -353,25 +366,26 @@ class ProductFilterManager
          // lets load, as an array, just all product specifications
          // matching the current criteria
          $products = $this->getPaginationQuery()
-         ->select('manufacturer')
-         ->hydrate(false)
          ->getQuery()
          ->execute();
 
          $manufacturerIds = array();
          foreach($products as $product) {
-             if(isset($product['manufacturer']['$id'])){
-                 $manufacturerIds[] = (string) $product['manufacturer']['$id'];
+             if($product->getManufacturer()){
+                 $manufacturerIds[] = $product->getManufacturer()->getId();
              }
          }
-          
-         $this->manufacturers = $this->configurationManager->getDocumentManager()
-           ->getRepository($this->configurationManager->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_MANUFACTURER))
-           ->createQueryBuilder()
-           ->field('id')->in($manufacturerIds)
-           ->getQuery()
-           ->execute();
-
+         
+         if (count($manufacturerIds)) {
+	         $this->manufacturers = $this->configurationManager->getEntityManager()
+	           ->getRepository($this->configurationManager->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_MANUFACTURER))
+	           ->createQueryBuilder('manufacturer')
+	           ->where('manufacturer.id IN(:ids)')
+	           ->setParameter('ids', $manufacturerIds)
+	           ->getQuery()
+	           ->getResult();
+         }
+         
          return $this->manufacturers;
      }
      
@@ -391,9 +405,9 @@ class ProductFilterManager
       * @param array $specifications
       * @param string $categoryId
       */
-     public function setSelectedSpecifications(array $specifications, $categoryId)
+     public function setSelectedSpecifications(array $specifications, $categoryId = null)
      {
-         $this->session->set(static::SESSION_TAG_SPECIFICATIONS.'.'.$categoryId, $specifications);
+         $this->session->set(static::SESSION_TAG_SPECIFICATIONS.'.'.(is_null($categoryId) ? 'all' : $categoryId), $specifications);
          return $this; 
      }
      
@@ -404,16 +418,15 @@ class ProductFilterManager
       * @param string $value
       * @param string $categoryId
       */
-     public function addSelectedSpecification($specificationId, $specificationValue, $categoryId)
+     public function addSelectedSpecification($optionId, $valueId, $categoryId)
      {
-         $specifications = $this->getSelectedSpecifications($categoryId);
-         if(!isset($specifications[$specificationId])){
-             $specifications[$specificationId] = array($specificationValue);
-         } else {
-             $specifications[$specificationId][] = $specificationValue;
-             $specifications[$specificationId] = array_unique($specifications[$specificationId]);
+         $options = $this->getSelectedSpecifications($categoryId);
+         if(!isset($options[$optionId])){
+             $options[$optionId] = array($valueId);
+         } else if(!in_array($valueId, $options[$optionId])) {
+             $options[$optionId][] = $valueId;
          }         
-         $this->setSelectedSpecifications(array_unique($specifications), $categoryId);
+         $this->setSelectedSpecifications($options, $categoryId);
          return $this;
      }
      
@@ -424,9 +437,19 @@ class ProductFilterManager
       * @param string $value
       * @param string $categoryId
       */
-     public function removeSelectedSpecification($specificationId, $specificationValue, $categoryId)
+     public function removeSelectedSpecification($optionId, $valueId, $categoryId = null)
      {
-          
+         $options = $this->getSelectedSpecifications($categoryId);
+
+         foreach($options as $_optionId => &$valueIds){
+             foreach($valueIds as $key => &$_valueId){
+                 if($valueId == $_valueId){
+                     unset($valueIds[$key]);
+                 }
+             }
+         }
+         $this->setSelectedSpecifications($options, $categoryId);
+         return $this;
      }
      
      /**
@@ -434,9 +457,9 @@ class ProductFilterManager
       * 
       * @return array
       */
-     public function getSelectedManufacturers($categoryId)
+     public function getSelectedManufacturers($categoryId = null)
      {
-          return  $this->session->get(static::SESSION_TAG_MANUFACTURERS.'.'.$categoryId, array());
+          return  $this->session->get(static::SESSION_TAG_MANUFACTURERS.'.'.(is_null($categoryId) ? 'all' : (int) $categoryId), array());
      }
      
      /**
@@ -445,9 +468,9 @@ class ProductFilterManager
       * @param array $manufacturerIds
       * @param string $categoryId 
       */
-     public function setSelectedManufacturers(array $manufacturerIds, $categoryId)
+     public function setSelectedManufacturers(array $manufacturerIds, $categoryId = null)
      {
-         $this->session->set(static::SESSION_TAG_MANUFACTURERS.'.'.$categoryId, $manufacturerIds);
+         $this->session->set(static::SESSION_TAG_MANUFACTURERS.'.'.(is_null($categoryId) ? 'all' : (int) $categoryId), $manufacturerIds);
          return $this;
      }
       
@@ -457,7 +480,7 @@ class ProductFilterManager
       * @param string $manufacturerId
       * @param string $categoryId
       */
-     public function addSelectedManufacturer($manufacturerId, $categoryId)
+     public function addSelectedManufacturer($manufacturerId, $categoryId = null)
      {
           $manufacturers = $this->getSelectedManufacturers($categoryId);
           if (!in_array($manufacturerId, $manufacturers)) {
@@ -473,7 +496,7 @@ class ProductFilterManager
       * @param string $manufacturerId
       * @param string $categoryId
       */
-     public function removeSelectedManufacturer($manufacturerId, $categoryId)
+     public function removeSelectedManufacturer($manufacturerId, $categoryId = null)
      {
          $manufacturers = $this->getSelectedManufacturers($categoryId);
          foreach ($manufacturers as $key => $_manufacturerId) {
@@ -484,4 +507,16 @@ class ProductFilterManager
          $this->setSelectedManufacturers($manufacturers, $categoryId);
          return $this;
      }
+
+    /**
+     *
+     */
+    public function getSpecificationValueProductCount($optionId, $valueId)
+    {
+        if(isset($this->specificationValueProductCounts[$optionId][$valueId])){
+            return count(array_unique($this->specificationValueProductCounts[$optionId][$valueId]));
+        }
+        return 0;
+    }
+
 }

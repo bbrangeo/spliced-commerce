@@ -48,13 +48,13 @@ class ContentPageType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('pageTitle', 'textarea', array('required' => false))
-            ->add('pageLayout', 'textarea', array('required' => false))
-            ->add('urlSlug')
+            ->add('pageTitle', 'text', array('required' => false))
+            ->add('pageLayout', 'text', array('required' => false))
+            ->add('urlSlug', 'text')
             ->add('metaDescription', 'textarea', array('required' => false))
             ->add('metaKeywords', 'textarea', array('required' => false))
             ->add('content', 'textarea', array('attr' => array( 'class' => 'wysiwyg')))
-            ->add('isActive');
+            ->add('isActive', 'choice', array('expanded' => true, 'choices' => array('No','Yes')));
     }
     
     /**
@@ -71,7 +71,7 @@ class ContentPageType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => $this->getConfigurationManager()->getDocumentClass(ConfigurationManager::OBJECT_CLASS_TAG_CONTENT_PAGE),
+            'data_class' => $this->getConfigurationManager()->getEntityClass(ConfigurationManager::OBJECT_CLASS_TAG_CONTENT_PAGE),
         ));
     }
 }
