@@ -3,9 +3,9 @@
 	"description" : "Spliced Media Commerce Platform for Symfony 2.3.x",
 	"type" : "library",
 	"authors" : [{
-		"email" : "ghassani@splicedmedia.com"
-				"name" : "Gassan Idriss"
-		}
+		"email" : "ghassani@splicedmedia.com",
+		"name" : "Gassan Idriss"
+	}
 	],
 	"homepage" : "http://www.splicedmedia.com",
 	"license" : [
