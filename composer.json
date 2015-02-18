@@ -13,14 +13,8 @@
 	],
 	"require" : {
 		"php" : ">=5.3.3",
-		"symfony/symfony" : ">=2.3,<2.7",
-		"guzzle/guzzle" : "dev-master",
-		"facebook/php-sdk" : "3.2.*",
-		"imagine/Imagine" : "v0.3.0",
-		"spliced/components" : "dev-master",
-		"knplabs/knp-paginator-bundle" : "dev-master",
-		"adoy/oauth2" : "dev-master",
-		"paypal/merchant-sdk-php" : "v3.5.103"
+		"symfony/symfony" : ">=2.3,<2.7"
+		
 	},
 	"autoload" : {
 		"psr-0" : {
